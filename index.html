@@ -111,7 +111,7 @@
         });
     </script>
 
-    <!-- Password Gate Overlay -->
+    <!-- 비밀번호 게이트 오버레이 -->
     <div id="password-gate"
         class="fixed inset-0 z-[100] flex items-center justify-center bg-[#fdfbf7] dark:bg-[#1a1814] transition-opacity duration-700">
         <div class="w-full max-w-md p-8 text-center space-y-8">
@@ -174,7 +174,7 @@
         })();
     </script>
 
-    <!-- Wrapping main content -->
+    <!-- 메인 콘텐츠 래퍼 -->
     <div id="landing-page" class="w-full h-full flex flex-col items-center justify-center transition-all duration-500">
         <div class="w-full h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent fixed top-0 z-50"></div>
         <header class="w-full pt-12 pb-6 flex flex-col items-center justify-center relative z-10">
@@ -239,7 +239,7 @@
                                     class="block text-[10px] font-display tracking-widest text-primary/60 mb-0.5 uppercase">Sutra</label>
                                 <select id="sutra-select-landing"
                                     class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary-dark font-serif text-lg cursor-pointer font-bold appearance-none outline-none">
-                                    <!-- Populated by JS -->
+                                    <!-- JS로 동적 생성됨 -->
                                 </select>
                                 <span
                                     class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-sm">arrow_drop_down</span>
@@ -342,16 +342,16 @@
             </div>
         </div>
     </div>
-    <!-- Compendium Modal -->
+    <!-- Compendium 모달 -->
     <div id="compendium-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-500">
-        <!-- Backdrop -->
+        <!-- 배경 딤 처리 -->
         <div class="absolute inset-0 bg-ink/30 backdrop-blur-sm" onclick="closeCompendium()"></div>
 
-        <!-- Content -->
+        <!-- 콘텐츠 영역 -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div
                 class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
-                <!-- Header -->
+                <!-- 내부 헤더 -->
                 <div class="flex items-center justify-between p-6 border-b border-primary/10">
                     <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">Compendium</h2>
                     <button onclick="closeCompendium()"
@@ -360,7 +360,7 @@
                     </button>
                 </div>
 
-                <!-- Scrollable Content -->
+                <!-- 스크롤 가능 영역 -->
                 <div
                     class="overflow-y-auto p-8 space-y-6 text-text-main font-kr-serif leading-relaxed text-lg no-scrollbar break-keep break-words">
                     <p>
@@ -423,16 +423,16 @@
         </div>
     </div>
 
-    <!-- Lexicon Modal -->
+    <!-- Lexicon 모달 -->
     <div id="lexicon-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-500">
-        <!-- Backdrop -->
+        <!-- 배경 딤 처리 -->
         <div class="absolute inset-0 bg-ink/30 backdrop-blur-sm" onclick="closeLexicon()"></div>
 
-        <!-- Content -->
+        <!-- 콘텐츠 영역 -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div
                 class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
-                <!-- Header -->
+                <!-- 내부 헤더 -->
                 <div class="flex items-center justify-between p-6 border-b border-primary/10">
                     <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">Lexicon</h2>
                     <button onclick="closeLexicon()" class="text-primary/50 hover:text-primary-dark transition-colors">
@@ -440,7 +440,7 @@
                     </button>
                 </div>
 
-                <!-- Scrollable Content -->
+                <!-- 스크롤 가능 영역 -->
                 <div id="lexicon-content"
                     class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar">
                     <!-- Dynamic Content -->
@@ -449,16 +449,16 @@
         </div>
     </div>
 
-    <!-- Commentaries Modal -->
+    <!-- Commentaries 모달 -->
     <div id="commentaries-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-500">
-        <!-- Backdrop -->
+        <!-- 배경 딤 처리 -->
         <div class="absolute inset-0 bg-ink/30 backdrop-blur-sm" onclick="closeCommentaries()"></div>
 
-        <!-- Content -->
+        <!-- 콘텐츠 영역 -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div
                 class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
-                <!-- Header -->
+                <!-- 내부 헤더 -->
                 <div class="flex items-center justify-between p-6 border-b border-primary/10">
                     <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">My Reflections</h2>
                     <button onclick="closeCommentaries()"
@@ -467,7 +467,7 @@
                     </button>
                 </div>
 
-                <!-- Scrollable Content -->
+                <!-- 스크롤 영역 -->
                 <div id="commentaries-content"
                     class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar">
                     <!-- Dynamic Content (User Notes) -->
@@ -477,7 +477,7 @@
     </div>
 
     <script src="data.js" defer></script>
-    <script src="script.js" defer></script>
+    <script type="module" src="js/app.js" defer></script>
     <script>
         function navigateToChapter(e, url) {
             e.preventDefault();

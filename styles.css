@@ -6,14 +6,14 @@
   --accent-gold: #d4af37;
   --accent-gold-dim: #8a7020;
   --font-serif: 'Maru Buri', 'Noto Serif KR', serif;
-  /* Unifying to Korean Serif */
+  /* 한국어 세리프 폰트로 통일함 */
   --font-sans: 'Inter', sans-serif;
   --font-kr: 'Maru Buri', 'Noto Serif KR', serif;
   --font-weight-kr: 500;
   --tooltip-bg: #333;
 }
 
-/* Tooltip Styles */
+/* 툴팁 스타일 */
 .tooltip-word {
   cursor: help;
   border-bottom: 1px dotted var(--accent-gold);
@@ -57,7 +57,7 @@
   visibility: visible;
 }
 
-/* Arrow for Tooltip */
+/* 툴팁용 화살표 */
 .tooltip-word::before {
   content: "";
   position: absolute;
@@ -94,7 +94,7 @@ body {
   font-family: var(--font-sans);
   line-height: 1.6;
   padding-bottom: 50px;
-  /* Global word-break settings */
+  /* 전역 단어 줄바꿈 설정 */
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -118,7 +118,7 @@ body {
 
 .nav-content {
   background: rgba(30, 30, 30, 0.95);
-  /* Fallback / Mobile: Solid/Darker background, no blur for performance */
+  /* 폴백 / 모바일: 성능을 위해 블러 없는 단색 배경을 적용함 */
   padding: 12px 25px;
   border-radius: 50px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -138,7 +138,7 @@ select {
   cursor: pointer;
   outline: none;
   appearance: none;
-  /* Custom styling */
+  /* 커스텀 스타일링 적용됨 */
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23d4af37%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: right .7em top 50%;
@@ -189,7 +189,7 @@ h1 {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  /* Ensure scrolling lands below the sticky header */
+  /* 고정된 헤더 아래로 여백이 남도록 스크롤 위치를 설정함 */
   scroll-margin-top: 120px;
 }
 
@@ -255,7 +255,7 @@ audio {
   height: 40px;
   border-radius: 20px;
   filter: invert(0.9);
-  /* Invert colors to match dark theme better */
+  /* 다크 테마에 더 잘 어울리도록 색상을 반전함 */
 }
 
 .sanskrit,
@@ -266,7 +266,7 @@ audio {
   max-width: 100%;
   line-height: 1.6;
   word-break: keep-all;
-  /* Ensure consistency */
+  /* 일관성 유지됨 */
 }
 
 .sanskrit {
@@ -336,7 +336,7 @@ audio {
   color: #d0d0d0;
 }
 
-/* Oxford Section Styles */
+/* 옥스퍼드 섹션 스타일 */
 .oxford-container {
   margin-top: 30px;
   padding: 20px;
@@ -365,13 +365,13 @@ audio {
   margin-bottom: 0;
 }
 
-/* Bae Chul-hyun Section Styles */
+/* 배철현 섹션 스타일 */
 .bae-container {
   margin-top: 20px;
   padding: 20px;
   background-color: #252525;
   border: 1px solid #8a8a8a;
-  /* Different border color to distinguish or similar? Let's use a neutral/silver tone or just match gold dim */
+  /* 테마와 어울리도록 중립적이거나 골드 계열과 유사한 색상을 적용함 */
   border-color: var(--accent-gold-dim);
   border-radius: 8px;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
