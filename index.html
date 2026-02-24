@@ -203,8 +203,8 @@
                 </a>
                 <span class="text-primary/30 text-[10px] md:text-xs">◆</span>
                 <a class="text-text-muted hover:text-primary-dark transition-colors text-base md:text-lg font-medium italic relative group cursor-pointer"
-                    href="https://bhagavad.simsang.org/" target="_blank" rel="noopener noreferrer">
-                    Bhagavad Gītā
+                    onclick="openCommentaries()">
+                    Commentaries
                     <span
                         class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </a>
@@ -444,6 +444,33 @@
                 <div id="lexicon-content"
                     class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar">
                     <!-- Dynamic Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Commentaries 모달 -->
+    <div id="commentaries-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-500">
+        <!-- 배경 딤 처리 -->
+        <div class="absolute inset-0 bg-ink/30 backdrop-blur-sm" onclick="closeCommentaries()"></div>
+
+        <!-- 콘텐츠 영역 -->
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div
+                class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
+                <!-- 내부 헤더 -->
+                <div class="flex items-center justify-between p-6 border-b border-primary/10">
+                    <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">My Reflections</h2>
+                    <button onclick="closeCommentaries()"
+                        class="text-primary/50 hover:text-primary-dark transition-colors">
+                        <span class="material-symbols-outlined text-2xl">close</span>
+                    </button>
+                </div>
+
+                <!-- 스크롤 영역 -->
+                <div id="commentaries-content"
+                    class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar">
+                    <!-- Dynamic Content (User Notes) -->
                 </div>
             </div>
         </div>
