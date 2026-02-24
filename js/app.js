@@ -3,7 +3,7 @@
 import { initAuthGate, checkPassword } from './auth.js';
 import { setupQuickJump, toggleSidebar, toggleNotes, closeAllSidebars, setupMobileNavScroll, navigateSutraDirection } from './navigation.js';
 import { renderSidebar, updateActiveSidebarItem, setupSutraDOM, showToast } from './ui.js';
-import { openCompendium, closeCompendium, openLexicon, closeLexicon, openCommentaries, closeCommentaries, setupModalEscListener } from './modals.js';
+import { openCompendium, closeCompendium, openLexicon, closeLexicon, setupModalEscListener } from './modals.js';
 
 let currentChapterId = null;
 let currentSutraId = null;
@@ -31,8 +31,7 @@ function bindGlobalEvents() {
     window.closeCompendium = closeCompendium;
     window.openLexicon = () => openLexicon(window.sutras); // 전역 데이터 참조
     window.closeLexicon = closeLexicon;
-    window.openCommentaries = () => openCommentaries(window.sutras);
-    window.closeCommentaries = closeCommentaries;
+
 
     window.toggleSidebar = toggleSidebar;
     window.toggleNotes = toggleNotes;

@@ -153,74 +153,7 @@ function createLexiconList(sortedWords) {
     return list;
 }
 
-// Commentaries (내 노트) 모달
-export function openCommentaries(sutrasData) {
-    showModal('commentaries-modal');
 
-    const contentContainer = document.getElementById('commentaries-content');
-    if (!contentContainer) return;
-
-    setTimeout(() => buildCommentaries(sutrasData, contentContainer), 50);
-}
-
-export function closeCommentaries() { hideModal('commentaries-modal'); }
-
-function buildCommentaries(sutrasData, container) {
-    container.innerHTML = '';
-    const notes = loadStoredNotes();
-
-    if (notes.length === 0) {
-        container.innerHTML = '<p class="text-center text-text-muted italic">노트가 없음. 수트라에 노트를 추가할 것!</p>';
-        return;
-    }
-
-    const list = document.createElement('div');
-    list.className = 'space-y-6';
-
-    notes.forEach(note => {
-        const sutraData = sutrasData.find(s => s.id === note.id);
-        const sutraTitle = sutraData ? sutraData.sanskrit : `Sutra ${note.id}`;
-        const chapterId = note.id.split('.')[0];
-
-        const item = document.createElement('div');
-        item.className = 'bg-white p-6 rounded-lg shadow-sm border border-primary/10 hover:border-primary/30 transition-colors';
-        item.innerHTML = `
-            <div class="flex items-center justify-between mb-3">
-                <a href="chapter.html?id=${chapterId}&sutra=${note.id}" class="text-primary-dark font-display font-medium hover:underline flex items-center gap-2">
-                    <span class="bg-primary/10 px-2 py-0.5 rounded text-sm">Sutra ${note.id}</span>
-                    <span>${sutraTitle}</span>
-                </a>
-            </div>
-            <p class="text-text-main font-kr-serif leading-relaxed whitespace-pre-wrap break-keep break-words">${note.content}</p>
-        `;
-        list.appendChild(item);
-    });
-
-    container.appendChild(list);
-}
-
-function loadStoredNotes() {
-    const ObjectKeys = Object.keys(localStorage);
-    const notes = ObjectKeys.reduce((acc, key) => {
-        if (key.startsWith('note-')) {
-            const sutraId = key.substring(5);
-            const content = localStorage.getItem(key);
-            if (content && content.trim() !== '' && content !== 'undefined') {
-                acc.push({ id: sutraId, content });
-            }
-        }
-        return acc;
-    }, []);
-
-    notes.sort((a, b) => {
-        const partsA = a.id.split('.').map(Number);
-        const partsB = b.id.split('.').map(Number);
-        if (partsA[0] !== partsB[0]) return partsA[0] - partsB[0];
-        return partsA[1] - partsB[1];
-    });
-
-    return notes;
-}
 
 // ESC 키 모달 닫기
 export function setupModalEscListener() {
@@ -228,7 +161,6 @@ export function setupModalEscListener() {
         if (e.key === 'Escape') {
             closeCompendium();
             closeLexicon();
-            closeCommentaries();
         }
     });
 }
