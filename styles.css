@@ -5,10 +5,10 @@
   --text-secondary: #666666;
   --accent-gold: #D4AF37;
   --accent-gold-dim: #C5A059;
-  --font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
-  --font-sans: 'Inter', sans-serif;
-  --font-kr: 'Maru Buri', 'Noto Serif KR', serif;
-  --font-weight-kr: 500;
+  --font-serif: 'Lexend', 'Pretendard', sans-serif;
+  --font-sans: 'Lexend', 'Pretendard', sans-serif;
+  --font-kr: 'Pretendard', sans-serif;
+  --font-weight-kr: 400;
   --tooltip-bg: rgba(22, 22, 24, 0.95);
 }
 
