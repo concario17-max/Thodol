@@ -37,8 +37,8 @@ function renderChapterButtons(activeChapterId, container) {
 }
 
 function getChapterBtnClass(isActive) {
-    const base = 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors mb-1 ';
-    return base + (isActive ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800');
+    const base = 'w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-sans tracking-[0.1em] uppercase transition-all mb-1.5 border border-transparent shadow-sm ';
+    return base + (isActive ? 'bg-primary/10 text-primary-dark border-primary/20 shadow-gold-glow' : 'text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-ink/50 hover:border-primary/15');
 }
 
 function getChapterBtnInner(chap, isActive) {
@@ -56,7 +56,7 @@ function getChapterBtnInner(chap, isActive) {
 function createSutraLink(sutra, container, loadSutraFn) {
     const link = document.createElement('a');
     link.href = '#';
-    link.className = 'block px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md truncate transition-colors';
+    link.className = 'block px-4 py-2 text-sm font-serif text-text-main dark:text-gray-300 hover:bg-white/40 dark:hover:bg-ink/40 rounded-lg truncate transition-all mb-1 hover:pl-5 hover:text-primary-dark border border-transparent hover:border-primary/10';
     link.dataset.id = sutra.id;
 
     link.onclick = (e) => {
@@ -72,10 +72,10 @@ function createSutraLink(sutra, container, loadSutraFn) {
 export function updateActiveSidebarItem(id) {
     document.querySelectorAll('#sidebar-sutra-list a').forEach(a => {
         if (a.dataset.id === id) {
-            a.className = 'block px-4 py-2 text-sm font-medium text-primary bg-primary/5 rounded-md border-l-2 border-primary truncate transition-colors';
+            a.className = 'block px-4 py-2 text-sm font-serif font-bold text-primary-dark bg-primary/10 rounded-lg border-l-2 border-primary-dark truncate transition-all mb-1 pl-5 shadow-[inset_0_1px_4px_rgba(212,175,55,0.1)]';
             a.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
-            a.className = 'block px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md truncate transition-colors';
+            a.className = 'block px-4 py-2 text-sm font-serif text-text-main dark:text-gray-300 hover:bg-white/40 dark:hover:bg-ink/40 rounded-lg truncate transition-all mb-1 hover:pl-5 hover:text-primary-dark border border-transparent hover:border-primary/10';
         }
     });
 }
@@ -97,62 +97,61 @@ export function setupSutraDOM(sutra, currentChapterId) {
 }
 
 function getSutraHtml(sutra, chapterId) {
-    return `
-        <div class="max-w-4xl mx-auto pb-24 animate-fade-in">
-            ${getSutraHeaderNav(sutra.id, chapterId)}
-            <section class="text-center mb-16 relative">
-                <div class="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 text-primary mb-6">
-                    <span class="material-symbols-outlined">self_improvement</span>
-                </div>
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight font-kr-serif break-keep break-words">
-                    ${sutra.sanskrit || ''}
-                </h1>
-                <h2 class="text-xl md:text-2xl font-light text-slate-600 dark:text-slate-400 italic mb-8 font-serif break-keep break-words">
-                    ${sutra.pronunciation || ''}
-                </h2>
-                <div class="text-lg text-slate-500 dark:text-slate-500 mb-8 font-kr-serif break-keep break-words leading-relaxed">
-                    ${formatPronunciationKr(sutra.pronunciation_kr || '')}
-                </div>
-                ${getAudioPlayerHtml(sutra.id)}
-                <div class="flex flex-wrap justify-center gap-3 text-sm font-display leading-relaxed max-w-2xl mx-auto">
-                    ${renderWordBreakdown(sutra)}
-                </div>
-            </section>
-            <div class="w-full h-px bg-primary/10 mb-12"></div>
-            <div class="space-y-6 max-w-3xl mx-auto">
-                ${renderTranslations(sutra)}
+    <div class="max-w-4xl mx-auto pb-24 animate-fade-in pt-4">
+        ${getSutraHeaderNav(sutra.id, chapterId)}
+        <section class="text-center mb-16 relative">
+            <div class="inline-flex items-center justify-center p-3 rounded-full bg-primary/5 text-primary mb-8 border border-primary/20 shadow-gold-glow">
+                <span class="material-symbols-outlined">self_improvement</span>
             </div>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-ink dark:text-gray-100 mb-8 leading-tight tracking-tight font-kr-serif break-keep break-words drop-shadow-sm">
+                ${sutra.sanskrit || ''}
+            </h1>
+            <h2 class="text-xl md:text-2xl font-light text-text-muted dark:text-gray-400 italic mb-8 font-serif break-keep break-words tracking-wide">
+                ${sutra.pronunciation || ''}
+            </h2>
+            <div class="text-lg text-text-muted/80 dark:text-gray-500 mb-10 font-kr-serif break-keep break-words leading-relaxed">
+                ${formatPronunciationKr(sutra.pronunciation_kr || '')}
+            </div>
+            ${getAudioPlayerHtml(sutra.id)}
+            <div class="flex flex-wrap justify-center gap-3 text-sm font-display leading-relaxed max-w-2xl mx-auto">
+                ${renderWordBreakdown(sutra)}
+            </div>
+        </section>
+        <div class="w-full h-px bg-primary/10 mb-12"></div>
+        <div class="space-y-6 max-w-3xl mx-auto">
+            ${renderTranslations(sutra)}
         </div>
+    </div>
     `;
 }
 
 function getSutraHeaderNav(sutraId, chapterId) {
     return `
-        <nav class="flex items-center gap-2 text-sm text-slate-400 mb-8 font-display">
-            <span class="hover:text-primary cursor-pointer">Chapter ${chapterId}</span>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-            <span class="font-medium text-slate-600 dark:text-slate-300">Sutra ${sutraId}</span>
-        </nav>
-    `;
+        < nav class="flex items-center justify-center gap-3 text-sm text-primary/60 mb-12 font-sans tracking-[0.2em] uppercase" >
+            <span class="hover:text-primary-dark cursor-pointer transition-colors">Chapter ${chapterId}</span>
+            <span class="material-symbols-outlined text-[12px] opacity-50">diamond</span>
+            <span class="font-medium text-primary-dark font-serif tracking-widest">Sutra ${sutraId}</span>
+        </nav >
+        `;
 }
 
 function getAudioPlayerHtml(sutraId) {
     return `
-        <div class="flex flex-col items-center mb-10 w-full max-w-md mx-auto">
-            <div id="audio-player-${sutraId}" class="w-full bg-white dark:bg-slate-800 border border-primary/20 rounded-full px-4 py-2 shadow-sm flex items-center gap-4 animate-fade-in">
-                <button id="play-pause-btn-${sutraId}" class="shrink-0 size-8 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
-                    <span class="material-symbols-outlined text-[24px]">play_arrow</span>
+        < div class="flex flex-col items-center mb-10 w-full max-w-md mx-auto" >
+            <div id="audio-player-${sutraId}" class="w-full glass-panel rounded-full px-5 py-3 flex items-center gap-4 animate-fade-in transition-all hover:shadow-gold-glow">
+                <button id="play-pause-btn-${sutraId}" class="shrink-0 size-10 flex items-center justify-center rounded-full bg-primary/10 text-primary-dark hover:bg-primary/20 hover:scale-105 transition-all">
+                    <span class="material-symbols-outlined text-[26px]">play_arrow</span>
                 </button>
-                <span id="current-time-${sutraId}" class="text-xs font-mono text-slate-500 w-10 text-right">0:00</span>
-                <div class="relative flex-1 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full cursor-pointer group">
-                     <div id="progress-bar-${sutraId}" class="absolute top-0 left-0 h-full bg-primary rounded-full w-0 transition-all duration-100"></div>
-                     <input type="range" id="seek-slider-${sutraId}" min="0" max="100" value="0" class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10">
+                <span id="current-time-${sutraId}" class="text-xs font-mono text-text-muted dark:text-gray-400 w-10 text-right">0:00</span>
+                <div class="relative flex-1 h-1 bg-primary/20 rounded-full cursor-pointer group">
+                    <div id="progress-bar-${sutraId}" class="absolute top-0 left-0 h-full bg-primary rounded-full w-0 transition-all duration-100 shadow-[0_0_8px_rgba(212,175,55,0.8)]"></div>
+                    <input type="range" id="seek-slider-${sutraId}" min="0" max="100" value="0" class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10">
                 </div>
-                <span id="duration-${sutraId}" class="text-xs font-mono text-slate-500 w-10">0:00</span>
+                <span id="duration-${sutraId}" class="text-xs font-mono text-text-muted dark:text-gray-400 w-10">0:00</span>
                 <audio id="audio-${sutraId}" src="mp3/${sutraId.replace('.', '-')}.mp3"></audio>
             </div>
-        </div>
-    `;
+        </div >
+        `;
 }
 
 function formatPronunciationKr(text) {
@@ -160,7 +159,7 @@ function formatPronunciationKr(text) {
     return text.split('｜').map(chunk => {
         const trimmed = chunk.trim();
         if (!trimmed) return '';
-        return `<span class="inline-block whitespace-nowrap">${trimmed}</span>`;
+        return `< span class="inline-block whitespace-nowrap" > ${ trimmed }</span > `;
     }).join('<span class="mx-1 opacity-50">｜</span>');
 }
 
@@ -187,31 +186,31 @@ function getWordHtmlFromToken(token) {
     const isDuplicate = cleanShort && (cleanMeaning === cleanShort || cleanMeaning.startsWith(cleanShort));
 
     if (shortMeaning && meaning && !isDuplicate) {
-        htmlContent += `<span class="font-bold ${goldClass} mr-1">${shortMeaning}</span>`;
-        htmlContent += `<span class="opacity-90 text-slate-600 dark:text-slate-400">${meaning}</span>`;
+        htmlContent += `< span class="font-bold ${goldClass} mr-1" > ${ shortMeaning }</span > `;
+        htmlContent += `< span class="opacity-90 text-slate-600 dark:text-slate-400" > ${ meaning }</span > `;
     } else {
         const displayMeaning = (shortMeaning && meaning && isDuplicate) ? meaning : (shortMeaning || meaning);
-        htmlContent += `<span class="font-bold ${goldClass}">${displayMeaning}</span>`;
+        htmlContent += `< span class="font-bold ${goldClass}" > ${ displayMeaning }</span > `;
     }
 
-    if (etymology) htmlContent += `<br><span class="text-xs opacity-50 mt-1 block font-normal">root: ${etymology}</span>`;
+    if (etymology) htmlContent += `< br > <span class="text-[10px] uppercase tracking-widest opacity-50 mt-1.5 block font-sans">root: ${etymology}</span>`;
 
     return `
-        <span class="inline-flex flex-col items-start gap-0.5 px-3 py-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-100 dark:border-slate-700/50 hover:border-[#b08d45]/30 transition-colors text-left">
-            <span class="font-serif font-bold text-slate-800 dark:text-slate-200 text-lg leading-none mb-1">${word}</span>
-            <span class="text-sm leading-snug">${htmlContent}</span>
-        </span>
-    `;
+        < span class="inline-flex flex-col items-start gap-1 px-4 py-3 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl border border-primary/15 hover:border-primary/40 hover:shadow-gold-glow transition-all text-left" >
+            <span class="font-serif font-bold text-ink dark:text-gray-100 text-lg leading-none mb-1">${word}</span>
+            <span class="text-sm leading-snug font-kr-serif tracking-wide block w-full text-text-main dark:text-gray-300 opacity-90">${htmlContent}</span>
+        </span >
+        `;
 }
 
 function getWordHtmlFallback(word, meaning) {
-    const formattedMeaning = meaning.replace(/</g, '<br><span class="opacity-60 text-xs">&lt;</span>');
+    const formattedMeaning = meaning.replace(/</g, '<br><span class="opacity-60 text-[10px] tracking-widest">&lt;</span>');
     return `
-        <span class="inline-flex flex-col items-start gap-1 px-3 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors text-left">
-            <strong class="font-serif text-slate-900 dark:text-white font-bold text-lg leading-none">${word}</strong>
-            <span class="text-slate-600 dark:text-slate-400 text-sm leading-snug">${formattedMeaning}</span>
-        </span>
-    `;
+        < span class="inline-flex flex-col items-start gap-1.5 px-4 py-3 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl border border-primary/15 hover:border-primary/40 hover:shadow-gold-glow transition-all text-left" >
+            <strong class="font-serif text-ink dark:text-gray-100 font-bold text-lg leading-none">${word}</strong>
+            <span class="text-text-main dark:text-gray-300 text-sm leading-snug font-kr-serif tracking-wide opacity-90">${formattedMeaning}</span>
+        </span >
+        `;
 }
 
 function renderTranslations(sutra) {
@@ -251,31 +250,31 @@ function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClas
         const label = formatLabel(key);
         const textStr = (sutra[key] || '').trim();
         return `
-            <div class="mb-6 last:mb-0">
-                <div class="section-label">${label}</div>
+        < div class="mb-8 last:mb-0 relative" >
+                <div class="section-label pl-2">${label}</div>
                 <div class="content-block">
-                    <blockquote class="${langClass} text-[1.05rem] text-[#1f2937] dark:text-[#d1d5db] whitespace-pre-wrap">${textStr}</blockquote>
+                    <blockquote class="${langClass} text-[1.1rem] text-ink dark:text-gray-200 whitespace-pre-wrap leading-loose">${textStr}</blockquote>
                 </div>
-            </div>
+            </div >
         `;
     }).join('');
 
     return `
-        <div class="max-w-[720px] mx-auto bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-primary/10 hover:border-primary/40 transition-all hover:shadow-md group text-left">
-            <div class="flex items-center justify-between mb-6">
+        < div class="max-w-[720px] mx-auto glass-panel rounded-2xl p-8 shadow-sm hover:shadow-gold-glow transition-all group text-left" >
+            <div class="flex items-center justify-between mb-8 pb-4 border-b border-primary/10">
                 <div class="flex items-center gap-3">
-                    <div class="size-10 rounded-full ${iconClass} flex items-center justify-center">
+                    <div class="size-12 rounded-full ${iconClass} flex items-center justify-center shadow-inner border border-white/20">
                         <span class="material-symbols-outlined">${icon}</span>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">${authorName}</h3>
-                        <p class="text-xs text-slate-500">${subTitle}</p>
+                        <h3 class="text-base font-bold text-ink dark:text-white font-serif tracking-wide">${authorName}</h3>
+                        <p class="text-xs text-text-muted tracking-widest uppercase mt-0.5">${subTitle}</p>
                     </div>
                 </div>
             </div>
-            ${contents}
-        </div>
-    `;
+            ${ contents }
+        </div >
+        `;
 }
 
 function formatLabel(key) {
@@ -302,8 +301,8 @@ export function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     const { colors, icon, iconColor } = getToastStyle(type);
 
-    toast.className = `flex items-center gap-3 px-6 py-3 rounded-full shadow-xl border ${colors} transform transition-all duration-300 translate-y-8 opacity-0 pointer-events-auto min-w-[300px] max-w-sm backdrop-blur-sm bg-white/95 dark:bg-slate-800/95`;
-    toast.innerHTML = `<span class="material-symbols-outlined ${iconColor}">${icon}</span><span class="text-sm font-medium font-serif">${message}</span>`;
+    toast.className = `flex items - center gap - 3 px - 6 py - 3 rounded - full shadow - xl border ${ colors } transform transition - all duration - 300 translate - y - 8 opacity - 0 pointer - events - auto min - w - [300px] max - w - sm backdrop - blur - sm bg - white / 95 dark: bg - slate - 800 / 95`;
+    toast.innerHTML = `< span class="material-symbols-outlined ${iconColor}" > ${ icon }</span > <span class="text-sm font-medium font-serif">${message}</span>`;
     container.appendChild(toast);
 
     requestAnimationFrame(() => toast.classList.remove('translate-y-8', 'opacity-0'));

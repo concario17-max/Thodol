@@ -35,26 +35,29 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#b08d45",
-                        "primary-dark": "#8a6d32",
-                        "background-light": "#fdfbf7",
-                        "background-paper": "#f4f1ea",
-                        "text-main": "#2c281f",
-                        "text-muted": "#5c5542",
-                        "gold-accent": "#c5a059",
-                        "ink": "#1a1814"
+                        "primary": "#D4AF37", // Champagne Gold
+                        "primary-dark": "#C5A059",
+                        "primary-light": "#ebd59b",
+                        "background-light": "#FAFAFA", // Pristine off-white
+                        "background-paper": "#F7F5F0", // Premium light cream
+                        "text-main": "#333333", // Deep grey for text readability
+                        "text-muted": "#666666",
+                        "gold-accent": "#D4AF37",
+                        "ink": "#161618" // Rich onyx/charcoal
                     },
                     fontFamily: {
                         "display": ["Cinzel", "serif"],
                         "serif": ["Cormorant Garamond", "serif"],
                         "kr-serif": ["Maru Buri", "Noto Serif KR", "serif"],
+                        "sans": ["Inter", "sans-serif"],
                     },
                     backgroundImage: {
-                        'parchment': "linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.9)), url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+                        'parchment': "linear-gradient(to bottom, rgba(250,250,250,0.98), rgba(247,245,240,0.95)), url('https://www.transparenttextures.com/patterns/cream-paper.png')",
                     },
                     boxShadow: {
-                        'gold-glow': '0 0 40px -10px rgba(176, 141, 69, 0.3)',
-                        'inset-gold': 'inset 0 0 0 1px rgba(176, 141, 69, 0.2)',
+                        'gold-glow': '0 0 30px -10px rgba(212, 175, 55, 0.4)',
+                        'gold-glow-lg': '0 0 50px -15px rgba(212, 175, 55, 0.5)',
+                        'inset-gold': 'inset 0 0 0 1px rgba(212, 175, 55, 0.25)',
                     }
                 },
             },
@@ -62,14 +65,14 @@
     </script>
     <style>
         .text-gold-gradient {
-            background: linear-gradient(to bottom, #cfb56e 0%, #b08d45 50%, #8f7032 100%);
+            background: linear-gradient(to bottom, #ebd59b 0%, #D4AF37 50%, #C5A059 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .border-gold-gradient {
-            border-image: linear-gradient(to right, transparent, #b08d45, transparent) 1;
+            border-image: linear-gradient(to right, transparent, #D4AF37, transparent) 1;
         }
 
         .ornament-divider {
@@ -77,20 +80,33 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            margin: 2rem 0;
+            margin: 2.5rem 0;
         }
 
         .ornament-divider::before,
         .ornament-divider::after {
             content: "";
             flex: 1;
-            border-bottom: 1px solid rgba(176, 141, 69, 0.3);
-            margin: 0 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            margin: 0 1.5rem;
         }
 
         .ornament-icon {
-            color: #b08d45;
+            color: #D4AF37;
             font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .glass-panel {
+            background: rgba(250, 250, 250, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .dark .glass-panel {
+            background: rgba(22, 22, 24, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
     </style>
     <link rel="icon" type="image/png" href="favicon.png">
@@ -127,10 +143,10 @@
                 </div>
             </div>
 
-            <form id="password-form" class="space-y-5" onsubmit="checkPassword(event)">
+            <form id="password-form" class="space-y-6" onsubmit="checkPassword(event)">
                 <div class="relative group">
                     <input type="password" id="app-password" placeholder="Enter Password"
-                        class="w-full bg-white border border-primary/20 rounded-xl px-4 py-4 text-center text-xl tracking-[0.5em] focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all placeholder:tracking-normal placeholder:text-sm placeholder:text-text-muted/50"
+                        class="w-full bg-white/50 backdrop-blur-sm border 1px solid rgba(212, 175, 55, 0.2) rounded-xl px-4 py-4 text-center text-xl tracking-[0.5em] focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all placeholder:tracking-widest placeholder:text-sm placeholder:text-text-muted/60 font-serif"
                         autofocus autocomplete="off">
                     <div id="password-error"
                         class="hidden absolute -bottom-6 left-0 right-0 text-[10px] text-red-500 font-bold uppercase tracking-wider">
@@ -138,7 +154,7 @@
                     </div>
                 </div>
                 <button type="submit"
-                    class="w-full bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-primary transition-all active:scale-[0.98] font-display flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
+                    class="w-full bg-ink text-primary-light hover:text-white font-medium py-4 rounded-xl shadow-[0_4px_15px_-3px_rgba(212,175,55,0.2)] hover:shadow-gold-glow transition-all active:scale-[0.98] font-sans flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-sm border border-primary/20 hover:border-primary/50">
                     Enter Gateway
                     <span class="material-symbols-outlined text-xl">vaping_rooms</span>
                 </button>
@@ -217,32 +233,33 @@
             <div class="w-full max-w-xl mx-auto mb-16 relative z-10">
                 <div class="relative group">
                     <div
-                        class="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200">
+                        class="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary-light/10 to-primary/20 blur-md opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-500">
                     </div>
                     <div
-                        class="relative flex items-center bg-white border border-primary/30 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-gold-glow transition-all duration-300 py-3 px-6 rounded-lg w-full max-w-xl mx-auto">
-                        <div class="flex items-center gap-4 w-full justify-between">
+                        class="relative flex items-center glass-panel shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-gold-glow-lg transition-all duration-500 py-4 px-8 rounded-xl w-full max-w-xl mx-auto">
+                        <div class="flex items-center gap-6 w-full justify-between">
                             <div class="flex-1 relative">
                                 <label
-                                    class="block text-[10px] font-display tracking-widest text-primary/60 mb-0.5 uppercase">Chapter</label>
+                                    class="block text-[10px] font-sans tracking-[0.2em] text-primary/70 mb-1 uppercase">Chapter</label>
                                 <select id="chapter-select-landing"
-                                    class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary-dark font-serif text-lg cursor-pointer font-bold appearance-none outline-none">
+                                    class="w-full bg-transparent border-none p-0 focus:ring-0 text-ink dark:text-gray-100 font-serif text-xl cursor-pointer font-medium appearance-none outline-none">
                                     <option value="1" class="bg-[#fdfbf7] text-text-main">I. Samādhi</option>
                                     <option value="2" class="bg-[#fdfbf7] text-text-main">II. Sādhana</option>
                                     <option value="3" class="bg-[#fdfbf7] text-text-main">III. Vibhūti</option>
                                     <option value="4" class="bg-[#fdfbf7] text-text-main">IV. Kaivalya</option>
                                 </select>
                             </div>
-                            <div class="w-px h-8 bg-primary/20"></div>
+                            <div class="w-px h-10 bg-gradient-to-b from-transparent via-primary/30 to-transparent">
+                            </div>
                             <div class="w-24 relative">
                                 <label
-                                    class="block text-[10px] font-display tracking-widest text-primary/60 mb-0.5 uppercase">Sutra</label>
+                                    class="block text-[10px] font-sans tracking-[0.2em] text-primary/70 mb-1 uppercase">Sutra</label>
                                 <select id="sutra-select-landing"
-                                    class="w-full bg-transparent border-none p-0 focus:ring-0 text-primary-dark font-serif text-lg cursor-pointer font-bold appearance-none outline-none">
+                                    class="w-full bg-transparent border-none p-0 focus:ring-0 text-ink dark:text-gray-100 font-serif text-xl cursor-pointer font-medium appearance-none outline-none">
                                     <!-- JS로 동적 생성됨 -->
                                 </select>
                                 <span
-                                    class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-sm">arrow_drop_down</span>
+                                    class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/50 pointer-events-none text-sm">arrow_drop_down</span>
                             </div>
                         </div>
                     </div>
@@ -250,66 +267,74 @@
             </div>
 
             <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-px bg-gradient-to-b from-transparent via-primary/20 to-transparent w-full max-w-3xl border-t border-b border-primary/20">
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer border-r border-primary/10 last:border-r-0 md:border-r"
+                class="grid grid-cols-1 md:grid-cols-2 gap-px bg-gradient-to-b from-transparent via-primary/10 to-transparent w-full max-w-3xl border-t border-b border-primary/10">
+                <a class="group relative p-12 hover:bg-white/40 transition-colors duration-700 flex flex-col items-center text-center cursor-pointer border-r border-primary/5 last:border-r-0 md:border-r"
                     href="chapter.html?id=1" onclick="navigateToChapter(event, 'chapter.html?id=1')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">psychology</span>
+                    <div class="mb-5 opacity-50 group-hover:opacity-100 transition-opacity duration-700">
+                        <span class="material-symbols-outlined text-4xl text-primary">psychology</span>
                     </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
+                    <div class="space-y-3">
+                        <span class="text-[10px] font-sans tracking-[0.3em] text-primary/70 uppercase block">Chapter
                             I</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
+                        <h2
+                            class="text-3xl font-display text-ink group-hover:text-primary transition-colors duration-500">
                             Samādhi Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
+                        <p
+                            class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words pt-2">
                             On the absorption of consciousness.
                         </p>
                     </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
+                    <div class="mt-8 w-12 h-px bg-primary/30 group-hover:w-24 transition-all duration-700"></div>
                 </a>
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer"
+                <a class="group relative p-12 hover:bg-white/40 transition-colors duration-700 flex flex-col items-center text-center cursor-pointer"
                     href="chapter.html?id=2" onclick="navigateToChapter(event, 'chapter.html?id=2')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">self_improvement</span>
+                    <div class="mb-5 opacity-50 group-hover:opacity-100 transition-opacity duration-700">
+                        <span class="material-symbols-outlined text-4xl text-primary">self_improvement</span>
                     </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
+                    <div class="space-y-3">
+                        <span class="text-[10px] font-sans tracking-[0.3em] text-primary/70 uppercase block">Chapter
                             II</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
+                        <h2
+                            class="text-3xl font-display text-ink group-hover:text-primary transition-colors duration-500">
                             Sādhana Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
+                        <p
+                            class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words pt-2">
                             On the practice of discipline.
                         </p>
                     </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
+                    <div class="mt-8 w-12 h-px bg-primary/30 group-hover:w-24 transition-all duration-700"></div>
                 </a>
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer border-r border-primary/10 last:border-r-0 md:border-r md:border-t border-t"
+                <a class="group relative p-12 hover:bg-white/40 transition-colors duration-700 flex flex-col items-center text-center cursor-pointer border-r border-primary/5 last:border-r-0 md:border-r md:border-t border-t border-primary/5"
                     href="chapter.html?id=3" onclick="navigateToChapter(event, 'chapter.html?id=3')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">wb_twilight</span>
+                    <div class="mb-5 opacity-50 group-hover:opacity-100 transition-opacity duration-700">
+                        <span class="material-symbols-outlined text-4xl text-primary">wb_twilight</span>
                     </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
+                    <div class="space-y-3">
+                        <span class="text-[10px] font-sans tracking-[0.3em] text-primary/70 uppercase block">Chapter
                             III</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
+                        <h2
+                            class="text-3xl font-display text-ink group-hover:text-primary transition-colors duration-500">
                             Vibhūti Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
+                        <p
+                            class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words pt-2">
                             On supernatural powers &amp; accomplishments.
                         </p>
                     </div>
-                    <div class="mt-6 w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
+                    <div class="mt-8 w-12 h-px bg-primary/30 group-hover:w-24 transition-all duration-700"></div>
                 </a>
-                <a class="group relative p-10 hover:bg-[#fbf9f4] transition-colors duration-500 flex flex-col items-center text-center cursor-pointer md:border-t border-t"
+                <a class="group relative p-12 hover:bg-white/40 transition-colors duration-700 flex flex-col items-center text-center cursor-pointer md:border-t border-t border-primary/5"
                     href="chapter.html?id=4" onclick="navigateToChapter(event, 'chapter.html?id=4')">
-                    <div class="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                        <span class="material-symbols-outlined text-3xl text-primary">all_inclusive</span>
+                    <div class="mb-5 opacity-50 group-hover:opacity-100 transition-opacity duration-700">
+                        <span class="material-symbols-outlined text-4xl text-primary">all_inclusive</span>
                     </div>
-                    <div class="space-y-2">
-                        <span class="text-xs font-display tracking-[0.2em] text-primary/70 uppercase block">Chapter
+                    <div class="space-y-3">
+                        <span class="text-[10px] font-sans tracking-[0.3em] text-primary/70 uppercase block">Chapter
                             IV</span>
-                        <h2 class="text-2xl font-display text-ink group-hover:text-primary-dark transition-colors">
+                        <h2
+                            class="text-3xl font-display text-ink group-hover:text-primary transition-colors duration-500">
                             Kaivalya Pāda</h2>
-                        <p class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words">
+                        <p
+                            class="text-lg text-text-muted font-serif italic leading-relaxed break-keep break-words pt-2">
                             On absolute freedom and liberation.
                         </p>
                     </div>
@@ -350,9 +375,10 @@
         <!-- 콘텐츠 영역 -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div
-                class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
+                class="glass-panel w-full max-w-2xl max-h-[80vh] rounded-2xl shadow-gold-glow-lg relative flex flex-col border border-primary/20 overflow-hidden">
                 <!-- 내부 헤더 -->
-                <div class="flex items-center justify-between p-6 border-b border-primary/10">
+                <div
+                    class="flex items-center justify-between p-6 border-b border-primary/10 bg-white/50 dark:bg-ink/50 backdrop-blur-md">
                     <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">Compendium</h2>
                     <button onclick="closeCompendium()"
                         class="text-primary/50 hover:text-primary-dark transition-colors">
@@ -362,7 +388,7 @@
 
                 <!-- 스크롤 가능 영역 -->
                 <div
-                    class="overflow-y-auto p-8 space-y-6 text-text-main font-kr-serif leading-relaxed text-lg no-scrollbar break-keep break-words">
+                    class="overflow-y-auto p-8 space-y-6 text-text-main font-kr-serif leading-relaxed text-lg no-scrollbar break-keep break-words dark:text-gray-200">
                     <p>
                         요가수트라는 흔히 ‘수행의 부록’처럼 오해되기도 하지만, 실제로는 수행의 핵심 원리와 실천 단계가 가장 압축적으로 담긴 <strong
                             class="text-primary-dark font-medium">정수(精髓)</strong>입니다.
@@ -431,9 +457,10 @@
         <!-- 콘텐츠 영역 -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div
-                class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
+                class="glass-panel w-full max-w-2xl max-h-[80vh] rounded-2xl shadow-gold-glow-lg relative flex flex-col border border-primary/20 overflow-hidden">
                 <!-- 내부 헤더 -->
-                <div class="flex items-center justify-between p-6 border-b border-primary/10">
+                <div
+                    class="flex items-center justify-between p-6 border-b border-primary/10 bg-white/50 dark:bg-ink/50 backdrop-blur-md">
                     <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">Lexicon</h2>
                     <button onclick="closeLexicon()" class="text-primary/50 hover:text-primary-dark transition-colors">
                         <span class="material-symbols-outlined text-2xl">close</span>
@@ -442,7 +469,7 @@
 
                 <!-- 스크롤 가능 영역 -->
                 <div id="lexicon-content"
-                    class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar">
+                    class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar dark:text-gray-200">
                     <!-- Dynamic Content -->
                 </div>
             </div>
@@ -457,9 +484,10 @@
         <!-- 콘텐츠 영역 -->
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div
-                class="bg-[#fcfaf7] w-full max-w-2xl max-h-[80vh] rounded-lg shadow-2xl relative flex flex-col border border-primary/20">
+                class="glass-panel w-full max-w-2xl max-h-[80vh] rounded-2xl shadow-gold-glow-lg relative flex flex-col border border-primary/20 overflow-hidden">
                 <!-- 내부 헤더 -->
-                <div class="flex items-center justify-between p-6 border-b border-primary/10">
+                <div
+                    class="flex items-center justify-between p-6 border-b border-primary/10 bg-white/50 dark:bg-ink/50 backdrop-blur-md">
                     <h2 class="text-3xl font-kr-serif text-primary-dark font-bold">My Reflections</h2>
                     <button onclick="closeCommentaries()"
                         class="text-primary/50 hover:text-primary-dark transition-colors">
@@ -469,7 +497,7 @@
 
                 <!-- 스크롤 영역 -->
                 <div id="commentaries-content"
-                    class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar">
+                    class="overflow-y-auto p-8 space-y-4 text-text-main font-serif leading-relaxed text-lg no-scrollbar dark:text-gray-200">
                     <!-- Dynamic Content (User Notes) -->
                 </div>
             </div>

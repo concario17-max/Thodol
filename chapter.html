@@ -33,19 +33,26 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#b08d45", // Gold from landing page
-                        "primary-dark": "#8a6d32",
-                        "background-light": "#fdfbf7", // Parchment tone
-                        "background-dark": "#1a1814", // Ink black
-                        "parchment": "#f4f1ea",
-                        "parchment-dark": "#2c281f",
+                        "primary": "#D4AF37", // Champagne Gold
+                        "primary-dark": "#C5A059",
+                        "primary-light": "#ebd59b",
+                        "background-light": "#FAFAFA", // Pristine off-white
+                        "background-dark": "#161618", // Rich onyx/charcoal
+                        "parchment": "#F7F5F0",
+                        "parchment-dark": "#1C1C1E",
+                        "ink": "#161618"
                     },
                     fontFamily: {
-                        "display": ["Lexend", "sans-serif"],
-                        "serif": ["Playfair Display", "serif"],
+                        "display": ["Cinzel", "serif"],
+                        "serif": ["Cormorant Garamond", "serif"],
                         "kr-serif": ["Maru Buri", "Noto Serif KR", "serif"],
+                        "sans": ["Inter", "sans-serif"],
                     },
                     borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    boxShadow: {
+                        'gold-glow': '0 0 30px -10px rgba(212, 175, 55, 0.4)',
+                        'gold-glow-lg': '0 0 50px -15px rgba(212, 175, 55, 0.5)',
+                    }
                 },
             },
         }
@@ -97,41 +104,52 @@
         }
 
         .lang-en {
-            font-family: "Noto Serif", serif;
+            font-family: "Cormorant Garamond", "Noto Serif", serif;
             letter-spacing: 0;
             line-height: 1.75;
         }
 
         .section-label {
             font-size: 13px;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             font-weight: 600;
-            color: #6b7280;
-            /* slate-500 */
+            color: #D4AF37;
+            /* Gold accent */
+            opacity: 0.8;
             margin-bottom: 6px;
+            text-transform: uppercase;
         }
 
         .content-block {
             padding-left: 12px;
-            border-left: 3px solid #e5e7eb;
-            /* gray-200 */
+            border-left: 2px solid rgba(212, 175, 55, 0.2);
         }
 
         /* Dark mode overrides */
         .dark .section-label {
-            color: #9ca3af;
-            /* slate-400 */
+            color: #ebd59b;
         }
 
         .dark .content-block {
-            border-left-color: #374151;
-            /* gray-700 */
+            border-left-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .glass-panel {
+            background: rgba(250, 250, 250, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .dark .glass-panel {
+            background: rgba(22, 22, 24, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
     </style>
 </head>
 
 <body
-    class="bg-[#fcfaf7] dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display transition-opacity duration-700 overflow-hidden selection:bg-primary/20 selection:text-slate-900 opacity-0"
+    class="bg-background-light dark:bg-background-dark text-ink dark:text-gray-100 min-h-screen font-display transition-opacity duration-700 overflow-hidden opacity-0"
     style="opacity: 0;">
     <script>
         document.fonts.ready.then(function () {
@@ -144,7 +162,7 @@
 
     <!-- 비밀번호 게이트 오버레이 -->
     <div id="password-gate"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-[#fdfbf7] dark:bg-[#1a1814] transition-opacity duration-700">
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-background-light dark:bg-background-dark transition-opacity duration-700">
         <div class="w-full max-w-md p-8 text-center space-y-8">
             <div class="flex flex-col items-center gap-4">
                 <div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary-dark">
@@ -158,10 +176,10 @@
                 </div>
             </div>
 
-            <form id="password-form" class="space-y-5" onsubmit="checkPassword(event)">
+            <form id="password-form" class="space-y-6" onsubmit="checkPassword(event)">
                 <div class="relative group">
                     <input type="password" id="app-password" placeholder="Enter Password"
-                        class="w-full bg-white border border-primary/20 rounded-xl px-4 py-4 text-center text-xl tracking-[0.5em] focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all placeholder:tracking-normal placeholder:text-sm placeholder:text-text-muted/50"
+                        class="w-full bg-white/50 backdrop-blur-sm border 1px solid rgba(212, 175, 55, 0.2) rounded-xl px-4 py-4 text-center text-xl tracking-[0.5em] focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all placeholder:tracking-widest placeholder:text-sm placeholder:text-text-muted/60 font-serif"
                         autofocus autocomplete="off">
                     <div id="password-error"
                         class="hidden absolute -bottom-6 left-0 right-0 text-[10px] text-red-500 font-bold uppercase tracking-wider">
@@ -169,7 +187,7 @@
                     </div>
                 </div>
                 <button type="submit"
-                    class="w-full bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-primary transition-all active:scale-[0.98] font-display flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
+                    class="w-full bg-ink text-primary-light hover:text-white font-medium py-4 rounded-xl shadow-[0_4px_15px_-3px_rgba(212,175,55,0.2)] hover:shadow-gold-glow transition-all active:scale-[0.98] font-sans flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-sm border border-primary/20 hover:border-primary/50">
                     Enter Gateway
                     <span class="material-symbols-outlined text-xl">vaping_rooms</span>
                 </button>
@@ -208,28 +226,29 @@
     <div id="app-wrapper" class="transition-all duration-700 flex flex-col h-[100dvh] overflow-hidden">
         <!-- 상단 내비게이션 -->
         <header
-            class="h-16 border-b border-primary/20 bg-background-light dark:bg-background-dark flex items-center justify-between px-4 md:px-6 shrink-0 z-30">
-            <div class="flex items-center gap-2 md:gap-4">
+            class="h-20 border-b border-primary/10 glass-panel flex items-center justify-between px-6 md:px-10 shrink-0 z-30 shadow-sm relative">
+            <div class="flex items-center gap-3 md:gap-6">
                 <!-- 모바일 메뉴 토글 -->
-                <button class="lg:hidden p-2 text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                <button
+                    class="lg:hidden p-2 text-primary hover:bg-primary/5 rounded-lg transition-colors border border-transparent hover:border-primary/20"
                     onclick="toggleSidebar()">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
-                <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity"
                     title="Back to Home">
-                    <span class="material-symbols-outlined text-primary text-xl">spa</span>
+                    <span class="material-symbols-outlined text-primary text-2xl drop-shadow-sm">spa</span>
                     <h1
-                        class="text-base md:text-lg font-bold tracking-tight text-slate-900 dark:text-white font-serif whitespace-nowrap">
+                        class="text-lg md:text-xl font-medium tracking-widest text-ink dark:text-gray-100 font-display uppercase whitespace-nowrap">
                         Yoga Sutras</h1>
                 </a>
             </div>
             <div class="flex items-center gap-1.5 md:gap-6">
                 <!-- 빠른 탐색 (모바일 숨김, 데스크탑 표시) -->
                 <div
-                    class="hidden md:flex items-center gap-1 md:gap-3 bg-parchment dark:bg-slate-800 rounded-lg py-0.5 px-1.5 md:px-3 border border-primary/10">
+                    class="hidden md:flex items-center gap-2 md:gap-4 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl py-1 px-3 md:px-5 border border-primary/20 shadow-inner">
                     <div class="relative">
                         <select id="chapter-select-header"
-                            class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 md:pr-6 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-8 md:w-auto">
+                            class="bg-transparent border-none text-[11px] md:text-sm p-0 pr-4 md:pr-7 focus:ring-0 text-ink dark:text-gray-200 cursor-pointer font-serif appearance-none font-medium outline-none w-10 md:w-auto">
                             <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
                                 I
                             </option>
@@ -241,26 +260,26 @@
                                 IV</option>
                         </select>
                         <span
-                            class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[8px] md:text-[10px]">arrow_drop_down</span>
+                            class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/50 pointer-events-none text-[10px] md:text-xs">arrow_drop_down</span>
                     </div>
-                    <div class="w-px h-3 bg-primary/20 mx-1"></div>
+                    <div class="w-px h-4 bg-primary/30 mx-2"></div>
                     <div class="relative">
                         <select id="sutra-select-header"
-                            class="bg-transparent border-none text-[10px] md:text-sm p-0 pr-3 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif w-8 md:w-16 appearance-none font-medium outline-none">
+                            class="bg-transparent border-none text-[11px] md:text-sm p-0 pr-4 focus:ring-0 text-ink dark:text-gray-200 cursor-pointer font-serif w-10 md:w-20 appearance-none font-medium outline-none">
                             <!-- JS로 동적 생성됨 -->
                         </select>
                         <span
-                            class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[8px] md:text-[10px]">arrow_drop_down</span>
+                            class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/50 pointer-events-none text-[10px] md:text-xs">arrow_drop_down</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-1">
+                <div class="flex items-center gap-2">
                     <button
-                        class="xl:hidden p-2 text-slate-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        class="xl:hidden p-2 text-primary/70 hover:text-primary hover:bg-primary/10 rounded-xl transition-colors border border-transparent hover:border-primary/20"
                         onclick="toggleNotes()" title="User Notes">
                         <span class="material-symbols-outlined text-[20px]">edit_note</span>
                     </button>
                     <button
-                        class="p-2 text-slate-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        class="p-2 text-primary/70 hover:text-primary hover:bg-primary/10 rounded-xl transition-colors border border-transparent hover:border-primary/20"
                         onclick="toggleTheme()" title="Toggle Theme">
                         <span class="material-symbols-outlined text-[20px]">dark_mode</span>
                     </button>
@@ -299,10 +318,12 @@
         <div class="flex flex-1 overflow-hidden relative">
             <!-- 좌측 사이드바: 내비게이션 드로어 -->
             <aside id="left-sidebar"
-                class="fixed inset-y-0 left-0 w-80 bg-background-light dark:bg-background-dark border-r border-primary/20 z-40 transition-transform -translate-x-full lg:relative lg:translate-x-0 flex flex-col shrink-0">
-                <div class="p-4 border-b border-primary/10 flex items-center justify-between">
-                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">챕터 (파다)</h2>
-                    <button class="lg:hidden p-1 text-slate-400 hover:text-primary transition-colors"
+                class="fixed inset-y-0 left-0 w-[340px] bg-background-light dark:bg-background-dark border-r border-primary/20 z-40 transition-transform -translate-x-full lg:relative lg:translate-x-0 flex flex-col shrink-0">
+                <div class="p-6 border-b border-primary/10 flex items-center justify-between">
+                    <h2 class="text-xs font-bold text-primary/70 uppercase tracking-[0.2em] font-sans">Chapters &amp;
+                        Sutras</h2>
+                    <button
+                        class="lg:hidden p-2 text-primary/50 hover:text-primary transition-colors hover:bg-primary/5 rounded-full"
                         onclick="closeAllSidebars()">
                         <span class="material-symbols-outlined text-[20px]">close</span>
                     </button>
@@ -320,11 +341,12 @@
 
             <!-- 중앙 콘텐츠: 수트라 영역 -->
             <main class="flex-1 flex flex-col h-full overflow-hidden relative" id="main-content">
-                <div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 pt-16 md:pt-8 scroll-smooth"
+                <div class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-14 pt-20 md:pt-10 scroll-smooth"
                     id="sutra-detail-view">
                     <!-- JS로 주입되는 상세 수트라 콘텐츠 -->
-                    <div class="flex items-center justify-center h-full text-slate-400 italic">
-                        시작하려면 수트라를 선택할 것...
+                    <div
+                        class="flex items-center justify-center h-full text-text-muted/50 italic font-serif text-lg tracking-wide">
+                        Select a sutra to begin...
                     </div>
                 </div>
 
@@ -333,17 +355,17 @@
                     onclick="closeAllSidebars()"></div>
 
                 <!-- 수트라 하단 내비게이션 (모바일/데스크탑) -->
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-lg border border-primary/20 z-10 transition-transform duration-300"
+                <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 glass-panel px-6 py-3 rounded-full shadow-gold-glow border border-primary/20 z-10 transition-transform duration-500"
                     id="bottom-nav">
                     <button
-                        class="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors"
+                        class="size-10 flex items-center justify-center rounded-full hover:bg-primary/10 text-primary-dark transition-all hover:scale-105 active:scale-95"
                         id="prev-sutra-btn">
                         <span class="material-symbols-outlined">arrow_back</span>
                     </button>
-                    <span class="text-sm font-medium text-slate-900 dark:text-white"
+                    <span class="text-base font-serif font-medium text-ink dark:text-gray-100 tracking-widest px-2"
                         id="current-sutra-indicator">--</span>
                     <button
-                        class="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors"
+                        class="size-10 flex items-center justify-center rounded-full hover:bg-primary/10 text-primary-dark transition-all hover:scale-105 active:scale-95"
                         id="next-sutra-btn">
                         <span class="material-symbols-outlined">arrow_forward</span>
                     </button>
@@ -352,34 +374,36 @@
 
             <!-- 우측 사이드바: 노트 드로어 -->
             <aside id="right-sidebar"
-                class="fixed inset-y-0 right-0 w-80 bg-parchment dark:bg-parchment-dark border-l border-primary/20 z-40 transition-transform translate-x-full xl:relative xl:translate-x-0 flex flex-col shrink-0">
-                <div class="p-4 border-b border-primary/10 flex items-center justify-between">
-                    <div class="flex items-center gap-2 text-slate-800 dark:text-slate-200">
-                        <span class="material-symbols-outlined text-primary">edit_note</span>
-                        <h2 class="text-sm font-bold">성찰 노트</h2>
+                class="fixed inset-y-0 right-0 w-[380px] bg-parchment dark:bg-parchment-dark border-l border-primary/20 z-40 transition-transform translate-x-full xl:relative xl:translate-x-0 flex flex-col shrink-0">
+                <div class="p-6 border-b border-primary/10 flex items-center justify-between glass-panel shadow-sm">
+                    <div class="flex items-center gap-3 text-ink dark:text-gray-100">
+                        <span class="material-symbols-outlined text-primary text-2xl">edit_note</span>
+                        <h2 class="text-base font-display tracking-widest uppercase">Reflections</h2>
                     </div>
-                    <button class="xl:hidden p-1 text-slate-400 hover:text-primary transition-colors"
+                    <button
+                        class="xl:hidden p-2 text-primary/50 hover:text-primary transition-colors hover:bg-primary/5 rounded-full"
                         onclick="closeAllSidebars()">
                         <span class="material-symbols-outlined text-[20px]">close</span>
                     </button>
                 </div>
-                <div class="flex-1 p-4 overflow-y-auto">
-                    <div class="text-xs font-medium text-slate-400 mb-2 uppercase tracking-wide"><span
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <div class="text-[10px] font-sans text-primary/70 mb-3 uppercase tracking-[0.2em]"><span
                             id="note-sutra-id">...</span></div>
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-primary/20 p-1 mb-4">
+                    <div
+                        class="bg-white/60 dark:bg-ink/60 rounded-xl shadow-inner border border-primary/15 p-2 mb-6 backdrop-blur-sm">
                         <textarea
-                            class="w-full h-64 resize-none border-none focus:ring-0 text-sm text-slate-700 dark:text-slate-300 bg-transparent p-2 leading-relaxed font-kr-serif"
-                            placeholder="이 수트라에 대한 나만의 단상이나 해석을 기록해보세요..." id="user-note-area"></textarea>
+                            class="w-full h-72 resize-none border-none focus:ring-0 text-base text-text-main dark:text-gray-300 bg-transparent p-3 leading-loose font-kr-serif placeholder:text-text-muted/40 placeholder:font-serif placeholder:italic"
+                            placeholder="Write your reflections here..." id="user-note-area"></textarea>
                     </div>
-                    <div class="flex justify-end gap-2">
+                    <div class="flex justify-end gap-3 mt-4">
                         <button
-                            class="bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-500 dark:text-slate-300 border border-slate-200 dark:border-slate-600 px-3 py-2 rounded-lg text-sm font-medium shadow-sm transition-all flex items-center gap-2"
+                            class="bg-white/50 dark:bg-ink/50 hover:bg-white dark:hover:bg-ink text-text-muted dark:text-gray-300 border border-primary/20 hover:border-primary/50 px-4 py-2.5 rounded-xl text-sm font-sans tracking-wide shadow-sm transition-all flex items-center gap-2 backdrop-blur-sm"
                             onclick="exportNotes()" title="Download Notes as Text File">
                             <span class="material-symbols-outlined text-[18px]">download</span>
                             Export
                         </button>
                         <button
-                            class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-all flex items-center gap-2"
+                            class="bg-ink hover:bg-background-dark text-primary-light hover:text-white px-5 py-2.5 rounded-xl text-sm font-sans tracking-wide shadow-gold-glow border border-transparent hover:border-primary/30 transition-all flex items-center gap-2"
                             onclick="saveNote()">
                             <span class="material-symbols-outlined text-[18px]">save</span>
                             Save Note
