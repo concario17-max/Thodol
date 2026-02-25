@@ -5,9 +5,9 @@
   --text-secondary: #666666;
   --accent-gold: #D4AF37;
   --accent-gold-dim: #C5A059;
-  --font-serif: 'Lexend', 'Pretendard', sans-serif;
-  --font-sans: 'Lexend', 'Pretendard', sans-serif;
-  --font-kr: 'Pretendard', sans-serif;
+  --font-serif: 'Crimson Pro', 'Noto Serif', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-kr: 'Noto Serif KR', serif;
   --font-weight-kr: 400;
   --tooltip-bg: rgba(22, 22, 24, 0.95);
 }
@@ -347,11 +347,11 @@ audio {
 }
 
 .translation-text.english {
-  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+  font-family: var(--font-serif);
   padding-left: 18px;
   border-left: 2px solid rgba(212, 175, 55, 0.4);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.02em;
 }
 
