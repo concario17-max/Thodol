@@ -231,17 +231,17 @@
             <div class="w-full max-w-[560px] mx-auto mb-16 relative z-10">
                 <div
                     class="relative bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(212,175,55,0.15)] transition-all duration-500 rounded-[1.2rem] w-full border border-primary/10">
-                    <div class="flex items-center w-full min-h-[90px]">
+                    <div class="flex flex-col md:flex-row items-center w-full md:min-h-[90px]">
                         <!-- Chapter Section -->
-                        <div class="flex-1 relative pl-8 pr-6 group/chap cursor-pointer py-4" id="custom-chap-select"
-                            onclick="toggleCustomDropdown(event, 'chap-dropdown')">
+                        <div class="w-full md:flex-1 relative px-6 md:pl-8 md:pr-6 group/chap cursor-pointer py-4"
+                            id="custom-chap-select" onclick="toggleCustomDropdown(event, 'chap-dropdown')">
                             <label
                                 class="block text-[11px] font-sans font-bold tracking-[0.2em] text-[#A68A56] mb-1 uppercase cursor-pointer pointer-events-none">Chapter</label>
-                            <div class="text-ink font-serif text-[17px] cursor-pointer group-hover/chap:text-primary transition-colors pointer-events-none"
+                            <div class="text-ink font-serif text-[16px] md:text-[17px] cursor-pointer group-hover/chap:text-primary transition-colors pointer-events-none"
                                 id="chap-display">Select a Chapter</div>
                             <!-- Custom Dropdown Menu -->
                             <div id="chap-dropdown"
-                                class="absolute left-0 top-full mt-2 w-[260px] bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-[#E8E1D5] opacity-0 invisible transition-all duration-300 z-50 overflow-hidden transform origin-top scale-95">
+                                class="absolute left-0 right-0 md:right-auto top-full mt-2 lg:mt-4 w-full md:w-[260px] bg-white rounded-xl shadow-[0_10px_40px_-5px_rgba(0,0,0,0.15)] border border-[#E8E1D5] opacity-0 invisible transition-all duration-300 z-50 overflow-hidden transform origin-top scale-95">
                                 <div class="max-h-[280px] overflow-y-auto custom-scrollbar">
                                     <div class="px-5 py-3.5 hover:bg-[#FAF8F5] cursor-pointer text-ink font-serif text-[15px] border-b border-[#F2EBE1] last:border-0 transition-colors"
                                         onclick="selectCustomChapter(event, '1', '1. 합일의 문제')">1. 합일의 문제</div>
@@ -257,18 +257,20 @@
                         </div>
 
                         <!-- Divider -->
-                        <div class="w-px h-12 bg-gradient-to-b from-transparent via-[#E8E1D5] to-transparent"></div>
+                        <div
+                            class="w-full h-px md:w-px md:h-12 bg-gradient-to-r md:bg-gradient-to-b from-transparent via-[#E8E1D5] to-transparent">
+                        </div>
 
                         <!-- Verse Section -->
-                        <div class="flex-1 relative pl-8 pr-6 group/verse cursor-pointer py-4" id="custom-sutra-select"
-                            onclick="toggleCustomDropdown(event, 'verse-dropdown')">
+                        <div class="w-full md:flex-1 relative px-6 md:pl-8 md:pr-6 group/verse cursor-pointer py-4"
+                            id="custom-sutra-select" onclick="toggleCustomDropdown(event, 'verse-dropdown')">
                             <label
                                 class="block text-[11px] font-sans font-bold tracking-[0.2em] text-[#A68A56] mb-1 uppercase cursor-pointer pointer-events-none">Verse</label>
-                            <div class="text-[#999] font-serif text-[17px] cursor-pointer transition-colors pointer-events-none"
+                            <div class="text-[#999] font-serif text-[16px] md:text-[17px] cursor-pointer transition-colors pointer-events-none"
                                 id="sutra-display">Select Chapter First</div>
                             <!-- Custom Dropdown Menu -->
                             <div id="verse-dropdown"
-                                class="absolute left-6 top-full mt-2 w-[220px] bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-[#E8E1D5] opacity-0 invisible transition-all duration-300 z-50 overflow-hidden transform origin-top scale-95">
+                                class="absolute left-0 right-0 md:left-6 md:right-auto top-full mt-2 lg:mt-4 w-full md:w-[220px] bg-white rounded-xl shadow-[0_10px_40px_-5px_rgba(0,0,0,0.15)] border border-[#E8E1D5] opacity-0 invisible transition-all duration-300 z-50 overflow-hidden transform origin-top scale-95">
                                 <div class="max-h-[280px] overflow-y-auto custom-scrollbar"
                                     id="sutra-options-container">
                                     <div class="px-5 py-4 text-[#999] font-serif text-[14px] text-center italic">Select

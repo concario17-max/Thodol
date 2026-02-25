@@ -250,7 +250,7 @@ function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClas
         const label = formatLabel(key);
         const textStr = (sutra[key] || '').trim();
         return `
-            <div class="mb-8 last:mb-0 relative">
+            <div class="mb-6 md:mb-8 last:mb-0 relative">
                 <div class="section-label pl-2">${label}</div>
                 <div class="content-block">
                     <blockquote class="${langClass} text-[1.1rem] text-ink dark:text-gray-200 whitespace-pre-wrap leading-loose">${textStr}</blockquote>
@@ -260,8 +260,8 @@ function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClas
     }).join('');
 
     return `
-        <div class="max-w-[720px] mx-auto glass-panel rounded-2xl p-8 shadow-sm hover:shadow-gold-glow transition-all group text-left">
-            <div class="flex items-center justify-between mb-8 pb-4 border-b border-primary/10">
+        <div class="max-w-[720px] mx-auto glass-panel rounded-2xl p-5 md:p-8 shadow-sm hover:shadow-gold-glow transition-all group text-left">
+            <div class="flex items-center justify-between mb-6 md:mb-8 pb-3 md:pb-4 border-b border-primary/10">
                 <div class="flex items-center gap-3">
                     <div class="size-12 rounded-full ${iconClass} flex items-center justify-center shadow-inner border border-white/20">
                         <span class="material-symbols-outlined">${icon}</span>
