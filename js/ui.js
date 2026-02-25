@@ -20,10 +20,10 @@ export function renderSidebar(chapterId, sutrasData, loadSutraFn) {
 function renderChapterButtons(activeChapterId, container) {
     if (!container) return;
     const chapters = [
-        { id: '1', name: 'Samadhi Pada', count: 51, icon: 'spa' },
-        { id: '2', name: 'Sadhana Pada', count: 55, icon: 'self_improvement' },
-        { id: '3', name: 'Vibhuti Pada', count: 56, icon: 'wb_twilight' },
-        { id: '4', name: 'Kaivalya Pada', count: 34, icon: 'all_inclusive' }
+        { id: '1', name: '1. 삼매장 (Samādhi)', count: 51, icon: 'spa' },
+        { id: '2', name: '2. 방법장 (Sādhana)', count: 55, icon: 'self_improvement' },
+        { id: '3', name: '3. 초월지장 (Vibhūti)', count: 56, icon: 'wb_twilight' },
+        { id: '4', name: '4. 독존장 (Kaivalya)', count: 34, icon: 'all_inclusive' }
     ];
 
     chapters.forEach(chap => {
@@ -37,7 +37,7 @@ function renderChapterButtons(activeChapterId, container) {
 }
 
 function getChapterBtnClass(isActive) {
-    const base = 'w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-sans tracking-[0.1em] uppercase transition-all mb-1.5 border border-transparent shadow-sm ';
+    const base = 'w-full flex items-center justify-between px-4 py-3 rounded-xl text-[15px] font-kr-serif tracking-wide transition-all mb-1.5 border border-transparent shadow-sm ';
     return base + (isActive ? 'bg-primary/10 text-primary-dark border-primary/20 shadow-gold-glow' : 'text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-ink/50 hover:border-primary/15');
 }
 
@@ -97,6 +97,7 @@ export function setupSutraDOM(sutra, currentChapterId) {
 }
 
 function getSutraHtml(sutra, chapterId) {
+    return `
     <div class="max-w-4xl mx-auto pb-24 animate-fade-in pt-4">
         ${getSutraHeaderNav(sutra.id, chapterId)}
         <section class="text-center mb-16 relative">
@@ -127,17 +128,17 @@ function getSutraHtml(sutra, chapterId) {
 
 function getSutraHeaderNav(sutraId, chapterId) {
     return `
-        < nav class="flex items-center justify-center gap-3 text-sm text-primary/60 mb-12 font-sans tracking-[0.2em] uppercase" >
+        <nav class="flex items-center justify-center gap-3 text-sm text-primary/60 mb-12 font-display tracking-[0.2em] uppercase">
             <span class="hover:text-primary-dark cursor-pointer transition-colors">Chapter ${chapterId}</span>
             <span class="material-symbols-outlined text-[12px] opacity-50">diamond</span>
-            <span class="font-medium text-primary-dark font-serif tracking-widest">Sutra ${sutraId}</span>
-        </nav >
+            <span class="font-medium text-primary-dark font-display tracking-widest">Sutra ${sutraId}</span>
+        </nav>
         `;
 }
 
 function getAudioPlayerHtml(sutraId) {
     return `
-        < div class="flex flex-col items-center mb-10 w-full max-w-md mx-auto" >
+        <div class="flex flex-col items-center mb-10 w-full max-w-md mx-auto">
             <div id="audio-player-${sutraId}" class="w-full glass-panel rounded-full px-5 py-3 flex items-center gap-4 animate-fade-in transition-all hover:shadow-gold-glow">
                 <button id="play-pause-btn-${sutraId}" class="shrink-0 size-10 flex items-center justify-center rounded-full bg-primary/10 text-primary-dark hover:bg-primary/20 hover:scale-105 transition-all">
                     <span class="material-symbols-outlined text-[26px]">play_arrow</span>
@@ -150,7 +151,7 @@ function getAudioPlayerHtml(sutraId) {
                 <span id="duration-${sutraId}" class="text-xs font-mono text-text-muted dark:text-gray-400 w-10">0:00</span>
                 <audio id="audio-${sutraId}" src="mp3/${sutraId.replace('.', '-')}.mp3"></audio>
             </div>
-        </div >
+        </div>
         `;
 }
 
@@ -159,7 +160,7 @@ function formatPronunciationKr(text) {
     return text.split('｜').map(chunk => {
         const trimmed = chunk.trim();
         if (!trimmed) return '';
-        return `< span class="inline-block whitespace-nowrap" > ${ trimmed }</span > `;
+        return `<span class="inline-block whitespace-nowrap">${trimmed}</span>`;
     }).join('<span class="mx-1 opacity-50">｜</span>');
 }
 
@@ -186,30 +187,30 @@ function getWordHtmlFromToken(token) {
     const isDuplicate = cleanShort && (cleanMeaning === cleanShort || cleanMeaning.startsWith(cleanShort));
 
     if (shortMeaning && meaning && !isDuplicate) {
-        htmlContent += `< span class="font-bold ${goldClass} mr-1" > ${ shortMeaning }</span > `;
-        htmlContent += `< span class="opacity-90 text-slate-600 dark:text-slate-400" > ${ meaning }</span > `;
+        htmlContent += `<span class="font-bold ${goldClass} mr-1">${shortMeaning}</span>`;
+        htmlContent += `<span class="opacity-90 text-slate-600 dark:text-slate-400">${meaning}</span>`;
     } else {
         const displayMeaning = (shortMeaning && meaning && isDuplicate) ? meaning : (shortMeaning || meaning);
-        htmlContent += `< span class="font-bold ${goldClass}" > ${ displayMeaning }</span > `;
+        htmlContent += `<span class="font-bold ${goldClass}">${displayMeaning}</span>`;
     }
 
-    if (etymology) htmlContent += `< br > <span class="text-[10px] uppercase tracking-widest opacity-50 mt-1.5 block font-sans">root: ${etymology}</span>`;
+    if (etymology) htmlContent += `<br><span class="text-[10px] uppercase tracking-widest opacity-50 mt-1.5 block font-display">root: ${etymology}</span>`;
 
     return `
-        < span class="inline-flex flex-col items-start gap-1 px-4 py-3 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl border border-primary/15 hover:border-primary/40 hover:shadow-gold-glow transition-all text-left" >
+        <span class="inline-flex flex-col items-start gap-1 px-4 py-3 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl border border-primary/15 hover:border-primary/40 hover:shadow-gold-glow transition-all text-left">
             <span class="font-serif font-bold text-ink dark:text-gray-100 text-lg leading-none mb-1">${word}</span>
             <span class="text-sm leading-snug font-kr-serif tracking-wide block w-full text-text-main dark:text-gray-300 opacity-90">${htmlContent}</span>
-        </span >
+        </span>
         `;
 }
 
 function getWordHtmlFallback(word, meaning) {
     const formattedMeaning = meaning.replace(/</g, '<br><span class="opacity-60 text-[10px] tracking-widest">&lt;</span>');
     return `
-        < span class="inline-flex flex-col items-start gap-1.5 px-4 py-3 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl border border-primary/15 hover:border-primary/40 hover:shadow-gold-glow transition-all text-left" >
+        <span class="inline-flex flex-col items-start gap-1.5 px-4 py-3 bg-white/40 dark:bg-ink/40 backdrop-blur-sm rounded-xl border border-primary/15 hover:border-primary/40 hover:shadow-gold-glow transition-all text-left">
             <strong class="font-serif text-ink dark:text-gray-100 font-bold text-lg leading-none">${word}</strong>
             <span class="text-text-main dark:text-gray-300 text-sm leading-snug font-kr-serif tracking-wide opacity-90">${formattedMeaning}</span>
-        </span >
+        </span>
         `;
 }
 
@@ -250,17 +251,17 @@ function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClas
         const label = formatLabel(key);
         const textStr = (sutra[key] || '').trim();
         return `
-        < div class="mb-8 last:mb-0 relative" >
+            <div class="mb-8 last:mb-0 relative">
                 <div class="section-label pl-2">${label}</div>
                 <div class="content-block">
                     <blockquote class="${langClass} text-[1.1rem] text-ink dark:text-gray-200 whitespace-pre-wrap leading-loose">${textStr}</blockquote>
                 </div>
-            </div >
+            </div>
         `;
     }).join('');
 
     return `
-        < div class="max-w-[720px] mx-auto glass-panel rounded-2xl p-8 shadow-sm hover:shadow-gold-glow transition-all group text-left" >
+        <div class="max-w-[720px] mx-auto glass-panel rounded-2xl p-8 shadow-sm hover:shadow-gold-glow transition-all group text-left">
             <div class="flex items-center justify-between mb-8 pb-4 border-b border-primary/10">
                 <div class="flex items-center gap-3">
                     <div class="size-12 rounded-full ${iconClass} flex items-center justify-center shadow-inner border border-white/20">
@@ -272,8 +273,8 @@ function renderTranslationCard(sutra, keys, authorName, subTitle, icon, iconClas
                     </div>
                 </div>
             </div>
-            ${ contents }
-        </div >
+            ${contents}
+        </div>
         `;
 }
 
@@ -301,8 +302,8 @@ export function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     const { colors, icon, iconColor } = getToastStyle(type);
 
-    toast.className = `flex items - center gap - 3 px - 6 py - 3 rounded - full shadow - xl border ${ colors } transform transition - all duration - 300 translate - y - 8 opacity - 0 pointer - events - auto min - w - [300px] max - w - sm backdrop - blur - sm bg - white / 95 dark: bg - slate - 800 / 95`;
-    toast.innerHTML = `< span class="material-symbols-outlined ${iconColor}" > ${ icon }</span > <span class="text-sm font-medium font-serif">${message}</span>`;
+    toast.className = `flex items-center gap-3 px-6 py-3 rounded-full shadow-xl border ${colors} transform transition-all duration-300 translate-y-8 opacity-0 pointer-events-auto min-w-[300px] max-w-sm backdrop-blur-sm bg-white/95 dark:bg-slate-800/95`;
+    toast.innerHTML = `<span class="material-symbols-outlined ${iconColor}">${icon}</span><span class="text-sm font-medium font-serif">${message}</span>`;
     container.appendChild(toast);
 
     requestAnimationFrame(() => toast.classList.remove('translate-y-8', 'opacity-0'));

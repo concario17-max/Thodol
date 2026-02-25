@@ -250,14 +250,14 @@
                         <select id="chapter-select-header"
                             class="bg-transparent border-none text-[11px] md:text-sm p-0 pr-4 md:pr-7 focus:ring-0 text-ink dark:text-gray-200 cursor-pointer font-serif appearance-none font-medium outline-none w-10 md:w-auto">
                             <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                I
+                                1장
                             </option>
                             <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                II</option>
+                                2장</option>
                             <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                III</option>
+                                3장</option>
                             <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                                IV</option>
+                                4장</option>
                         </select>
                         <span
                             class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/50 pointer-events-none text-[10px] md:text-xs">arrow_drop_down</span>
@@ -295,10 +295,10 @@
                 <div class="relative flex-1 text-center">
                     <select id="chapter-select-mobile"
                         class="bg-transparent border-none text-xs p-0 pr-4 focus:ring-0 text-slate-700 dark:text-slate-200 cursor-pointer font-serif appearance-none font-medium outline-none w-full text-center">
-                        <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 1</option>
-                        <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 2</option>
-                        <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 3</option>
-                        <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800">Ch 4</option>
+                        <option value="1" class="bg-[#fdfbf7] dark:bg-slate-800">1장. 삼매장</option>
+                        <option value="2" class="bg-[#fdfbf7] dark:bg-slate-800">2장. 방법장</option>
+                        <option value="3" class="bg-[#fdfbf7] dark:bg-slate-800">3장. 초월지장</option>
+                        <option value="4" class="bg-[#fdfbf7] dark:bg-slate-800">4장. 독존장</option>
                     </select>
                     <span
                         class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/40 pointer-events-none text-[10px]">arrow_drop_down</span>
@@ -320,7 +320,7 @@
             <aside id="left-sidebar"
                 class="fixed inset-y-0 left-0 w-[340px] bg-background-light dark:bg-background-dark border-r border-primary/20 z-40 transition-transform -translate-x-full lg:relative lg:translate-x-0 flex flex-col shrink-0">
                 <div class="p-6 border-b border-primary/10 flex items-center justify-between">
-                    <h2 class="text-xs font-bold text-primary/70 uppercase tracking-[0.2em] font-sans">Chapters &amp;
+                    <h2 class="text-xs font-bold text-primary/70 uppercase tracking-[0.2em] font-display">Chapters &amp;
                         Sutras</h2>
                     <button
                         class="lg:hidden p-2 text-primary/50 hover:text-primary transition-colors hover:bg-primary/5 rounded-full"
@@ -387,7 +387,7 @@
                     </button>
                 </div>
                 <div class="flex-1 p-6 overflow-y-auto">
-                    <div class="text-[10px] font-sans text-primary/70 mb-3 uppercase tracking-[0.2em]"><span
+                    <div class="text-[10px] font-display text-primary/70 mb-3 uppercase tracking-[0.2em]"><span
                             id="note-sutra-id">...</span></div>
                     <div
                         class="bg-white/60 dark:bg-ink/60 rounded-xl shadow-inner border border-primary/15 p-2 mb-6 backdrop-blur-sm">
@@ -397,13 +397,13 @@
                     </div>
                     <div class="flex justify-end gap-3 mt-4">
                         <button
-                            class="bg-white/50 dark:bg-ink/50 hover:bg-white dark:hover:bg-ink text-text-muted dark:text-gray-300 border border-primary/20 hover:border-primary/50 px-4 py-2.5 rounded-xl text-sm font-sans tracking-wide shadow-sm transition-all flex items-center gap-2 backdrop-blur-sm"
+                            class="bg-white/50 dark:bg-ink/50 hover:bg-white dark:hover:bg-ink text-text-muted dark:text-gray-300 border border-primary/20 hover:border-primary/50 px-4 py-2.5 rounded-xl text-sm font-serif tracking-wide shadow-sm transition-all flex items-center gap-2 backdrop-blur-sm"
                             onclick="exportNotes()" title="Download Notes as Text File">
                             <span class="material-symbols-outlined text-[18px]">download</span>
                             Export
                         </button>
                         <button
-                            class="bg-ink hover:bg-background-dark text-primary-light hover:text-white px-5 py-2.5 rounded-xl text-sm font-sans tracking-wide shadow-gold-glow border border-transparent hover:border-primary/30 transition-all flex items-center gap-2"
+                            class="bg-ink hover:bg-background-dark text-primary-light hover:text-white px-5 py-2.5 rounded-xl text-sm font-serif tracking-wide shadow-gold-glow border border-transparent hover:border-primary/30 transition-all flex items-center gap-2"
                             onclick="saveNote()">
                             <span class="material-symbols-outlined text-[18px]">save</span>
                             Save Note
