@@ -5,8 +5,8 @@
   --text-secondary: #666666;
   --accent-gold: #D4AF37;
   --accent-gold-dim: #C5A059;
-  --font-serif: 'Crimson Pro', 'Noto Serif', serif;
-  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Crimson Pro', 'Noto Serif KR', serif;
+  --font-sans: 'Inter', 'Pretendard', sans-serif;
   --font-kr: 'Noto Serif KR', serif;
   --font-weight-kr: 400;
   --tooltip-bg: rgba(22, 22, 24, 0.95);

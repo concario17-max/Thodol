@@ -37,7 +37,7 @@ function renderChapterButtons(activeChapterId, container) {
 }
 
 function getChapterBtnClass(isActive) {
-    const base = 'w-full flex items-center justify-between px-4 py-3 rounded-xl text-[15px] font-kr-serif tracking-wide transition-all mb-1.5 border border-transparent shadow-sm ';
+    const base = 'w-full flex items-center justify-between px-4 py-3 rounded-xl text-[15px] font-sans font-medium tracking-[0.02em] transition-all mb-1.5 border border-transparent shadow-sm ';
     return base + (isActive ? 'bg-primary/10 text-primary-dark border-primary/20 shadow-gold-glow' : 'text-text-muted dark:text-gray-400 hover:bg-white/50 dark:hover:bg-ink/50 hover:border-primary/15');
 }
 
@@ -55,7 +55,7 @@ function getChapterBtnInner(chap, isActive) {
 function createSutraLink(sutra, container, loadSutraFn) {
     const link = document.createElement('a');
     link.href = '#';
-    link.className = 'block px-4 py-2 text-sm font-serif text-text-main dark:text-gray-300 hover:bg-white/40 dark:hover:bg-ink/40 rounded-lg truncate transition-all mb-1 hover:pl-5 hover:text-primary-dark border border-transparent hover:border-primary/10';
+    link.className = 'block px-4 py-2 text-[13.5px] tracking-wide font-sans text-text-main dark:text-gray-300 hover:bg-white/40 dark:hover:bg-ink/40 rounded-lg truncate transition-all mb-1 hover:pl-5 hover:text-primary-dark border border-transparent hover:border-primary/10';
     link.dataset.id = sutra.id;
 
     link.onclick = (e) => {
