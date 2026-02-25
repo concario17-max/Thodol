@@ -228,36 +228,52 @@
             <div class="ornament-divider max-w-lg mx-auto opacity-60">
                 <span class="material-symbols-outlined ornament-icon">spa</span>
             </div>
-            <div class="w-full max-w-xl mx-auto mb-16 relative z-10">
-                <div class="relative group">
-                    <div
-                        class="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary-light/10 to-primary/20 blur-md opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-500">
-                    </div>
-                    <div
-                        class="relative flex items-center glass-panel shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-gold-glow-lg transition-all duration-500 py-4 px-8 rounded-xl w-full max-w-xl mx-auto">
-                        <div class="flex items-center gap-6 w-full justify-between">
-                            <div class="flex-1 relative">
-                                <label
-                                    class="block text-[10px] font-sans tracking-[0.2em] text-primary/70 mb-1 uppercase">Chapter</label>
-                                <select id="chapter-select-landing"
-                                    class="w-full bg-transparent border-none p-0 focus:ring-0 text-ink dark:text-gray-100 font-kr-serif text-xl cursor-pointer font-medium appearance-none outline-none">
-                                    <option value="1" class="bg-[#fdfbf7] text-text-main">I. 합일의 문제</option>
-                                    <option value="2" class="bg-[#fdfbf7] text-text-main">II. 합일의 단계</option>
-                                    <option value="3" class="bg-[#fdfbf7] text-text-main">III. 합일의 성취와 그 결과</option>
-                                    <option value="4" class="bg-[#fdfbf7] text-text-main">IV. 깨달음</option>
-                                </select>
+            <div class="w-full max-w-[560px] mx-auto mb-16 relative z-10">
+                <div
+                    class="relative bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(212,175,55,0.15)] transition-all duration-500 rounded-[1.2rem] w-full border border-primary/10">
+                    <div class="flex items-center w-full min-h-[90px]">
+                        <!-- Chapter Section -->
+                        <div class="flex-1 relative pl-8 pr-6 group/chap cursor-pointer py-4" id="custom-chap-select"
+                            onclick="toggleCustomDropdown(event, 'chap-dropdown')">
+                            <label
+                                class="block text-[11px] font-sans font-bold tracking-[0.2em] text-[#A68A56] mb-1 uppercase cursor-pointer pointer-events-none">Chapter</label>
+                            <div class="text-ink font-serif text-[17px] cursor-pointer group-hover/chap:text-primary transition-colors pointer-events-none"
+                                id="chap-display">Select a Chapter</div>
+                            <!-- Custom Dropdown Menu -->
+                            <div id="chap-dropdown"
+                                class="absolute left-0 top-full mt-2 w-[260px] bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-[#E8E1D5] opacity-0 invisible transition-all duration-300 z-50 overflow-hidden transform origin-top scale-95">
+                                <div class="max-h-[280px] overflow-y-auto custom-scrollbar">
+                                    <div class="px-5 py-3.5 hover:bg-[#FAF8F5] cursor-pointer text-ink font-serif text-[15px] border-b border-[#F2EBE1] last:border-0 transition-colors"
+                                        onclick="selectCustomChapter(event, '1', '1. 합일의 문제')">1. 합일의 문제</div>
+                                    <div class="px-5 py-3.5 hover:bg-[#FAF8F5] cursor-pointer text-ink font-serif text-[15px] border-b border-[#F2EBE1] last:border-0 transition-colors"
+                                        onclick="selectCustomChapter(event, '2', '2. 합일의 단계')">2. 합일의 단계</div>
+                                    <div class="px-5 py-3.5 hover:bg-[#FAF8F5] cursor-pointer text-ink font-serif text-[15px] border-b border-[#F2EBE1] last:border-0 transition-colors"
+                                        onclick="selectCustomChapter(event, '3', '3. 합일의 성취와 그 결과')">3. 합일의 성취와 그 결과
+                                    </div>
+                                    <div class="px-5 py-3.5 hover:bg-[#FAF8F5] cursor-pointer text-ink font-serif text-[15px] transition-colors"
+                                        onclick="selectCustomChapter(event, '4', '4. 깨달음')">4. 깨달음</div>
+                                </div>
                             </div>
-                            <div class="w-px h-10 bg-gradient-to-b from-transparent via-primary/30 to-transparent">
-                            </div>
-                            <div class="w-24 relative">
-                                <label
-                                    class="block text-[10px] font-sans tracking-[0.2em] text-primary/70 mb-1 uppercase">Sutra</label>
-                                <select id="sutra-select-landing"
-                                    class="w-full bg-transparent border-none p-0 focus:ring-0 text-ink dark:text-gray-100 font-serif text-xl cursor-pointer font-medium appearance-none outline-none">
-                                    <!-- JS로 동적 생성됨 -->
-                                </select>
-                                <span
-                                    class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-primary/50 pointer-events-none text-sm">arrow_drop_down</span>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="w-px h-12 bg-gradient-to-b from-transparent via-[#E8E1D5] to-transparent"></div>
+
+                        <!-- Verse Section -->
+                        <div class="flex-1 relative pl-8 pr-6 group/verse cursor-pointer py-4" id="custom-sutra-select"
+                            onclick="toggleCustomDropdown(event, 'verse-dropdown')">
+                            <label
+                                class="block text-[11px] font-sans font-bold tracking-[0.2em] text-[#A68A56] mb-1 uppercase cursor-pointer pointer-events-none">Verse</label>
+                            <div class="text-[#999] font-serif text-[17px] cursor-pointer transition-colors pointer-events-none"
+                                id="sutra-display">Select Chapter First</div>
+                            <!-- Custom Dropdown Menu -->
+                            <div id="verse-dropdown"
+                                class="absolute left-6 top-full mt-2 w-[220px] bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-[#E8E1D5] opacity-0 invisible transition-all duration-300 z-50 overflow-hidden transform origin-top scale-95">
+                                <div class="max-h-[280px] overflow-y-auto custom-scrollbar"
+                                    id="sutra-options-container">
+                                    <div class="px-5 py-4 text-[#999] font-serif text-[14px] text-center italic">Select
+                                        a Chapter First</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -525,6 +541,83 @@
                 window.location.href = url;
             }, 500);
         }
+
+        // Custom Dropdown Logic for Landing Page
+        const sutraCountsCustom = {
+            '1': 51,
+            '2': 55,
+            '3': 56,
+            '4': 34
+        };
+        let selectedCustomChapter = null;
+
+        function toggleCustomDropdown(event, id) {
+            event.stopPropagation();
+            const el = document.getElementById(id);
+            const isVisible = !el.classList.contains('invisible');
+
+            // Close all
+            const d1 = document.getElementById('chap-dropdown');
+            const d2 = document.getElementById('verse-dropdown');
+            if (d1) { d1.classList.add('invisible', 'opacity-0', 'scale-95'); d1.classList.remove('opacity-100', 'scale-100'); }
+            if (d2) { d2.classList.add('invisible', 'opacity-0', 'scale-95'); d2.classList.remove('opacity-100', 'scale-100'); }
+
+            if (!isVisible) {
+                el.classList.remove('invisible', 'opacity-0', 'scale-95');
+                el.classList.add('opacity-100', 'scale-100');
+            }
+        }
+
+        function selectCustomChapter(event, chapterId, chapterName) {
+            event.stopPropagation();
+            selectedCustomChapter = chapterId;
+            const chapDisplay = document.getElementById('chap-display');
+            if (chapDisplay) {
+                chapDisplay.textContent = chapterName;
+                chapDisplay.classList.remove('text-[#999]');
+                chapDisplay.classList.add('text-ink');
+            }
+
+            // Generate Sutra Options
+            const container = document.getElementById('sutra-options-container');
+            if (container) {
+                container.innerHTML = '';
+                const count = sutraCountsCustom[chapterId];
+                for (let i = 1; i <= count; i++) {
+                    const opt = document.createElement('div');
+                    opt.className = 'px-5 py-3 hover:bg-[#FAF8F5] cursor-pointer text-ink font-serif text-[15px] border-b border-[#F2EBE1] last:border-0 transition-colors';
+                    opt.textContent = `Sutra ${i}`;
+                    opt.onclick = (e) => selectCustomSutra(e, i);
+                    container.appendChild(opt);
+                }
+            }
+
+            const sutraDisplay = document.getElementById('sutra-display');
+            if (sutraDisplay) {
+                sutraDisplay.textContent = 'Select a Verse';
+                sutraDisplay.classList.remove('text-[#999]');
+                sutraDisplay.classList.add('text-ink');
+            }
+
+            const chapDropdown = document.getElementById('chap-dropdown');
+            if (chapDropdown) {
+                chapDropdown.classList.add('invisible', 'opacity-0', 'scale-95');
+                chapDropdown.classList.remove('opacity-100', 'scale-100');
+            }
+        }
+
+        function selectCustomSutra(event, sutraId) {
+            event.stopPropagation();
+            if (!selectedCustomChapter) return;
+            window.location.href = `chapter.html?chapter=${selectedCustomChapter}&sutra=${selectedCustomChapter}.${sutraId}`;
+        }
+
+        document.addEventListener('click', () => {
+            const d1 = document.getElementById('chap-dropdown');
+            const d2 = document.getElementById('verse-dropdown');
+            if (d1) { d1.classList.add('invisible', 'opacity-0', 'scale-95'); d1.classList.remove('opacity-100', 'scale-100'); }
+            if (d2) { d2.classList.add('invisible', 'opacity-0', 'scale-95'); d2.classList.remove('opacity-100', 'scale-100'); }
+        });
     </script>
 </body>
 

@@ -94,7 +94,8 @@ function setupNavigationButtons() {
 
     // 노트 버튼 바인딩
     window.saveNote = saveUserNote;
-    window.exportNotes = exportCustomNotes;
+    window.exportAllNotes = exportAllNotes;
+    window.exportCurrentNote = exportCurrentNote;
 }
 
 function loadUserNote(sutraId) {
@@ -121,44 +122,62 @@ function saveUserNote() {
     }
 }
 
-function exportCustomNotes() {
-    let content = "Yoga Sutras - 나의 성찰\n\n";
+function exportCurrentNote() {
+    const noteArea = document.getElementById('user-note-area');
+    const sutraId = noteArea && noteArea.dataset.currentSutraId;
+    const note = sutraId ? localStorage.getItem(`note-${sutraId}`) : null;
+
+    if (!sutraId || !note || !note.trim()) {
+        showToast("현재 구절에 작성된 성찰 노트가 없습니다.", "warning");
+        return;
+    }
+
+    let content = `Yoga Sutras - 나의 성찰\n\n[Sutra ${sutraId}]\n${note}\n\n`;
+    createAndDownloadFile(content, `yoga_sutra_note_${sutraId}_${new Date().toISOString().slice(0, 10)}.txt`);
+}
+
+function exportAllNotes() {
+    let content = "Yoga Sutras - 전체 성찰 노트\n\n";
     let hasNotes = false;
 
     // 키 가져오기
-    const ObjectKeys = Object.keys(localStorage);
+    const ObjectKeys = Object.keys(localStorage).filter(k => k.startsWith('note-')).sort(); // Sort so they appear somewhat in order if possible
 
-    // 단순 무결점 추출
+    // 문자열 숫자 혼합 정렬
+    ObjectKeys.sort((a, b) => {
+        const numA = parseFloat(a.replace('note-', ''));
+        const numB = parseFloat(b.replace('note-', ''));
+        return numA - numB;
+    });
+
     for (const key of ObjectKeys) {
-        if (key.startsWith('note-')) {
-            const id = key.substring(5);
-            const note = localStorage.getItem(key);
-            if (note && note.trim()) {
-                content += `[Sutra ${id}]\n${note}\n\n-------------------\n\n`;
-                hasNotes = true;
-            }
+        const id = key.substring(5);
+        const note = localStorage.getItem(key);
+        if (note && note.trim()) {
+            content += `[Sutra ${id}]\n${note}\n\n-------------------\n\n`;
+            hasNotes = true;
         }
     }
 
     if (!hasNotes) {
-        showToast("내보낼 노트가 없음.", "warning");
+        showToast("내보낼 성찰 노트가 없습니다.", "warning");
         return;
     }
 
-    createAndDownloadFile(content);
+    createAndDownloadFile(content, `yoga_sutras_all_notes_${new Date().toISOString().slice(0, 10)}.txt`);
 }
 
-function createAndDownloadFile(content) {
+function createAndDownloadFile(content, filename) {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `yoga_sutras_notes_${new Date().toISOString().slice(0, 10)}.txt`;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-    showToast("텍스트 파일로 내보내기 완료됨", "success");
+    showToast("성찰 노트가 파일로 저장되었습니다.", "success");
 }
 
 function setupThemeToggle() {
