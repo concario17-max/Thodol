@@ -219,14 +219,13 @@ function renderTranslations(sutra) {
     let html = '';
 
     const configs = [
-        { key: '2.english', author: 'Alice A. Bailey', title: 'The Light of the Soul', icon: 'auto_stories', cls: 'bg-purple-50 text-purple-600' },
-        { key: '3.korean-1', author: '심상학회', title: '직역 및 해설', icon: 'diversity_3', cls: 'bg-green-50 text-green-600' },
+        { keys: ['2.english', '3.korean-1'], author: 'Alice A. Bailey / 심상학회', title: 'The Light of the Soul', icon: 'auto_stories', cls: 'bg-purple-50 text-purple-600' },
         { prefix: 'bae', author: '배철현', title: '배철현의 요가수트라 강독', icon: 'person_search', cls: 'bg-orange-50 text-orange-600' },
         { prefix: 'ox', author: 'Nicholas Sutton', title: 'Oxford Centre for Hindu Studies', icon: 'school', cls: 'bg-blue-50 text-blue-600' }
     ];
 
     configs.forEach(cfg => {
-        let keys = cfg.prefix ? translationKeys.filter(k => k.includes(cfg.prefix)) : (translationKeys.includes(cfg.key) ? [cfg.key] : []);
+        let keys = cfg.prefix ? translationKeys.filter(k => k.includes(cfg.prefix)) : (cfg.keys ? cfg.keys.filter(k => translationKeys.includes(k)) : []);
         if (cfg.prefix === 'ox' && keys.length) {
             keys.sort((a, b) => (a.includes('ox-en') ? -1 : (b.includes('ox-en') ? 1 : a.localeCompare(b))));
         } else if (cfg.prefix === 'bae') {
