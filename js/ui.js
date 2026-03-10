@@ -22,7 +22,7 @@ function renderChapterButtons(activeChapterId, container) {
     const chapters = [
         { id: '1', name: '1. 합일의 문제', count: 51, icon: 'spa' },
         { id: '2', name: '2. 합일의 단계', count: 55, icon: 'self_improvement' },
-        { id: '3', name: '3. 합일의 성취와 그 결과', count: 56, icon: 'wb_twilight' },
+        { id: '3', name: '3. 합일의 성취와 그 결과', count: 55, icon: 'wb_twilight' },
         { id: '4', name: '4. 깨달음', count: 34, icon: 'all_inclusive' }
     ];
 
