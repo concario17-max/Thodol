@@ -9,6 +9,7 @@ export interface SidebarLayoutProps {
     children: ReactNode;
     position?: 'left' | 'right';
     widthClass?: string;
+    desktopWidthClass?: string;
 }
 
 /**
@@ -22,7 +23,8 @@ export const SidebarLayout = React.memo(({
     title,
     children,
     position = 'left',
-    widthClass = 'w-80'
+    widthClass = 'w-80',
+    desktopWidthClass = 'lg:w-80'
 }: SidebarLayoutProps) => {
 
     const isLeft = position === 'left';
@@ -40,8 +42,8 @@ export const SidebarLayout = React.memo(({
             )}
 
             <aside className={`fixed inset-y-0 ${placementClass} z-50 bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md ${borderClass} border-gold-primary/20 dark:border-dark-border/50 h-[100dvh] lg:h-[calc(100vh-64px)] lg:sticky lg:top-16 transform transition-all duration-300 flex flex-col font-inter overscroll-contain
-                ${isOpen ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none` : `w-[90vw] lg:${widthClass} ${translateClosed} lg:translate-x-0`}
-                ${isDesktopOpen ? `lg:${widthClass} lg:opacity-100` : `lg:w-0 lg:opacity-0 lg:border-none p-0 px-0 overflow-hidden`}
+                ${isOpen ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none` : `w-[90vw] ${desktopWidthClass} ${translateClosed} lg:translate-x-0`}
+                ${isDesktopOpen ? `${desktopWidthClass} lg:opacity-100` : `lg:w-0 lg:opacity-0 lg:border-none p-0 px-0 overflow-hidden`}
             `}>
 
                 {title && (

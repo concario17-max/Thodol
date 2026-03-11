@@ -181,8 +181,8 @@ const VerseView = () => {
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className="min-h-screen bg-transparent font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500">
-            <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-6 sm:px-6">
+        <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-12">
+            <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6">
                 <div className="flex flex-col items-center justify-center mb-2 pt-4">
                     <nav className="flex items-center gap-2 text-[13px] text-text-secondary dark:text-dark-text-secondary font-inter mb-6">
                         <Link to="/" className="hover:text-gold-primary dark:hover:text-gold-light transition-colors">Chapter {chapterNum}</Link>

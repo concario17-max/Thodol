@@ -98,6 +98,7 @@ const Sidebar = () => {
             title="장 (Chapter)"
             position="left"
             widthClass="w-80"
+            desktopWidthClass="lg:w-80"
         >
             <SidebarMenu
                 groups={groups}
