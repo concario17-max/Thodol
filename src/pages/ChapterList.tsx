@@ -49,10 +49,10 @@ const ChapterList = () => {
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gold-surface/50 dark:bg-dark-surface border border-gold-border dark:border-dark-border mb-4">
                     <span className="text-xl font-serif leading-none opacity-80 text-gold-primary">֍</span>
                 </div>
-                <h1 className="text-4xl sm:text-5xl md:text-[48px] tracking-[0.25em] font-crimson text-text-primary dark:text-dark-text-primary mb-3 drop-shadow-sm font-light">
+                <h1 className="text-4xl sm:text-5xl md:text-[53px] tracking-[0.25em] font-crimson text-text-primary dark:text-dark-text-primary mb-4 drop-shadow-sm font-light">
                     YOGA SUTRAS
                 </h1>
-                <p className="text-sm text-gold-primary dark:text-gold-light italic font-crimson tracking-widest mb-6">
+                <p className="text-sm md:text-base text-gold-primary dark:text-gold-light italic font-crimson tracking-widest mb-12">
                     The Light of Yoga
                 </p>
 
