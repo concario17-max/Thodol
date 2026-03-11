@@ -8,6 +8,17 @@ import { GlassCard } from '../components/ui/GlassCard';
 const CompendiumModal = lazy(() => import('../components/CompendiumModal'));
 const LexiconModal = lazy(() => import('../components/LexiconModal'));
 const ReflectionsModal = lazy(() => import('../components/ReflectionsModal'));
+import { Target, Zap, Sparkles, Cloud } from 'lucide-react';
+
+const getChapterIcon = (chapter: number) => {
+    switch (chapter) {
+        case 1: return <Target className="w-5 h-5" />;
+        case 2: return <Zap className="w-5 h-5" />;
+        case 3: return <Sparkles className="w-5 h-5" />;
+        case 4: return <Cloud className="w-5 h-5" />;
+        default: return <span className="text-xl font-serif">֍</span>;
+    }
+};
 
 const ChapterList = () => {
     const navigate = useNavigate();
@@ -74,9 +85,9 @@ const ChapterList = () => {
                     <div className="flex-1 h-px bg-gold-border"></div>
                 </div>
 
-                <div className="bg-white/80 dark:bg-dark-surface/80 backdrop-blur-md border border-gold-border/40 rounded-2xl shadow-xl shadow-gold-primary/5 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] p-4 sm:p-5 mb-10 relative z-10 w-full max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
-                    <div className="flex-1 w-full flex flex-col items-start px-2 sm:px-4 border-b sm:border-b-0 sm:border-r border-gold-border/30 pb-3 sm:pb-0">
-                        <span className="text-[10px] font-black text-gold-primary tracking-[0.2em] uppercase mb-1 drop-shadow-sm">CHAPTER</span>
+                <div className="bg-white/80 dark:bg-dark-surface/80 backdrop-blur-md border border-gold-border/40 rounded-2xl shadow-xl shadow-gold-primary/5 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] p-2.5 sm:p-3 mb-5 relative z-10 w-full max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
+                    <div className="flex-1 w-full flex flex-col items-start px-2 sm:px-4 border-b sm:border-b-0 sm:border-r border-gold-border/30 pb-2 sm:pb-0">
+                        <span className="text-[9px] font-black text-gold-primary tracking-[0.2em] uppercase mb-0.5 drop-shadow-sm">CHAPTER</span>
                         <select
                             className="text-sm font-crimson font-medium text-text-primary bg-transparent outline-none w-full cursor-pointer appearance-none dark:text-dark-text-primary transition-colors focus:text-gold-primary"
                             value={selectedChapter}
@@ -93,8 +104,8 @@ const ChapterList = () => {
                         </select>
                     </div>
 
-                    <div className="flex-1 w-full flex flex-col items-start px-2 sm:px-6 pt-1 sm:pt-0">
-                        <span className="text-[10px] font-black text-gold-primary tracking-[0.2em] uppercase mb-1 drop-shadow-sm">VERSE</span>
+                    <div className="flex-1 w-full flex flex-col items-start px-2 sm:px-6 pt-0.5 sm:pt-0">
+                        <span className="text-[9px] font-black text-gold-primary tracking-[0.2em] uppercase mb-0.5 drop-shadow-sm">VERSE</span>
                         <select
                             className="text-sm font-crimson font-medium text-text-primary bg-transparent outline-none w-full cursor-pointer appearance-none dark:text-dark-text-primary transition-colors focus:text-gold-primary disabled:opacity-50"
                             value={selectedVerse}
@@ -126,7 +137,7 @@ const ChapterList = () => {
                         <GlassCard
                             key={ch.chapter}
                             href={`/chapter/${ch.chapter}/verse/1`}
-                            icon={<span className="text-xl font-serif leading-none opacity-90">֍</span>}
+                            icon={getChapterIcon(ch.chapter)}
                             subtitle={`CHAPTER ${ch.chapter}`}
                             title={
                                 (() => {
@@ -134,9 +145,9 @@ const ChapterList = () => {
                                     const titleKr = chapterInfo?.name_korean || ch.meta?.name_korean || "";
                                     return (
                                         <>
-                                            <span className="text-base md:text-lg">{title}</span>
-                                            <span className="text-xs text-text-secondary dark:text-dark-text-secondary font-medium mt-0.5">
-                                                ({titleKr})
+                                            <span className="text-xl md:text-2xl font-crimson">{title}</span>
+                                            <span className="text-sm text-text-secondary dark:text-dark-text-secondary font-noto-kr font-medium mt-1">
+                                                {titleKr}
                                             </span>
                                         </>
                                     );

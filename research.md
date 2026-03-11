@@ -1,44 +1,38 @@
-# Yoga Project Architecture & Design Research Report
+# Yoga Project Deep Architecture & Phase 2 Refinement Report
 
-## 1. System Architecture Overview
-The project is a modern React web application built with **React 19**, **Vite 7**, and **Tailwind CSS 4**. It serves as a digital compendium for the Yoga Sutras, featuring a highly interactive, "Meta-Design" aesthetic.
+## 1. Project Anatomy (Deep Dive)
+The Yoga Sutras application is a specialized text-viewer with a strong emphasis on **aesthetic density** and **typography**.
 
-### Core Tech Stack
-- **Framework**: React 19 (using modern patterns like `lazy` loading and Context API).
-- **Styling**: Tailwind CSS 4.0. The configuration is primarily handled via the `@theme` block in `src/index.css`, utilizing CSS variables for semantic coloring.
-- **Routing**: `react-router-dom` v7.
-- **State**: `UIContext` manages sidebar/panel states; `ThemeContext` manages light/dark mode.
-- **Assets**: Static assets in `public/`. Data is stored in `public/data.json`.
+### 1.1 State & Routing Mechanism
+- **Selective Data Loading**: `fetchYogaData()` in `dataFetcher.ts` loads a static `data.json`. The application structure is hierarchical: `Chapter -> Sutra -> Tokens`.
+- **URL-Based State**: Routing via `react-router-dom` ensures that the user's location is the primary source of truth for the verse being read, enabling direct links to specific sutras.
 
-## 2. Component Analysis
-The UI follows a "Zero Monolith" approach, extracting logic into reusable UI components.
+### 1.2 Design System (Tailwind 4)
+- **Fluid Tokens**: The `@theme` block in `index.css` defines a strict palette of Deep Gold tones.
+- **Glassmorphism Logic**: The `glass-panel` utility uses `backdrop-filter: blur(16px)` and variable opacities (`rgba`) to create depth without clutter.
 
-- **AppShell (`src/components/ui/AppShell.tsx`)**: The root layout wrapper providing a 100dvh container with an ambient radial spotlight background.
-- **ChapterList (`src/pages/ChapterList.tsx`)**: The landing page displaying four main chapters of the Yoga Sutras.
-- **GlassCard (`src/components/ui/GlassCard.tsx`)**: A premium, glassmorphic card component used for navigation.
-- **VerseView (`src/pages/VerseView.tsx`)**: The core reading interface with audio playback and commentaries.
+## 2. Phase 2 Refinement Analysis
 
-## 3. Design Audit & Identified Issues
+### 2.1 Typography & Scaling
+- **Global Scaling**: A 1pt increase across the board suggests shifting the base rem or systematically updating utility classes.
+- **Title hierarchy**: Increasing title size by 3 levels (e.g., `text-lg` -> `text-2xl`) targets the main chapter cards.
+- **Readability**: The user noted Korean text readability. `Noto Serif KR` is elegant but can be dense; increasing `line-height` (leading) is the primary solution.
 
-### 3.1 Layout & Spacing
-- **Grid Density**: `ChapterList` currently uses `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`. For 4 chapters, this leaves a trailing card on a new line or skewed spacing.
-- **Vertical Bloat**: Extensive use of `mb-16`, `pb-20`, and large `py` paddings makes the content exceed the viewport height on standard resolutions.
+### 2.2 Iconography (Semantic Mapping)
+Replacing the generic `֍` symbol with unique, thematic icons from `Lucide` or custom SVGs:
+- **Chapter 1 (Samadhi)**: `Target` or `Focus` - symbolizing concentration.
+- **Chapter 2 (Sadhana)**: `Zap` or `Activity` - symbolizing practice and action.
+- **Chapter 3 (Vibhuti)**: `Sparkles` or `Award` - symbolizing supernatural accomplishments.
+- **Chapter 4 (Kaivalya)**: `Cloud` or `Mountain` - symbolizing absolute freedom and transcendence.
 
-### 3.2 Visual Identity & Icons
-- **Icon Mismatch**: The header icon references `gita_header_icon.png`, suggesting a leftover asset from a previous Gita project.
-- **Visual Glitches**: The user noted "아이콘 찐빠" (icon glitches) above titles, likely referring to the alignment or sizing of these assets.
+### 2.3 Layout Compression Strategy
+- **Selector Height**: Currently `p-4 sm:p-5`. Reducing to `p-3 sm:p-4` and shrinking internal vertical paddings by 1/3.
+- **Density**: Halving the `mb-10` between selector and grid to `mb-5`.
+- **Card Aspect Ratio**: Moving from `min-h-[250px]` to `min-h-[400px]` to create more vertical presence for the detailed descriptions.
 
-### 3.3 Color Palette (Current vs. Proposed)
-The current "Bright Gold" theme uses high-luminance backgrounds:
-- `gold-bg`: `#F9F6F0` (Too bright)
-- `gold-primary`: `#D4AF37`
-- `gold-surface`: `#F2EBE1`
-
-**Proposed "Deep Gold" Palette:**
-- Backgrounds should shift towards warmer, darker parchment or "Shadow Gold" tones.
-- Accents should move towards "Antique Gold" (#B8860B) or "Burnished Gold" to reduce eye strain and increase premium feel.
-
-## 4. Implementation Strategy
-- **Theme**: Update `@theme` tokens in `index.css`.
-- **Layout**: Refactor `ChapterList` grid to `lg:grid-cols-4` and tighten spacing tokens.
-- **Component Refinement**: Adjust `GlassCard` internal padding and icon size to maintain elegance in a denser layout.
+## 3. Data Enhancement
+The `description` field in `constants.ts` needs a significant content boost (2-3 sentences) to provide real value and fill the longer cards.
+- **Samadhi Pāda**: Describes the nature of yoga and the means of reaching union (Samadhi). It explores the functions of the mind and how to still the internal whirlpools of thought.
+- **Sadhana Pāda**: Details the practical steps of yoga, including the famous eight limbs (Ashtanga). It focuses on the discipline needed to overcome suffering and attain wisdom.
+- **Vibhuti Pāda**: Discusses the extraordinary powers and mental focus achieved through advanced practice. It warns that these powers are side effects, not the end goal of liberation.
+- **Kaivalya Pāda**: Explains the culmination of the journey—absolute independence and liberation from the cycle of birth and death, where the seer abides in their own true nature.

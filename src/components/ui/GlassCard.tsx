@@ -44,14 +44,14 @@ export const GlassCard = React.memo(({
                     </span>
                 )}
 
-                <h2 className="font-bold tracking-wide mb-3 text-text-primary dark:text-dark-text-primary font-noto-kr flex flex-col gap-1 mt-1">
+                <h2 className="font-bold tracking-wide mb-4 text-text-primary dark:text-dark-text-primary font-noto-kr flex flex-col gap-2 mt-1 px-2">
                     {title}
                 </h2>
 
-                <div className="w-8 h-[1px] bg-gold-border/80 mx-auto my-3 group-hover:w-16 transition-all duration-500"></div>
+                <div className="w-12 h-[1px] bg-gold-border/80 mx-auto my-4 group-hover:w-20 transition-all duration-500"></div>
 
                 {description && (
-                    <p className="text-[11px] text-text-secondary dark:text-dark-text-secondary font-crimson italic max-w-[180px] mx-auto opacity-80 leading-relaxed">
+                    <p className="text-[12px] text-text-secondary dark:text-dark-text-secondary font-crimson italic max-w-[240px] mx-auto opacity-90 leading-relaxed px-1">
                         {description}
                     </p>
                 )}
@@ -59,7 +59,7 @@ export const GlassCard = React.memo(({
         </>
     );
 
-    const baseStyle = `group relative flex flex-col items-center justify-start text-center p-4 sm:p-5 pt-8 sm:pt-10 bg-white/50 dark:bg-[#161616]/70 backdrop-blur-md border border-gold-border/50 hover:border-gold-primary/70 rounded-2xl shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-gold-primary/20 dark:shadow-none dark:hover:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)] transition-all duration-700 min-h-[250px] sm:min-h-[300px] overflow-hidden ${className}`;
+    const baseStyle = `group relative flex flex-col items-center justify-start text-center p-5 sm:p-6 pt-10 sm:pt-14 bg-white/50 dark:bg-[#161616]/70 backdrop-blur-md border border-gold-border/50 hover:border-gold-primary/70 rounded-2xl shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-gold-primary/20 dark:shadow-none dark:hover:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)] transition-all duration-700 min-h-[400px] sm:min-h-[420px] overflow-hidden ${className}`;
 
     if (href) {
         return (

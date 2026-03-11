@@ -1,35 +1,30 @@
-# Yoga Sutra UI Overhaul Plan
+# Yoga Sutra UI Phase 2 - Density & Typography Refinement Plan
 
-## 1. Deep Research & Analysis (Completed)
-- [x] Analyze current component architecture (src/App.tsx, src/pages/ChapterList.tsx)
-- [x] Audit theme tokens and CSS variables (src/index.css)
-- [x] Identify icon assets and spacing bottlenecks
-- [x] Document findings in research.md
+## 1. Global Typography & Readability
+- [x] Increase global font size by 1pt (approx. 6.25%) across the application.
+- [x] Refine Korean text readability by increasing `line-height` (leading) for descriptions.
+- [x] Implement font size increase (+3 levels) for main chapter titles in cards.
 
-## 2. Infrastructure & Theme Update
-- [/] Update Tailwind 4 `@theme` block in `src/index.css`
-  - Introduce "Deep Gold" semantic colors (#B8860B)
-  - Darken background tokens (`gold-bg`, `gold-surface`) to reduce eye strain
-  - Refine `glass-panel` and scrollbar styles for the new theme
-- [ ] Ensure `AppShell.tsx` ambient background aligns with darker theme
+## 2. Dynamic Chapter Iconography
+- [x] Replace generic `֍` icon with unique, thematic icons from `Lucide`:
+  - Chapter 1: `Target` (Samadhi - Concentration)
+  - Chapter 2: `Zap` (Sadhana - Practice)
+  - Chapter 3: `Sparkles` (Vibhuti - Powers)
+  - Chapter 4: `Cloud` (Kaivalya - Liberation)
 
-## 3. Home Page (ChapterList) Refactoring
-- [ ] Implement 4-column grid layout for chapters (`lg:grid-cols-4`)
-- [ ] Minimize vertical spacing:
-  - Reduce container paddings (`py-12` -> `py-8`)
-  - Tighten section margins (`mb-16` -> `mb-10`)
-- [ ] Fix title icons ("아이콘 찐빠"):
-  - Verify and update `gita_header_icon.png` reference or replace with a proper Yoga symbol
-  - Adjust icon sizing and alignment above the main title
+## 3. Home Page (ChapterList) Layout Refinement
+- [x] Reduce Chapter/Verse selector box height by 1/3 (tighten internal padding).
+- [x] Halve the margin between the selector box and the chapter cards (`mb-10` -> `mb-5`).
+- [x] Refactor chapter title display:
+  - Remove parentheses from the Korean title below the English title.
+  - Apply the +3 font size scaling to English titles.
+- [x] Update `src/constants.ts` with significantly longer, more academic descriptions for each chapter.
 
-## 4. Component Compression & Polish
-- [ ] Optimize `GlassCard.tsx`:
-  - Shrink internal padding for higher density
-  - Adjust hover effects for the darker background
-- [ ] Verify "one-page" visibility (minimize scrolling)
-- [ ] Sync theme across VerseView and Chapter pages
+## 4. Enhanced Card Design (GlassCard)
+- [x] Increase minimum card height (`min-h`) to accommodate longer descriptions and create a more elegant vertical presence.
+- [x] Adjust internal spacing to maintain balance with larger titles and longer text.
 
-## 5. Verification & Finalization
-- [ ] Manual layout verification on various screen sizes
-- [ ] Theme consistency check
-- [ ] Auto-commit and push changes (Ray Standard)
+## 5. Verification & Sync
+- [x] Verify "one-page" visual balance on desktop.
+- [x] Ensure font scaling is consistent across ChapterList and VerseView.
+- [x] Auto-commit and push changes (Ray Standard).
