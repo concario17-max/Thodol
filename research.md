@@ -1,13 +1,44 @@
-# 인코딩 손실 및 '?' 출력 버그(MIME/UI Blank Rendering) 정리 문서 (리서치)
+# Yoga Project Architecture & Design Research Report
 
-## 1. 이슈 개요
-브라우저 화면(UI) 상에서 산스크리트어 및 한국어 텍스트가 `??????` 또는 알 수 없는 특수문자(``)로 렌더링되는 치명적인 데이터 오염 버그 발생. (스크린샷 증상)
+## 1. System Architecture Overview
+The project is a modern React web application built with **React 19**, **Vite 7**, and **Tailwind CSS 4**. It serves as a digital compendium for the Yoga Sutras, featuring a highly interactive, "Meta-Design" aesthetic.
 
-## 2. 근본 원인 (Root Cause Analysis)
-*   **문제 지점**: 클라이언트가 런타임에 호출하는 정적 데이터 파일 `public/data.json` (약 915KB).
-*   **분석 결과**: 해당 JSON 파일 내부를 직접 확인해본 결과, `sanskrit` 필드나 한국어 필드 모두가 이미 파일 시스템 상에서 `?? ????????????` 및 `` 기호로 깨져서 저장되어 있음. 즉, React나 Vite의 문제가 아니라 **데이터 생성 과정에서의 인코딩 유실**이 원인임.
-*   **발생 메커니즘**: 파워쉘(PowerShell) 등에서 데이터를 파싱하거나 JSON으로 변환(Export/Out-File)할 때 명시적으로 `UTF-8` 인코딩을 지정하지 않거나, ANSI/EUC-KR(기본 시스템 인코딩) 포맷으로 파일 입출력을 시도하다 다국어(산스크리트어, 유니코드 이모지 등)가 완전히 파괴됨.
+### Core Tech Stack
+- **Framework**: React 19 (using modern patterns like `lazy` loading and Context API).
+- **Styling**: Tailwind CSS 4.0. The configuration is primarily handled via the `@theme` block in `src/index.css`, utilizing CSS variables for semantic coloring.
+- **Routing**: `react-router-dom` v7.
+- **State**: `UIContext` manages sidebar/panel states; `ThemeContext` manages light/dark mode.
+- **Assets**: Static assets in `public/`. Data is stored in `public/data.json`.
 
-## 3. 해결 방안 모색 (Next Steps)
-1.  **데이터 소스 복원**: 오염되기 전의 원본 텍스트 소스(`1.sans.txt`, `7.dan.txt` 등)의 인코딩을 점검하고, `generate_data.ps1` (데이터 생성 스크립트)가 정상적인 UTF-8 포맷으로 출력하도록 수정해야 함.
-2.  `Out-File -Encoding UTF8` 혹은 `Set-Content -Encoding UTF8`을 강제하도록 파워쉘 스크립트 전면 개편 필요.
+## 2. Component Analysis
+The UI follows a "Zero Monolith" approach, extracting logic into reusable UI components.
+
+- **AppShell (`src/components/ui/AppShell.tsx`)**: The root layout wrapper providing a 100dvh container with an ambient radial spotlight background.
+- **ChapterList (`src/pages/ChapterList.tsx`)**: The landing page displaying four main chapters of the Yoga Sutras.
+- **GlassCard (`src/components/ui/GlassCard.tsx`)**: A premium, glassmorphic card component used for navigation.
+- **VerseView (`src/pages/VerseView.tsx`)**: The core reading interface with audio playback and commentaries.
+
+## 3. Design Audit & Identified Issues
+
+### 3.1 Layout & Spacing
+- **Grid Density**: `ChapterList` currently uses `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`. For 4 chapters, this leaves a trailing card on a new line or skewed spacing.
+- **Vertical Bloat**: Extensive use of `mb-16`, `pb-20`, and large `py` paddings makes the content exceed the viewport height on standard resolutions.
+
+### 3.2 Visual Identity & Icons
+- **Icon Mismatch**: The header icon references `gita_header_icon.png`, suggesting a leftover asset from a previous Gita project.
+- **Visual Glitches**: The user noted "아이콘 찐빠" (icon glitches) above titles, likely referring to the alignment or sizing of these assets.
+
+### 3.3 Color Palette (Current vs. Proposed)
+The current "Bright Gold" theme uses high-luminance backgrounds:
+- `gold-bg`: `#F9F6F0` (Too bright)
+- `gold-primary`: `#D4AF37`
+- `gold-surface`: `#F2EBE1`
+
+**Proposed "Deep Gold" Palette:**
+- Backgrounds should shift towards warmer, darker parchment or "Shadow Gold" tones.
+- Accents should move towards "Antique Gold" (#B8860B) or "Burnished Gold" to reduce eye strain and increase premium feel.
+
+## 4. Implementation Strategy
+- **Theme**: Update `@theme` tokens in `index.css`.
+- **Layout**: Refactor `ChapterList` grid to `lg:grid-cols-4` and tighten spacing tokens.
+- **Component Refinement**: Adjust `GlassCard` internal padding and icon size to maintain elegance in a denser layout.

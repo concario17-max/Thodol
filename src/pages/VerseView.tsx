@@ -181,10 +181,10 @@ const VerseView = () => {
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-12">
+        <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-6">
             <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6">
-                <div className="flex flex-col items-center justify-center mb-2 pt-4">
-                    <nav className="flex items-center gap-2 text-[13px] text-text-secondary dark:text-dark-text-secondary font-inter mb-6">
+                <div className="flex flex-col items-center justify-center mb-1 pt-2">
+                    <nav className="flex items-center gap-2 text-[12px] text-text-secondary dark:text-dark-text-secondary font-inter mb-4">
                         <Link to="/" className="hover:text-gold-primary dark:hover:text-gold-light transition-colors">Chapter {chapterNum}</Link>
                         <span>›</span>
                         <span className="text-text-primary dark:text-dark-text-primary font-bold">Sutra {verseRange}</span>
@@ -208,14 +208,14 @@ const VerseView = () => {
                 </section>
 
                 {verseData.pronunciation_kr && (
-                    <section className="mb-12 text-center">
+                    <section className="mb-8 text-center">
                         <p className="font-noto-kr italic text-[#B0A084] dark:text-[#D4C3A3] text-[14px] leading-relaxed whitespace-pre-line tracking-[0.15em] drop-shadow-sm">
                             {verseData.pronunciation_kr}
                         </p>
                     </section>
                 )}
 
-                <div className="mb-16 flex justify-center">
+                <div className="mb-10 flex justify-center">
                     <audio
                         ref={audioRef}
                         src={getAudioSrc()}
@@ -260,7 +260,7 @@ const VerseView = () => {
                     </div>
                 </div>
 
-                <section className="mb-16">
+                <section className="mb-10">
                     <div className="flex items-center justify-center mb-6">
                         <button
                             onClick={() => setShowLexicon(!showLexicon)}
@@ -359,7 +359,7 @@ const VerseView = () => {
                     </section>
                 )}
 
-                <div className="mt-16 pb-8 flex justify-center font-inter">
+                <div className="mt-10 pb-4 flex justify-center font-inter">
                     <div className="flex items-center justify-between bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md border border-gold-primary/20 dark:border-dark-border/50 rounded-full px-3 py-1.5 shadow-sm min-w-[180px] hover:shadow-md transition-shadow">
                         <button
                             onClick={handlePrev}
