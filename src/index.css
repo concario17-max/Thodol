@@ -32,9 +32,10 @@
     --font-crimson: 'Crimson Pro', serif;
     --font-noto-kr: 'Noto Serif KR', serif;
 
-    /* Tailwind 4 Dark Mode Configuration (Selector Strategy) */
-    @custom-variant dark (&:where(.dark, .dark *));
 }
+
+/* Tailwind 4 Dark Mode Configuration (Selector Strategy) */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
