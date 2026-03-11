@@ -23,7 +23,7 @@ export const AppShell = React.memo(({
     isMobilePanelOpen = false
 }: AppShellProps) => {
     return (
-        <div className="h-[100dvh] flex flex-col bg-gold-bg dark:bg-dark-bg transition-colors duration-500 relative selection:bg-gold-primary/20 selection:text-text-primary dark:selection:text-dark-text-primary overflow-hidden">
+        <div className="h-[100dvh] flex flex-col bg-gold-bg dark:bg-dark-bg text-text-primary dark:text-dark-text-primary transition-colors duration-500 relative selection:bg-gold-primary/20 selection:text-text-primary dark:selection:text-dark-text-primary overflow-hidden">
             {/* Ambient luxury spotlight overlay. */}
             <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.65)_0%,_transparent_80%)] dark:bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.04)_0%,_transparent_80%)] z-0"></div>
 

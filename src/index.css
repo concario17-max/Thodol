@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 @theme {
+    /* ... existing theme variables ... */
     --color-primary: #B8860B;
     --color-primary-dark: #8B6508;
     --color-primary-light: #D4AF37;
     --color-background-light: #FBF9F2;
     --color-background-paper: #F3EEE0;
     --color-text-main: #2C2820;
+    --color-text-primary: #2C2820;
+    --color-text-secondary: #6B6455;
     --color-text-muted: #6B6455;
     --color-gold-accent: #B8860B;
     --color-gold-primary: #B8860B;
@@ -28,6 +31,9 @@
     --font-inter: 'Inter', sans-serif;
     --font-crimson: 'Crimson Pro', serif;
     --font-noto-kr: 'Noto Serif KR', serif;
+
+    /* Tailwind 4 Dark Mode Configuration (Selector Strategy) */
+    @custom-variant dark (&:where(.dark, .dark *));
 }
 
 @layer utilities {
