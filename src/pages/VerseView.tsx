@@ -102,7 +102,7 @@ const VerseView = () => {
                 <SutraContent 
                     sanskrit={verseData.sanskrit}
                     pronunciation={verseData.pronunciation}
-                    pronunciationKr={verseData.pronunciation_kr}
+                    pronunciationKr={verseData['4.han bal']}
                 />
 
                 <audio
