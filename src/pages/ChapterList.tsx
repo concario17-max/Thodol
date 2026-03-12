@@ -37,10 +37,9 @@ const ChapterList = () => {
                     const chapterArray = Object.values(data) as YogaChapter[];
                     setChapters(chapterArray);
                 } else {
-                    console.error('Invalid Yoga data format');
                 }
             })
-            .catch(err => console.error('Failed to load chapters:', err));
+            .catch(() => {});
     }, []);
 
     return (

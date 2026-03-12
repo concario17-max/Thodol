@@ -22,7 +22,7 @@ const Sidebar = () => {
                     setChapters(chapterArray);
                 }
             })
-            .catch(err => console.error('Failed to load chapters:', err));
+            .catch(() => {});
     }, []);
 
     useEffect(() => {

@@ -16,3 +16,16 @@
 - [x] Test dark mode toggle on the Home Page and Verse View.
 - [x] Ensure no regressions in typography or layout density.
 - [x] Auto-commit and push changes (Ray Standard).
+
+## 4. Phase 5 - Refactoring & Quality (Ray Standard Compliance)
+- [ ] Centralize and correct `localStorage` keys (Prefix: `yoga-`).
+- [ ] Remove all `console.log`, `console.warn`, `console.error` calls.
+- [ ] Extract `useAudio` hook from `VerseView.tsx` to handle playback logic.
+- [ ] Decompose `VerseView.tsx` into smaller sub-components.
+  - [ ] `SutraHeader`: Navigation and Breadcrumbs.
+  - [ ] `SutraContent`: Sanskrit, Pronunciation, Lexicon.
+  - [ ] `AudioPlayer`: Media controls.
+  - [ ] `TranslationSection`: Multi-language translations and Commentary.
+- [ ] Refactor `dataFetcher.ts` to include better error handling (non-console) and possibly pre-process verse ranges.
+- [ ] Audit and fix UI accessibility and specific `dark:` variant omissions.
+- [ ] Auto-commit and push changes.

@@ -51,7 +51,6 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
         cachedData = structuredData;
         return structuredData;
     } catch (error) {
-        console.error("Failed to fetch Yoga data:", error);
         return {};
     }
 };

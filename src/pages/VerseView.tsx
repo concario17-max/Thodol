@@ -1,387 +1,163 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Play, Pause, ChevronRight, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
-import { fetchYogaData } from '../utils/dataFetcher';
-import { YogaChapter, YogaSutra } from '../types';
+import { useRef, useEffect, useState, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useYogaData } from '../hooks/useYogaData';
+import { useAudio } from '../hooks/useAudio';
+import { SutraHeader } from '../components/verse/SutraHeader';
+import { SutraContent } from '../components/verse/SutraContent';
+import { AudioPlayer } from '../components/verse/AudioPlayer';
+import { TranslationSection } from '../components/verse/TranslationSection';
+import { SutraNavigation } from '../components/verse/SutraNavigation';
 
 const VerseView = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
     const navigate = useNavigate();
-    const [verseData, setVerseData] = useState<YogaSutra | null>(null);
-    const [allChapters, setAllChapters] = useState<Record<number, YogaChapter> | null>(null);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    const [currentTime, setCurrentTime] = useState<number>(0);
-    const [duration, setDuration] = useState<number>(0);
+    const audioRef = useRef<HTMLAudioElement>(null);
+
     const [showLexicon, setShowLexicon] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('gita-show-lexicon');
-            if (saved !== null) {
-                return JSON.parse(saved);
-            }
+            const saved = localStorage.getItem('yoga-show-lexicon');
+            return saved !== null ? JSON.parse(saved) : false;
         }
         return false;
     });
-    const audioRef = useRef<HTMLAudioElement>(null);
 
+    const { 
+        allChapters, 
+        loading, 
+        getVerseInRange, 
+        getVerseRangeText 
+    } = useYogaData();
+
+    const {
+        isPlaying,
+        currentTime,
+        duration,
+        togglePlay,
+        handleTimeUpdate,
+        handleLoadedMetadata,
+        handleAudioEnded,
+        reset,
+        seek,
+        formatTime,
+        progressPercent
+    } = useAudio(audioRef);
+
+    // Initial load and URL sync
     useEffect(() => {
-        localStorage.setItem('gita-show-lexicon', JSON.stringify(showLexicon));
-    }, [showLexicon]);
+        if (!chapterNum || !verseNum || !allChapters) return;
 
-    useEffect(() => {
-        if (!chapterNum || !verseNum) return;
-        fetchYogaData()
-            .then((data) => {
-                if (data) {
-                    setAllChapters(data);
-                    const chapter = data[parseInt(chapterNum)];
-                    if (chapter) {
-                        const targetVerseNum = parseInt(verseNum);
-                        const verseIndex = chapter.sutras.findIndex((s, i, arr) => {
-                            const sutraNum = parseInt(s.id.split('.')[1], 10);
-                            const nextS = arr[i + 1];
-                            if (nextS) {
-                                const nextNum = parseInt(nextS.id.split('.')[1], 10);
-                                return sutraNum <= targetVerseNum && targetVerseNum < nextNum;
-                            }
-                            return sutraNum <= targetVerseNum;
-                        });
+        const verseData = getVerseInRange(chapterNum, verseNum);
+        if (verseData) {
+            const actualNum = parseInt(verseData.id.split('.')[1], 10);
+            if (actualNum !== parseInt(verseNum)) {
+                navigate(`/chapter/${chapterNum}/verse/${actualNum}`, { replace: true });
+            }
+        }
+    }, [chapterNum, verseNum, allChapters, getVerseInRange, navigate]);
 
-                        if (verseIndex !== -1) {
-                            const foundVerse = chapter.sutras[verseIndex];
-                            setVerseData(foundVerse);
-                            const actualNum = parseInt(foundVerse.id.split('.')[1], 10);
-                            if (actualNum !== targetVerseNum) {
-                                navigate(`/chapter/${chapterNum}/verse/${actualNum}`, { replace: true });
-                            }
-                        } else {
-                            console.warn(`Sutra ${verseNum} not found in Chapter ${chapterNum}`);
-                        }
-                    } else {
-                        console.warn(`Chapter ${chapterNum} not found`);
-                    }
-                }
-            })
-            .catch(err => console.error('Failed to load verse data:', err));
-    }, [chapterNum, verseNum, navigate]);
-
+    // Reset audio on navigation
     useEffect(() => {
         window.scrollTo(0, 0);
-        setIsPlaying(false);
-        setCurrentTime(0);
-        setDuration(0);
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-    }, [chapterNum, verseNum]); // Keep this simple, it reacts to URL changes
+        reset();
+    }, [chapterNum, verseNum, reset]);
 
-    const getAudioSrc = () => {
-        if (!verseData || !chapterNum) return undefined;
-        const sutraNum = verseData.id.split('.')[1];
-        return `/mp3/${chapterNum}-${sutraNum}.mp3`;
-    };
+    const handleToggleLexicon = useCallback(() => {
+        const nextState = !showLexicon;
+        setShowLexicon(nextState);
+        localStorage.setItem('yoga-show-lexicon', JSON.stringify(nextState));
+    }, [showLexicon]);
 
-    const togglePlay = () => {
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-            } else {
-                audioRef.current.play();
-            }
-            setIsPlaying(!isPlaying);
-        }
-    };
+    if (loading || !allChapters || !chapterNum || !verseNum) {
+        return (
+            <div className="min-h-full flex items-center justify-center bg-gold-bg dark:bg-dark-bg">
+                <div className="w-8 h-8 border-4 border-gold-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
-    const handleTimeUpdate = () => {
-        if (audioRef.current) {
-            setCurrentTime(audioRef.current.currentTime);
-        }
-    };
+    const verseData = getVerseInRange(chapterNum, verseNum);
+    if (!verseData) return null;
 
-    const handleLoadedMetadata = () => {
-        if (audioRef.current) {
-            setDuration(audioRef.current.duration);
-        }
-    };
+    const currentChapter = allChapters[parseInt(chapterNum)];
+    const currentIndex = currentChapter.sutras.findIndex(s => s.id === verseData.id);
+    const verseRange = getVerseRangeText(currentChapter, verseData);
+    const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
 
-    const handleAudioEnded = () => {
-        setIsPlaying(false);
-        setCurrentTime(0);
-    };
-
-    const formatTime = (time: number) => {
-        if (isNaN(time)) return "0:00";
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    };
-
+    // Navigation handlers
     const handlePrev = () => {
-        if (!allChapters || !verseData || !chapterNum) return;
-
         const currentC = parseInt(chapterNum);
-        const currentChapter = allChapters[currentC];
-        const currentIndex = currentChapter.sutras.findIndex((s: YogaSutra) => s.id === verseData.id);
-
         if (currentIndex > 0) {
-            const prevVerse = currentChapter.sutras[currentIndex - 1];
-            const prevNum = prevVerse.id.split('.')[1];
-            navigate(`/chapter/${currentC}/verse/${prevNum}`);
+            navigate(`/chapter/${currentC}/verse/${currentChapter.sutras[currentIndex - 1].id.split('.')[1]}`);
         } else if (currentC > 1) {
             const prevChapter = allChapters[currentC - 1];
-            if (prevChapter && prevChapter.sutras.length > 0) {
-                const lastVerse = prevChapter.sutras[prevChapter.sutras.length - 1];
-                const lastNum = lastVerse.id.split('.')[1];
-                navigate(`/chapter/${currentC - 1}/verse/${lastNum}`);
+            if (prevChapter?.sutras.length) {
+                navigate(`/chapter/${currentC - 1}/verse/${prevChapter.sutras[prevChapter.sutras.length - 1].id.split('.')[1]}`);
             }
         }
     };
 
     const handleNext = () => {
-        if (!allChapters || !verseData || !chapterNum) return;
-
         const currentC = parseInt(chapterNum);
-        const currentChapter = allChapters[currentC];
-        const currentIndex = currentChapter.sutras.findIndex((s: YogaSutra) => s.id === verseData.id);
-
         if (currentIndex < currentChapter.sutras.length - 1) {
-            const nextVerse = currentChapter.sutras[currentIndex + 1];
-            const nextNum = nextVerse.id.split('.')[1];
-            navigate(`/chapter/${currentC}/verse/${nextNum}`);
+            navigate(`/chapter/${currentC}/verse/${currentChapter.sutras[currentIndex + 1].id.split('.')[1]}`);
         } else if (currentC < Object.keys(allChapters).length) {
             const nextChapter = allChapters[currentC + 1];
-            if (nextChapter && nextChapter.sutras.length > 0) {
-                const firstVerse = nextChapter.sutras[0];
-                const firstNum = firstVerse.id.split('.')[1];
-                navigate(`/chapter/${currentC + 1}/verse/${firstNum}`);
+            if (nextChapter?.sutras.length) {
+                navigate(`/chapter/${currentC + 1}/verse/${nextChapter.sutras[0].id.split('.')[1]}`);
             }
         }
     };
-
-    if (!verseData || !allChapters || !chapterNum) {
-        return <div className="min-h-screen flex items-center justify-center bg-gold-bg dark:bg-dark-bg"><div className="w-8 h-8 border-4 border-gold-primary border-t-transparent rounded-full animate-spin"></div></div>;
-    }
-
-    const currentChapter = allChapters[parseInt(chapterNum)];
-
-    const getVerseRange = () => {
-        const idx = currentChapter.sutras.findIndex((s: YogaSutra) => s.id === verseData.id);
-        const nextS = currentChapter.sutras[idx + 1];
-        const currentNum = parseInt(verseData.id.split('.')[1], 10);
-        if (nextS) {
-            const nextNum = parseInt(nextS.id.split('.')[1], 10);
-            if (nextNum > currentNum + 1) {
-                return `${currentNum}-${nextNum - 1}`;
-            }
-        }
-        return currentNum.toString();
-    };
-
-    const verseRange = getVerseRange();
-    const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     return (
         <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-6">
             <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6">
-                <div className="flex flex-col items-center justify-center mb-1 pt-2">
-                    <nav className="flex items-center gap-2 text-[12px] text-text-secondary dark:text-dark-text-secondary font-inter mb-4">
-                        <Link to="/" className="hover:text-gold-primary dark:hover:text-gold-light transition-colors">Chapter {chapterNum}</Link>
-                        <span>›</span>
-                        <span className="text-text-primary dark:text-dark-text-primary font-bold">Sutra {verseRange}</span>
-                    </nav>
+                <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
 
-                    <div className="w-8 h-8 rounded-full bg-gold-border/20 flex items-center justify-center mb-2 text-gold-primary">
-                        <span className="font-serif leading-none">֍</span>
-                    </div>
-                </div>
+                <SutraContent 
+                    sanskrit={verseData.sanskrit}
+                    pronunciation={verseData.pronunciation}
+                    pronunciationKr={verseData.pronunciation_kr}
+                    tokens={verseData.tokens}
+                    showLexicon={showLexicon}
+                    onToggleLexicon={handleToggleLexicon}
+                />
 
-                <section className="mb-4 text-center px-2 sm:px-0">
-                    <p className="font-noto text-[#8C3A3A] dark:text-[#E8A586] text-xl sm:text-2xl leading-normal whitespace-pre-line tracking-wide font-bold drop-shadow-sm">
-                        {verseData.sanskrit}
-                    </p>
-                </section>
+                <audio
+                    ref={audioRef}
+                    src={audioSrc}
+                    onTimeUpdate={handleTimeUpdate}
+                    onLoadedMetadata={handleLoadedMetadata}
+                    onEnded={handleAudioEnded}
+                    className="hidden"
+                />
 
-                <section className="mb-2 text-center flex flex-col items-center">
-                    <p className="font-noto italic text-[#B0A084] dark:text-[#D4C3A3] text-[14px] leading-snug whitespace-pre-line tracking-[0.15em] uppercase mb-1 drop-shadow-sm">
-                        {verseData.pronunciation}
-                    </p>
-                </section>
+                <AudioPlayer 
+                    isPlaying={isPlaying}
+                    togglePlay={togglePlay}
+                    currentTime={currentTime}
+                    duration={duration}
+                    progressPercent={progressPercent}
+                    formatTime={formatTime}
+                    onSeek={seek}
+                />
 
-                {verseData.pronunciation_kr && (
-                    <section className="mb-8 text-center">
-                        <p className="font-noto-kr italic text-[#B0A084] dark:text-[#D4C3A3] text-[14px] leading-relaxed whitespace-pre-line tracking-[0.15em] drop-shadow-sm">
-                            {verseData.pronunciation_kr}
-                        </p>
-                    </section>
-                )}
+                <TranslationSection 
+                    english={verseData['2.english']}
+                    korean1={verseData['3.korean-1']}
+                    baeJik={verseData['5.bae_jik']}
+                    baeUu={verseData['6.bae_uu']}
+                    oxfordKr={verseData['8. ox']}
+                    oxfordEn={verseData['9. ox-en']}
+                />
 
-                <div className="mb-10 flex justify-center">
-                    <audio
-                        ref={audioRef}
-                        src={getAudioSrc()}
-                        onTimeUpdate={handleTimeUpdate}
-                        onLoadedMetadata={handleLoadedMetadata}
-                        onEnded={handleAudioEnded}
-                        className="hidden"
-                    />
-                    <div className="flex items-center justify-between w-full max-w-[400px] rounded-full border border-gold-primary/20 dark:border-dark-border/50 bg-white/40 dark:bg-[#111]/40 backdrop-blur-md px-5 py-2.5 shadow-sm hover:shadow-md transition-all hover:border-gold-primary/40">
-                        <button
-                            onClick={togglePlay}
-                            className={`text-gold-primary dark:text-gold-light hover:scale-110 transition-transform`}
-                        >
-                            {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                        </button>
-
-                        <span className="text-[10px] text-text-secondary/50 font-inter font-bold tracking-widest tabular-nums ml-4">
-                            {formatTime(currentTime)}
-                        </span>
-
-                        <div className="relative flex-1 mx-4 h-[2px] bg-gold-border/30 dark:bg-dark-border rounded-full cursor-pointer group"
-                            onClick={(e) => {
-                                if (!audioRef.current) return;
-                                const rect = e.currentTarget.getBoundingClientRect();
-                                const x = e.clientX - rect.left;
-                                const percentage = x / rect.width;
-                                audioRef.current.currentTime = percentage * duration;
-                            }}>
-                            <div
-                                className="absolute top-0 left-0 h-full bg-[#A68B5C] transition-all"
-                                style={{ width: `${progressPercent}%` }}
-                            ></div>
-                            <div
-                                className="absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-[#A68B5C] rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
-                                style={{ left: `calc(${progressPercent}% - 4px)` }}
-                            ></div>
-                        </div>
-
-                        <span className="text-[10px] text-text-secondary/50 font-inter font-bold tracking-widest tabular-nums">
-                            {formatTime(duration)}
-                        </span>
-                    </div>
-                </div>
-
-                <section className="mb-10">
-                    <div className="flex items-center justify-center mb-6">
-                        <button
-                            onClick={() => setShowLexicon(!showLexicon)}
-                            className="group flex flex-col items-center gap-1.5 focus:outline-none"
-                        >
-                            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-muted dark:text-gold-muted group-hover:text-gold-primary transition-colors font-inter">
-                                Word-by-Word
-                            </span>
-                            <div className="w-6 h-6 rounded-full border border-gold-primary/20 bg-white/20 dark:bg-dark-surface/20 flex items-center justify-center group-hover:border-gold-primary/50 transition-colors">
-                                {showLexicon ? (
-                                    <ChevronUp className="w-3.5 h-3.5 text-gold-muted group-hover:text-gold-primary transition-colors" />
-                                ) : (
-                                    <ChevronDown className="w-3.5 h-3.5 text-gold-muted group-hover:text-gold-primary transition-colors" />
-                                )}
-                            </div>
-                        </button>
-                    </div>
-
-                    <div className={`transition-all duration-500 overflow-hidden ${showLexicon ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-4xl mx-auto px-2 sm:px-4">
-                            {verseData.tokens?.map((token, i) => {
-                                const cleanMeaning = token.meaning_ko.replace(/^—\s*/, '').trim();
-                                return (
-                                    <div key={i} className="flex flex-col px-3 py-2 rounded-xl bg-white/30 dark:bg-dark-bg/40 backdrop-blur-sm border border-gold-primary/10 dark:border-dark-border/50 shadow-sm relative overflow-hidden group">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-white/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                                        <span className="font-bold text-text-primary dark:text-dark-text-primary text-[15px] font-crimson mb-0.5">{token.surface}</span>
-                                        <span className="text-text-secondary dark:text-dark-text-secondary text-[13px] font-inter leading-relaxed break-keep">{cleanMeaning}</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                <section className="mb-10">
-                    <div className="flex items-center justify-center mb-6">
-                        <span className="text-gold-muted/40 dark:text-gold-muted/30 tracking-[8px] text-xs">•••</span>
-                    </div>
-                    <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-muted dark:text-gold-muted text-center font-inter">Translation</h2>
-
-                    {verseData['2.english'] && (
-                        <div className="mb-8">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-primary/70 dark:text-gold-light/60 text-center mb-3 font-inter">English</h3>
-                            <p className="text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary font-inter min-h-[1.5em] text-center max-w-3xl mx-auto px-2 sm:px-0 whitespace-pre-line break-keep">
-                                {verseData['2.english']}
-                            </p>
-                        </div>
-                    )}
-
-                    {verseData['3.korean-1'] && (
-                        <div className="mb-8">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-primary/70 dark:text-gold-light/60 text-center mb-3 font-inter">한국어 번역 1</h3>
-                            <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary min-h-[1.5em] text-center max-w-3xl mx-auto px-2 sm:px-0 whitespace-pre-line break-keep">
-                                {verseData['3.korean-1']}
-                            </p>
-                        </div>
-                    )}
-
-                    {verseData['5.bae_jik'] && (
-                        <div className="mb-8">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-primary/70 dark:text-gold-light/60 text-center mb-3 font-inter">배철현 (직역)</h3>
-                            <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary min-h-[1.5em] text-center max-w-3xl mx-auto px-2 sm:px-0 whitespace-pre-line break-keep">
-                                {verseData['5.bae_jik']}
-                            </p>
-                        </div>
-                    )}
-
-                    {verseData['6.bae_uu'] && (
-                        <div className="mb-4">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-primary/70 dark:text-gold-light/60 text-center mb-3 font-inter">배철현 (의역)</h3>
-                            <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary min-h-[1.5em] text-center max-w-3xl mx-auto px-2 sm:px-0 whitespace-pre-line break-keep">
-                                {verseData['6.bae_uu']}
-                            </p>
-                        </div>
-                    )}
-
-                    {verseData['8. ox'] && (
-                        <div className="mb-4">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-primary/70 dark:text-gold-light/60 text-center mb-3 font-inter">Oxford 역</h3>
-                            <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary min-h-[1.5em] text-center max-w-3xl mx-auto px-2 sm:px-0 whitespace-pre-line break-keep">
-                                {verseData['8. ox']}
-                            </p>
-                        </div>
-                    )}
-                </section>
-
-                {verseData['9. ox-en'] && (
-                    <section className="mb-12">
-                        <div className="flex items-center justify-center mb-6">
-                            <span className="text-gold-muted/40 dark:text-gold-muted/30 tracking-[8px] text-xs">•••</span>
-                        </div>
-                        <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-muted dark:text-gold-muted text-center font-inter">Commentary</h2>
-                        <div className="text-base sm:text-lg leading-loose text-text-secondary dark:text-dark-text-secondary space-y-4 font-inter min-h-[1.5em] max-w-2xl mx-auto px-2 sm:px-0 whitespace-pre-line break-keep">
-                            {verseData['9. ox-en']}
-                        </div>
-                    </section>
-                )}
-
-                <div className="mt-10 pb-4 flex justify-center font-inter">
-                    <div className="flex items-center justify-between bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md border border-gold-primary/20 dark:border-dark-border/50 rounded-full px-3 py-1.5 shadow-sm min-w-[180px] hover:shadow-md transition-shadow">
-                        <button
-                            onClick={handlePrev}
-                            disabled={parseInt(chapterNum) === 1 && parseInt(verseNum || '1') === 1}
-                            className="p-2 rounded-full hover:bg-gold-surface/50 dark:hover:bg-[#222] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-[#5B7282] dark:text-dark-text-secondary"
-                        >
-                            <ChevronLeft className="w-5 h-5 group-hover:scale-110 transition-transform stroke-[1.5]" />
-                        </button>
-
-                        <span className="text-[15px] font-bold text-[#1C2B36] dark:text-dark-text-primary tracking-wide px-4">
-                            {chapterNum}.{verseRange}
-                        </span>
-
-                        <button
-                            onClick={handleNext}
-                            disabled={parseInt(chapterNum) === 4 && parseInt(verseNum || '1') === 34}
-                            className="p-2 rounded-full hover:bg-gold-surface/50 dark:hover:bg-[#222] transition-colors disabled:opacity-30 disabled:cursor-not-allowed group text-[#5B7282] dark:text-dark-text-secondary"
-                        >
-                            <ChevronRight className="w-5 h-5 group-hover:scale-110 transition-transform stroke-[1.5]" />
-                        </button>
-                    </div>
-                </div>
+                <SutraNavigation 
+                    chapterNum={chapterNum}
+                    verseRange={verseRange}
+                    onPrev={handlePrev}
+                    onNext={handleNext}
+                    isPrevDisabled={parseInt(chapterNum) === 1 && currentIndex === 0}
+                    isNextDisabled={parseInt(chapterNum) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                />
             </div>
         </div>
     );

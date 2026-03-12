@@ -1,38 +1,43 @@
-# Yoga Project Deep Architecture & Phase 2 Refinement Report
+# Yoga Project Deep Dive Report
 
-## 1. Project Anatomy (Deep Dive)
-The Yoga Sutras application is a specialized text-viewer with a strong emphasis on **aesthetic density** and **typography**.
+본 프로젝트의 아키텍처, 데이터 흐름, 그리고 코드 품질 상태에 대한 심층 분석 결과 보고서.
 
-### 1.1 State & Routing Mechanism
-- **Selective Data Loading**: `fetchYogaData()` in `dataFetcher.ts` loads a static `data.json`. The application structure is hierarchical: `Chapter -> Sutra -> Tokens`.
-- **URL-Based State**: Routing via `react-router-dom` ensures that the user's location is the primary source of truth for the verse being read, enabling direct links to specific sutras.
+## 1. 시스템 아키텍처 (System Architecture)
 
-### 1.2 Design System (Tailwind 4)
-- **Fluid Tokens**: The `@theme` block in `index.css` defines a strict palette of Deep Gold tones.
-- **Glassmorphism Logic**: The `glass-panel` utility uses `backdrop-filter: blur(16px)` and variable opacities (`rgba`) to create depth without clutter.
+본 프로젝트는 **Vite + React + Tailwind CSS 4** 기반의 SPA(Single Page Application)이다. 'Zero Monolith' 지침에 따라 기능별로 컴포넌트가 분리되어 있으나, 일부 페이지 컴포넌트의 로직 밀도가 높음.
 
-## 2. Phase 2 Refinement Analysis
+### 핵심 컴포넌트 구조
+- **AppShell (`AppShell.tsx`)**: 전체 레이아웃의 근간. 상단 헤더, 좌측 사이드바, 우측 통찰 패널, 중앙 본문을 관리. `100dvh` 및 `backdrop-blur` 환경 제공.
+- **UIContext (`UIContext.tsx`)**: 사이드바 및 패널의 열림/닫힘 상태를 전역 관리. 데스크톱 상태는 `localStorage`에 저장됨.
+- **ThemeContext (`ThemeContext.tsx`)**: 다크 모드 상태 관리.
+- **Sidebar (`Sidebar.tsx`)**: 장(Chapter) 및 수트라(Sutra) 목록을 트리 구조로 렌더링. `SidebarMenu`를 사용하여 선언적으로 관리.
+- **VerseView (`VerseView.tsx`)**: 가장 복잡한 컴포넌트. 오디오 재생, 단어별 뜻(Lexicon), 다국어 번역, 주석 등을 모두 렌더링함.
 
-### 2.1 Typography & Scaling
-- **Global Scaling**: A 1pt increase across the board suggests shifting the base rem or systematically updating utility classes.
-- **Title hierarchy**: Increasing title size by 3 levels (e.g., `text-lg` -> `text-2xl`) targets the main chapter cards.
-- **Readability**: The user noted Korean text readability. `Noto Serif KR` is elegant but can be dense; increasing `line-height` (leading) is the primary solution.
+## 2. 데이터 흐름 및 관리 (Data Flow)
 
-### 2.2 Iconography (Semantic Mapping)
-Replacing the generic `֍` symbol with unique, thematic icons from `Lucide` or custom SVGs:
-- **Chapter 1 (Samadhi)**: `Target` or `Focus` - symbolizing concentration.
-- **Chapter 2 (Sadhana)**: `Zap` or `Activity` - symbolizing practice and action.
-- **Chapter 3 (Vibhuti)**: `Sparkles` or `Award` - symbolizing supernatural accomplishments.
-- **Chapter 4 (Kaivalya)**: `Cloud` or `Mountain` - symbolizing absolute freedom and transcendence.
+### 데이터 구조
+- `public/data.json`: 모든 수트라 데이터의 원천.
+- `src/utils/dataFetcher.ts`: `data.json`을 가져와서 `Chapter` 단위로 그룹화하고 캐싱함.
 
-### 2.3 Layout Compression Strategy
-- **Selector Height**: Currently `p-4 sm:p-5`. Reducing to `p-3 sm:p-4` and shrinking internal vertical paddings by 1/3.
-- **Density**: Halving the `mb-10` between selector and grid to `mb-5`.
-- **Card Aspect Ratio**: Moving from `min-h-[250px]` to `min-h-[400px]` to create more vertical presence for the detailed descriptions.
+### 데이터 파이프라인 (Scripts)
+- `generate_data.ps1`: 텍스트 소스 파일들(`.txt`)을 읽어 `data.js`를 생성하는 PowerShell 스크립트.
+- `update_dictionary.js`: `7.dan.txt`와 `1.sans.txt`를 기반으로 `data.js`의 단어 뜻과 산스크리트어 본문을 동기화하는 도구.
 
-## 3. Data Enhancement
-The `description` field in `constants.ts` needs a significant content boost (2-3 sentences) to provide real value and fill the longer cards.
-- **Samadhi Pāda**: Describes the nature of yoga and the means of reaching union (Samadhi). It explores the functions of the mind and how to still the internal whirlpools of thought.
-- **Sadhana Pāda**: Details the practical steps of yoga, including the famous eight limbs (Ashtanga). It focuses on the discipline needed to overcome suffering and attain wisdom.
-- **Vibhuti Pāda**: Discusses the extraordinary powers and mental focus achieved through advanced practice. It warns that these powers are side effects, not the end goal of liberation.
-- **Kaivalya Pāda**: Explains the culmination of the journey—absolute independence and liberation from the cycle of birth and death, where the seer abides in their own true nature.
+## 3. 주요 발견 사항 및 개선 필요점 (Key Findings)
+
+### 레이 표준(Ray Standard) 위반 사항
+- **Console 사용**: `dataFetcher.ts`, `VerseView.tsx`, `Sidebar.tsx`, `ChapterList.tsx` 등 다수의 파일에 `console.error` 및 `console.warn`이 잔존함. 즉각적인 제거 또는 커스텀 로거로 대체 필요.
+- **네이밍 일관성**: `localStorage` 키에 `gita-` 접두사가 사용되고 있음 (`gita-desktop-sidebar`, `gita-show-lexicon` 등). 프로젝트 명칭인 `yoga-`로 통일 필요.
+
+### 아키텍처 및 코드 품질
+- **VerseView 로직 비대화**: `VerseView.tsx` (391라인)가 오디오 제어 로직과 대규모 UI 렌더링을 동시에 수행 중. `useAudio` 커스텀 훅 추출 및 렌더링 하위 컴포넌트(TranslationSection, AudioPlayer 등) 분리 필요.
+- **중복 로직**: 장/절 내비게이션 및 수트라 범위(Verse Range) 판단 로직이 여러 곳에서 반복됨. 이를 유틸리티화 하거나 데이터 페칭 단계에서 전처리 필요.
+- **타입 정의**: `src/types/index.ts`에 정의된 인터페이스들이 실제 데이터 구조와 약간의 괴리가 있거나 옵셔널 처리가 미흡함.
+
+### UI/UX 디테일
+- **다크 모드**: Tailwind 4의 `@custom-variant` 전략은 구현되었으나, 일부 컴포넌트에서 `dark:` 프리픽스가 누락되었을 가능성 존재.
+- **접근성**: `ThemeToggle` 외에는 `aria-label` 등의 웹 접근성 속성이 부족함.
+
+## 4. 최종 결론 (Conclusion)
+
+프로젝트는 기반이 튼튼하고 디자인 감각이 뛰어남. 하지만 세부적인 코드 관리(Console 제거, 네이밍 통일)와 거대 컴포넌트의 분할이 이루어지지 않으면 유지보수 비용이 급증할 위험이 있음. 다음 페이즈에서 '지저분한 코드 정리'는 **로직 추출 및 컴포넌트 모듈화**에 집중해야 함.

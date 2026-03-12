@@ -25,7 +25,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     // Desktop Panel States
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('gita-desktop-sidebar');
+            const saved = localStorage.getItem('yoga-desktop-sidebar');
             return saved !== null ? JSON.parse(saved) : true;
         }
         return true;
@@ -33,7 +33,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
 
     const [isDesktopReflectionsOpen, setIsDesktopReflectionsOpen] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('gita-desktop-reflections');
+            const saved = localStorage.getItem('yoga-desktop-reflections');
             return saved !== null ? JSON.parse(saved) : true;
         }
         return true;
@@ -45,7 +45,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         } else {
             const newState = !isDesktopSidebarOpen;
             setIsDesktopSidebarOpen(newState);
-            localStorage.setItem('gita-desktop-sidebar', JSON.stringify(newState));
+            localStorage.setItem('yoga-desktop-sidebar', JSON.stringify(newState));
         }
     };
 
@@ -55,7 +55,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         } else {
             const newState = !isDesktopReflectionsOpen;
             setIsDesktopReflectionsOpen(newState);
-            localStorage.setItem('gita-desktop-reflections', JSON.stringify(newState));
+            localStorage.setItem('yoga-desktop-reflections', JSON.stringify(newState));
         }
     };
 
