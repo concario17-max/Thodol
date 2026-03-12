@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, RefObject } from 'react';
+import { useState, useCallback, RefObject } from 'react';
 
 export const useAudio = (audioRef: RefObject<HTMLAudioElement | null>) => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);

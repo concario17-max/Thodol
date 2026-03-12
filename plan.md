@@ -1,21 +1,34 @@
-# Yoga Refinement Plan
+# 요가 프로젝트 고도화 구현 계획 (Todo List)
 
-## 1. Global UI Fixes
-- [ ] Fix Header title in `App.tsx` (Change "Default Title" to "Yoga Sutras").
-- [ ] Adjust `SidebarMenu.tsx` layout to favor Verse list visibility (fixed height for Chapters 1-4).
+본 계획은 분석된 아키텍처를 바탕으로 낭송 경험을 극대화하기 위한 단계별 구현 로직을 제안합니다.
 
-## 2. Verse View Content Cleanup
-- [ ] **SutraContent.tsx**:
-    - [ ] Remove `showLexicon` state and toggle logic.
-    - [ ] Remove "Word-by-Word" button and Lexicon grid.
-- [ ] **TranslationSection.tsx**:
-    - [ ] Create a merged section for "앨리스 A. 베일리" (Alice A. Bailey).
-    - [ ] Create a merged section for "니콜라스 서튼" (Nicholas Sutton).
-    - [ ] Ensure proper spacing and typography for merged blocks.
-- [ ] **VerseView.tsx**:
-    - [ ] Update props passed to sub-components to reflect new structure.
+## Phase 1: 낭송 최적화 레이아웃 구현 (준비 중)
+- [ ] **SutraContent.tsx 리팩토링**
+    - [ ] `pronunciation`과 `pronunciation_kr`을 구분자(`|`, `｜`)를 기준으로 파싱하는 로직 추가.
+    - [ ] 분리된 세그먼트를 묶어서 렌더링하는 `SegmentRow` 구조 설계.
+    - [ ] 한국어 발음에서 `-` 기호 제거 로직 적용.
+- [ ] **데이터 정제 로직 강화**
+    - [ ] 영어/한국어 세그먼트 개수가 불일치할 경우에 대한 엣지 케이스 처리.
+    - [ ] 산스크리트어(Devanagari) 단어 단위 분기 처리 알고리즘 고도화.
 
-## 3. Verification & Push
-- [ ] Verify all UI changes in both Light and Dark modes.
-- [ ] Audit console for any stray logs.
-- [ ] Auto-commit and push changes (Ray Standard).
+## Phase 2: UI/UX 세부 정제
+- [ ] **사이드바(Sidebar) 최적화**
+    - [ ] 챕터 목록과 구절 목록 사이의 구분선을 4장 아래로 조정하여 구절 가시성 확보.
+    - [ ] 구절 선택 시 사이드바 자동 닫힘(모바일) 및 액티브 상태 시각화 강화.
+- [ ] **Header 및 내비게이션**
+    - [ ] 챕터 뷰의 고정 타이틀을 "YOGA SUTRAS"로 통일.
+    - [ ] 테마 전환 시의 트랜지션 애니메이션 보강.
+- [ ] **번역 섹션(TranslationSection) 통합**
+    - [ ] 앨리스 A. 베일리(English + Korean) 섹션 병합.
+    - [ ] 니콜라스 서튼(Oxford) 번역과 주해(Commentary) 섹션 병합 및 디자인 최적화.
+
+## Phase 3: 기능 고도화 및 검증
+- [ ] **성찰(Reflections) 패널 강화**
+    - [ ] 노트 저장 시 시각적 피드백(Save Progress) 추가.
+    - [ ] 저장된 노트의 전체 내보내기(Export All) 기능 안정성 테스트.
+- [ ] **빌드 및 성능 테스트**
+    - [ ] `npm run build`를 통한 타입 체크 및 번들링 확인.
+    - [ ] 저사양 기기에서의 스크롤 성능 및 다크 모드 렌더링 최적화.
+
+---
+**주의**: 위 작업들은 계획 단계이며, 사용자의 최종 승인 후 순차적으로 구현을 진행합니다.
