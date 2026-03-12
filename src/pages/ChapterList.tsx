@@ -55,24 +55,24 @@ const ChapterList = () => {
                     The Light of Yoga
                 </p>
 
-                <div className="flex items-center gap-4 sm:gap-8 text-[11px] font-crimson tracking-[0.2em] text-text-secondary uppercase mb-8">
+                <div className="flex items-center gap-1 sm:gap-6 text-[11px] font-crimson tracking-[0.2em] text-text-secondary uppercase mb-8 flex-wrap justify-center">
                     <span
                         onClick={() => setIsCompendiumOpen(true)}
-                        className="hover:text-gold-primary cursor-pointer transition-colors italic"
+                        className="hover:text-gold-primary cursor-pointer transition-colors px-3 py-2 bg-transparent hover:bg-gold-surface/30 rounded-full active:scale-95"
                     >
                         Compendium
                     </span>
                     <div className="w-1 h-1 rotate-45 bg-gold-border/50"></div>
                     <span
                         onClick={() => setIsLexiconOpen(true)}
-                        className="hover:text-gold-primary cursor-pointer transition-colors italic"
+                        className="hover:text-gold-primary cursor-pointer transition-colors px-3 py-2 bg-transparent hover:bg-gold-surface/30 rounded-full active:scale-95"
                     >
                         Lexicon
                     </span>
-                    <div className="w-1 h-1 rotate-45 bg-gold-border/50"></div>
+                    <div className="w-1 h-1 rotate-45 bg-gold-border/50 hidden sm:block"></div>
                     <span
                         onClick={() => setIsReflectionsOpen(true)}
-                        className="hover:text-gold-primary cursor-pointer transition-colors italic"
+                        className="hover:text-gold-primary cursor-pointer transition-colors px-3 py-2 bg-transparent hover:bg-gold-surface/30 rounded-full active:scale-95"
                     >
                         Commentaries
                     </span>
