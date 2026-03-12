@@ -26,12 +26,12 @@ export const TranslationSection = ({
                 <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-inter">앨리스 A. 베일리</h2>
                 <div className="space-y-6 max-w-3xl mx-auto px-2 sm:px-0">
                     {english && (
-                        <p className="text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary font-inter text-center whitespace-pre-line break-keep">
+                        <p className="text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary font-sans text-center whitespace-pre-line break-keep">
                             {english}
                         </p>
                     )}
                     {korean1 && (
-                        <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep border-t border-gold-primary/10 pt-6">
+                        <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep border-t border-gold-primary/10 pt-6">
                             {korean1}
                         </p>
                     )}
@@ -48,12 +48,12 @@ export const TranslationSection = ({
                     <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-inter">니콜라스 서튼</h2>
                     <div className="space-y-6 max-w-3xl mx-auto px-2 sm:px-0">
                         {oxfordEn && (
-                            <p className="text-sm sm:text-base leading-relaxed text-text-secondary dark:text-dark-text-secondary text-center whitespace-pre-line break-keep font-inter">
+                            <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                 {oxfordEn}
                             </p>
                         )}
                         {oxfordKr && (
-                            <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                            <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                 {oxfordKr}
                             </p>
                         )}
@@ -72,16 +72,16 @@ export const TranslationSection = ({
                     <div className="space-y-8 max-w-3xl mx-auto px-2 sm:px-0">
                         {baeJik && (
                             <div>
-                                <h3 className="text-[10px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">직역</h3>
-                                <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                                <h3 className="text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">직역</h3>
+                                <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                     {baeJik}
                                 </p>
                             </div>
                         )}
                         {baeUu && (
                             <div>
-                                <h3 className="text-[10px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">의역</h3>
-                                <p className="font-noto-kr text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                                <h3 className="text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">의역</h3>
+                                <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                     {baeUu}
                                 </p>
                             </div>

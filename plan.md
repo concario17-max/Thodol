@@ -33,5 +33,19 @@
 - [x] **Commentary 섹션 비우기**
     - 기존 데이터를 출력하던 부분을 제거하고 빈 템플릿(타이틀과 여백만 존재하는 형태)으로 유지.
 
+## Phase 5: 번역 텍스트 가독성 및 디자인 완전 통일
+- [x] **가독성 높은 폰트로 변경 (`TranslationSection.tsx`)**
+    - 기존의 장식적인 `font-noto-kr`(명조체 계열) 및 얇은 `font-inter`를 제거.
+    - 장문 읽기에 최적화된 기본 `font-sans` (기본값 설정된 Pretendard/system-ui 등 고딕 계열) 폰트로 클래스 일괄 변경.
+- [x] **영어 번역 텍스트 스타일 통일**
+    - 앨리스 A. 베일리와 니콜라스 서튼의 영어 본문 폰트 크기 및 색상을 완전 통일.
+    - 적용 클래스: `text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary font-sans text-center`
+- [x] **한글 번역 텍스트 스타일 통일**
+    - 앨리스 A. 베일리, 니콜라스 서튼, 배철현(직역/의역)의 모든 한글 본문 폰트 크기 및 색상을 완전 통일.
+    - 적용 클래스: `text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary font-sans text-center break-keep`
+- [x] **배철현 직역/의역 소제목 크기 확대**
+    - 기존 `text-[10px]` 였던 "직역", "의역" 소제목을 1포인트(1px) 키워 가독성 향상.
+    - 적용 클래스: `text-[11px]`
+
 ---
 **주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.
