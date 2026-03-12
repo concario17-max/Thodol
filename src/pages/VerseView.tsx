@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useYogaData } from '../hooks/useYogaData';
 import { useAudio } from '../hooks/useAudio';
@@ -12,14 +12,6 @@ const VerseView = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
     const navigate = useNavigate();
     const audioRef = useRef<HTMLAudioElement>(null);
-
-    const [showLexicon, setShowLexicon] = useState<boolean>(() => {
-        if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('yoga-show-lexicon');
-            return saved !== null ? JSON.parse(saved) : false;
-        }
-        return false;
-    });
 
     const { 
         allChapters, 
@@ -60,12 +52,6 @@ const VerseView = () => {
         window.scrollTo(0, 0);
         reset();
     }, [chapterNum, verseNum, reset]);
-
-    const handleToggleLexicon = useCallback(() => {
-        const nextState = !showLexicon;
-        setShowLexicon(nextState);
-        localStorage.setItem('yoga-show-lexicon', JSON.stringify(nextState));
-    }, [showLexicon]);
 
     if (loading || !allChapters || !chapterNum || !verseNum) {
         return (
@@ -117,9 +103,6 @@ const VerseView = () => {
                     sanskrit={verseData.sanskrit}
                     pronunciation={verseData.pronunciation}
                     pronunciationKr={verseData.pronunciation_kr}
-                    tokens={verseData.tokens}
-                    showLexicon={showLexicon}
-                    onToggleLexicon={handleToggleLexicon}
                 />
 
                 <audio

@@ -19,7 +19,7 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header /> : undefined}
+            header={isVerseView ? <Header title="Yoga Sutras" /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             rightPanel={isVerseView ? <Reflections /> : undefined}
             isMobilePanelOpen={isSidebarOpen}

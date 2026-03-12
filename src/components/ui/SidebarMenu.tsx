@@ -32,8 +32,8 @@ interface SidebarMenuProps {
 export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: SidebarMenuProps) => {
     return (
         <>
-            {/* Top Half: Groups */}
-            <div className="flex-1 overflow-y-auto border-b border-gold-border/40 dark:border-[#222] custom-scrollbar min-h-0 overscroll-contain">
+            {/* Top Half: Groups (Chapters) - Compact fixed height to show 1-4 */}
+            <div className="flex-none border-b border-gold-border/20 dark:border-[#222] custom-scrollbar min-h-0 overscroll-contain">
                 {groupTitle && (
                     <div className="p-4 bg-transparent sticky top-0 z-10 backdrop-blur-sm hidden lg:block">
                         <h2 className="text-xs font-bold text-text-primary/70 dark:text-dark-text-primary/70">
