@@ -73,5 +73,12 @@
 - [x] **코멘터리 동적 확장 로직 구현 (`CommentarySidebar.tsx`)**
     - Context에서 `isDesktopSidebarOpen` 값을 읽어와, **좌측 Chapter 패널이 닫혀 있을 때** 자신의 너비(`className`)를 `lg:w-[400px]`에서 `lg:w-[720px]`로 동적으로 넓히는 레이아웃 로직 구현.
 
+## Phase 9: 구절 이동 시 스크롤 상단(스크롤 초기화) 자동 복귀 기능
+- [x] **스크롤 컨테이너 식별자 추가 (`AppShell.tsx`)**
+    - `AppShell.tsx` 안의 실제 스크롤을 담당하는 `<main>` 엘리먼트에 `id="main-scroll-container"` 속성 부여.
+- [x] **페이지/구절 이동 시 스크롤 초기화 타겟 변경 (`VerseView.tsx`)**
+    - 기존의 동작불가 코드인 `window.scrollTo(0,0);`를 삭제.
+    - 컴포넌트 마운트 및 라우팅 파라미터(`chapterNum`, `verseNum`) 변경 시, `document.getElementById('main-scroll-container')`를 찾아 하위 콘텐츠 스크롤을 `0`으로 올려주는 로직 적용.
+
 ---
 **주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.

@@ -47,9 +47,12 @@ const VerseView = () => {
         }
     }, [chapterNum, verseNum, allChapters, getVerseInRange, navigate]);
 
-    // Reset audio on navigation
+    // Reset audio and scroll to top on navigation
     useEffect(() => {
-        window.scrollTo(0, 0);
+        const scrollContainer = document.getElementById('main-scroll-container');
+        if (scrollContainer) {
+            scrollContainer.scrollTo(0, 0);
+        }
         reset();
     }, [chapterNum, verseNum, reset]);
 
