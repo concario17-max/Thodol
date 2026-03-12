@@ -80,5 +80,11 @@
     - 기존의 동작불가 코드인 `window.scrollTo(0,0);`를 삭제.
     - 컴포넌트 마운트 및 라우팅 파라미터(`chapterNum`, `verseNum`) 변경 시, `document.getElementById('main-scroll-container')`를 찾아 하위 콘텐츠 스크롤을 `0`으로 올려주는 로직 적용.
 
+## Phase 10: 구절 뷰어 하단 잔재(Commentary Placeholder) 제거 및 Lexicon 데이터 복구
+- [x] **구절 페이지 통번역 섹션 정리 (`TranslationSection.tsx`)**
+    - 파일 하단의 `<section className="mb-12 opacity-20">` 에 해당하는 `{/* Empty Commentary Section */}` UI 블록과 하단 구분선(`<div className="h-px w-24..."/>`) 코드를 컴포넌트 렌더링에서 완전히 삭제.
+- [x] **Lexicon 기능 정상화 (`public/lexicon.json`)**
+    - 제공된 `11. Lexicon.txt` 데이터를 파싱하여 A-Z 알파벳 기준으로 그룹핑한 `lexicon.json` 파일을 `public` 디렉터리에 성공적으로 컴파일 및 배치 완료.
+
 ---
 **주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.

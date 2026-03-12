@@ -90,11 +90,5 @@ export const TranslationSection = ({
                 </div>
             )}
         </section>
-
-        {/* Empty Commentary Section */}
-        <section className="mb-12 opacity-20">
-            <h2 className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-muted text-center font-inter">Commentary</h2>
-            <div className="h-px w-24 mx-auto bg-gold-primary/20"></div>
-        </section>
     </>
 );
