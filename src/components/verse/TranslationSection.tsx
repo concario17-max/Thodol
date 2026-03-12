@@ -31,7 +31,7 @@ export const TranslationSection = ({
                         </p>
                     )}
                     {korean1 && (
-                        <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep border-t border-gold-primary/10 pt-6">
+                        <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                             {korean1}
                         </p>
                     )}
@@ -72,7 +72,7 @@ export const TranslationSection = ({
                     <div className="space-y-8 max-w-3xl mx-auto px-2 sm:px-0">
                         {baeJik && (
                             <div>
-                                <h3 className="text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">직역</h3>
+                                <h3 className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">직역</h3>
                                 <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                     {baeJik}
                                 </p>
@@ -80,7 +80,7 @@ export const TranslationSection = ({
                         )}
                         {baeUu && (
                             <div>
-                                <h3 className="text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">의역</h3>
+                                <h3 className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">의역</h3>
                                 <p className="font-sans text-base sm:text-lg leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                     {baeUu}
                                 </p>
