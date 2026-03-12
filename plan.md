@@ -86,5 +86,17 @@
 - [x] **Lexicon 기능 정상화 (`public/lexicon.json`)**
     - 제공된 `11. Lexicon.txt` 데이터를 파싱하여 A-Z 알파벳 기준으로 그룹핑한 `lexicon.json` 파일을 `public` 디렉터리에 성공적으로 컴파일 및 배치 완료.
 
+## Phase 11: 웹 및 모바일 UI/UX 반응형 종합 최적화 (Web & Mobile Optimization)
+- [ ] **1단계: 터치 타겟(Tap Target) 및 모바일 간격 확보**
+    - `ChapterList.tsx`: 대문 페이지의 "Compendium, Lexicon, Commentaries" 텍스트 링크에 상하좌우 패딩(padding)을 추가하여 모바일 오터치(Fat-finger) 방지 및 간격 확대.
+    - `Header.tsx`: 모바일 너비(sm 미만)에서 타이틀과 좌우 버튼들이 겹치지 않도록 flex 레이아웃 비율 또는 폰트 크기 조정 (`text-lg` -> `text-base md:text-lg`).
+- [ ] **2단계: 반응형 타이포그래피 및 가독성 (VerseView 단위)**
+    - `SutraContent.tsx`: 산스크리트어와 발음(English/Korean)의 모바일-데스크탑 스케일링 간극 완화. (예: `text-xl sm:text-2xl md:text-3xl`).
+    - `TranslationSection.tsx`: 텍스트 단락들의 좌우 여백(`px-4 sm:px-0`) 및 줄간격 배치를 모바일에서도 눈이 편안하도록 조정.
+- [ ] **3단계: AppShell 및 사이드바 화면 락킹 연동**
+    - 좌/우측 사이드바(Sidebar, Reflections, Commentary)가 모바일(화면 폭 좁은 상태)에서 열렸을 때, 백그라운드의 본문이 같이 스크롤되지 않도록 `AppShell.tsx`의 `isMobilePanelOpen` 상태 제어를 `UIContext`와 연동하여 완벽한 모달식(Overlay) 처리 적용.
+- [ ] **4단계: 하단 네비게이션 패딩 최적화**
+    - `SutraNavigation.tsx`: 하단 이전/다음 구절 버튼의 터치 편의성을 위해 버튼의 여백 확보 및 아이콘 정렬 개선.
+
 ---
 **주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.
