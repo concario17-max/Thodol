@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, Edit3, MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
 
@@ -19,7 +19,7 @@ const Header = ({
     rightContent,
     className = ""
 }: HeaderProps) => {
-    const { toggleSidebar } = useUI();
+    const { toggleSidebar, toggleRightPanel, activeDesktopRightPanel } = useUI();
 
     return (
         <header className={`sticky top-0 z-50 w-full border-b border-gold-primary/20 dark:border-dark-border/60 bg-white/60 dark:bg-[#070707]/60 backdrop-blur-xl transition-colors duration-500 shadow-sm ${className}`}>
@@ -44,9 +44,29 @@ const Header = ({
                 </div>
 
                 {/* Right Side: Dynamic Content & Theme Toggle */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                     {rightContent}
-                    <ThemeToggle className="ml-2" />
+                    
+                    {showSidebarToggle && (
+                        <div className="flex items-center gap-1 bg-gold-bg dark:bg-dark-surface p-1 rounded-full border border-gold-primary/10">
+                            <button
+                                onClick={() => toggleRightPanel('reflections')}
+                                className={`p-1.5 rounded-full transition-colors ${activeDesktopRightPanel === 'reflections' ? 'bg-gold-primary text-white' : 'text-gold-primary dark:text-gold-light hover:bg-gold-surface dark:hover:bg-dark-bg'}`}
+                                title="통찰 기록 열기"
+                            >
+                                <Edit3 className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={() => toggleRightPanel('commentary')}
+                                className={`p-1.5 rounded-full transition-colors ${activeDesktopRightPanel === 'commentary' ? 'bg-gold-primary text-white' : 'text-gold-primary dark:text-gold-light hover:bg-gold-surface dark:hover:bg-dark-bg'}`}
+                                title="코멘터리 열기"
+                            >
+                                <MessageSquare className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )}
+                    
+                    <ThemeToggle className="ml-1 sm:ml-2" />
                 </div>
             </div>
         </header>

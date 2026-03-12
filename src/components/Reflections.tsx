@@ -8,9 +8,11 @@ const Reflections = () => {
     const [note, setNote] = useState<string>('');
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [showExportMenu, setShowExportMenu] = useState<boolean>(false);
-    const { isReflectionsOpen, setIsReflectionsOpen, isDesktopReflectionsOpen } = useUI();
+    const { activeRightPanel, setActiveRightPanel, activeDesktopRightPanel } = useUI();
 
     const noteKey = `yoga-note-${chapterNum}-${verseNum}`;
+    const isReflectionsOpen = activeRightPanel === 'reflections';
+    const isDesktopReflectionsOpen = activeDesktopRightPanel === 'reflections';
 
     useEffect(() => {
         const savedNote = localStorage.getItem(noteKey);
@@ -77,7 +79,7 @@ const Reflections = () => {
             {isReflectionsOpen && (
                 <div
                     className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden transition-opacity duration-300"
-                    onClick={() => setIsReflectionsOpen(false)}
+                    onClick={() => setActiveRightPanel(null)}
                 />
             )}
             <aside className={`fixed inset-y-0 right-0 z-50 sm:w-[400px] bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md border-l border-gold-primary/20 dark:border-dark-border/50 h-full lg:h-[calc(100vh-64px)] lg:sticky lg:top-16 transform transition-all duration-300 flex flex-col font-inter
@@ -86,7 +88,7 @@ const Reflections = () => {
             `}>
 
                 <div className="lg:hidden absolute top-4 right-4 z-50">
-                    <button onClick={() => setIsReflectionsOpen(false)} className="p-2 rounded-full hover:bg-gold-surface dark:hover:bg-dark-surface text-text-secondary dark:text-dark-text-secondary transition-colors">
+                    <button onClick={() => setActiveRightPanel(null)} className="p-2 rounded-full hover:bg-gold-surface dark:hover:bg-dark-surface text-text-secondary dark:text-dark-text-secondary transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>

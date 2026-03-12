@@ -1,14 +1,20 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 
+export type RightPanelType = 'reflections' | 'commentary' | null;
+
 interface UIContextType {
     isSidebarOpen: boolean;
     setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
     isDesktopSidebarOpen: boolean;
     toggleSidebar: () => void;
-    isReflectionsOpen: boolean;
-    setIsReflectionsOpen: Dispatch<SetStateAction<boolean>>;
-    isDesktopReflectionsOpen: boolean;
-    toggleReflections: () => void;
+    
+    // Union status for right panel
+    activeRightPanel: RightPanelType;
+    setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
+    activeDesktopRightPanel: RightPanelType;
+    setActiveDesktopRightPanel: Dispatch<SetStateAction<RightPanelType>>;
+    toggleRightPanel: (panel: 'reflections' | 'commentary') => void;
+    
     closeAllDrawers: () => void;
 }
 
@@ -20,7 +26,7 @@ interface UIProviderProps {
 
 export const UIProvider = ({ children }: UIProviderProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-    const [isReflectionsOpen, setIsReflectionsOpen] = useState<boolean>(false);
+    const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
     // Desktop Panel States
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
@@ -31,12 +37,15 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         return true;
     });
 
-    const [isDesktopReflectionsOpen, setIsDesktopReflectionsOpen] = useState<boolean>(() => {
+    const [activeDesktopRightPanel, setActiveDesktopRightPanel] = useState<RightPanelType>(() => {
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('yoga-desktop-reflections');
-            return saved !== null ? JSON.parse(saved) : true;
+            const saved = localStorage.getItem('yoga-desktop-right-panel');
+            // If stored as boolean previously, convert it
+            if (saved === 'true') return 'reflections';
+            if (saved === 'false') return null;
+            return saved !== null ? JSON.parse(saved) as RightPanelType : 'reflections';
         }
-        return true;
+        return 'reflections';
     });
 
     const toggleSidebar = () => {
@@ -49,19 +58,19 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         }
     };
 
-    const toggleReflections = () => {
+    const toggleRightPanel = (panel: 'reflections' | 'commentary') => {
         if (window.innerWidth < 1024) {
-            setIsReflectionsOpen(prev => !prev);
+            setActiveRightPanel(prev => prev === panel ? null : panel);
         } else {
-            const newState = !isDesktopReflectionsOpen;
-            setIsDesktopReflectionsOpen(newState);
-            localStorage.setItem('yoga-desktop-reflections', JSON.stringify(newState));
+            const newState = activeDesktopRightPanel === panel ? null : panel;
+            setActiveDesktopRightPanel(newState);
+            localStorage.setItem('yoga-desktop-right-panel', JSON.stringify(newState));
         }
     };
 
     const closeAllDrawers = () => {
         setIsSidebarOpen(false);
-        setIsReflectionsOpen(false);
+        setActiveRightPanel(null);
     };
 
     return (
@@ -70,10 +79,11 @@ export const UIProvider = ({ children }: UIProviderProps) => {
             setIsSidebarOpen,
             isDesktopSidebarOpen,
             toggleSidebar,
-            isReflectionsOpen,
-            setIsReflectionsOpen,
-            isDesktopReflectionsOpen,
-            toggleReflections,
+            activeRightPanel,
+            setActiveRightPanel,
+            activeDesktopRightPanel,
+            setActiveDesktopRightPanel,
+            toggleRightPanel,
             closeAllDrawers
         }}>
             {children}

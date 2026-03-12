@@ -61,5 +61,17 @@
     - 라이트 모드: `text-[#8B6508]` (Deep Gold/Primary Dark 계열)
     - 다크 모드: `dark:text-[#B8860B]` (시인성을 고려한 Gold Primary 계열)
 
+## Phase 8: 레이아웃 토글 제어 및 코멘터리 동적 확장
+- [x] **전역 상태 개편 (`UIContext.tsx`)**
+    - 우측 패널의 상태를 관리하기 위해 기존의 boolean 기반 상태(`isReflectionsOpen`)를 `'reflections' | 'commentary' | null` 형태의 Union 상태(`activeRightPanel`, `activeDesktopRightPanel`)로 확장 및 전환.
+- [x] **헤더(Header) 토글 버튼 배치 (`Header.tsx`, `App.tsx`)**
+    - 좌측 상단: 기존 `Menu` 버튼을 활성화(`showSidebarToggle={true}`)하여 Chapter 패널 토글 기능 연동.
+    - 우측 상단: `Edit3`(통찰 기록), `MessageSquare`(코멘터리) 아이콘 2개를 배치하여 우측 패널 모드 스위칭 연동.
+- [x] **코멘터리 패널 컴포넌트 생성 및 반영 (`CommentarySidebar.tsx`, `App.tsx`)**
+    - `Reflections.tsx`와 유사한 틀의 `CommentarySidebar.tsx` 가짜(Placeholder) 컴포넌트 생성.
+    - `App.tsx`의 `rightPanel` 영역에서 현재 활성화된 상태(`activeDesktopRightPanel`)에 따라 `Reflections` 또는 `CommentarySidebar`를 조건부 렌더링하도록 래퍼 스크립트 적용.
+- [x] **코멘터리 동적 확장 로직 구현 (`CommentarySidebar.tsx`)**
+    - Context에서 `isDesktopSidebarOpen` 값을 읽어와, **좌측 Chapter 패널이 닫혀 있을 때** 자신의 너비(`className`)를 `lg:w-[400px]`에서 `lg:w-[720px]`로 동적으로 넓히는 레이아웃 로직 구현.
+
 ---
 **주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.

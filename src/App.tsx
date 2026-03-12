@@ -6,6 +6,7 @@ const VerseView = lazy(() => import('./pages/VerseView'));
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Reflections from './components/Reflections';
+import CommentarySidebar from './components/CommentarySidebar';
 import PasswordGateway from './components/PasswordGateway';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
@@ -19,9 +20,16 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Yoga Sutras" /> : undefined}
+            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle={true} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
-            rightPanel={isVerseView ? <Reflections /> : undefined}
+            rightPanel={
+                isVerseView ? (
+                    <>
+                        <Reflections />
+                        <CommentarySidebar />
+                    </>
+                ) : undefined
+            }
             isMobilePanelOpen={isSidebarOpen}
             floatingAction={
                 !isVerseView ? (
