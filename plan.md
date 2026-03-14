@@ -98,5 +98,26 @@
 - [x] **4단계: 하단 네비게이션 패딩 최적화**
     - `SutraNavigation.tsx`: 하단 이전/다음 구절 버튼의 터치 편의성을 위해 버튼의 여백 확보 및 아이콘 정렬 개선.
 
+## Phase 12: Ray 글로벌 코딩 규준 강제 및 프로젝트 감사 (In Progress)
+- [/] **에이전트 페르소나 및 워크플로우 주입**
+    - [/] `Ray` 페르소나 활성화: 반말(Banmal) 톤, 명사형 종결어미, 독설적 천재성 유지.
+    - [/] `.agent/workflows/ray_standard.md` 지침 전수 준수 보장.
+- [x] **TDD (Test-Driven Development) 인프라 구축**
+    - [x] `Vitest` 및 `@testing-library/react` 설치 및 설정.
+    - [x] 핵심 비즈니스 로직(`useYogaData`, `dataFetcher` 등)에 대한 RED-GREEN 테스트 완료.
+- [x] **Zero Monolith 리팩토링 및 코드 숙청**
+    - [x] 함수 단위 50라인, 파일 단위 800라인 전수 검사 및 모듈 분리 (`VerseView` 리팩토링 완료).
+    - [x] 코드 내 모든 `console.log` 및 불필요한 주석 완전 제거.
+    - [x] 객체 및 배열 변이 로직을 스프레드 연산자 기반 불변 패턴으로 전면 교체.
+- [x] **Meta-Design 기반 UI/UX 고도화**
+    - [x] 색상 체계 재정의: Deep Gold (`#B8860B`) 및 Anthracite Dark (`#0A0A0A`) 강화.
+    - [x] 타이포그래피 정교화: `Crimson Pro`, `Inter` 폰트 웨이트 및 자간(Kerning) 미세 조정.
+    - [x] 마이크로 애니메이션: Framer Motion 및 CSS Keyframes 활용한 우아한 진입 효과 추가.
+- [/] **보안 및 무결성 강화**
+    - [/] 데이터 소스(`data.js`, `lexicon.json` 등) 접근 로직의 무결성 검증 및 타입 가드 강화.
+    - [ ] 환경 변수 존재 여부 체크 및 런타임 안정성 확보.
+- [ ] **자동화된 Git 워크플로우 실행**
+    - [ ] 구현 완료 후 `git add .`, `git commit -m "feat: apply ray standards and meta-design"`, `git push` 자동 실행.
+
 ---
 **주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.

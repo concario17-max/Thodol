@@ -7,6 +7,7 @@ import { SutraContent } from '../components/verse/SutraContent';
 import { AudioPlayer } from '../components/verse/AudioPlayer';
 import { TranslationSection } from '../components/verse/TranslationSection';
 import { SutraNavigation } from '../components/verse/SutraNavigation';
+import { useSutraNavigation } from '../hooks/useSutraNavigation';
 
 const VerseView = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
@@ -72,41 +73,22 @@ const VerseView = () => {
     const verseRange = getVerseRangeText(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
 
-    // Navigation handlers
-    const handlePrev = () => {
-        const currentC = parseInt(chapterNum);
-        if (currentIndex > 0) {
-            navigate(`/chapter/${currentC}/verse/${currentChapter.sutras[currentIndex - 1].id.split('.')[1]}`);
-        } else if (currentC > 1) {
-            const prevChapter = allChapters[currentC - 1];
-            if (prevChapter?.sutras.length) {
-                navigate(`/chapter/${currentC - 1}/verse/${prevChapter.sutras[prevChapter.sutras.length - 1].id.split('.')[1]}`);
-            }
-        }
-    };
-
-    const handleNext = () => {
-        const currentC = parseInt(chapterNum);
-        if (currentIndex < currentChapter.sutras.length - 1) {
-            navigate(`/chapter/${currentC}/verse/${currentChapter.sutras[currentIndex + 1].id.split('.')[1]}`);
-        } else if (currentC < Object.keys(allChapters).length) {
-            const nextChapter = allChapters[currentC + 1];
-            if (nextChapter?.sutras.length) {
-                navigate(`/chapter/${currentC + 1}/verse/${nextChapter.sutras[0].id.split('.')[1]}`);
-            }
-        }
-    };
+    const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
 
     return (
         <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-6">
-            <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6">
-                <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
+            <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6 space-y-12">
+                <div className="reveal-item" style={{ animationDelay: '0.1s' }}>
+                    <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
+                </div>
 
-                <SutraContent 
-                    sanskrit={verseData.sanskrit}
-                    pronunciation={verseData.pronunciation}
-                    pronunciationKr={verseData['4.han bal']}
-                />
+                <div className="reveal-item" style={{ animationDelay: '0.2s' }}>
+                    <SutraContent 
+                        sanskrit={verseData.sanskrit}
+                        pronunciation={verseData.pronunciation}
+                        pronunciationKr={verseData['4.han bal']}
+                    />
+                </div>
 
                 <audio
                     ref={audioRef}
@@ -117,33 +99,39 @@ const VerseView = () => {
                     className="hidden"
                 />
 
-                <AudioPlayer 
-                    isPlaying={isPlaying}
-                    togglePlay={togglePlay}
-                    currentTime={currentTime}
-                    duration={duration}
-                    progressPercent={progressPercent}
-                    formatTime={formatTime}
-                    onSeek={seek}
-                />
+                <div className="reveal-item" style={{ animationDelay: '0.3s' }}>
+                    <AudioPlayer 
+                        isPlaying={isPlaying}
+                        togglePlay={togglePlay}
+                        currentTime={currentTime}
+                        duration={duration}
+                        progressPercent={progressPercent}
+                        formatTime={formatTime}
+                        onSeek={seek}
+                    />
+                </div>
 
-                <TranslationSection 
-                    english={verseData['2.english']}
-                    korean1={verseData['3.korean-1']}
-                    baeJik={verseData['5.bae_jik']}
-                    baeUu={verseData['6.bae_uu']}
-                    oxfordKr={verseData['8. ox']}
-                    oxfordEn={verseData['9. ox-en']}
-                />
+                <div className="reveal-item" style={{ animationDelay: '0.4s' }}>
+                    <TranslationSection 
+                        english={verseData['2.english']}
+                        korean1={verseData['3.korean-1']}
+                        baeJik={verseData['5.bae_jik']}
+                        baeUu={verseData['6.bae_uu']}
+                        oxfordKr={verseData['8. ox']}
+                        oxfordEn={verseData['9. ox-en']}
+                    />
+                </div>
 
-                <SutraNavigation 
-                    chapterNum={chapterNum}
-                    verseRange={verseRange}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
-                    isPrevDisabled={parseInt(chapterNum) === 1 && currentIndex === 0}
-                    isNextDisabled={parseInt(chapterNum) === 4 && currentIndex === currentChapter.sutras.length - 1}
-                />
+                <div className="reveal-item" style={{ animationDelay: '0.5s' }}>
+                    <SutraNavigation 
+                        chapterNum={chapterNum}
+                        verseRange={verseRange}
+                        onPrev={handlePrev}
+                        onNext={handleNext}
+                        isPrevDisabled={parseInt(chapterNum) === 1 && currentIndex === 0}
+                        isNextDisabled={parseInt(chapterNum) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                    />
+                </div>
             </div>
         </div>
     );
