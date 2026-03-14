@@ -514,64 +514,64 @@ na | ca | tat | sālambanaṃ | tasyāviṣayībhūtatvāt ||
 kāya-rūpa-saṃyamāt | tad-grāhya-śakti-stambhe | cakṣuḥ-prakāśāsamprayoge’ntardhānam ||
 
 3-22
-एतेन शब्दाद्यन्तर्धानमुक्तम्
-etena | śabdādy-antardhānam | uktam ||
-
-3-23
 सोपक्रमं निरुपक्रमं च कर्म तत्संयमादपरान्तज्ञानमरिष्टेभ्यो वा
 sopakramaṃ | nirupakramaṃ | ca | karma | tat-saṃyamād | aparānta-jñānam | ariṣṭebhyo | vā ||
 
-3-24
+3-23
 मैत्र्यादिषु बलानि
 maitryādiṣu | balāni ||
 
-3-25
+3-24
 बलेषु हस्तिबलादीनि
 baleṣu | hastibalādīni ||
 
-3-26
+3-25
 प्रवृत्त्यालोकन्यासात्सूक्ष्मव्यवहितविप्रकृष्टज्ञानम्
 pravṛtty-āloka-nyāsāt | sūkṣma-vyavahita-viprakṛṣṭa-jñānam ||
 
-3-27
+3-26
 भुवनज्ञानं सूर्ये संयमात्
 bhuvana-jñānaṃ | sūrye | saṃyamāt ||
 
-3-28
+3-27
 चन्द्रे ताराव्यूहज्ञानम्
 candre | tārā-vyūha-jñānam ||
 
-3-29
+3-28
 ध्रुवे तद्गतिज्ञानम्
 dhruve | tad-gati-jñānam ||
 
-3-30
+3-29
 नाभिचक्रे कायव्यूहज्ञानम्
 nābhi-cakre | kāya-vyūha-jñānam ||
 
-3-31
+3-30
 कण्ठकूपे क्षुत्पिपासानिवृत्तिः
 kaṇṭha-kūpe | kṣut-pipāsā-nivṛttiḥ ||
 
-3-32
+3-31
 कूर्मनाड्यां स्थैर्यम्
 kūrma-nāḍyāṃ | sthairyam ||
 
-3-33
+3-32
 मूर्धज्योतिषि सिद्धदर्शनम्
 mūrdha-jyotiṣi | siddha-darśanam ||
 
-3-34
+3-33
 प्रातिभावा सर्वम्
 prātibhād | vā | sarvam ||
 
-3-35
+3-34
 हृदये चित्तसंवित्
 hṛdaye | citta-saṃvit ||
 
-3-36
+3-35
 सत्त्वपुरुषयोरत्यन्तासङ्कीर्णयोः प्रत्ययाविशेषो भोगः परार्थत्वात्स्वार्थसंयमात्पुरुषज्ञानम्
 sattva-puruṣayor | atyantāsaṅkīrṇayoḥ | pratyayāviśeṣo | bhogaḥ | parārthatvāt | svārtha-saṃyamāt | puruṣa-jñānam ||
+
+3-36
+ततः प्रातिभश्रावणवेदनादर्शास्वादवार्ता जायंते
+Tataḥ | prātibha-śrhāvaṇa-vedanādarśhāsvādavārtā | jāyante
 
 3-37
 ते समाधावुपसर्गा व्युत्थाने सिद्धयः
@@ -648,7 +648,6 @@ tārakaṃ | sarva-viṣayaṃ | sarvathāviṣayam | akramaṃ | ceti | vivekaj
 3-55
 सत्त्वपुरुषयोः शुद्धिसाम्ये कैवल्यमिति
 sattva-puruṣayoḥ | śuddhi-sāmye | kaivalyam | iti || ||
-
 
 === 제4장: Kaivalya Pāda (독존의 장) ===
 

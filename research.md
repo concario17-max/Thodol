@@ -69,3 +69,29 @@
   - `max-w-[70%]` 등 컨테이너 제한 두기.
   
 위 분석 내용에 따라 `plan.md`에 "Phase 11: 웹 및 모바일 UI/UX 최적화" 챕터를 신설하고 세부 할 일 목록을 정리합니다.
+---
+
+# 요가 UI/UX 리서치: 단어별 의미(Word-by-word) 토글 기능 복구 분석
+
+## 1. 현상 파악
+- **문제**: 과거에 존재했던 "단어 뜻 토글(Word-by-word toggle)" 기능이 현재 UI에서 제거된 상태임.
+- **영향**: 사용자가 개별 산스크리트어 단어의 상세 의미를 파악하기 위해서는 사전(Lexicon)을 별도로 열어야 하는 번거로움이 발생.
+
+## 2. 코드 및 데이터 분석
+- **데이터 소스**: `data.js` 내의 각 sutra 객체는 `word_meanings`라는 딕셔너리 형태의 데이터를 이미 보유하고 있음.
+  - 예: `{"atha": "지금 여기", "yoga": "요가, 합일..."}`
+- **타입 정의**: `src/types.ts`에 `word_meanings?: WordMeaning;` 인터페이스가 정의되어 있어 데이터 구조적 준비는 완료된 상태.
+- **삭제 원인 추정**: Phase 12의 "Zero Monolith" 리팩토링 및 Meta-Design 적용 과정에서 UI의 미니멀리즘을 위해 일시적으로 제거되었거나, 컴포넌트 분리 과정에서 누락된 것으로 판단됨.
+
+## 3. 기능 원복 및 개선 설계 (Proposed Design)
+- **컴포넌트 신설**: `src/components/verse/WordMeanings.tsx`를 생성하여 단일 책임을 부여.
+- **UI/UX 아키텍처**:
+  - **Header**: "WORD-BY-WORD" 텍스트와 Lucide-React의 `ChevronDown/Up` 아이콘 결합.
+  - **Interaction**: 클릭 시 Framer Motion 또는 CSS `grid-template-rows` 애니메이션을 이용한 부드러운 아코디언 토글 구현.
+  - **Aesthetics**: `glass-panel` 스타일을 적용하고, 단어와 뜻 사이에 Deep Gold 색상의 구분선을 배치하여 Meta-Design 무드 유지.
+- **배치**: `VerseView.tsx`에서 `SutraContent`와 `AudioPlayer` 사이에 배치하여 콘텐츠 읽기 흐름을 자연스럽게 유도.
+
+## 4. 구현 가이드라인
+- `any` 또는 `unknown` 타입 사용 금지 (Strict Typing).
+- `typecheck` 및 `test`를 통한 정합성 검증 필수.
+- 반응형 레이아웃 대응: 모바일에서는 2열 배치를 1열로 전환하여 가독성 확보.

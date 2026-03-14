@@ -98,10 +98,10 @@
 - [x] **4단계: 하단 네비게이션 패딩 최적화**
     - `SutraNavigation.tsx`: 하단 이전/다음 구절 버튼의 터치 편의성을 위해 버튼의 여백 확보 및 아이콘 정렬 개선.
 
-## Phase 12: Ray 글로벌 코딩 규준 강제 및 프로젝트 감사 (In Progress)
-- [/] **에이전트 페르소나 및 워크플로우 주입**
-    - [/] `Ray` 페르소나 활성화: 반말(Banmal) 톤, 명사형 종결어미, 독설적 천재성 유지.
-    - [/] `.agent/workflows/ray_standard.md` 지침 전수 준수 보장.
+## Phase 12: Ray 글로벌 코딩 규준 강제 및 프로젝트 감사 (Completed)
+- [x] **에이전트 페르소나 및 워크플로우 주입**
+    - [x] `Ray` 페르소나 활성화: 반말(Banmal) 톤, 명사형 종결어미, 독설적 천재성 유지.
+    - [x] `.agent/workflows/ray_standard.md` 지침 전수 준수 보장.
 - [x] **TDD (Test-Driven Development) 인프라 구축**
     - [x] `Vitest` 및 `@testing-library/react` 설치 및 설정.
     - [x] 핵심 비즈니스 로직(`useYogaData`, `dataFetcher` 등)에 대한 RED-GREEN 테스트 완료.
@@ -113,11 +113,46 @@
     - [x] 색상 체계 재정의: Deep Gold (`#B8860B`) 및 Anthracite Dark (`#0A0A0A`) 강화.
     - [x] 타이포그래피 정교화: `Crimson Pro`, `Inter` 폰트 웨이트 및 자간(Kerning) 미세 조정.
     - [x] 마이크로 애니메이션: Framer Motion 및 CSS Keyframes 활용한 우아한 진입 효과 추가.
-- [/] **보안 및 무결성 강화**
-    - [/] 데이터 소스(`data.js`, `lexicon.json` 등) 접근 로직의 무결성 검증 및 타입 가드 강화.
-    - [ ] 환경 변수 존재 여부 체크 및 런타임 안정성 확보.
-- [ ] **자동화된 Git 워크플로우 실행**
-    - [ ] 구현 완료 후 `git add .`, `git commit -m "feat: apply ray standards and meta-design"`, `git push` 자동 실행.
+- [x] **보안 및 무결성 강화**
+    - [x] 데이터 소스(`data.js`, `lexicon.json` 등) 접근 로직의 무결성 검증 및 타입 가드 강화.
+    - [x] 환경 변수 존재 여부 체크 및 런타임 안정성 확보.
+- [x] **자동화된 Git 워크플로우 실행**
+    - [x] `git add .`, `git commit`, `git push` 자동 실행 완료.
+
+## Phase 13: 1번 텍스트(산스크리트어) 데이터 동기화 및 검증 (Completed)
+- [x] **데이터 스트림 통합**
+    - [x] `1.sans.txt` 변경 사항 검토: Devanagari 및 IAST 오탈자 확인.
+    - [x] `generate_data.ps1` 실행을 통한 `data.js` (또는 `public/data.json`) 갱신.
+- [x] **데이터 정합성 및 무결성 감사**
+    - [x] `update_dictionary.js` 실행: 갱신된 산스크리트어 단어 기반 사전(lexicon) 싱크.
+    - [x] TDD 검증: `dataFetcher.test.ts`를 통한 데이터 구조 및 로드 안정성 테스트.
+- [x] **UI/UX 렌더링 정밀 검사**
+    - [x] 폰트 렌더링 확인: Devanagari 전용 폰트(Sanskrit 2003 등) 적용 상태 및 가독성 체크.
+    - [x] 애니메이션 동기화: 갱신된 데이터 길이에 따른 `Reveal` 효과 타이밍 조정.
 
 ---
-**주의**: 사용자(Ray)의 명시적인 "구현 시작" 지시가 있기 전까지는 어떠한 코드도 수정하지 않습니다.
+
+## Phase 15: 레이아웃 너비 최적화 및 시각적 정렬 통일 (Completed)
+- [x] **텍스트 컨테이너 정밀 조정**
+    - [x] `SutraContent.tsx`의 산스크리트어 및 발음 섹션에 `max-w-3xl` 레이아웃 적용.
+    - [x] `TranslationSection.tsx`와 동일한 `mx-auto` 및 `px` 값을 강제하여 수직 정렬 라인 일치화.
+- [x] **반응형 가독성 검수**
+    - [x] 모바일 환경에서 긴 산스크리트어 문장의 자동 줄바꿈(Word-break) 및 가독성 체크.
+    - [x] 데스크탑 환경에서 중앙 집중형(Center-aligned) 그리드 밸런스 확인.
+- [x] **Meta-Design 고도화**
+    - [x] 텍스트 정렬 변화에 따른 `Reveal` 애니메이션의 시각적 안정성 재검증.
+    - [x] 섹션 간 간격(Spacing)의 기하학적 비례 조정.
+
+## Phase 14: 단어 뜻(Word-by-word) 토글 기능 복구 (Completed)
+- [x] **컴포넌트 아키텍처 설계**
+    - [x] `src/components/verse/WordMeanings.tsx` 신설: 아코디언 UI 기반의 단어 뜻 렌더링.
+    - [x] `Lucide-React`의 `Chevron` 아이콘을 활용한 상태 표시.
+- [x] **시스템 통합**
+    - [x] `VerseView.tsx`에 `WordMeanings` 컴포넌트 주입 및 데이터 연동.
+    - [x] 로컬 상태(`useState`)를 통한 토글 여부 관리 및 퍼시스턴스(선택 사항) 검토.
+- [x] **디자인 세밀화 (Meta-Design)**
+    - [x] 토글 시 슬라이딩 애니메이션 적용 (`--transition-smooth` 활용).
+    - [x] 다크 모드 및 라이트 모드에서의 가독성 정밀 튜닝.
+- [x] **최종 검증 및 배포**
+    - [x] `typecheck` 실행 및 런타임 안정성 확인.
+    - [x] 브라우저 감사를 통한 애니메이션 프레임 드랍 여부 체크.

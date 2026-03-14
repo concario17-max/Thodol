@@ -7,6 +7,7 @@ import { SutraContent } from '../components/verse/SutraContent';
 import { AudioPlayer } from '../components/verse/AudioPlayer';
 import { TranslationSection } from '../components/verse/TranslationSection';
 import { SutraNavigation } from '../components/verse/SutraNavigation';
+import { WordMeanings } from '../components/verse/WordMeanings';
 import { useSutraNavigation } from '../hooks/useSutraNavigation';
 
 const VerseView = () => {
@@ -57,6 +58,15 @@ const VerseView = () => {
         reset();
     }, [chapterNum, verseNum, reset]);
 
+    // Calculate index and get navigation hook at top level to satisfy Rules of Hooks
+    const verseData = (chapterNum && verseNum) ? getVerseInRange(chapterNum, verseNum) : null;
+    const currentChapter = (allChapters && chapterNum) ? allChapters[parseInt(chapterNum)] : null;
+    const currentIndex = (currentChapter && verseData) 
+        ? currentChapter.sutras.findIndex(s => s.id === verseData.id) 
+        : -1;
+    
+    const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
+
     if (loading || !allChapters || !chapterNum || !verseNum) {
         return (
             <div className="min-h-full flex items-center justify-center bg-gold-bg dark:bg-dark-bg">
@@ -65,15 +75,10 @@ const VerseView = () => {
         );
     }
 
-    const verseData = getVerseInRange(chapterNum, verseNum);
-    if (!verseData) return null;
+    if (!verseData || !currentChapter) return null;
 
-    const currentChapter = allChapters[parseInt(chapterNum)];
-    const currentIndex = currentChapter.sutras.findIndex(s => s.id === verseData.id);
     const verseRange = getVerseRangeText(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
-
-    const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
 
     return (
         <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-6">
@@ -88,6 +93,10 @@ const VerseView = () => {
                         pronunciation={verseData.pronunciation}
                         pronunciationKr={verseData['4.han bal']}
                     />
+                </div>
+
+                <div className="reveal-item" style={{ animationDelay: '0.25s' }}>
+                    <WordMeanings meanings={verseData.word_meanings} />
                 </div>
 
                 <audio
