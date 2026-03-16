@@ -13,19 +13,17 @@ interface HeaderProps {
 }
 
 const Header = ({
-    title = "Default Title",
-    targetUrl = "/",
+    title = 'Default Title',
+    targetUrl = '/',
     showSidebarToggle = false,
     rightContent,
-    className = ""
+    className = '',
 }: HeaderProps) => {
     const { toggleSidebar, toggleRightPanel, activeDesktopRightPanel } = useUI();
 
     return (
         <header className={`sticky top-0 z-50 w-full border-b border-gold-primary/20 dark:border-dark-border/60 glass-panel transition-colors duration-500 shadow-sm ${className}`}>
-            <div className={`container mx-auto flex h-16 items-center px-4 justify-between max-w-7xl`}>
-
-                {/* Left Side: Logo / Title */}
+            <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-7xl">
                 <div className="flex items-center gap-2 sm:gap-4 tracking-[0.2em] text-text-primary dark:text-dark-text-primary min-w-0">
                     {showSidebarToggle && (
                         <button
@@ -36,17 +34,16 @@ const Header = ({
                         </button>
                     )}
                     <Link to={targetUrl} className="flex items-center gap-2 sm:gap-3 group truncate min-w-0">
-                        <span className="text-2xl font-serif text-gold-primary leading-none opacity-90 group-hover:rotate-90 transition-transform duration-700 shrink-0">֍</span>
+                        <span className="text-2xl font-serif text-gold-primary leading-none opacity-90 group-hover:rotate-90 transition-transform duration-700 shrink-0">ॐ</span>
                         <span className="font-bold text-[15px] sm:text-base tracking-[0.15em] transition-colors font-crimson uppercase truncate mt-0.5 group-hover:text-gold-primary">
                             {title}
                         </span>
                     </Link>
                 </div>
 
-                {/* Right Side: Dynamic Content & Theme Toggle */}
                 <div className="flex items-center gap-2 sm:gap-3">
                     {rightContent}
-                    
+
                     {showSidebarToggle && (
                         <div className="flex items-center gap-1 bg-gold-bg dark:bg-dark-surface p-1 rounded-full border border-gold-primary/10">
                             <button
@@ -65,7 +62,7 @@ const Header = ({
                             </button>
                         </div>
                     )}
-                    
+
                     <ThemeToggle className="ml-1 sm:ml-2" />
                 </div>
             </div>

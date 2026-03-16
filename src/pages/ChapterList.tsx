@@ -13,11 +13,16 @@ const ReflectionsModal = lazy(() => import('../components/ReflectionsModal'));
 
 const getChapterIcon = (chapter: number) => {
     switch (chapter) {
-        case 1: return <Target className="w-5 h-5" />;
-        case 2: return <Zap className="w-5 h-5" />;
-        case 3: return <Sparkles className="w-5 h-5" />;
-        case 4: return <Cloud className="w-5 h-5" />;
-        default: return <span className="text-xl font-serif">֍</span>;
+        case 1:
+            return <Target className="w-5 h-5" />;
+        case 2:
+            return <Zap className="w-5 h-5" />;
+        case 3:
+            return <Sparkles className="w-5 h-5" />;
+        case 4:
+            return <Cloud className="w-5 h-5" />;
+        default:
+            return <span className="text-xl font-serif">ॐ</span>;
     }
 };
 
@@ -27,9 +32,9 @@ const containerVariants: Variants = {
         opacity: 1,
         transition: {
             staggerChildren: 0.1,
-            delayChildren: 0.2
-        }
-    }
+            delayChildren: 0.2,
+        },
+    },
 };
 
 const itemVariants: Variants = {
@@ -39,9 +44,9 @@ const itemVariants: Variants = {
         opacity: 1,
         transition: {
             duration: 0.8,
-            ease: "easeOut"
-        }
-    }
+            ease: 'easeOut',
+        },
+    },
 };
 
 const ChapterList = () => {
@@ -50,16 +55,14 @@ const ChapterList = () => {
     const [isCompendiumOpen, setIsCompendiumOpen] = useState<boolean>(false);
     const [isLexiconOpen, setIsLexiconOpen] = useState<boolean>(false);
     const [isReflectionsOpen, setIsReflectionsOpen] = useState<boolean>(false);
-
     const [selectedChapter, setSelectedChapter] = useState<string>('');
     const [selectedVerse, setSelectedVerse] = useState<string>('');
 
     useEffect(() => {
         fetchYogaData()
-            .then(data => {
+            .then((data) => {
                 if (data && typeof data === 'object') {
-                    const chapterArray = Object.values(data) as YogaChapter[];
-                    setChapters(chapterArray);
+                    setChapters(Object.values(data) as YogaChapter[]);
                 }
             })
             .catch(() => {});
@@ -67,14 +70,14 @@ const ChapterList = () => {
 
     return (
         <div className="container mx-auto max-w-6xl px-4 py-6 md:py-8 transition-colors duration-500">
-            <motion.div 
+            <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
                 className="text-center mb-8 md:mb-10 flex flex-col items-center"
             >
                 <motion.div variants={itemVariants} className="w-10 h-10 flex items-center justify-center rounded-full bg-gold-surface/50 dark:bg-dark-surface border border-gold-border dark:border-dark-border mb-4">
-                    <span className="text-xl font-serif leading-none opacity-80 text-gold-primary">֍</span>
+                    <span className="text-xl font-serif leading-none opacity-80 text-gold-primary">ॐ</span>
                 </motion.div>
                 <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-[53px] tracking-[0.25em] font-display text-text-primary dark:text-dark-text-primary mb-4 drop-shadow-sm font-light">
                     YOGA SUTRAS
@@ -108,7 +111,7 @@ const ChapterList = () => {
 
                 <motion.div variants={itemVariants} className="flex items-center justify-center w-full max-w-md mx-auto mb-10 opacity-40">
                     <div className="flex-1 h-px bg-gold-border"></div>
-                    <div className="mx-4 text-gold-primary text-lg font-serif leading-none">❦</div>
+                    <div className="mx-4 text-gold-primary text-lg font-serif leading-none">•</div>
                     <div className="flex-1 h-px bg-gold-border"></div>
                 </motion.div>
 
@@ -119,14 +122,15 @@ const ChapterList = () => {
                             className="text-sm font-display font-medium text-text-primary bg-transparent outline-none w-full cursor-pointer appearance-none dark:text-dark-text-primary transition-colors focus:text-gold-primary"
                             value={selectedChapter}
                             onChange={(e) => {
-                                const ch = e.target.value;
-                                setSelectedChapter(ch);
-                                setSelectedVerse(''); // Reset verse when chapter changes
+                                setSelectedChapter(e.target.value);
+                                setSelectedVerse('');
                             }}
                         >
                             <option value="">Select Chapter</option>
-                            {chapters.map(ch => (
-                                <option key={ch.chapter} value={ch.chapter} className="text-base">Chapter {ch.chapter}</option>
+                            {chapters.map((chapter) => (
+                                <option key={chapter.chapter} value={chapter.chapter} className="text-base">
+                                    Chapter {chapter.chapter}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -138,54 +142,53 @@ const ChapterList = () => {
                             value={selectedVerse}
                             disabled={!selectedChapter}
                             onChange={(e) => {
-                                const v = e.target.value;
-                                setSelectedVerse(v);
-                                if (selectedChapter && v) {
-                                    navigate(`/chapter/${selectedChapter}/verse/${v}`);
+                                const verse = e.target.value;
+                                setSelectedVerse(verse);
+                                if (selectedChapter && verse) {
+                                    navigate(`/chapter/${selectedChapter}/verse/${verse}`);
                                 }
                             }}
                         >
-                            <option value="">{selectedChapter ? "Select Sutra" : "Select Chapter First"}</option>
-                            {selectedChapter && chapters.find(c => c.chapter === parseInt(selectedChapter))?.sutras.map(s => {
-                                const sNum = s.id.split('.')[1];
-                                return (
-                                    <option key={s.id} value={sNum} className="text-base">Sutra {sNum}</option>
-                                );
-                            })}
+                            <option value="">{selectedChapter ? 'Select Sutra' : 'Select Chapter First'}</option>
+                            {selectedChapter &&
+                                chapters
+                                    .find((chapter) => chapter.chapter === parseInt(selectedChapter))
+                                    ?.sutras.map((sutra) => {
+                                        const sutraNum = sutra.id.split('.')[1];
+                                        return (
+                                            <option key={sutra.id} value={sutraNum} className="text-base">
+                                                Sutra {sutraNum}
+                                            </option>
+                                        );
+                                    })}
                         </select>
                     </div>
                 </motion.div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto px-4 relative z-10 pb-12"
             >
-                {chapters.map((ch) => {
-                    const chapterInfo = YOGA_CHAPTERS_META[ch.chapter];
+                {chapters.map((chapter) => {
+                    const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
                     return (
-                        <motion.div key={ch.chapter} variants={itemVariants}>
+                        <motion.div key={chapter.chapter} variants={itemVariants}>
                             <GlassCard
-                                href={`/chapter/${ch.chapter}/verse/1`}
-                                icon={getChapterIcon(ch.chapter)}
-                                subtitle={`CHAPTER ${ch.chapter}`}
+                                href={`/chapter/${chapter.chapter}/verse/1`}
+                                icon={getChapterIcon(chapter.chapter)}
+                                subtitle={`CHAPTER ${chapter.chapter}`}
                                 title={
-                                    (() => {
-                                        const title = chapterInfo?.name_english || ch.meta?.name_english || "";
-                                        const titleKr = chapterInfo?.name_korean || ch.meta?.name_korean || "";
-                                        return (
-                                            <>
-                                                <span className="text-xl md:text-2xl font-crimson">{title}</span>
-                                                <span className="text-sm text-text-secondary dark:text-dark-text-secondary font-noto-kr font-medium mt-1">
-                                                    {titleKr}
-                                                </span>
-                                            </>
-                                        );
-                                    })()
+                                    <>
+                                        <span className="text-xl md:text-2xl font-crimson">{chapterInfo?.name_english || chapter.meta?.name_english || ''}</span>
+                                        <span className="text-sm text-text-secondary dark:text-dark-text-secondary font-noto-kr font-medium mt-1">
+                                            {chapterInfo?.name_korean || chapter.meta?.name_korean || ''}
+                                        </span>
+                                    </>
                                 }
-                                description={chapterInfo?.description || "Read sutras of this part."}
+                                description={chapterInfo?.description || 'Read sutras of this part.'}
                             />
                         </motion.div>
                     );
@@ -193,24 +196,9 @@ const ChapterList = () => {
             </motion.div>
 
             <Suspense fallback={null}>
-                {isCompendiumOpen && (
-                    <CompendiumModal
-                        isOpen={isCompendiumOpen}
-                        onClose={() => setIsCompendiumOpen(false)}
-                    />
-                )}
-                {isLexiconOpen && (
-                    <LexiconModal
-                        isOpen={isLexiconOpen}
-                        onClose={() => setIsLexiconOpen(false)}
-                    />
-                )}
-                {isReflectionsOpen && (
-                    <ReflectionsModal
-                        isOpen={isReflectionsOpen}
-                        onClose={() => setIsReflectionsOpen(false)}
-                    />
-                )}
+                {isCompendiumOpen && <CompendiumModal isOpen={isCompendiumOpen} onClose={() => setIsCompendiumOpen(false)} />}
+                {isLexiconOpen && <LexiconModal isOpen={isLexiconOpen} onClose={() => setIsLexiconOpen(false)} />}
+                {isReflectionsOpen && <ReflectionsModal isOpen={isReflectionsOpen} onClose={() => setIsReflectionsOpen(false)} />}
             </Suspense>
         </div>
     );

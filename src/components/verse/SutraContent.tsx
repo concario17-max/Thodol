@@ -7,11 +7,15 @@ interface SutraContentProps {
 export const SutraContent = ({
     sanskrit,
     pronunciation,
-    pronunciationKr
+    pronunciationKr,
 }: SutraContentProps) => {
-    // 발음 기호 정제 로직
+    // Clean pronunciation markers while keeping readable spacing.
     const cleanPronunciation = pronunciation?.replace(/\|+/g, '').replace(/\s+/g, ' ').trim();
-    const cleanPronunciationKr = pronunciationKr?.replace(/-/g, '').replace(/｜/g, ' ').replace(/\s+/g, ' ').trim();
+    const cleanPronunciationKr = pronunciationKr
+        ?.replace(/[｜|]/g, ' ')
+        .replace(/-/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
     return (
         <>
