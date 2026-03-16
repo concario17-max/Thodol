@@ -36,12 +36,12 @@ export const SidebarLayout = React.memo(({
         <>
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden transition-opacity duration-300 opacity-100 touch-none"
+                    className="fixed inset-x-0 bottom-0 top-16 z-40 bg-black/50 backdrop-blur-sm opacity-100 transition-opacity duration-300 touch-none lg:hidden"
                     onClick={onClose}
                 />
             )}
 
-            <aside className={`fixed inset-y-0 ${placementClass} z-50 bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md ${borderClass} border-gold-primary/20 dark:border-dark-border/50 h-[100dvh] lg:h-[calc(100vh-64px)] lg:sticky lg:top-16 transform transition-all duration-300 flex flex-col font-pretendard overscroll-contain
+            <aside className={`fixed bottom-0 top-16 ${placementClass} z-50 bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md ${borderClass} border-gold-primary/20 dark:border-dark-border/50 h-[calc(100dvh-64px)] lg:h-[calc(100vh-64px)] lg:sticky lg:top-16 transform transition-all duration-300 flex flex-col font-pretendard overscroll-contain
                 ${isOpen ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none` : `w-[90vw] ${desktopWidthClass} ${translateClosed} lg:translate-x-0`}
                 ${isDesktopOpen ? `${desktopWidthClass} lg:opacity-100` : `lg:w-0 lg:opacity-0 lg:border-none p-0 px-0 overflow-hidden`}
             `}>

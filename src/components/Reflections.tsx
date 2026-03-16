@@ -74,13 +74,13 @@ const Reflections = () => {
         <>
             {isReflectionsOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden"
+                    className="fixed inset-x-0 bottom-0 top-16 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden"
                     onClick={() => setActiveRightPanel(null)}
                 />
             )}
 
             <aside
-                className={`fixed inset-y-0 right-0 z-50 flex flex-col border-l border-gold-primary/20 bg-white/40 font-inter backdrop-blur-md transition-all duration-300 dark:border-dark-border/50 dark:bg-dark-surface/40 sm:w-[400px] lg:sticky lg:top-16 lg:h-[calc(100vh-64px)]
+                className={`fixed bottom-0 right-0 top-16 z-50 flex h-[calc(100dvh-64px)] flex-col border-l border-gold-primary/20 bg-white/40 font-inter backdrop-blur-md transition-all duration-300 dark:border-dark-border/50 dark:bg-dark-surface/40 sm:w-[400px] lg:sticky lg:top-16 lg:h-[calc(100vh-64px)]
                 ${isReflectionsOpen ? 'w-[90vw] translate-x-0 overflow-hidden shadow-2xl lg:shadow-none' : 'w-[90vw] translate-x-full lg:translate-x-0'}
                 ${isDesktopReflectionsOpen ? 'lg:w-[400px] lg:opacity-100' : 'lg:w-0 lg:translate-x-10 lg:border-none lg:opacity-0 overflow-hidden px-0'}`}
             >

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode, Dispatch, SetStateAction } from 'react';
 
 export type RightPanelType = 'reflections' | 'commentary' | null;
 
@@ -7,14 +7,11 @@ interface UIContextType {
     setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
     isDesktopSidebarOpen: boolean;
     toggleSidebar: () => void;
-    
-    // Union status for right panel
     activeRightPanel: RightPanelType;
     setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     activeDesktopRightPanel: RightPanelType;
     setActiveDesktopRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     toggleRightPanel: (panel: 'reflections' | 'commentary') => void;
-    
     closeAllDrawers: () => void;
 }
 
@@ -28,7 +25,6 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
-    // Desktop Panel States
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             const saved = localStorage.getItem('yoga-desktop-sidebar');
@@ -40,52 +36,67 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     const [activeDesktopRightPanel, setActiveDesktopRightPanel] = useState<RightPanelType>(() => {
         if (typeof window !== 'undefined') {
             const saved = localStorage.getItem('yoga-desktop-right-panel');
-            // If stored as boolean previously, convert it
             if (saved === 'true') return 'reflections';
             if (saved === 'false') return null;
-            return saved !== null ? JSON.parse(saved) as RightPanelType : 'reflections';
+            return saved !== null ? (JSON.parse(saved) as RightPanelType) : null;
         }
-        return 'reflections';
+        return null;
     });
 
-    const toggleSidebar = () => {
-        if (window.innerWidth < 1024) {
-            setIsSidebarOpen(prev => !prev);
-        } else {
-            const newState = !isDesktopSidebarOpen;
-            setIsDesktopSidebarOpen(newState);
-            localStorage.setItem('yoga-desktop-sidebar', JSON.stringify(newState));
-        }
-    };
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setIsSidebarOpen(false);
+                setActiveRightPanel(null);
+            }
+        };
 
-    const toggleRightPanel = (panel: 'reflections' | 'commentary') => {
-        if (window.innerWidth < 1024) {
-            setActiveRightPanel(prev => prev === panel ? null : panel);
-        } else {
-            const newState = activeDesktopRightPanel === panel ? null : panel;
-            setActiveDesktopRightPanel(newState);
-            localStorage.setItem('yoga-desktop-right-panel', JSON.stringify(newState));
-        }
-    };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-    const closeAllDrawers = () => {
+    const toggleSidebar = useCallback(() => {
+        if (window.innerWidth < 1024) {
+            setIsSidebarOpen((prev) => !prev);
+            return;
+        }
+
+        const newState = !isDesktopSidebarOpen;
+        setIsDesktopSidebarOpen(newState);
+        localStorage.setItem('yoga-desktop-sidebar', JSON.stringify(newState));
+    }, [isDesktopSidebarOpen]);
+
+    const toggleRightPanel = useCallback((panel: 'reflections' | 'commentary') => {
+        if (window.innerWidth < 1024) {
+            setActiveRightPanel((prev) => (prev === panel ? null : panel));
+            return;
+        }
+
+        const newState = activeDesktopRightPanel === panel ? null : panel;
+        setActiveDesktopRightPanel(newState);
+        localStorage.setItem('yoga-desktop-right-panel', JSON.stringify(newState));
+    }, [activeDesktopRightPanel]);
+
+    const closeAllDrawers = useCallback(() => {
         setIsSidebarOpen(false);
         setActiveRightPanel(null);
-    };
+    }, []);
 
     return (
-        <UIContext.Provider value={{
-            isSidebarOpen,
-            setIsSidebarOpen,
-            isDesktopSidebarOpen,
-            toggleSidebar,
-            activeRightPanel,
-            setActiveRightPanel,
-            activeDesktopRightPanel,
-            setActiveDesktopRightPanel,
-            toggleRightPanel,
-            closeAllDrawers
-        }}>
+        <UIContext.Provider
+            value={{
+                isSidebarOpen,
+                setIsSidebarOpen,
+                isDesktopSidebarOpen,
+                toggleSidebar,
+                activeRightPanel,
+                setActiveRightPanel,
+                activeDesktopRightPanel,
+                setActiveDesktopRightPanel,
+                toggleRightPanel,
+                closeAllDrawers,
+            }}
+        >
             {children}
         </UIContext.Provider>
     );
