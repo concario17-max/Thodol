@@ -19,13 +19,18 @@ function Normalize-Text {
     return $clean -replace '[hmsr]$', ''
 }
 
+# Backup existing data.js
+if (Test-Path $dataFilePath) {
+    Copy-Item $dataFilePath "$dataFilePath.bak" -Force
+}
+
 # 1. Parse 7.dan.txt to get expected order
 Write-Host "Reading 7.dan.txt..."
 $lines = Get-Content $danFilePath -Encoding UTF8
-$sutraOrderMap = @{} # Key: "1.1", Value: [List of normalized words]
+$sutraOrderMap = [ordered]@{} # Key: "1.1", Value: [List of normalized words]
 
 $currentId = $null
-$currentWords = @()
+$currentWords = New-Object System.Collections.Generic.List[string]
 
 foreach ($line in $lines) {
     $trimmed = $line.Trim()
@@ -34,11 +39,11 @@ foreach ($line in $lines) {
     if ($trimmed -match "^(\d+)-(\d+)$") {
         # Save previous
         if ($currentId -and $currentWords.Count -gt 0) {
-            $sutraOrderMap[$currentId] = $currentWords
+            $sutraOrderMap[$currentId] = $currentWords.ToArray()
         }
         # Start new
-        $currentId = "$($matches[1]).$($matches[2])" # 1-1 -> 1.1
-        $currentWords = @()
+        $currentId = "$($Matches[1]).$($Matches[2])" # 1-1 -> 1.1
+        $currentWords.Clear()
     }
     elseif ($currentId) {
         # Line format: "word meaning..."
@@ -46,17 +51,16 @@ foreach ($line in $lines) {
         $firstSpace = $trimmed.IndexOf(' ')
         if ($firstSpace -gt 0) {
             $word = $trimmed.Substring(0, $firstSpace)
-            $currentWords += (Normalize-Text $word)
+            $currentWords.Add((Normalize-Text $word))
         }
         elseif ($firstSpace -eq -1) {
-            # Maybe just a word on the line?
-            $currentWords += (Normalize-Text $trimmed)
+            $currentWords.Add((Normalize-Text $trimmed))
         }
     }
 }
 # Save last one
 if ($currentId -and $currentWords.Count -gt 0) {
-    $sutraOrderMap[$currentId] = $currentWords
+    $sutraOrderMap[$currentId] = $currentWords.ToArray()
 }
 
 # 2. Update data.js

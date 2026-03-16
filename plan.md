@@ -156,15 +156,15 @@
 - [x] **최종 배포 및 자동 커밋**
     - [x] `feat: fix word-by-word mapping by filtering symbols and splitting compound words` 메시지로 커밋 및 푸시.
 
-## Phase 22: 단어 해석(Word-by-word) 정렬 순서 복구
-- [ ] **`generate_data.ps1` 내 데이터 구조 순서화 ([ordered] 도입)**
-    - [ ] `sutraData` 전역 맵 초기화 시 `[ordered]@ {}` 적용.
-    - [ ] `word_meanings` 객체 초기화 시 `[ordered]@ {}` 적용하여 `7.dan.txt`의 출현 순서 강제 보존.
-- [ ] **데이터 재생성 및 구조 검증**
-    - [ ] `generate_data.ps1` 실행하여 `data.js` 갱신.
-    - [ ] `data.js` 내 JSON 객체의 키 순서가 `7.dan.txt`와 100% 일치하는지 실물 검수.
-- [ ] **최종 배포 및 자동 커밋**
-    - [ ] `feat: preserve word-by-word meaning order using ordered hashtables` 메시지로 커밋 및 푸시.
+## Phase 22: 단어 해석(Word-by-word) 정렬 순서 복구 (Completed)
+- [x] **`generate_data.ps1` 내 데이터 구조 순서화 ([ordered] 도입)**
+    - [x] `sutraData` 전역 맵 초기화 시 `[ordered]@{}` 적용 (구문 교정 및 멈춤 현상 해결).
+    - [x] `word_meanings` 객체 초기화 시 `[ordered]@{}` 적용하여 `7.dan.txt`의 출현 순서 강제 보존.
+- [x] **데이터 재생성 및 구조 검증**
+    - [x] `generate_data.ps1` 실행하여 `data.js` 갱신 (Stale Variable 버그 수정 완료).
+    - [x] `data.js` 내 JSON 객체의 키 순서가 `7.dan.txt`와 100% 일치하는지 실물 검수.
+- [x] **최종 배포 및 자동 커밋**
+    - [x] `feat: fix powershell script bug and ensure ordered word meanings` 메시지로 커밋 및 푸시.
 
 ## Phase 23: 단어 해석 순서 보장 및 데이터 런타임 정규화 (Ray Standard) (Completed)
 - [x] **데이터 소스 교체 및 정규화 구현 (`dataFetcher.ts`)**
@@ -206,3 +206,20 @@
 - [x] **최종 검증 및 배포**
     - [x] `typecheck` 실행 및 런타임 안정성 확인.
     - [x] 브라우저 감사를 통한 애니메이션 프레임 드랍 여부 체크.
+
+## Phase 24: Premium Web & Mobile UX Optimization (Ray Standard)
+- [ ] **Typography 및 Spacing 정교화 (Fluid Design System)**
+    - [ ] CSS `clamp()`를 활용한 가변 타이포그래피 구현 (데스크탑/모바일 자동 스케일링 효율화).
+    - [ ] 섹션 간 여백 및 가독성 비례(Geometric Proportion) 재조정.
+- [ ] **인터랙션 및 마이크로 애니메이션 강화 (Framer Motion)**
+    - [ ] `ChapterList` 및 `WordMeanings` 리스트 아이템에 Stagger 애니메이션 적용.
+    - [ ] 구절 이동 시 부드러운 레이아웃 전환(`AnimatePresence`) 도입 검토.
+- [ ] **모바일 사용성 전고도화 (Advanced Mobile UX)**
+    - [ ] modern notch devices 대응을 위해 `env(safe-area-inset-bottom)` 기반 하단 내비게이션/버튼 여백 보정.
+    - [ ] 오디오 플레이어 터치 감도 및 슬라이더 조작성 향상 (Touch-target 최소 44px 확보).
+- [ ] **시각적 감성 및 디테일 정제 (Aesthetic Polish)**
+    - [ ] Glassmorphism 효과의 투명도 및 블러 강도 최적화.
+    - [ ] 다크 모드/라이트 모드 전환 시 색상 전이(Transition)의 우아함 극대화.
+- [ ] **성능 최적화 및 접근성 검증 (Performance & Accessibility)**
+    - [ ] 불필요한 리렌더링 방지를 위한 `memo` 및 `useCallback` 전수 재검사.
+    - [ ] 시각 장애인을 위한 시맨틱 마크업 및 WAI-ARIA 속성 보완.

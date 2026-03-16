@@ -2,15 +2,20 @@
 # encoding set to UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
+# Backup existing 1.sans.txt
+if (Test-Path "1.sans.txt") {
+    Copy-Item "1.sans.txt" "1.sans.txt.bak" -Force
+}
+
 # 1. Parse 7.dan.txt to get key words for each sutra
-$sutraWords = @{}
+$sutraWords = [ordered]@{}
 $lines = Get-Content "7.dan.txt" -Encoding UTF8
 $currentId = $null
 
 foreach ($line in $lines) {
     if ($line -match "^(\d+)-(\d+)$") {
         $currentId = "$($Matches[1]).$($Matches[2])"
-        $sutraWords[$currentId] = @()
+        $sutraWords[$currentId] = New-Object System.Collections.Generic.List[string]
         continue
     }
     if ($currentId -ne $null -and $line.Trim().Length -gt 0) {
@@ -18,7 +23,7 @@ foreach ($line in $lines) {
         $word = $parts[0]
         # Ignore korean lines if any
         if ($word -notmatch "[\uAC00-\uD7A3]") { 
-            $sutraWords[$currentId] += $word
+            $sutraWords[$currentId].Add($word)
         }
     }
 }

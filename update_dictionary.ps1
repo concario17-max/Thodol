@@ -4,10 +4,15 @@ $dataFilePath = Join-Path $PSScriptRoot "data.js"
 $danFilePath = Join-Path $PSScriptRoot "7.dan.txt"
 $sansFilePath = Join-Path $PSScriptRoot "1.sans.txt"
 
+# Backup existing data.js
+if (Test-Path $dataFilePath) {
+    Copy-Item $dataFilePath "$dataFilePath.bak" -Force
+}
+
 function Parse-DanFile {
     param ($filePath)
     $lines = Get-Content $filePath -Encoding UTF8
-    $data = @{}
+    $data = [ordered]@{}
     $currentId = $null
 
     foreach ($line in $lines) {
@@ -16,7 +21,7 @@ function Parse-DanFile {
 
         if ($trimmedLine -match "^\d+-\d+$") {
             $currentId = $trimmedLine -replace '-', '.'
-            $data[$currentId] = @{}
+            $data[$currentId] = [ordered]@{}
         }
         elseif ($currentId) {
             $firstSpaceIndex = $trimmedLine.IndexOf(' ')
@@ -35,7 +40,7 @@ function Parse-DanFile {
 function Parse-SansFile {
     param ($filePath)
     $lines = Get-Content $filePath -Encoding UTF8
-    $data = @{}
+    $data = [ordered]@{}
     $currentId = $null
     $state = 0 # 0: find ID, 1: find Sanskrit, 2: find Pronunciation
 
@@ -46,7 +51,7 @@ function Parse-SansFile {
 
         if ($trimmedLine -match "^\d+-\d+$") {
             $currentId = $trimmedLine -replace '-', '.'
-            $data[$currentId] = @{ sanskrit = ""; pronunciation = "" }
+            $data[$currentId] = [ordered]@{ sanskrit = ""; pronunciation = "" }
             $state = 1
         }
         elseif ($currentId -and $state -eq 1) {

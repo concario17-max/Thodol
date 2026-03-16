@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dataFilePath = path.join(__dirname, 'data.js');
-const mp3DirPath = path.join(__dirname, 'mp3');
+const mp3DirPath = path.join(__dirname, 'public', 'mp3');
 
 // 1. Read data.js and extract sutras array safely
 const fileContent = fs.readFileSync(dataFilePath, 'utf8');
