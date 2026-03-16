@@ -24,29 +24,38 @@ const ReflectionsModal = ({ isOpen, onClose }: ReflectionsModalProps) => {
         fetchYogaData()
             .then((data) => {
                 if (!data) return;
-                const noteKeys = Object.keys(localStorage).filter(key => key.startsWith('yoga-note-'));
+
+                const noteKeys = Object.keys(localStorage).filter((key) => key.startsWith('yoga-note-'));
 
                 noteKeys.sort((a, b) => {
                     const [, , chA, vA] = a.split('-');
                     const [, , chB, vB] = b.split('-');
-                    if (parseInt(chA) !== parseInt(chB)) return parseInt(chA) - parseInt(chB);
-                    return parseInt(vA) - parseInt(vB);
+                    if (parseInt(chA, 10) !== parseInt(chB, 10)) return parseInt(chA, 10) - parseInt(chB, 10);
+                    return parseInt(vA, 10) - parseInt(vB, 10);
                 });
 
                 const loadedNotes: ReflectionNote[] = [];
 
-                noteKeys.forEach(key => {
+                noteKeys.forEach((key) => {
                     const [, , ch, v] = key.split('-');
                     const content = localStorage.getItem(key);
 
                     if (content && content.trim()) {
-                        let sanskritText = "";
-                        const chapterData = data[parseInt(ch)];
-                        if (chapterData && chapterData.sutras) {
-                            const sutraData = chapterData.sutras.find(s => s.id.split('.')[1] === v);
-                            if (sutraData && sutraData.sanskrit) {
-                                sanskritText = sutraData.sanskrit.split('\n')[1] || sutraData.sanskrit.split('।')[0] + '।';
-                                if (!sanskritText.trim()) sanskritText = sutraData.sanskrit.substring(0, 50) + "...";
+                        let sanskritText = '';
+                        const chapterData = data[parseInt(ch, 10)];
+
+                        if (chapterData?.sutras) {
+                            const sutraData = chapterData.sutras.find((sutra) => sutra.id.split('.')[1] === v);
+                            if (sutraData?.sanskrit) {
+                                const lines = sutraData.sanskrit
+                                    .split('\n')
+                                    .map((line) => line.trim())
+                                    .filter(Boolean);
+
+                                sanskritText = lines[1] || lines[0] || '';
+                                if (!sanskritText.trim()) {
+                                    sanskritText = `${sutraData.sanskrit.substring(0, 50)}...`;
+                                }
                             }
                         }
 
@@ -55,43 +64,35 @@ const ReflectionsModal = ({ isOpen, onClose }: ReflectionsModalProps) => {
                             chapter: ch,
                             verse: v,
                             sanskrit: sanskritText.trim(),
-                            content: content.trim()
+                            content: content.trim(),
                         });
                     }
                 });
 
                 setNotesData(loadedNotes);
             })
-            .catch(err => console.error("Failed to load yoga data for reflections:", err));
-
+            .catch((err) => console.error('Failed to load yoga data for reflections:', err));
     }, [isOpen]);
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-opacity duration-300 font-serif">
-            {/* Modal Container */}
-            <div className="relative w-full max-w-3xl bg-[#FDFBF7] dark:bg-dark-surface border border-gold-border rounded-lg shadow-2xl flex flex-col max-h-[90vh]">
-
-                {/* Header */}
-                <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gold-border/30">
-                    <h2 className="text-2xl sm:text-3xl text-[#A68B5C] tracking-wide font-medium">
-                        My Reflections
-                    </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 font-serif backdrop-blur-sm transition-opacity duration-300">
+            <div className="relative flex max-h-[90vh] w-full max-w-3xl flex-col rounded-lg border border-gold-border bg-[#FDFBF7] shadow-2xl dark:bg-dark-surface">
+                <div className="flex items-center justify-between border-b border-gold-border/30 p-4 sm:p-6">
+                    <h2 className="text-2xl font-medium tracking-wide text-[#A68B5C] sm:text-3xl">My Reflections</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 -mr-2 text-[#A68B5C] hover:bg-gold-surface dark:hover:bg-dark-bg rounded-full transition-colors"
+                        className="-mr-2 rounded-full p-2 text-[#A68B5C] transition-colors hover:bg-gold-surface dark:hover:bg-dark-bg"
                         aria-label="Close"
                     >
-                        <X className="w-5 h-5" />
+                        <X className="h-5 w-5" />
                     </button>
                 </div>
 
-                {/* Content Body */}
-                <div className="flex-1 overflow-y-auto px-4 sm:px-8 pt-6 pb-10 custom-scrollbar scroll-smooth">
-
+                <div className="custom-scrollbar flex-1 overflow-y-auto px-4 pb-10 pt-6 scroll-smooth sm:px-8">
                     {notesData.length === 0 ? (
-                        <div className="text-center py-12 text-[#A68B5C]/60 italic">
+                        <div className="py-12 text-center italic text-[#A68B5C]/60">
                             No reflections saved yet. Read a sutra and save your thoughts.
                         </div>
                     ) : (
@@ -99,17 +100,17 @@ const ReflectionsModal = ({ isOpen, onClose }: ReflectionsModalProps) => {
                             {notesData.map((note) => (
                                 <div
                                     key={note.id}
-                                    className="bg-white dark:bg-[#1C1C1E] border border-[#E5E0D8] dark:border-[#333] rounded-md p-5 sm:p-6 shadow-sm flex flex-col"
+                                    className="flex flex-col rounded-md border border-[#E5E0D8] bg-white p-5 shadow-sm dark:border-[#333] dark:bg-[#1C1C1E] sm:p-6"
                                 >
-                                    <div className="flex flex-wrap items-baseline gap-3 mb-4 pb-4 border-b border-[#E5E0D8]/40 dark:border-[#333]/50">
-                                        <span className="px-2 py-1 bg-[#F5EFE6] dark:bg-[#2C2C2E] text-[#A68B5C] dark:text-[#D4AF37] text-[10px] sm:text-[11px] font-bold tracking-[0.15em] uppercase rounded-sm whitespace-nowrap">
+                                    <div className="mb-4 flex flex-wrap items-baseline gap-3 border-b border-[#E5E0D8]/40 pb-4 dark:border-[#333]/50">
+                                        <span className="whitespace-nowrap rounded-sm bg-[#F5EFE6] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-[#A68B5C] dark:bg-[#2C2C2E] dark:text-[#D4AF37] sm:text-[11px]">
                                             SUTRA {note.chapter}.{note.verse}
                                         </span>
-                                        <span className="font-noto text-[#A68B5C] dark:text-[#EAE5D9] text-[15px] sm:text-base tracking-wide leading-snug drop-shadow-sm">
+                                        <span className="font-noto text-[15px] leading-snug tracking-wide text-[#A68B5C] drop-shadow-sm dark:text-[#EAE5D9] sm:text-base">
                                             {note.sanskrit}
                                         </span>
                                     </div>
-                                    <div className="text-[#5B7282] dark:text-[#A0AEC0] font-noto-kr text-[14px] sm:text-[15px] leading-relaxed whitespace-pre-wrap break-keep">
+                                    <div className="font-noto-kr text-[14px] leading-relaxed text-[#5B7282] whitespace-pre-wrap break-keep dark:text-[#A0AEC0] sm:text-[15px]">
                                         {note.content}
                                     </div>
                                 </div>

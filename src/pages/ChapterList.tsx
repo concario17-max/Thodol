@@ -1,11 +1,11 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Variants, motion } from 'framer-motion';
+import { Target, Zap, Sparkles, Cloud } from 'lucide-react';
 import { YOGA_CHAPTERS_META } from '../constants';
 import { fetchYogaData } from '../utils/dataFetcher';
 import { YogaChapter } from '../types';
 import { GlassCard } from '../components/ui/GlassCard';
-import { Variants, motion } from 'framer-motion';
-import { Target, Zap, Sparkles, Cloud } from 'lucide-react';
 
 const CompendiumModal = lazy(() => import('../components/CompendiumModal'));
 const LexiconModal = lazy(() => import('../components/LexiconModal'));
@@ -14,15 +14,15 @@ const ReflectionsModal = lazy(() => import('../components/ReflectionsModal'));
 const getChapterIcon = (chapter: number) => {
     switch (chapter) {
         case 1:
-            return <Target className="w-5 h-5" />;
+            return <Target className="h-5 w-5" />;
         case 2:
-            return <Zap className="w-5 h-5" />;
+            return <Zap className="h-5 w-5" />;
         case 3:
-            return <Sparkles className="w-5 h-5" />;
+            return <Sparkles className="h-5 w-5" />;
         case 4:
-            return <Cloud className="w-5 h-5" />;
+            return <Cloud className="h-5 w-5" />;
         default:
-            return <span className="text-xl font-serif">ॐ</span>;
+            return <span className="font-serif text-xl">ॐ</span>;
     }
 };
 
@@ -69,57 +69,72 @@ const ChapterList = () => {
     }, []);
 
     return (
-        <div className="container mx-auto max-w-6xl px-4 py-6 md:py-8 transition-colors duration-500">
+        <div className="container mx-auto max-w-6xl px-4 py-6 transition-colors duration-500 md:py-8">
             <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="text-center mb-8 md:mb-10 flex flex-col items-center"
+                className="mb-8 flex flex-col items-center text-center md:mb-10"
             >
-                <motion.div variants={itemVariants} className="w-10 h-10 flex items-center justify-center rounded-full bg-gold-surface/50 dark:bg-dark-surface border border-gold-border dark:border-dark-border mb-4">
-                    <span className="text-xl font-serif leading-none opacity-80 text-gold-primary">ॐ</span>
+                <motion.div
+                    variants={itemVariants}
+                    className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-gold-border bg-gold-surface/50 dark:border-dark-border dark:bg-dark-surface"
+                >
+                    <span className="font-serif text-xl leading-none text-gold-primary opacity-80">ॐ</span>
                 </motion.div>
-                <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-[53px] tracking-[0.25em] font-display text-text-primary dark:text-dark-text-primary mb-4 drop-shadow-sm font-light">
+                <motion.h1
+                    variants={itemVariants}
+                    className="mb-4 font-display text-4xl font-light tracking-[0.25em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-5xl md:text-[53px]"
+                >
                     YOGA SUTRAS
                 </motion.h1>
-                <motion.p variants={itemVariants} className="text-sm md:text-base text-gold-primary dark:text-gold-light italic font-display tracking-widest mb-12">
+                <motion.p
+                    variants={itemVariants}
+                    className="mb-12 font-display text-sm italic tracking-widest text-gold-primary dark:text-gold-light md:text-base"
+                >
                     The Light of Yoga
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="flex items-center gap-1 sm:gap-6 text-[11px] font-display tracking-[0.2em] text-text-secondary uppercase mb-8 flex-wrap justify-center">
+                <motion.div
+                    variants={itemVariants}
+                    className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-display uppercase tracking-[0.2em] text-text-secondary sm:gap-6"
+                >
                     <span
                         onClick={() => setIsCompendiumOpen(true)}
-                        className="hover:text-gold-primary cursor-pointer transition-colors px-3 py-2 bg-transparent hover:bg-gold-surface/30 rounded-full active:scale-95"
+                        className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95"
                     >
                         Compendium
                     </span>
-                    <div className="w-1 h-1 rotate-45 bg-gold-border/50"></div>
+                    <div className="h-1 w-1 rotate-45 bg-gold-border/50" />
                     <span
                         onClick={() => setIsLexiconOpen(true)}
-                        className="hover:text-gold-primary cursor-pointer transition-colors px-3 py-2 bg-transparent hover:bg-gold-surface/30 rounded-full active:scale-95"
+                        className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95"
                     >
                         Lexicon
                     </span>
-                    <div className="w-1 h-1 rotate-45 bg-gold-border/50 hidden sm:block"></div>
+                    <div className="hidden h-1 w-1 rotate-45 bg-gold-border/50 sm:block" />
                     <span
                         onClick={() => setIsReflectionsOpen(true)}
-                        className="hover:text-gold-primary cursor-pointer transition-colors px-3 py-2 bg-transparent hover:bg-gold-surface/30 rounded-full active:scale-95"
+                        className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95"
                     >
                         Commentaries
                     </span>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="flex items-center justify-center w-full max-w-md mx-auto mb-10 opacity-40">
-                    <div className="flex-1 h-px bg-gold-border"></div>
-                    <div className="mx-4 text-gold-primary text-lg font-serif leading-none">•</div>
-                    <div className="flex-1 h-px bg-gold-border"></div>
+                <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-md items-center justify-center opacity-40">
+                    <div className="h-px flex-1 bg-gold-border" />
+                    <div className="mx-4 font-serif text-lg leading-none text-gold-primary">•</div>
+                    <div className="h-px flex-1 bg-gold-border" />
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="bg-white/80 dark:bg-dark-surface/80 backdrop-blur-md border border-gold-border/40 rounded-2xl shadow-xl shadow-gold-primary/5 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] p-2.5 sm:p-3 mb-5 relative z-10 w-full max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
-                    <div className="flex-1 w-full flex flex-col items-start px-2 sm:px-4 border-b sm:border-b-0 sm:border-r border-gold-border/30 pb-2 sm:pb-0">
-                        <span className="text-[9px] font-black text-gold-primary tracking-[0.2em] uppercase mb-0.5 drop-shadow-sm">CHAPTER</span>
+                <motion.div
+                    variants={itemVariants}
+                    className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3"
+                >
+                    <div className="flex w-full flex-1 flex-col items-start border-b border-gold-border/30 px-2 pb-2 sm:border-b-0 sm:border-r sm:px-4 sm:pb-0">
+                        <span className="mb-0.5 text-[9px] font-black uppercase tracking-[0.2em] text-gold-primary drop-shadow-sm">Chapter</span>
                         <select
-                            className="text-sm font-display font-medium text-text-primary bg-transparent outline-none w-full cursor-pointer appearance-none dark:text-dark-text-primary transition-colors focus:text-gold-primary"
+                            className="w-full appearance-none bg-transparent font-display text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary dark:text-dark-text-primary"
                             value={selectedChapter}
                             onChange={(e) => {
                                 setSelectedChapter(e.target.value);
@@ -135,10 +150,10 @@ const ChapterList = () => {
                         </select>
                     </div>
 
-                    <div className="flex-1 w-full flex flex-col items-start px-2 sm:px-6 pt-0.5 sm:pt-0">
-                        <span className="text-[9px] font-black text-gold-primary tracking-[0.2em] uppercase mb-0.5 drop-shadow-sm">VERSE</span>
+                    <div className="flex w-full flex-1 flex-col items-start px-2 pt-0.5 sm:px-6 sm:pt-0">
+                        <span className="mb-0.5 text-[9px] font-black uppercase tracking-[0.2em] text-gold-primary drop-shadow-sm">Verse</span>
                         <select
-                            className="text-sm font-display font-medium text-text-primary bg-transparent outline-none w-full cursor-pointer appearance-none dark:text-dark-text-primary transition-colors focus:text-gold-primary disabled:opacity-50"
+                            className="w-full appearance-none bg-transparent font-display text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary disabled:opacity-50 dark:text-dark-text-primary"
                             value={selectedVerse}
                             disabled={!selectedChapter}
                             onChange={(e) => {
@@ -152,7 +167,7 @@ const ChapterList = () => {
                             <option value="">{selectedChapter ? 'Select Sutra' : 'Select Chapter First'}</option>
                             {selectedChapter &&
                                 chapters
-                                    .find((chapter) => chapter.chapter === parseInt(selectedChapter))
+                                    .find((chapter) => chapter.chapter === parseInt(selectedChapter, 10))
                                     ?.sutras.map((sutra) => {
                                         const sutraNum = sutra.id.split('.')[1];
                                         return (
@@ -170,10 +185,11 @@ const ChapterList = () => {
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto px-4 relative z-10 pb-12"
+                className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
             >
                 {chapters.map((chapter) => {
                     const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
+
                     return (
                         <motion.div key={chapter.chapter} variants={itemVariants}>
                             <GlassCard
@@ -182,8 +198,10 @@ const ChapterList = () => {
                                 subtitle={`CHAPTER ${chapter.chapter}`}
                                 title={
                                     <>
-                                        <span className="text-xl md:text-2xl font-crimson">{chapterInfo?.name_english || chapter.meta?.name_english || ''}</span>
-                                        <span className="text-sm text-text-secondary dark:text-dark-text-secondary font-noto-kr font-medium mt-1">
+                                        <span className="font-crimson text-xl md:text-2xl">
+                                            {chapterInfo?.name_english || chapter.meta?.name_english || ''}
+                                        </span>
+                                        <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">
                                             {chapterInfo?.name_korean || chapter.meta?.name_korean || ''}
                                         </span>
                                     </>

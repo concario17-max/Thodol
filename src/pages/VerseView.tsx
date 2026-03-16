@@ -72,7 +72,7 @@ const VerseView = () => {
         const verseData = getVerseInRange(chapterNum, verseNum);
         if (verseData) {
             const actualNum = parseInt(verseData.id.split('.')[1], 10);
-            if (actualNum !== parseInt(verseNum)) {
+            if (actualNum !== parseInt(verseNum, 10)) {
                 navigate(`/chapter/${chapterNum}/verse/${actualNum}`, { replace: true });
             }
         }
@@ -89,7 +89,7 @@ const VerseView = () => {
 
     // Calculate index and get navigation hook at top level to satisfy Rules of Hooks
     const verseData = (chapterNum && verseNum) ? getVerseInRange(chapterNum, verseNum) : null;
-    const currentChapter = (allChapters && chapterNum) ? allChapters[parseInt(chapterNum)] : null;
+    const currentChapter = (allChapters && chapterNum) ? allChapters[parseInt(chapterNum, 10)] : null;
     const currentIndex = (currentChapter && verseData) 
         ? currentChapter.sutras.findIndex(s => s.id === verseData.id) 
         : -1;
@@ -174,8 +174,8 @@ const VerseView = () => {
                             verseRange={verseRange}
                             onPrev={handlePrev}
                             onNext={handleNext}
-                            isPrevDisabled={parseInt(chapterNum) === 1 && currentIndex === 0}
-                            isNextDisabled={parseInt(chapterNum) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                            isPrevDisabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
+                            isNextDisabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
                         />
                     </motion.div>
                 </div>

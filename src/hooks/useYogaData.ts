@@ -19,10 +19,10 @@ export const useYogaData = () => {
 
     const getVerseInRange = useCallback((chapterNum: string, verseNum: string): YogaSutra | null => {
         if (!allChapters) return null;
-        const chapter = allChapters[parseInt(chapterNum)];
+        const chapter = allChapters[parseInt(chapterNum, 10)];
         if (!chapter) return null;
 
-        const targetVerseNum = parseInt(verseNum);
+        const targetVerseNum = parseInt(verseNum, 10);
         const verseIndex = chapter.sutras.findIndex((s, i, arr) => {
             const sutraNum = parseInt(s.id.split('.')[1], 10);
             const nextS = arr[i + 1];

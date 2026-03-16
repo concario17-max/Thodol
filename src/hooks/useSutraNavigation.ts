@@ -10,7 +10,7 @@ export const useSutraNavigation = (
 
   const handlePrev = () => {
     if (!allChapters || !chapterNum) return;
-    const currentC = parseInt(chapterNum);
+    const currentC = parseInt(chapterNum, 10);
     const currentChapter = allChapters[currentC];
 
     if (currentIndex > 0) {
@@ -25,7 +25,7 @@ export const useSutraNavigation = (
 
   const handleNext = () => {
     if (!allChapters || !chapterNum) return;
-    const currentC = parseInt(chapterNum);
+    const currentC = parseInt(chapterNum, 10);
     const currentChapter = allChapters[currentC];
 
     if (currentIndex < currentChapter.sutras.length - 1) {
