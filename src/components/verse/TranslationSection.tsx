@@ -22,16 +22,16 @@ export const TranslationSection = ({
             </div>
             
             {/* Alice A. Bailey Section */}
-            <div className="mb-12">
-                <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-pretendard">앨리스 A. 베일리</h2>
-                <div className="space-y-6 max-w-3xl mx-auto px-4 sm:px-6">
+            <div className="mb-[var(--spacing-fluid-lg)]">
+                <h2 className="mb-[var(--spacing-fluid-sm)] text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-pretendard opacity-80">앨리스 A. 베일리</h2>
+                <div className="space-y-[var(--spacing-fluid-sm)] max-w-3xl mx-auto px-4 sm:px-6">
                     {english && (
-                        <p className="text-[15px] sm:text-base lg:text-lg leading-[1.8] sm:leading-loose text-text-primary dark:text-dark-text-primary font-sans text-center whitespace-pre-line break-keep">
+                        <p className="text-[var(--font-size-base)] lg:text-[var(--font-size-lg)] leading-relaxed text-text-primary dark:text-dark-text-primary font-sans text-center whitespace-pre-line break-keep">
                             {english}
                         </p>
                     )}
                     {korean1 && (
-                        <p className="font-sans text-[15px] sm:text-base lg:text-lg leading-[1.8] sm:leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                        <p className="font-sans text-[var(--font-size-base)] lg:text-[var(--font-size-lg)] leading-relaxed text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep font-medium">
                             {korean1}
                         </p>
                     )}
@@ -44,16 +44,16 @@ export const TranslationSection = ({
 
             {/* Nicholas Sutton Section */}
             {(oxfordKr || oxfordEn) && (
-                <div className="mb-12">
-                    <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-pretendard">니콜라스 서튼</h2>
-                    <div className="space-y-6 max-w-3xl mx-auto px-4 sm:px-6">
+                <div className="mb-[var(--spacing-fluid-lg)]">
+                    <h2 className="mb-[var(--spacing-fluid-sm)] text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-pretendard opacity-80">니콜라스 서튼</h2>
+                    <div className="space-y-[var(--spacing-fluid-sm)] max-w-3xl mx-auto px-4 sm:px-6">
                         {oxfordEn && (
-                            <p className="font-sans text-[15px] sm:text-base lg:text-lg leading-[1.8] sm:leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                            <p className="font-sans text-[var(--font-size-base)] lg:text-[var(--font-size-lg)] leading-relaxed text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
                                 {oxfordEn}
                             </p>
                         )}
                         {oxfordKr && (
-                            <p className="font-sans text-[15px] sm:text-base lg:text-lg leading-[1.8] sm:leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                            <p className="font-sans text-[var(--font-size-base)] lg:text-[var(--font-size-lg)] leading-relaxed text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep font-medium">
                                 {oxfordKr}
                             </p>
                         )}
@@ -67,21 +67,21 @@ export const TranslationSection = ({
 
             {/* Bae Chul-hyun Section */}
             {(baeJik || baeUu) && (
-                <div className="mb-12">
-                    <h2 className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-pretendard">배철현</h2>
-                    <div className="space-y-8 max-w-3xl mx-auto px-4 sm:px-6">
+                <div className="mb-[var(--spacing-fluid-lg)]">
+                    <h2 className="mb-[var(--spacing-fluid-sm)] text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light text-center font-pretendard opacity-80">배철현</h2>
+                    <div className="space-y-[var(--spacing-fluid-md)] max-w-3xl mx-auto px-4 sm:px-6">
                         {baeJik && (
                             <div>
-                                <h3 className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">직역</h3>
-                                <p className="font-sans text-[15px] sm:text-base lg:text-lg leading-[1.8] sm:leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                                <h3 className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-1.5 opacity-70">직역</h3>
+                                <p className="font-sans text-[var(--font-size-base)] lg:text-[var(--font-size-lg)] leading-relaxed text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep font-medium">
                                     {baeJik}
                                 </p>
                             </div>
                         )}
                         {baeUu && (
                             <div>
-                                <h3 className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-2">의역</h3>
-                                <p className="font-sans text-[15px] sm:text-base lg:text-lg leading-[1.8] sm:leading-loose text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep">
+                                <h3 className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted dark:text-gold-muted text-center mb-1.5 opacity-70">의역</h3>
+                                <p className="font-sans text-[var(--font-size-base)] lg:text-[var(--font-size-lg)] leading-relaxed text-text-primary dark:text-dark-text-primary text-center whitespace-pre-line break-keep font-medium">
                                     {baeUu}
                                 </p>
                             </div>

@@ -22,7 +22,7 @@ const Header = ({
     const { toggleSidebar, toggleRightPanel, activeDesktopRightPanel } = useUI();
 
     return (
-        <header className={`sticky top-0 z-50 w-full border-b border-gold-primary/20 dark:border-dark-border/60 bg-white/60 dark:bg-[#070707]/60 backdrop-blur-xl transition-colors duration-500 shadow-sm ${className}`}>
+        <header className={`sticky top-0 z-50 w-full border-b border-gold-primary/20 dark:border-dark-border/60 glass-panel transition-colors duration-500 shadow-sm ${className}`}>
             <div className={`container mx-auto flex h-16 items-center px-4 justify-between max-w-7xl`}>
 
                 {/* Left Side: Logo / Title */}

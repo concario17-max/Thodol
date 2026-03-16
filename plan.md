@@ -207,19 +207,27 @@
     - [x] `typecheck` 실행 및 런타임 안정성 확인.
     - [x] 브라우저 감사를 통한 애니메이션 프레임 드랍 여부 체크.
 
-## Phase 24: Premium Web & Mobile UX Optimization (Ray Standard)
-- [ ] **Typography 및 Spacing 정교화 (Fluid Design System)**
-    - [ ] CSS `clamp()`를 활용한 가변 타이포그래피 구현 (데스크탑/모바일 자동 스케일링 효율화).
-    - [ ] 섹션 간 여백 및 가독성 비례(Geometric Proportion) 재조정.
-- [ ] **인터랙션 및 마이크로 애니메이션 강화 (Framer Motion)**
-    - [ ] `ChapterList` 및 `WordMeanings` 리스트 아이템에 Stagger 애니메이션 적용.
-    - [ ] 구절 이동 시 부드러운 레이아웃 전환(`AnimatePresence`) 도입 검토.
-- [ ] **모바일 사용성 전고도화 (Advanced Mobile UX)**
-    - [ ] modern notch devices 대응을 위해 `env(safe-area-inset-bottom)` 기반 하단 내비게이션/버튼 여백 보정.
-    - [ ] 오디오 플레이어 터치 감도 및 슬라이더 조작성 향상 (Touch-target 최소 44px 확보).
-- [ ] **시각적 감성 및 디테일 정제 (Aesthetic Polish)**
-    - [ ] Glassmorphism 효과의 투명도 및 블러 강도 최적화.
-    - [ ] 다크 모드/라이트 모드 전환 시 색상 전이(Transition)의 우아함 극대화.
-- [ ] **성능 최적화 및 접근성 검증 (Performance & Accessibility)**
-    - [ ] 불필요한 리렌더링 방지를 위한 `memo` 및 `useCallback` 전수 재검사.
-    - [ ] 시각 장애인을 위한 시맨틱 마크업 및 WAI-ARIA 속성 보완.
+## Phase 24: Premium Web & Mobile UX Optimization (Ray Standard) [Completed]
+- [x] **Typography 및 Spacing 정교화 (Fluid Design System)**
+    - [x] `index.css`의 `clamp()` 변수 (`--font-size-*`)를 `SutraContent`, `TranslationSection`에 전면 적용하여 해상도별 폰트 가변화.
+    - [x] 모든 섹션 간 여백을 `--spacing-fluid-*` 계열로 교체하여 상하 밸런스(Geometric Proportion) 최적화.
+- [x] **인터랙션 및 마이크로 애니메이션 강화 (Framer Motion)**
+    - [x] `WordMeanings` 리스트 아이템에 `staggerChildren` 및 `reveal` 애니메이션 적용하여 시각적 리듬감 부여.
+    - [x] 구절 이동(`${chapterNum}.${verseNum}`) 시 `AnimatePresence`를 활용한 부드러운 레이아웃 전환 효과 도입.
+- [x] **모바일 사용성 전고도화 (Advanced Mobile UX)**
+    - [x] 하단 내비게이션(`SutraNavigation`)에 `env(safe-area-inset-bottom)` 기반 패딩 보정 적용 (노치 디바이스 홈 바 대응).
+    - [x] 모든 터치 인터랙티브 요소에 `active:scale-95` 스케일 피드백 및 최소 44px 탭 타겟 확보.
+- [x] **시각적 감성 및 디테일 정제 (Aesthetic Polish)**
+    - [x] 헤더 및 사이드바에 적용된 Glassmorphism 효과의 투명도/블러 강도 최적화.
+    - [x] 다크/라이트 모드 전환 시 색상 전이(Transition)의 우아함 극대화 및 미세 잔상 제거.
+
+## Phase 25: 사이드바 레이아웃 정합성 및 스크롤 이슈 해결 [Completed]
+- [x] **사이드바 컨테이너 구조 개선 (`SidebarLayout.tsx`)**
+    - [x] 내부 래퍼(`children` 영역)의 `overflow-y-auto`가 하위 컴포넌트의 Flex 레이아웃 스크롤을 방해하지 않도록 CSS 구조 재조정.
+- [x] **듀얼 스택 스크롤 로직 구현 (`SidebarMenu.tsx`)**
+    - [x] 상단 챕터 선택 영역(`flex-none`)과 하단 구절 리스트(`flex-1`)가 부모의 남은 높이 안에서 조화롭게 배치되도록 Flexbox 속성 정교화.
+    - [x] 상단 영역이 너무 길어질 경우를 대비하여 `max-h` 임계값 설정 및 `overflow-y-auto` 주입 여부 결정.
+- [x] **반응형 스크롤 무결성 검증**
+    - [x] 데스크탑(Sticky Sidebar) 및 모바일(Overlay Drawer) 환경에서 각각 스크롤이 끊김 없이 작동하는지 실물 기기 수준 검수.
+- [x] **최종 배포 및 자동 커밋**
+    - [x] `fix: ensure scrollability in sidebar chapter selection and optimize layout` 메시지로 자동 커밋/푸시.

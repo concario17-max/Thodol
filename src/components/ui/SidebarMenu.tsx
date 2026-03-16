@@ -1,5 +1,23 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { motion, Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+    visible: {
+        transition: {
+            staggerChildren: 0.05
+        }
+    }
+};
+
+const itemVariants: Variants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { 
+        opacity: 1, 
+        x: 0,
+        transition: { duration: 0.4, ease: "easeOut" }
+    }
+};
 
 export interface NavItemType {
     id: string;
@@ -33,7 +51,12 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
     return (
         <>
             {/* Top Half: Groups (Chapters) - Compact fixed height to show 1-4 */}
-            <div className="flex-none border-b border-gold-border/20 dark:border-[#222] custom-scrollbar min-h-0 overscroll-contain">
+            <motion.div 
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+                className="flex-none max-h-[40%] overflow-y-auto border-b border-gold-border/20 dark:border-[#222] custom-scrollbar overscroll-contain"
+            >
                 {groupTitle && (
                     <div className="p-4 bg-transparent sticky top-0 z-10 backdrop-blur-sm hidden lg:block">
                         <h2 className="text-xs font-bold text-text-primary/70 dark:text-dark-text-primary/70">
@@ -44,10 +67,11 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
 
                 <div className="py-1 px-2 space-y-0.5">
                     {groups.map((group) => (
-                        <button
+                        <motion.button
+                            variants={itemVariants}
                             key={group.id}
                             onClick={group.onToggle}
-                            className={`w-full flex items-start justify-between gap-1.5 px-2 py-1.5 sm:px-1.5 sm:py-1 rounded-lg text-left transition-colors ${group.isExpanded
+                            className={`w-full flex items-start justify-between gap-1.5 px-2 py-1.5 sm:px-1.5 sm:py-1 rounded-lg text-left transition-colors active:scale-[0.98] ${group.isExpanded
                                     ? 'bg-white/60 dark:bg-dark-bg/60 shadow-sm border border-gold-primary/20 text-[#1C2B36] dark:text-gold-light'
                                     : 'text-[#5B7282] dark:text-dark-text-secondary hover:bg-gold-surface/40 dark:hover:bg-dark-bg/40 border border-transparent'
                                 }`}
@@ -67,10 +91,10 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                     {group.badge}
                                 </span>
                             )}
-                        </button>
+                        </motion.button>
                     ))}
                 </div>
-            </div>
+            </motion.div>
 
             {/* Bottom Half: Items */}
             <div className="flex-1 overflow-y-auto bg-transparent custom-scrollbar overscroll-contain">

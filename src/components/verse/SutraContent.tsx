@@ -15,21 +15,21 @@ export const SutraContent = ({
 
     return (
         <>
-            <section className="mb-4 text-center px-4 sm:px-6 max-w-3xl mx-auto">
-                <p className="font-serif text-[#8B6508] dark:text-[#B8860B] text-lg sm:text-2xl md:text-[28px] leading-relaxed whitespace-pre-line tracking-wide font-bold drop-shadow-sm">
+            <section className="mb-[var(--spacing-fluid-sm)] text-center px-4 sm:px-6 max-w-3xl mx-auto">
+                <p className="font-serif text-[#8B6508] dark:text-[#B8860B] text-[var(--font-size-2xl)] md:text-[var(--font-size-3xl)] leading-relaxed whitespace-pre-line tracking-wide font-bold drop-shadow-sm">
                     {sanskrit}
                 </p>
             </section>
 
-            <section className="mb-2 text-center flex flex-col items-center px-4 sm:px-6 max-w-3xl mx-auto">
-                <p className="font-serif italic text-[#B0A084] dark:text-[#D4C3A3] text-xs sm:text-[14px] leading-relaxed whitespace-pre-line tracking-[0.15em] uppercase mb-1 drop-shadow-sm">
+            <section className="mb-[var(--spacing-fluid-sm)] text-center flex flex-col items-center px-4 sm:px-6 max-w-3xl mx-auto">
+                <p className="font-serif italic text-[#B0A084] dark:text-[#D4C3A3] text-[var(--font-size-xs)] sm:text-[var(--font-size-sm)] leading-relaxed whitespace-pre-line tracking-[0.15em] uppercase mb-1 drop-shadow-sm">
                     {cleanPronunciation}
                 </p>
             </section>
 
             {cleanPronunciationKr && (
-                <section className="mb-8 text-center px-4 sm:px-6 max-w-3xl mx-auto">
-                    <p className="font-serif-kr italic text-[#B0A084] dark:text-[#D4C3A3] text-xs sm:text-[14px] leading-loose whitespace-pre-line tracking-[0.15em] drop-shadow-sm">
+                <section className="mb-[var(--spacing-fluid-md)] text-center px-4 sm:px-6 max-w-3xl mx-auto">
+                    <p className="font-serif-kr italic text-[#B0A084] dark:text-[#D4C3A3] text-[var(--font-size-xs)] sm:text-[var(--font-size-sm)] leading-loose whitespace-pre-line tracking-[0.15em] drop-shadow-sm">
                         {cleanPronunciationKr}
                     </p>
                 </section>
