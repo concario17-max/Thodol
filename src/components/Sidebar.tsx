@@ -16,10 +16,9 @@ const Sidebar = () => {
 
     useEffect(() => {
         fetchYogaData()
-            .then(data => {
+            .then((data) => {
                 if (data && typeof data === 'object') {
-                    const chapterArray = Object.values(data) as unknown as YogaChapter[];
-                    setChapters(chapterArray);
+                    setChapters(Object.values(data) as YogaChapter[]);
                 }
             })
             .catch(() => {});
@@ -27,7 +26,7 @@ const Sidebar = () => {
 
     useEffect(() => {
         if (chapterNum) {
-            setExpandedChapter(parseInt(chapterNum));
+            setExpandedChapter(parseInt(chapterNum, 10));
         }
     }, [chapterNum]);
 
@@ -36,57 +35,52 @@ const Sidebar = () => {
         navigate(`/chapter/${chNum}/verse/1`);
     };
 
-    const currentChapter = chapters.find(ch => ch.chapter === expandedChapter);
+    const currentChapter = chapters.find((chapter) => chapter.chapter === expandedChapter);
 
-    // 라우팅 데이터를 범용 NavGroups 포맷으로 변환 (Zero Monolith Logic Extraction)
-    const groups: NavGroupType[] = chapters.map(ch => {
-        const titleRaw = YOGA_CHAPTERS_META[ch.chapter]?.name_korean || ch.meta?.name_korean || "";
-        const hasSub = titleRaw.includes('(');
-        const mainTitle = hasSub ? titleRaw.substring(0, titleRaw.indexOf('(')).trim() : titleRaw;
-        const subTitle = hasSub ? titleRaw.substring(titleRaw.indexOf('(')).trim() : undefined;
+    const groups: NavGroupType[] = chapters.map((chapter) => {
+        const titleRaw = YOGA_CHAPTERS_META[chapter.chapter]?.name_korean || chapter.meta?.name_korean || '';
+        const hasSubTitle = titleRaw.includes('(');
+        const mainTitle = hasSubTitle ? titleRaw.substring(0, titleRaw.indexOf('(')).trim() : titleRaw;
+        const subTitle = hasSubTitle ? titleRaw.substring(titleRaw.indexOf('(')).trim() : undefined;
+        const isExpanded = expandedChapter === chapter.chapter;
 
-        const isExpanded = expandedChapter === ch.chapter;
-
-        // items are dynamically built if the chapter is expanded, to save processing, 
-        // or we build everything. Building what is current chapter is fine.
         let items: NavItemType[] = [];
         if (isExpanded && currentChapter) {
-            items = currentChapter.sutras.map((s, idx) => {
-                const parts = s.id.split('.');
-                const sutraNumText = parts[1];
+            items = currentChapter.sutras.map((sutra, index) => {
+                const sutraNumText = sutra.id.split('.')[1];
                 const sutraNum = parseInt(sutraNumText, 10);
+                const nextSutra = currentChapter.sutras[index + 1];
 
-                const nextS = currentChapter.sutras[idx + 1];
-                let displaySutra = `${ch.chapter}.${sutraNumText}`;
-
-                if (nextS) {
-                    const nextSutraNum = parseInt(nextS.id.split('.')[1], 10);
+                let displaySutra = `${chapter.chapter}.${sutraNumText}`;
+                if (nextSutra) {
+                    const nextSutraNum = parseInt(nextSutra.id.split('.')[1], 10);
                     if (nextSutraNum > sutraNum + 1) {
-                        displaySutra = `${ch.chapter}.${sutraNum}-${nextSutraNum - 1}`;
+                        displaySutra = `${chapter.chapter}.${sutraNum}-${nextSutraNum - 1}`;
                     }
                 }
 
-                const sutraText = s.sanskrit ? s.sanskrit.split('\n')[0].substring(0, 40) + '...' : `Sutra ${sutraNumText}`;
-                const isActive = ch.chapter === parseInt(chapterNum || '1') && sutraNumText === verseNum;
+                const preview = sutra.sanskrit
+                    ? `${sutra.sanskrit.split('\n')[0].substring(0, 40)}...`
+                    : `Sutra ${sutraNumText}`;
 
                 return {
                     id: String(sutraNum),
                     label: displaySutra,
-                    href: `/chapter/${ch.chapter}/verse/${sutraNumText}`,
-                    description: sutraText,
-                    isActive
+                    href: `/chapter/${chapter.chapter}/verse/${sutraNumText}`,
+                    description: preview,
+                    isActive: chapter.chapter === parseInt(chapterNum || '1', 10) && sutraNumText === verseNum,
                 };
             });
         }
 
         return {
-            id: ch.chapter,
-            title: `${ch.chapter}. ${mainTitle}`,
+            id: chapter.chapter,
+            title: `${chapter.chapter}. ${mainTitle}`,
             subtitle: subTitle,
-            badge: ch.sutras.length,
+            badge: chapter.sutras.length,
             isExpanded,
-            onToggle: () => toggleChapter(ch.chapter),
-            items
+            onToggle: () => toggleChapter(chapter.chapter),
+            items,
         };
     });
 
@@ -95,7 +89,7 @@ const Sidebar = () => {
             isOpen={isSidebarOpen}
             isDesktopOpen={isDesktopSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
-            title="장 (Chapter)"
+            title="챕터"
             position="left"
             widthClass="w-80"
             desktopWidthClass="lg:w-80"
@@ -103,7 +97,7 @@ const Sidebar = () => {
             <SidebarMenu
                 groups={groups}
                 onItemClick={() => setIsSidebarOpen(false)}
-                groupTitle="장 (Chapter)"
+                groupTitle="Chapters"
             />
         </SidebarLayout>
     );
