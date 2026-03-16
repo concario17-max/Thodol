@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Edit3, MessageSquare } from 'lucide-react';
+import { Menu, Edit3, MessageSquare, PanelRightOpen } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
 
@@ -12,6 +12,39 @@ interface HeaderProps {
     className?: string;
 }
 
+interface PanelToggleButtonProps {
+    icon: ReactNode;
+    label: string;
+    isActive: boolean;
+    onClick: () => void;
+    title: string;
+}
+
+const PanelToggleButton = ({ icon, label, isActive, onClick, title }: PanelToggleButtonProps) => (
+    <button
+        type="button"
+        onClick={onClick}
+        title={title}
+        aria-pressed={isActive}
+        className={`group inline-flex h-10 items-center gap-2 rounded-full border px-3.5 text-[12px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${
+            isActive
+                ? 'border-gold-primary bg-gold-primary text-white shadow-[0_10px_30px_-16px_rgba(166,139,92,0.95)]'
+                : 'border-gold-primary/20 bg-white/75 text-[#6F6759] hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-dark-text-secondary dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80'
+        }`}
+    >
+        <span
+            className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${
+                isActive
+                    ? 'border-white/25 bg-white/12 text-white'
+                    : 'border-[#D8C8AE] bg-white/85 text-[#76684E] group-hover:border-gold-primary/40 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/80 dark:text-gold-light'
+            }`}
+        >
+            {icon}
+        </span>
+        <span className="leading-none">{label}</span>
+    </button>
+);
+
 const Header = ({
     title = 'Default Title',
     targetUrl = '/',
@@ -19,23 +52,38 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, toggleRightPanel, activeDesktopRightPanel } = useUI();
+    const {
+        toggleSidebar,
+        toggleRightPanel,
+        activeRightPanel,
+        activeDesktopRightPanel,
+    } = useUI();
+
+    const isReflectionsActive = activeRightPanel === 'reflections' || activeDesktopRightPanel === 'reflections';
+    const isCommentaryActive = activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary';
 
     return (
-        <header className={`sticky top-0 z-50 w-full border-b border-gold-primary/20 dark:border-dark-border/60 glass-panel transition-colors duration-500 shadow-sm ${className}`}>
-            <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-7xl">
-                <div className="flex items-center gap-2 sm:gap-4 tracking-[0.2em] text-text-primary dark:text-dark-text-primary min-w-0">
+        <header
+            className={`sticky top-0 z-50 w-full border-b border-gold-primary/20 shadow-sm glass-panel transition-colors duration-500 dark:border-dark-border/60 ${className}`}
+        >
+            <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+                <div className="min-w-0 flex items-center gap-2 text-text-primary dark:text-dark-text-primary sm:gap-4">
                     {showSidebarToggle && (
                         <button
+                            type="button"
                             onClick={toggleSidebar}
-                            className="p-1.5 sm:p-2 -ml-2 rounded-xl hover:bg-gold-surface/50 dark:hover:bg-dark-surface/50 text-gold-primary dark:text-gold-light transition-all duration-300 shrink-0"
+                            className="shrink-0 rounded-xl p-1.5 text-gold-primary transition-all duration-300 hover:bg-gold-surface/50 dark:text-gold-light dark:hover:bg-dark-surface/50 sm:p-2"
+                            title="챕터 목록 열기"
                         >
-                            <Menu className="w-5 h-5" />
+                            <Menu className="h-5 w-5" />
                         </button>
                     )}
-                    <Link to={targetUrl} className="flex items-center gap-2 sm:gap-3 group truncate min-w-0">
-                        <span className="text-2xl font-serif text-gold-primary leading-none opacity-90 group-hover:rotate-90 transition-transform duration-700 shrink-0">ॐ</span>
-                        <span className="font-bold text-[15px] sm:text-base tracking-[0.15em] transition-colors font-crimson uppercase truncate mt-0.5 group-hover:text-gold-primary">
+
+                    <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate sm:gap-3">
+                        <span className="shrink-0 font-serif text-2xl leading-none text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-90">
+                            ॐ
+                        </span>
+                        <span className="mt-0.5 truncate font-crimson text-[15px] font-bold uppercase tracking-[0.15em] transition-colors group-hover:text-gold-primary sm:text-base">
                             {title}
                         </span>
                     </Link>
@@ -45,22 +93,33 @@ const Header = ({
                     {rightContent}
 
                     {showSidebarToggle && (
-                        <div className="flex items-center gap-1 bg-gold-bg dark:bg-dark-surface p-1 rounded-full border border-gold-primary/10">
-                            <button
+                        <div className="hidden items-center gap-2 sm:flex">
+                            <PanelToggleButton
+                                icon={<Edit3 className="h-3.5 w-3.5" />}
+                                label="Reflections"
+                                isActive={isReflectionsActive}
                                 onClick={() => toggleRightPanel('reflections')}
-                                className={`p-1.5 rounded-full transition-colors ${activeDesktopRightPanel === 'reflections' ? 'bg-gold-primary text-white' : 'text-gold-primary dark:text-gold-light hover:bg-gold-surface dark:hover:bg-dark-bg'}`}
                                 title="통찰 기록 열기"
-                            >
-                                <Edit3 className="w-4 h-4" />
-                            </button>
-                            <button
+                            />
+                            <PanelToggleButton
+                                icon={<MessageSquare className="h-3.5 w-3.5" />}
+                                label="Commentary"
+                                isActive={isCommentaryActive}
                                 onClick={() => toggleRightPanel('commentary')}
-                                className={`p-1.5 rounded-full transition-colors ${activeDesktopRightPanel === 'commentary' ? 'bg-gold-primary text-white' : 'text-gold-primary dark:text-gold-light hover:bg-gold-surface dark:hover:bg-dark-bg'}`}
                                 title="코멘터리 열기"
-                            >
-                                <MessageSquare className="w-4 h-4" />
-                            </button>
+                            />
                         </div>
+                    )}
+
+                    {showSidebarToggle && (
+                        <button
+                            type="button"
+                            onClick={() => toggleRightPanel(isCommentaryActive ? 'commentary' : 'reflections')}
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-gold-primary/20 bg-white/75 text-gold-primary transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80 sm:hidden"
+                            title="오른쪽 패널 토글"
+                        >
+                            {isCommentaryActive ? <MessageSquare className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
+                        </button>
                     )}
 
                     <ThemeToggle className="ml-1 sm:ml-2" />
