@@ -1,6 +1,10 @@
 
 # encoding set to UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
+$projectRoot = Split-Path $PSScriptRoot -Parent
+$dataSourceDir = Join-Path $projectRoot "data-source"
+$danFilePath = Join-Path $dataSourceDir "7.dan.txt"
+$sansFilePath = Join-Path $dataSourceDir "1.sans.txt"
 
 # Levenshtein Distance Function
 function Get-LevenshteinDistance {
@@ -46,7 +50,7 @@ function Get-NormalizedString {
 # 1. Parse 7.dan.txt to get key words
 Write-Host "Reading 7.dan.txt..."
 $sutraWords = @{}
-$lines = Get-Content "7.dan.txt" -Encoding UTF8
+$lines = Get-Content $danFilePath -Encoding UTF8
 $currentId = $null
 
 foreach ($line in $lines) {
@@ -67,7 +71,7 @@ foreach ($line in $lines) {
 
 # 2. Process 1.sans.txt
 Write-Host "Processing 1.sans.txt..."
-$sansFile = "1.sans.txt"
+$sansFile = $sansFilePath
 $sansLines = Get-Content $sansFile -Encoding UTF8
 $newSansLines = @()
 $state = 0

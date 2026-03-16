@@ -1,8 +1,9 @@
 $ErrorActionPreference = "Stop"
 
 $scriptDir = $PSScriptRoot
-$dataFilePath = Join-Path $scriptDir "data.js"
-$hanJsonDir = Join-Path $scriptDir "han json"
+$projectRoot = Split-Path $scriptDir -Parent
+$dataFilePath = Join-Path $projectRoot "data.js"
+$hanJsonDir = Join-Path $projectRoot "data-source\han-json"
 
 # Read data.js
 Write-Host "Reading data.js..."

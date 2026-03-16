@@ -1,5 +1,11 @@
 # encoding set to UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
+$scriptDir = $PSScriptRoot
+$projectRoot = Split-Path $scriptDir -Parent
+$dataSourceDir = Join-Path $projectRoot "data-source"
+$publicDir = Join-Path $projectRoot "public"
+$dataJsPath = Join-Path $projectRoot "data.js"
+$dataJsonPath = Join-Path $publicDir "data.json"
 
 $sutras = [ordered]@{}
 
@@ -70,7 +76,8 @@ function Process-BlockFile {
 # 1. Process 1.sans.txt (Special Dual-Block Format)
 # 1.sans.txt has separate Sanskrit and Pronunciation lines
 Write-Host "Processing 1.sans.txt..."
-$lines = Get-Content "1.sans.txt" -Encoding UTF8
+$sansFilePath = Join-Path $dataSourceDir "1.sans.txt"
+$lines = Get-Content $sansFilePath -Encoding UTF8
 $currentId = $null
 $state = 0 # 0: Look for ID, 1: Sanskrit, 2: Pronunciation
 
@@ -100,7 +107,7 @@ foreach ($line in $lines) {
 
 # 2. Process Line Format Files (e.g. 2.english.txt, 3.korean-1.txt)
 # We explicitly list them or exclude the known block files
-$files = Get-ChildItem *.txt | Where-Object { 
+$files = Get-ChildItem (Join-Path $dataSourceDir "*.txt") | Where-Object { 
     $_.Name -ne "1.sans.txt" -and 
     $_.Name -ne "4.han bal.txt" -and 
     $_.Name -ne "5.bae_jik.txt" -and 
@@ -127,9 +134,9 @@ foreach ($file in $files) {
 }
 
 # 3. Process Specific Block Format Files
-Process-BlockFile "4.han bal.txt" "pronunciation_kr"
-Process-BlockFile "5.bae_jik.txt" "5.bae_jik"
-Process-BlockFile "6.bae_uu.txt" "6.bae_uu"
+Process-BlockFile (Join-Path $dataSourceDir "4.han bal.txt") "pronunciation_kr"
+Process-BlockFile (Join-Path $dataSourceDir "5.bae_jik.txt") "5.bae_jik"
+Process-BlockFile (Join-Path $dataSourceDir "6.bae_uu.txt") "6.bae_uu"
 
 
 
@@ -138,7 +145,7 @@ Write-Host "Processing 7.dan.txt for word meanings (Sequential Mapping)..."
 
 # First, we need to re-parse 1.sans.txt to get the ordered list of words for each Sutra
 $sansWordsMap = [ordered]@{}
-$lines = Get-Content "1.sans.txt" -Encoding UTF8
+$lines = Get-Content $sansFilePath -Encoding UTF8
 $currentId = $null
 $state = 0
 foreach ($line in $lines) {
@@ -171,8 +178,9 @@ foreach ($line in $lines) {
 }
 
 # Now process 7.dan.txt and map sequentially
-if (Test-Path "7.dan.txt") {
-    $lines = Get-Content "7.dan.txt" -Encoding UTF8
+$danFilePath = Join-Path $dataSourceDir "7.dan.txt"
+if (Test-Path $danFilePath) {
+    $lines = Get-Content $danFilePath -Encoding UTF8
     $currentId = $null
     $definitionIndex = 0
     
@@ -252,7 +260,7 @@ $json = $outputList | ConvertTo-Json -Depth 4 -Compress
 $jsContent = "const sutras = $json;"
 
 # Output to both data.js and public/data.json
-[System.IO.File]::WriteAllText("$PWD\data.js", $jsContent, [System.Text.Encoding]::UTF8)
-[System.IO.File]::WriteAllText("$PWD\public\data.json", $json, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllText($dataJsPath, $jsContent, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllText($dataJsonPath, $json, [System.Text.Encoding]::UTF8)
 
 Write-Host "Successfully generated data.js and public/data.json with $( $outputList.Count ) sutras."

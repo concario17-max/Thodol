@@ -1,6 +1,7 @@
-
-$danFile = "7.dan.txt"
-$sansFile = "1.sans.txt"
+$projectRoot = Split-Path $PSScriptRoot -Parent
+$dataSourceDir = Join-Path $projectRoot "data-source"
+$danFile = Join-Path $dataSourceDir "7.dan.txt"
+$sansFile = Join-Path $dataSourceDir "1.sans.txt"
 
 # 1. Parse 7.dan.txt to get words for each sutra
 $sutraWords = @{}

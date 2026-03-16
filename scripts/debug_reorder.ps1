@@ -1,8 +1,10 @@
 $ErrorActionPreference = "Stop"
 
 $scriptDir = $PSScriptRoot
-$danFilePath = Join-Path $scriptDir "7.dan.txt"
-$dataFilePath = Join-Path $scriptDir "data.js"
+$projectRoot = Split-Path $scriptDir -Parent
+$dataSourceDir = Join-Path $projectRoot "data-source"
+$danFilePath = Join-Path $dataSourceDir "7.dan.txt"
+$dataFilePath = Join-Path $projectRoot "data.js"
 
 function Normalize-Text {
     param ($text)

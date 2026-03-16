@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 // Mock DOM elements and window if needed, or just extract logic
 // We just want to test value processing.
@@ -6,7 +7,8 @@ const fs = require('fs');
 // Load data.js
 // data.js starts with "const sutras = ..."
 // We'll read it and eval it (safe enough here as it's local file)
-const dataContent = fs.readFileSync('c:/Users/PT/Desktop/yoga/data.js', 'utf8');
+const projectRoot = path.resolve(__dirname, '..');
+const dataContent = fs.readFileSync(path.join(projectRoot, 'data.js'), 'utf8');
 // Remove "const " and run
 const sutras = eval(dataContent.replace('const sutras =', ''));
 

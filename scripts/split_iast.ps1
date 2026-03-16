@@ -1,15 +1,19 @@
 
 # encoding set to UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
+$projectRoot = Split-Path $PSScriptRoot -Parent
+$dataSourceDir = Join-Path $projectRoot "data-source"
+$sansFilePath = Join-Path $dataSourceDir "1.sans.txt"
+$danFilePath = Join-Path $dataSourceDir "7.dan.txt"
 
 # Backup existing 1.sans.txt
-if (Test-Path "1.sans.txt") {
-    Copy-Item "1.sans.txt" "1.sans.txt.bak" -Force
+if (Test-Path $sansFilePath) {
+    Copy-Item $sansFilePath "$sansFilePath.bak" -Force
 }
 
 # 1. Parse 7.dan.txt to get key words for each sutra
 $sutraWords = [ordered]@{}
-$lines = Get-Content "7.dan.txt" -Encoding UTF8
+$lines = Get-Content $danFilePath -Encoding UTF8
 $currentId = $null
 
 foreach ($line in $lines) {
@@ -29,7 +33,7 @@ foreach ($line in $lines) {
 }
 
 # 2. Process 1.sans.txt
-$sansFile = "1.sans.txt"
+$sansFile = $sansFilePath
 $sansLines = Get-Content $sansFile -Encoding UTF8
 $newSansLines = @()
 $state = 0 # 0: ID, 1: Sanskrit, 2: Pronunciation

@@ -1,10 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
+const projectRoot = path.resolve(__dirname, '..');
+const dataSourceDir = path.join(projectRoot, 'data-source');
 const files = ['4.han bal.txt', '7.dan.txt', '1.sans.txt', '2.english.txt', '3.korean-1.txt', '5.bae_jik.txt', '6.bae_uu.txt'];
 
 files.forEach(file => {
-  const filePath = path.resolve(file);
+  const filePath = path.join(dataSourceDir, file);
   if (fs.existsSync(filePath)) {
     const buffer = fs.readFileSync(filePath);
     // Remove BOM if exists

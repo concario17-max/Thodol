@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataFilePath = path.join(__dirname, 'data.js');
-const danFilePath = path.join(__dirname, '7.dan.txt');
-const sansFilePath = path.join(__dirname, '1.sans.txt');
+const projectRoot = path.resolve(__dirname, '..');
+const dataSourceDir = path.join(projectRoot, 'data-source');
+const dataFilePath = path.join(projectRoot, 'data.js');
+const danFilePath = path.join(dataSourceDir, '7.dan.txt');
+const sansFilePath = path.join(dataSourceDir, '1.sans.txt');
 
 function parseDanFile(filePath) {
     const content = fs.readFileSync(filePath, 'utf-8');

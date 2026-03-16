@@ -1,8 +1,10 @@
 $ErrorActionPreference = "Stop"
 
-$dataFilePath = Join-Path $PSScriptRoot "data.js"
-$danFilePath = Join-Path $PSScriptRoot "7.dan.txt"
-$sansFilePath = Join-Path $PSScriptRoot "1.sans.txt"
+$projectRoot = Split-Path $PSScriptRoot -Parent
+$dataSourceDir = Join-Path $projectRoot "data-source"
+$dataFilePath = Join-Path $projectRoot "data.js"
+$danFilePath = Join-Path $dataSourceDir "7.dan.txt"
+$sansFilePath = Join-Path $dataSourceDir "1.sans.txt"
 
 # Backup existing data.js
 if (Test-Path $dataFilePath) {
@@ -92,7 +94,7 @@ try {
     $danData = Parse-DanFile -filePath $danFilePath
     $sansData = Parse-SansFile -filePath $sansFilePath
     
-    $hanBalFilePath = Join-Path $PSScriptRoot "4.han bal.txt"
+    $hanBalFilePath = Join-Path $dataSourceDir "4.han bal.txt"
     
     if (Test-Path $hanBalFilePath) {
         $hanBalData = Parse-HanBalFile -filePath $hanBalFilePath

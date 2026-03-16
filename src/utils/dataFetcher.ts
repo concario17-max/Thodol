@@ -22,8 +22,8 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
     }
 
     try {
-        // Use updated data source with complete word meanings
-        const response = await fetch('/data_updated_3_22_3_36.json');
+        // Use the canonical generated dataset shared with the project scripts.
+        const response = await fetch('/data.json');
         if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
