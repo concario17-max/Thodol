@@ -24,6 +24,11 @@
     --color-dark-text-secondary: #A09D96;
     --color-ink: #161618;
     
+    /* Font Families */
+    --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --font-display: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+    --font-serif: "Crimson Pro", "Noto Serif KR", serif;
+
     /* Animation Tokens */
     --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     --transition-lazy: cubic-bezier(0.2, 0, 0, 1);
@@ -120,7 +125,21 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: var(--font-size-base) !important; 
     line-height: 1.7;
+    font-family: var(--font-sans);
     @apply bg-gold-bg text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
+}
+
+.font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+}
+
+.font-serif {
+    font-family: var(--font-serif);
+}
+
+.font-pretendard {
+    font-family: var(--font-sans);
 }
 
 .font-noto-kr, .font-kr-serif {
