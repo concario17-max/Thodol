@@ -32,8 +32,8 @@
 
     --font-size-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
     --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
-    --font-size-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
-    --font-size-lg: clamp(1.1rem, 1rem + 0.5vw, 1.25rem);
+    --font-size-base: clamp(0.98rem, 0.93rem + 0.25vw, 1.08rem);
+    --font-size-lg: clamp(1.12rem, 1.02rem + 0.5vw, 1.28rem);
     --font-size-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
     --font-size-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);
     --font-size-3xl: clamp(1.875rem, 1.6rem + 1.25vw, 2.5rem);
@@ -124,15 +124,16 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: var(--font-size-base) !important;
-    line-height: 1.7;
+    line-height: 1.78;
     font-family: var(--font-sans);
     @apply bg-gold-bg text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
 }
 
 .font-display {
     font-family: var(--font-display);
-    letter-spacing: 0.01em;
+    letter-spacing: 0.015em;
     font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: geometricPrecision;
 }
 
 .font-serif {
@@ -147,11 +148,11 @@ body {
 .font-kr-serif {
     font-family: var(--font-sans);
     line-height: 1.9 !important;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
 }
 
 .font-serif-kr {
     font-family: "Noto Serif KR", var(--font-display);
-    line-height: 1.9 !important;
+    line-height: 1.85 !important;
     letter-spacing: -0.01em;
 }

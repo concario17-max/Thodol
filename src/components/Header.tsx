@@ -26,7 +26,7 @@ const PanelToggleButton = ({ icon, label, isActive, onClick, title }: PanelToggl
         onClick={onClick}
         title={title}
         aria-pressed={isActive}
-        className={`group inline-flex h-10 items-center gap-2 rounded-full border px-3.5 text-[12px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${
+        className={`group inline-flex h-10 items-center gap-2 rounded-full border px-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 ${
             isActive
                 ? 'border-gold-primary bg-gold-primary text-white shadow-[0_10px_30px_-16px_rgba(166,139,92,0.95)]'
                 : 'border-gold-primary/20 bg-white/75 text-[#6F6759] hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-dark-text-secondary dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80'
@@ -52,12 +52,7 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const {
-        toggleSidebar,
-        toggleRightPanel,
-        activeRightPanel,
-        activeDesktopRightPanel,
-    } = useUI();
+    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
 
     const isReflectionsActive = activeRightPanel === 'reflections' || activeDesktopRightPanel === 'reflections';
     const isCommentaryActive = activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary';
@@ -80,10 +75,10 @@ const Header = ({
                     )}
 
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate sm:gap-3">
-                        <span className="shrink-0 font-serif text-2xl leading-none text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-90">
+                        <span className="shrink-0 font-serif text-[28px] leading-none text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-90">
                             ॐ
                         </span>
-                        <span className="mt-0.5 truncate font-crimson text-[15px] font-bold uppercase tracking-[0.15em] transition-colors group-hover:text-gold-primary sm:text-base">
+                        <span className="mt-0.5 truncate font-display text-[22px] font-medium tracking-[0.08em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary sm:text-[25px]">
                             {title}
                         </span>
                     </Link>

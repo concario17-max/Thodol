@@ -84,20 +84,20 @@ const ChapterList = () => {
                 </motion.div>
                 <motion.h1
                     variants={itemVariants}
-                    className="mb-4 font-display text-4xl font-light tracking-[0.25em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-5xl md:text-[53px]"
+                    className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px]"
                 >
                     YOGA SUTRAS
                 </motion.h1>
                 <motion.p
                     variants={itemVariants}
-                    className="mb-12 font-display text-sm italic tracking-widest text-gold-primary dark:text-gold-light md:text-base"
+                    className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg"
                 >
                     The Light of Yoga
                 </motion.p>
 
                 <motion.div
                     variants={itemVariants}
-                    className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-display uppercase tracking-[0.2em] text-text-secondary sm:gap-6"
+                    className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6"
                 >
                     <span
                         onClick={() => setIsCompendiumOpen(true)}
@@ -132,9 +132,9 @@ const ChapterList = () => {
                     className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3"
                 >
                     <div className="flex w-full flex-1 flex-col items-start border-b border-gold-border/30 px-2 pb-2 sm:border-b-0 sm:border-r sm:px-4 sm:pb-0">
-                        <span className="mb-0.5 text-[9px] font-black uppercase tracking-[0.2em] text-gold-primary drop-shadow-sm">Chapter</span>
+                        <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Chapter</span>
                         <select
-                            className="w-full appearance-none bg-transparent font-display text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary dark:text-dark-text-primary"
+                            className="w-full appearance-none bg-transparent text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary dark:text-dark-text-primary"
                             value={selectedChapter}
                             onChange={(e) => {
                                 setSelectedChapter(e.target.value);
@@ -151,9 +151,9 @@ const ChapterList = () => {
                     </div>
 
                     <div className="flex w-full flex-1 flex-col items-start px-2 pt-0.5 sm:px-6 sm:pt-0">
-                        <span className="mb-0.5 text-[9px] font-black uppercase tracking-[0.2em] text-gold-primary drop-shadow-sm">Verse</span>
+                        <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Verse</span>
                         <select
-                            className="w-full appearance-none bg-transparent font-display text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary disabled:opacity-50 dark:text-dark-text-primary"
+                            className="w-full appearance-none bg-transparent text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary disabled:opacity-50 dark:text-dark-text-primary"
                             value={selectedVerse}
                             disabled={!selectedChapter}
                             onChange={(e) => {
@@ -198,7 +198,7 @@ const ChapterList = () => {
                                 subtitle={`CHAPTER ${chapter.chapter}`}
                                 title={
                                     <>
-                                        <span className="font-crimson text-xl md:text-2xl">
+                                        <span className="font-display text-[30px] font-medium tracking-[0.04em] md:text-[34px]">
                                             {chapterInfo?.name_english || chapter.meta?.name_english || ''}
                                         </span>
                                         <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">
