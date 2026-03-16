@@ -119,16 +119,20 @@
 - [x] **자동화된 Git 워크플로우 실행**
     - [x] `git add .`, `git commit`, `git push` 자동 실행 완료.
 
-## Phase 13: 1번 텍스트(산스크리트어) 데이터 동기화 및 검증 (Completed)
-- [x] **데이터 스트림 통합**
-    - [x] `1.sans.txt` 변경 사항 검토: Devanagari 및 IAST 오탈자 확인.
-    - [x] `generate_data.ps1` 실행을 통한 `data.js` (또는 `public/data.json`) 갱신.
-- [x] **데이터 정합성 및 무결성 감사**
-    - [x] `update_dictionary.js` 실행: 갱신된 산스크리트어 단어 기반 사전(lexicon) 싱크.
-    - [x] TDD 검증: `dataFetcher.test.ts`를 통한 데이터 구조 및 로드 안정성 테스트.
-- [x] **UI/UX 렌더링 정밀 검사**
-    - [x] 폰트 렌더링 확인: Devanagari 전용 폰트(Sanskrit 2003 등) 적용 상태 및 가독성 체크.
-    - [x] 애니메이션 동기화: 갱신된 데이터 길이에 따른 `Reveal` 효과 타이밍 조정.
+
+- [x] **데이터 정제 및 원천 파일 동기화**
+    - [x] `public/data_updated_3_22_3_36.json`에서 3.22 ~ 3.36 구간 데이터 추출.
+    - [x] `4.han bal.txt`: 해당 구간의 깨진 한글 발음 데이터를 추출된 데이터로 정밀 교체.
+    - [x] `7.dan.txt`: 해당 구간의 단어 해석 데이터를 추출된 데이터 스타일로 교체.
+    - [x] **주의**: 3.22 ~ 3.36 외의 다른 구간 데이터가 손상되지 않도록 개별 행(Row) 단위로 패치.
+- [x] **데이터 파이프라인 무결성 가동**
+    - [x] `generate_data.ps1` 실행을 통한 `data.js` 및 `public/data.json` 빌드.
+    - [x] 빌드 후 `data.js` 파일의 3.22 ~ 3.36 구간 데이터 인코딩 및 키값 존재 여부 확인.
+- [x] **UI 렌더링 품질 검수 (QA)**
+    - [x] `VerseView` 컴포넌트에서 3.22 ~ 3.36 각 구절 로딩 시 `WordMeanings` 아코디언 정상 작동 확인.
+    - [x] 한글 발음의 특수 기호(`-`, `｜`) 정제 로직 적용 상태 시각적 점검.
+- [x] **최종 배포 및 자취 기록**
+    - [x] `feat: update sutra 3.22-3.36 pronunciation and definitions` 메시지로 자동 커밋 및 푸시.
 
 ---
 

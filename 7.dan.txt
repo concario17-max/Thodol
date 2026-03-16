@@ -957,96 +957,99 @@ prakasa 빛, 드러남
 asamprayoge 결합/접촉 없음에서 < a- 부정 + samprayoga 결합
 antardhanam 사라짐, 은닉, 보이지 않음 < antar 안 + dha 두다(감추다)
 3-22
-etena 이것에 의해, 이로써
-sabda 소리, 말
-adi 등등(소리 등)
-antardhanam 은닉, 사라짐
-uktam 말해졌다, 설명되었다 < vac 말하다
+  sopakrama 시작(원인)을 가진, ‘시작이 있는’ < sa- 함께 + upakrama 시작
+  nirupakrama 시작(원인)이 없는, ‘갑자기 오는’ < nir- 없음 + upakrama
+  ca 그리고
+  karma 업, 행위
+  tat 그것(업)에
+  samyamat 삼야마로부터
+  aparanta 끝이 다가옴, ‘최후의’ < a + para + anta 끝
+  jnanam 앎
+  aristhabhyo 불길한 징조들로부터, 죽음의 징표들로부터 < arishta 불길함
+  va 또는
 3-23
-sopakrama 시작(원인)을 가진, ‘시작이 있는’ < sa- 함께 + upakrama 시작
-nirupakrama 시작(원인)이 없는, ‘갑자기 오는’ < nir- 없음 + upakrama
-ca 그리고
-karma 업, 행위
-tat 그것(업)에
-samyamat 삼야마로부터
-aparanta 끝이 다가옴, ‘최후의’ < a + para + anta 끝
-jnanam 앎
-aristhabhyo 불길한 징조들로부터, 죽음의 징표들로부터 < arishta 불길함
-va 또는
+  maitri 자애, 우정(마이트리)
+  adisu 등(…등에서)
+  balani 힘들, 능력들 < bala 힘
 3-24
-maitri 자애, 우정(마이트리)
-adisu 등(…등에서)
-balani 힘들, 능력들 < bala 힘
+  balesu 힘들에(대하여)
+  hasti 코끼리
+  bala 힘
+  baladini 등, 등등 < bala 힘 + adi 등
 3-25
-balesu 힘들에(대하여)
-hasti 코끼리
-bala 힘
-baladini 등, 등등 < bala 힘 + adi 등
+  pravrtti 활동, 작용, 작동 < pra + vrt 돌다/작동하다
+  aloka 빛, 밝음
+  nyasat 두기/적용으로부터 < ni + as 두다
+  suksma 미세한
+  vyavahita 가로막힌, 멀리 떨어져 끼어 있는 < vi + ava + dha 두다(사이에 놓임)
+  viprakrsta 아주 먼, 멀리 떨어진 < vi + pra + krs 끌다(멀어짐)
+  jnanam 앎
 3-26
-pravrtti 활동, 작용, 작동 < pra + vrt 돌다/작동하다
-aloka 빛, 밝음
-nyasat 두기/적용으로부터 < ni + as 두다
-suksma 미세한
-vyavahita 가로막힌, 멀리 떨어져 끼어 있는 < vi + ava + dha 두다(사이에 놓임)
-viprakrsta 아주 먼, 멀리 떨어진 < vi + pra + krs 끌다(멀어짐)
-jnanam 앎
+  bhuvana 세계(들), 우주 영역 < bhu 존재
+  jnanam 앎
+  surye 태양에서/에
+  samyamat 삼야마로부터
 3-27
-bhuvana 세계(들), 우주 영역 < bhu 존재
-jnanam 앎
-surye 태양에서/에
-samyamat 삼야마로부터
+  candre 달에서/에
+  tara 별
+  vyuha 무리, 배열, 진(陣)
+  jnanam 앎
 3-28
-candre 달에서/에
-tara 별
-vyuha 무리, 배열, 진(陣)
-jnanam 앎
+  dhruve 북극성/고정점에서/에 < dhruva 고정된
+  tad 그(것의)
+  gati 움직임, 진행, 궤도
+  jnanam 앎
 3-29
-dhruve 북극성/고정점에서/에 < dhruva 고정된
-tad 그(것의)
-gati 움직임, 진행, 궤도
-jnanam 앎
+  nabhi 배꼽
+  cakre 윤(輪), 바퀴(차크라)에서/에 < cakra 바퀴
+  kaya 몸
+  vyuha 구조, 배열, 구성(체계)
+  jnanam 앎
 3-30
-nabhi 배꼽
-cakre 윤(輪), 바퀴(차크라)에서/에 < cakra 바퀴
-kaya 몸
-vyuha 구조, 배열, 구성(체계)
-jnanam 앎
+  kantha 목, 인후
+  kupe 우물(같은 곳), 구멍(에서) < kupa 우물/구멍
+  ksut 배고픔 < ksudh 굶주리다
+  pipasa 갈증 < pipas 목마름
+  nivrttih 소멸, 그침, 멈춤 < ni + vrt 돌아가다/멈추다
 3-31
-kantha 목, 인후
-kupe 우물(같은 곳), 구멍(에서) < kupa 우물/구멍
-ksut 배고픔 < ksudh 굶주리다
-pipasa 갈증 < pipas 목마름
-nivrttih 소멸, 그침, 멈춤 < ni + vrt 돌아가다/멈추다
+  kurma 거북
+  nadyam 관(管), ‘나디(에너지 통로)’에서/에 < nadi 통로
+  sthairyam 안정, 견고함 < sthira 견고
 3-32
-kurma 거북
-nadyam 관(管), ‘나디(에너지 통로)’에서/에 < nadi 통로
-sthairyam 안정, 견고함 < sthira 견고
+  murdha 머리, 정수리
+  jyotisi 빛(나는 것)에서/에 < jyotis 광명
+  siddha 성취자, 완성자
+  darsanam 봄, 관조, 직견 < drs 보다
 3-33
-murdha 머리, 정수리
-jyotisi 빛(나는 것)에서/에 < jyotis 광명
-siddha 성취자, 완성자
-darsanam 봄, 관조, 직견 < drs 보다
+  pratibhat 직관(의 빛)으로부터 < prati + bha 비치다/떠오르다
+  va 또는
+  sarvam 모든 것(에 대한 앎)
 3-34
-pratibhat 직관(의 빛)으로부터 < prati + bha 비치다/떠오르다
-va 또는
-sarvam 모든 것(에 대한 앎)
+  hrdaye 심장, 마음자리에서/에 < hrdaya 심장
+  citta 마음, 의식
+  samvit 완전한 앎, 자각 < sam + vid 알다
 3-35
-hrdaye 심장, 마음자리에서/에 < hrdaya 심장
-citta 마음, 의식
-samvit 완전한 앎, 자각 < sam + vid 알다
+  sattva 사트바, 맑음의 성질
+  purusayoh 푸루샤(순수의식)들의/의(쌍수 속격)
+  atyanta 완전히, 극도로
+  asankirnayoh 섞이지 않은 둘의 < a- 부정 + sankirna 혼합
+  pratyaya 인식내용, 관념
+  avisesah 구분 없음, 분별되지 않음 < a- 부정 + visesa 구별
+  bhogah 향유, 경험 < bhuj 누리다
+  pararthatvat 타(他)의 목적이기 때문에 < para 타자 + artha 목적 + -tvat
+  svartha 자기 목적, 자기 이익 < sva 자기 + artha 목적
+  samyamat 삼야마로부터
+  purusa 푸루샤(순수의식)
+  jnanam 앎
 3-36
-sattva 사트바, 맑음의 성질
-purusayoh 푸루샤(순수의식)들의/의(쌍수 속격)
-atyanta 완전히, 극도로
-asankirnayoh 섞이지 않은 둘의 < a- 부정 + sankirna 혼합
-pratyaya 인식내용, 관념
-avisesah 구분 없음, 분별되지 않음 < a- 부정 + visesa 구별
-bhogah 향유, 경험 < bhuj 누리다
-pararthatvat 타(他)의 목적이기 때문에 < para 타자 + artha 목적 + -tvat
-svartha 자기 목적, 자기 이익 < sva 자기 + artha 목적
-samyamat 삼야마로부터
-purusa 푸루샤(순수의식)
-jnanam 앎
+  tatah (따따하): 그로부터 (그 결과로) < tatas
+  pratibha (쁘라띠바): 직관적 깨달음 (통찰의 빛) < prati- (향하여) + bha (빛나다)
+  sravana (슈라바나): 신성한 청각 < sru (듣다)
+  vedana (베다나): 신성한 촉각 < vid (알다, 경험하다)
+  adarsa (아다르샤): 신성한 시각 (본뜻: 거울) < a- (완전히) + drs (보다)
+  asvada (아스바다): 신성한 미각 < a- (완전히) + svad (맛보다)
+  varta (바르따): 신성한 후각 < vrit (존재하다)에서 파생
+  jayante (자얀떼): 생겨난다 (발생한다) < jan (태어나다, 발생하다)
 3-37
 te 그것들(능력들)
 samadhau 삼매에서/에는

@@ -2391,23 +2391,6 @@
   {
     "id": "3.22",
     "word_meanings": {
-      "etena": "이것에 의해, 이로써",
-      "sabda": "소리, 말",
-      "adi": "등등(소리 등)",
-      "antardhanam": "은닉, 사라짐",
-      "uktam": "말해졌다, 설명되었다 < vac 말하다"
-    },
-    "4.han bal": "에-떼-나｜샤-브-다-아-디｜안-따-르-다-나-암｜욱-땀",
-    "8. ox": "카르마는 때로 그 결과를 드러내고, 때로 아직 머물러 있기도 하다. 이 두 가지에 삼야마를 수행하면 삶과 죽음의 흐름을 이해하고 때로는 죽음의 시기조차 예견할 수 있다.",
-    "pronunciation": "sopakramaṃ | nirupakramaṃ | ca | karma | tat-saṃyamād | aparānta-jñānam | ariṣṭebhyo | vā ||",
-    "2.english": "Karma (or effects) are of two kinds: immediate karma or future karma. By perfectly concentrated meditation on these, the yogi knows the term of his experience in the three worlds. This knowledge comes also from signs.",
-    "9. ox-en": "karma is of two types: sa-upakrama and nir-upakrama (“with nearness” and “without nearness” respectively, namely quick or slow in bearing fruits). Through saṃyama on that, or by omens (ariṣṭa), foreknowledge of death is obtained.",
-    "sanskrit": "सोपक्रमं निरुपक्रमं च कर्म तत्संयमादपरान्तज्ञानमरिष्टेभ्यो वा",
-    "3.korean-1": "카르마(Karma, 혹은 결과들)에는 두 종류가 있다. 즉각적인 카르마 또는 미래의 카르마이다. 이들에 완벽하게 집중하여 참선함으로써, 요기는 삼계(three worlds) 안에서 자신의 경험이 지속되는 기간을 알게 된다. 이런 지식은 또한 표시(signs)로부터 온다."
-  },
-  {
-    "id": "3.23",
-    "word_meanings": {
       "sopakrama": "시작(원인)을 가진, ‘시작이 있는’ < sa- 함께 + upakrama 시작",
       "nirupakrama": "시작(원인)이 없는, ‘갑자기 오는’ < nir- 없음 + upakrama",
       "ca": "그리고",
@@ -2420,6 +2403,21 @@
       "va": "또는"
     },
     "4.han bal": "소-빠-끄-라-맘｜니-루-빠-끄-라-맘｜짜｜까-르-마｜따-뜨-상-야-마-앗｜아-빠-라-안-따｜즈-냐-나-암｜아-리-쉬-떼-뱌-호｜바",
+    "8. ox": "카르마는 때로 그 결과를 드러내고, 때로 아직 머물러 있기도 하다. 이 두 가지에 삼야마를 수행하면 삶과 죽음의 흐름을 이해하고 때로는 죽음의 시기조차 예견할 수 있다.",
+    "pronunciation": "sopakramaṃ | nirupakramaṃ | ca | karma | tat-saṃyamād | aparānta-jñānam | ariṣṭebhyo | vā ||",
+    "2.english": "Karma (or effects) are of two kinds: immediate karma or future karma. By perfectly concentrated meditation on these, the yogi knows the term of his experience in the three worlds. This knowledge comes also from signs.",
+    "9. ox-en": "karma is of two types: sa-upakrama and nir-upakrama (“with nearness” and “without nearness” respectively, namely quick or slow in bearing fruits). Through saṃyama on that, or by omens (ariṣṭa), foreknowledge of death is obtained.",
+    "sanskrit": "सोपक्रमं निरुपक्रमं च कर्म तत्संयमादपरान्तज्ञानमरिष्टेभ्यो वा",
+    "3.korean-1": "카르마(Karma, 혹은 결과들)에는 두 종류가 있다. 즉각적인 카르마 또는 미래의 카르마이다. 이들에 완벽하게 집중하여 참선함으로써, 요기는 삼계(three worlds) 안에서 자신의 경험이 지속되는 기간을 알게 된다. 이런 지식은 또한 표시(signs)로부터 온다."
+  },
+  {
+    "id": "3.23",
+    "word_meanings": {
+      "maitri": "자애, 우정(마이트리)",
+      "adisu": "등(…등에서)",
+      "balani": "힘들, 능력들 < bala 힘"
+    },
+    "4.han bal": "마-이-뜨-리-아-디-슈｜바-라-니",
     "8. ox": "선의와 같은 덕목에 깊이 집중하면, 그에 걸맞은 힘이 깃든다.",
     "pronunciation": "maitryādiṣu | balāni ||",
     "2.english": "Union with others is to be gained through one-pointed meditation upon the three states of feeling—compassion, tenderness and dispassion.",
@@ -2430,11 +2428,12 @@
   {
     "id": "3.24",
     "word_meanings": {
-      "maitri": "자애, 우정(마이트리)",
-      "adisu": "등(…등에서)",
-      "balani": "힘들, 능력들 < bala 힘"
+      "balesu": "힘들에(대하여)",
+      "hasti": "코끼리",
+      "bala": "힘",
+      "baladini": "등, 등등 < bala 힘 + adi 등"
     },
-    "4.han bal": "마-이-뜨-리-아-디-슈｜바-라-니",
+    "4.han bal": "바-레-슈｜하-스-띠-발-라-아-디-니",
     "8. ox": "코끼리나 다른 동물의 힘에 삼야마를 발휘하여 집중하면, 그 힘이 내 것이 된다.",
     "pronunciation": "baleṣu | hastibalādīni ||",
     "2.english": "Meditation, one-pointedly centered upon the power of the elephant, will awaken that force or light.",
@@ -2445,12 +2444,15 @@
   {
     "id": "3.25",
     "word_meanings": {
-      "balesu": "힘들에(대하여)",
-      "hasti": "코끼리",
-      "bala": "힘",
-      "baladini": "등, 등등 < bala 힘 + adi 등"
+      "pravrtti": "활동, 작용, 작동 < pra + vrt 돌다/작동하다",
+      "aloka": "빛, 밝음",
+      "nyasat": "두기/적용으로부터 < ni + as 두다",
+      "suksma": "미세한",
+      "vyavahita": "가로막힌, 멀리 떨어져 끼어 있는 < vi + ava + dha 두다(사이에 놓임)",
+      "viprakrsta": "아주 먼, 멀리 떨어진 < vi + pra + krs 끌다(멀어짐)",
+      "jnanam": "앎"
     },
-    "4.han bal": "바-레-슈｜하-스-띠-발-라-아-디-니",
+    "4.han bal": "쁘라-브-리-띠｜아-로-까｜냐-사-앗｜숙-슈-마｜브-야-바-히-따｜비-쁘라-끄-리-쉬-따｜즈-냐-나-암",
     "8. ox": "삼야마의 빛을 통해 보이지 않는 것, 감춰진 것, 그리고 먼 곳의 진리를 깨닫게 된다.",
     "pronunciation": "pravṛtty-āloka-nyāsāt | sūkṣma-vyavahita-viprakṛṣṭa-jñānam ||",
     "2.english": "Perfectly concentrated meditation upon the awakened light will produce the consciousness of that which is subtle, hidden or remote.",
@@ -2461,15 +2463,12 @@
   {
     "id": "3.26",
     "word_meanings": {
-      "pravrtti": "활동, 작용, 작동 < pra + vrt 돌다/작동하다",
-      "aloka": "빛, 밝음",
-      "nyasat": "두기/적용으로부터 < ni + as 두다",
-      "suksma": "미세한",
-      "vyavahita": "가로막힌, 멀리 떨어져 끼어 있는 < vi + ava + dha 두다(사이에 놓임)",
-      "viprakrsta": "아주 먼, 멀리 떨어진 < vi + pra + krs 끌다(멀어짐)",
-      "jnanam": "앎"
+      "bhuvana": "세계(들), 우주 영역 < bhu 존재",
+      "jnanam": "앎",
+      "surye": "태양에서/에",
+      "samyamat": "삼야마로부터"
     },
-    "4.han bal": "쁘라-브-리-띠｜아-로-까｜냐-사-앗｜숙-슈-마｜브-야-바-히-따｜비-쁘라-끄-리-쉬-따｜즈-냐-나-암",
+    "4.han bal": "부-바-나｜즈-냐-나-암｜수-르-예｜상-야-마-앗",
     "8. ox": "태양에 대한 삼야마를 통해, 다른 세계(우주와 존재의 본질에 대한 통찰)에 대한 지혜를 얻을 수 있다.",
     "pronunciation": "bhuvana-jñānaṃ | sūrye | saṃyamāt ||",
     "2.english": "Through meditation, one-pointedly fixed upon the sun, will come a consciousness (or knowledge) of the seven worlds.",
@@ -2480,12 +2479,12 @@
   {
     "id": "3.27",
     "word_meanings": {
-      "bhuvana": "세계(들), 우주 영역 < bhu 존재",
-      "jnanam": "앎",
-      "surye": "태양에서/에",
-      "samyamat": "삼야마로부터"
+      "candre": "달에서/에",
+      "tara": "별",
+      "vyuha": "무리, 배열, 진(陣)",
+      "jnanam": "앎"
     },
-    "4.han bal": "부-바-나｜즈-냐-나-암｜수-르-예｜상-야-마-앗",
+    "4.han bal": "찬-드-레｜따-라-브-유-하｜즈-냐-나-암",
     "8. ox": "달에 대한 삼야마를 통해, 별들의 위치와 움직임을 이해할 수 있다.",
     "pronunciation": "candre | tārā-vyūha-jñānam ||",
     "2.english": "A knowledge of all lunar forms arises through one-pointed meditation upon the moon.",
@@ -2496,12 +2495,12 @@
   {
     "id": "3.28",
     "word_meanings": {
-      "candre": "달에서/에",
-      "tara": "별",
-      "vyuha": "무리, 배열, 진(陣)",
+      "dhruve": "북극성/고정점에서/에 < dhruva 고정된",
+      "tad": "그(것의)",
+      "gati": "움직임, 진행, 궤도",
       "jnanam": "앎"
     },
-    "4.han bal": "찬-드-레｜따-라-브-유-하｜즈-냐-나-암",
+    "4.han bal": "드-루-베｜따-드-가-띠｜즈-냐-나-암",
     "8. ox": "북극성(드루바)에 대한 삼야마를 수행하면 별들의 움직임에 대한 지식을 얻을 수 있다.",
     "pronunciation": "dhruve | tad-gati-jñānam ||",
     "2.english": "Concentration upon the Pole-Star will give knowledge of the orbits of the planets and the stars.",
@@ -2512,12 +2511,13 @@
   {
     "id": "3.29",
     "word_meanings": {
-      "dhruve": "북극성/고정점에서/에 < dhruva 고정된",
-      "tad": "그(것의)",
-      "gati": "움직임, 진행, 궤도",
+      "nabhi": "배꼽",
+      "cakre": "윤(輪), 바퀴(차크라)에서/에 < cakra 바퀴",
+      "kaya": "몸",
+      "vyuha": "구조, 배열, 구성(체계)",
       "jnanam": "앎"
     },
-    "4.han bal": "드-루-베｜따-드-가-띠｜즈-냐-나-암",
+    "4.han bal": "나-비-짜-끄-레｜까-야-브-유-하｜즈-냐-나-암",
     "8. ox": "단전에 삼야마를 수행하면 신체의 작용 원리를 알 수 있다.",
     "pronunciation": "nābhi-cakre | kāya-vyūha-jñānam ||",
     "2.english": "By concentrated attention upon the centre called the solar plexus, comes perfected knowledge as to the condition of the body.",
@@ -2528,13 +2528,13 @@
   {
     "id": "3.30",
     "word_meanings": {
-      "nabhi": "배꼽",
-      "cakre": "윤(輪), 바퀴(차크라)에서/에 < cakra 바퀴",
-      "kaya": "몸",
-      "vyuha": "구조, 배열, 구성(체계)",
-      "jnanam": "앎"
+      "kantha": "목, 인후",
+      "kupe": "우물(같은 곳), 구멍(에서) < kupa 우물/구멍",
+      "ksut": "배고픔 < ksudh 굶주리다",
+      "pipasa": "갈증 < pipas 목마름",
+      "nivrttih": "소멸, 그침, 멈춤 < ni + vrt 돌아가다/멈추다"
     },
-    "4.han bal": "나-비-짜-끄-레｜까-야-브-유-하｜즈-냐-나-암",
+    "4.han bal": "깐-타-꾸-뻬｜끄-슛-삐-빠-사-아-니-브-리-띠-히",
     "8. ox": "목의 오목한 부분(인후)을 대상으로 삼야마를 수행하면, 허기와 갈증에 더 이상 영향을 받지 않게 된다.",
     "pronunciation": "kaṇṭha-kūpe | kṣut-pipāsā-nivṛttiḥ ||",
     "2.english": "By fixing the attention upon the throat centre, the cessation of hunger and thirst will ensue.",
@@ -2545,13 +2545,11 @@
   {
     "id": "3.31",
     "word_meanings": {
-      "kantha": "목, 인후",
-      "kupe": "우물(같은 곳), 구멍(에서) < kupa 우물/구멍",
-      "ksut": "배고픔 < ksudh 굶주리다",
-      "pipasa": "갈증 < pipas 목마름",
-      "nivrttih": "소멸, 그침, 멈춤 < ni + vrt 돌아가다/멈추다"
+      "kurma": "거북",
+      "nadyam": "관(管), ‘나디(에너지 통로)’에서/에 < nadi 통로",
+      "sthairyam": "안정, 견고함 < sthira 견고"
     },
-    "4.han bal": "깐-타-꾸-뻬｜끄-슛-삐-빠-사-아-니-브-리-띠-히",
+    "4.han bal": "꾸-르-마-나-댜-암｜스-타-이-르-얌",
     "8. ox": "목 아래쪽 또는 가슴 부근에 삼야마를 수행하면, 내면의 평정과 확고한 집중력을 얻게 된다.",
     "pronunciation": "kūrma-nāḍyāṃ | sthairyam ||",
     "2.english": "By fixing the attention upon the tube or nerve below the throat centre, equilibrium is achieved.",
@@ -2562,11 +2560,12 @@
   {
     "id": "3.32",
     "word_meanings": {
-      "kurma": "거북",
-      "nadyam": "관(管), ‘나디(에너지 통로)’에서/에 < nadi 통로",
-      "sthairyam": "안정, 견고함 < sthira 견고"
+      "murdha": "머리, 정수리",
+      "jyotisi": "빛(나는 것)에서/에 < jyotis 광명",
+      "siddha": "성취자, 완성자",
+      "darsanam": "봄, 관조, 직견 < drs 보다"
     },
-    "4.han bal": "꾸-르-마-나-댜-암｜스-타-이-르-얌",
+    "4.han bal": "무-르-다-죠-띠-쉬｜싯-다-다-르-샤-남",
     "8. ox": "머릿속 빛을 대상으로 삼야마를 수행하면, 신적 존재나 초월적 존재를 볼 수 있는 능력이 생긴다.",
     "pronunciation": "mūrdha-jyotiṣi | siddha-darśanam ||",
     "2.english": "Those who have attained self-mastery can be seen and contacted through focussing the light in the head. This power is developed in one-pointed meditation.",
@@ -2577,12 +2576,11 @@
   {
     "id": "3.33",
     "word_meanings": {
-      "murdha": "머리, 정수리",
-      "jyotisi": "빛(나는 것)에서/에 < jyotis 광명",
-      "siddha": "성취자, 완성자",
-      "darsanam": "봄, 관조, 직견 < drs 보다"
+      "pratibhat": "직관(의 빛)으로부터 < prati + bha 비치다/떠오르다",
+      "va": "또는",
+      "sarvam": "모든 것(에 대한 앎)"
     },
-    "4.han bal": "무-르-다-죠-띠-쉬｜싯-다-다-르-샤-남",
+    "4.han bal": "쁘라-띠-바-드｜바｜사-르-밤",
     "8. ox": "그 외에 직관적 지식이 깨어나면 모든 것을 얻을 수 있다.",
     "pronunciation": "prātibhād | vā | sarvam ||",
     "2.english": "All things can be known in the vivid light of the intuition.",
@@ -2593,11 +2591,11 @@
   {
     "id": "3.34",
     "word_meanings": {
-      "pratibhat": "직관(의 빛)으로부터 < prati + bha 비치다/떠오르다",
-      "va": "또는",
-      "sarvam": "모든 것(에 대한 앎)"
+      "hrdaye": "심장, 마음자리에서/에 < hrdaya 심장",
+      "citta": "마음, 의식",
+      "samvit": "완전한 앎, 자각 < sam + vid 알다"
     },
-    "4.han bal": "쁘라-띠-바-드｜바｜사-르-밤",
+    "4.han bal": "흐-리-다-예｜치-따-상-비-뜨",
     "8. ox": "심장을 대상으로 삼야마를 수행하면, 사고 과정과 마음의 본질을 깊이 이해하게 된다.",
     "pronunciation": "hṛdaye | citta-saṃvit ||",
     "2.english": "Understanding of the mind-consciousness comes from one-pointed meditation upon the heart centre.",
@@ -2607,21 +2605,6 @@
   },
   {
     "id": "3.35",
-    "word_meanings": {
-      "hrdaye": "심장, 마음자리에서/에 < hrdaya 심장",
-      "citta": "마음, 의식",
-      "samvit": "완전한 앎, 자각 < sam + vid 알다"
-    },
-    "4.han bal": "흐-리-다-예｜치-따-상-비-뜨",
-    "8. ox": "세속적인 즐거움은 삿트바와 푸루샤를 혼동하는 데에서 비롯되지만, 사실 이 둘은 완전히 다른 것이다. 삼야마를 통해 자신의 참된 정체성을 깊이 탐구하면, 푸루샤에 대한 깨달음을 얻을 수 있다.",
-    "pronunciation": "sattva-puruṣayor | atyantāsaṅkīrṇayoḥ | pratyayāviśeṣo | bhogaḥ | parārthatvāt | svārtha-saṃyamāt | puruṣa-jñānam ||",
-    "2.english": "Experience (of the pairs of opposites) comes from the inability of the soul to distinguish between the personal self and the purusa (or spirit). The objective forms exist for the use (and experience) of the spiritual man. By meditation upon this, arises the intuitive perception of the spiritual nature (the purusa).",
-    "9. ox-en": "Phenomenal experience (bhoga) is based on nondistinction between the radically distinct sattva and puruṣa. Through saṃyama on (the fact that sattva, or the citta, or prakṛti is) for the sake of “the other” (puruṣa), as opposed to (puruṣa’s) self-sufficiency (sva-artha), knowledge of puruṣa is obtained.",
-    "sanskrit": "सत्त्वपुरुषयोरत्यन्तासङ्कीर्णयोः प्रत्ययाविशेषो भोगः परार्थत्वात्स्वार्थसंयमात्पुरुषज्ञानम्",
-    "3.korean-1": "(상반되는 것들에 대한) 경험은, 영혼이 개인적 존재감 (personal self)과 푸루사(purusa, 혹은 영) 사이를 구분할 수 없어서 생긴다. 객관적 형상들은 영적 인간이 사용하고 (경험하기) 위해 존재한다. 이것에 대해 참선함으로써, 영적 본질에 대한 직관적 지각이 생긴다."
-  },
-  {
-    "id": "3.36",
     "word_meanings": {
       "sattva": "사트바, 맑음의 성질",
       "purusayoh": "푸루샤(순수의식)들의/의(쌍수 속격)",
@@ -2637,6 +2620,26 @@
       "jnanam": "앎"
     },
     "4.han bal": "사-뜨-바｜뿌-루-샤-요-르｜아-띠-얀-따-아-상-끼-르-나-요-호｜쁘라-땨-야-아-비-셰-쇼｜보-가-하｜빠-라-아-르-타-뜨-밧-앗｜스-바-아-르-타｜상-야-마-앗｜뿌-루-샤｜즈-냐-나-암",
+    "8. ox": "세속적인 즐거움은 삿트바와 푸루샤를 혼동하는 데에서 비롯되지만, 사실 이 둘은 완전히 다른 것이다. 삼야마를 통해 자신의 참된 정체성을 깊이 탐구하면, 푸루샤에 대한 깨달음을 얻을 수 있다.",
+    "pronunciation": "sattva-puruṣayor | atyantāsaṅkīrṇayoḥ | pratyayāviśeṣo | bhogaḥ | parārthatvāt | svārtha-saṃyamāt | puruṣa-jñānam ||",
+    "2.english": "Experience (of the pairs of opposites) comes from the inability of the soul to distinguish between the personal self and the purusa (or spirit). The objective forms exist for the use (and experience) of the spiritual man. By meditation upon this, arises the intuitive perception of the spiritual nature (the purusa).",
+    "9. ox-en": "Phenomenal experience (bhoga) is based on nondistinction between the radically distinct sattva and puruṣa. Through saṃyama on (the fact that sattva, or the citta, or prakṛti is) for the sake of “the other” (puruṣa), as opposed to (puruṣa’s) self-sufficiency (sva-artha), knowledge of puruṣa is obtained.",
+    "sanskrit": "सत्त्वपुरुषयोरत्यन्तासङ्कीर्णयोः प्रत्ययाविशेषो भोगः परार्थत्वात्स्वार्थसंयमात्पुरुषज्ञानम्",
+    "3.korean-1": "(상반되는 것들에 대한) 경험은, 영혼이 개인적 존재감 (personal self)과 푸루사(purusa, 혹은 영) 사이를 구분할 수 없어서 생긴다. 객관적 형상들은 영적 인간이 사용하고 (경험하기) 위해 존재한다. 이것에 대해 참선함으로써, 영적 본질에 대한 직관적 지각이 생긴다."
+  },
+  {
+    "id": "3.36",
+    "word_meanings": {
+      "tatah": "(따따하): 그로부터 (그 결과로) < tatas",
+      "pratibha": "(쁘라띠바): 직관적 깨달음 (통찰의 빛) < prati- (향하여) + bha (빛나다)",
+      "sravana": "(슈라바나): 신성한 청각 < sru (듣다)",
+      "vedana": "(베다나): 신성한 촉각 < vid (알다, 경험하다)",
+      "adarsa": "(아다르샤): 신성한 시각 (본뜻: 거울) < a- (완전히) + drs (보다)",
+      "asvada": "(아스바다): 신성한 미각 < a- (완전히) + svad (맛보다)",
+      "varta": "(바르따): 신성한 후각 < vrit (존재하다)에서 파생",
+      "jayante": "(자얀떼): 생겨난다 (발생한다) < jan (태어나다, 발생하다)"
+    },
+    "4.han bal": "따-따-하｜쁘라-띠-바-슈라-바-나-베-다-나-아-다르-샤-아-스-바-다-바르-따｜자-얀-떼",
     "8. ox": "이 상태에 도달하면 직관적 지식이 깨어나며 청각, 촉각, 시각, 미각, 후각이 더욱 강화된다.",
     "pronunciation": "Tataḥ | prātibha-śrhāvaṇa-vedanādarśhāsvādavārtā | jāyante",
     "2.english": "As the result of this experience and meditation, the higher hearing, touch, sight, taste and smell are developed, producing intuitional knowledge.",
