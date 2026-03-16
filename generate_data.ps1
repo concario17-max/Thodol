@@ -27,10 +27,14 @@ function Process-BlockFile {
         $line = $line.Trim()
         if ([string]::IsNullOrWhiteSpace($line)) { continue }
 
-        # Check for ID (e.g., 1-1, 1-51)
-        if ($line -match "^(\d+)-(\d+)$") {
+        # Check for ID (e.g., 1-1, 1-51) at start of line
+        if ($line -match "^(\d+)-(\d+)(.*)$") {
             $currentId = "$($Matches[1]).$($Matches[2])"
-            continue
+            $line = $Matches[3].Trim()
+            if ([string]::IsNullOrWhiteSpace($line)) {
+                continue
+            }
+            # If there's content on the ID line, fall through to process it
         }
 
         # If we have an ID and this line is not an ID, it's content
@@ -98,7 +102,7 @@ foreach ($line in $lines) {
 # We explicitly list them or exclude the known block files
 $files = Get-ChildItem *.txt | Where-Object { 
     $_.Name -ne "1.sans.txt" -and 
-    $_.Name -ne "4.bae_han.txt" -and 
+    $_.Name -ne "4.han bal.txt" -and 
     $_.Name -ne "5.bae_jik.txt" -and 
     $_.Name -ne "6.bae_uu.txt" 
 }
@@ -111,10 +115,10 @@ foreach ($file in $files) {
     foreach ($textLine in $contentLines) {
         if ($textLine -eq $null) { continue }
         $textLine = $textLine.Trim()
-        # Match "1-1. Text"
-        if ($textLine -match "^(\d+)-(\d+)[\.\s]+(.*)$") {
+        # Match "1-1. Text" or "1-1 Text"
+        if ($textLine -match "^(\d+)-(\d+)[\.\s]*(.*)$") {
             $id = "$($Matches[1]).$($Matches[2])"
-            $text = $Matches[3]
+            $text = $Matches[3].Trim()
             
             $sutra = Get-OrCreateSutra $id
             $sutra[$keyName] = $text
@@ -123,7 +127,7 @@ foreach ($file in $files) {
 }
 
 # 3. Process Specific Block Format Files
-Process-BlockFile "4.bae_han.txt" "pronunciation_kr"
+Process-BlockFile "4.han bal.txt" "pronunciation_kr"
 Process-BlockFile "5.bae_jik.txt" "5.bae_jik"
 Process-BlockFile "6.bae_uu.txt" "6.bae_uu"
 
@@ -245,9 +249,16 @@ foreach ($id in $sortedIds) {
     $outputList += $sutras[$id]
 }
 
+# Integrity Check
+if ($outputList.Count -ne 196) {
+    Write-Warning "Inconsistent Sutra Count: Found $($outputList.Count), Expected 196. Please Check 1.sans.txt or parsing logic."
+}
+
 $json = $outputList | ConvertTo-Json -Depth 4 -Compress
 $jsContent = "const sutras = $json;"
 
+# Output to both data.js and public/data.json
 [System.IO.File]::WriteAllText("$PWD\data.js", $jsContent, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllText("$PWD\public\data.json", $json, [System.Text.Encoding]::UTF8)
 
-Write-Host "Successfully generated data.js with $( $outputList.Count ) sutras."
+Write-Host "Successfully generated data.js and public/data.json with $( $outputList.Count ) sutras."

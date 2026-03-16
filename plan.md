@@ -120,19 +120,19 @@
     - [x] `git add .`, `git commit`, `git push` 자동 실행 완료.
 
 
-- [x] **데이터 정제 및 원천 파일 동기화**
-    - [x] `public/data_updated_3_22_3_36.json`에서 3.22 ~ 3.36 구간 데이터 추출.
-    - [x] `4.han bal.txt`: 해당 구간의 깨진 한글 발음 데이터를 추출된 데이터로 정밀 교체.
-    - [x] `7.dan.txt`: 해당 구간의 단어 해석 데이터를 추출된 데이터 스타일로 교체.
-    - [x] **주의**: 3.22 ~ 3.36 외의 다른 구간 데이터가 손상되지 않도록 개별 행(Row) 단위로 패치.
-- [x] **데이터 파이프라인 무결성 가동**
-    - [x] `generate_data.ps1` 실행을 통한 `data.js` 및 `public/data.json` 빌드.
-    - [x] 빌드 후 `data.js` 파일의 3.22 ~ 3.36 구간 데이터 인코딩 및 키값 존재 여부 확인.
-- [x] **UI 렌더링 품질 검수 (QA)**
-    - [x] `VerseView` 컴포넌트에서 3.22 ~ 3.36 각 구절 로딩 시 `WordMeanings` 아코디언 정상 작동 확인.
-    - [x] 한글 발음의 특수 기호(`-`, `｜`) 정제 로직 적용 상태 시각적 점검.
-- [x] **최종 배포 및 자취 기록**
-    - [x] `feat: update sutra 3.22-3.36 pronunciation and definitions` 메시지로 자동 커밋 및 푸시.
+## Phase 19: 3장 22~36절 데이터 누락 수정 및 시스템 복구 (Fix Plan)
+- [x] **데이터 무결성 및 인코딩 복구**
+    - [x] `public/data_updated_3_22_3_36.json` (원본 `data.json`)의 깨진 한글 데이터를 복구하고 `public/data.json`으로 물리적 통합.
+    - [x] 원천 `.txt` 파일(`4.han bal.txt`, `7.dan.txt`)의 인코딩을 UTF-8(No BOM)로 강제 변환하여 파이프라인 호환성 확보.
+- [x] **데이터 생성 파이프라인(`generate_data.ps1`) 로직 강화**
+    - [x] Sutra 총계(196개) 검증 로직 추가 및 3.22~3.36 구간 IAST 특수문자 파싱 오류 수정.
+    - [x] `$PWD\data.js` 뿐만 아니라 `public/data.json`도 동시에 갱신하도록 동기화 코드 삽입.
+- [ ] **프론트엔드 데이터 로딩 로직 점검**
+    - [ ] `fetchYogaData`가 캐시된 예전 `data.json`을 참조하지 않도록 캐시 무효화 및 로딩 무결성 테스트.
+    - [ ] 데이터 부재 시 이전 구절을 보여주는 `getVerseInRange` 로직에 대한 경고 알림 또는 에러 처리 검토.
+- [ ] **최종 배포 및 검증**
+    - [ ] 3.22 페이지에서 `sopakrama...` 산스크리트어와 한글 발음이 정확히 일치하는지 전수 검사.
+    - [ ] `feat: fix data pipeline and achieve 100% sutra data integrity` 메시지로 커밋 및 푸시.
 
 ---
 
