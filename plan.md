@@ -153,8 +153,32 @@
     - [x] `data.js` 및 `public/data.json` 재생성.
     - [x] 수트라 1.2 (`yogaś | citta-vṛtti-nirodhaḥ`) 등 복합어가 포함된 구절의 매핑 결과 전수 조사.
     - [x] 3.22 등 신규 업데이트 구간 데이터의 단어 해석 일치 여부 확인.
+- [x] **최종 배포 및 자동 커밋**
+    - [x] `feat: fix word-by-word mapping by filtering symbols and splitting compound words` 메시지로 커밋 및 푸시.
+
+## Phase 22: 단어 해석(Word-by-word) 정렬 순서 복구
+- [ ] **`generate_data.ps1` 내 데이터 구조 순서화 ([ordered] 도입)**
+    - [ ] `sutraData` 전역 맵 초기화 시 `[ordered]@ {}` 적용.
+    - [ ] `word_meanings` 객체 초기화 시 `[ordered]@ {}` 적용하여 `7.dan.txt`의 출현 순서 강제 보존.
+- [ ] **데이터 재생성 및 구조 검증**
+    - [ ] `generate_data.ps1` 실행하여 `data.js` 갱신.
+    - [ ] `data.js` 내 JSON 객체의 키 순서가 `7.dan.txt`와 100% 일치하는지 실물 검수.
 - [ ] **최종 배포 및 자동 커밋**
-    - [ ] `feat: fix word-by-word mapping by filtering symbols and splitting compound words` 메시지로 커밋 및 푸시.
+    - [ ] `feat: preserve word-by-word meaning order using ordered hashtables` 메시지로 커밋 및 푸시.
+
+## Phase 23: 단어 해석 순서 보장 및 데이터 런타임 정규화 (Ray Standard) (Completed)
+- [x] **데이터 소스 교체 및 정규화 구현 (`dataFetcher.ts`)**
+    - [x] `data.json` 대신 `data_updated_3_22_3_36.json`을 기본 소스로 사용하도록 수정.
+    - [x] `word_meanings` 객체를 순서가 보장된 `{ word, meaning }[]` 배열로 변환하는 런타임 로직 구현.
+- [x] **타입 시스템 정합성 확보 (`types.ts`)**
+    - [x] `WordMeaning` 타입을 `Record<string, string>`에서 `Array<{ word: string, meaning: string }>` 구조로 변경.
+    - [x] `YogaSutra` 인터페이스의 `word_meanings` 필드 타입 업데이트.
+- [x] **UI/UX 고도화 및 레이아웃 수선 (`WordMeanings.tsx`)**
+    - [x] 배열 기반 렌더링으로 전환하여 중복 단어 누락 및 순서 왜곡 원천 차단.
+    - [x] 2열 그리드 배치 시 시각적 흐름(Scanability) 개선을 위한 구분선 및 간격 재설계.
+- [x] **최종 무결성 검증 및 코드 숙청**
+    - [x] 중복 단어가 포함된 구절에서 데이터 누락 여부 전수 검사.
+    - [x] `console.log` 및 불필요한 주석 제거 확인 후 오토 커밋/푸시.
 
 ---
 

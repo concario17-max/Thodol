@@ -1,6 +1,9 @@
-export interface WordMeaning {
-    [key: string]: string;
+export interface WordMeaningEntry {
+    word: string;
+    meaning: string;
 }
+
+export type WordMeaning = WordMeaningEntry[];
 
 export interface Grammar {
     [key: string]: string;

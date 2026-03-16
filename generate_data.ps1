@@ -1,13 +1,13 @@
 # encoding set to UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-$sutras = @{}
+$sutras = [ordered]@{}
 
 # Function to ensure nested object exists
 function Get-OrCreateSutra {
     param ($id)
-    if (-not $sutras.ContainsKey($id)) {
-        $sutras[$id] = @{ id = $id }
+    if (-not $sutras.Contains($id)) {
+        $sutras[$id] = [ordered]@{ id = $id }
     }
     return $sutras[$id]
 }
@@ -57,7 +57,7 @@ function Process-BlockFile {
             }
 
             $sutra = Get-OrCreateSutra $currentId
-            if ($sutra.ContainsKey($keyName) -and -not [string]::IsNullOrEmpty($sutra[$keyName])) {
+            if ($sutra.Contains($keyName) -and -not [string]::IsNullOrEmpty($sutra[$keyName])) {
                 $sutra[$keyName] += " $line"
             }
             else {
@@ -137,7 +137,7 @@ Process-BlockFile "6.bae_uu.txt" "6.bae_uu"
 Write-Host "Processing 7.dan.txt for word meanings (Sequential Mapping)..."
 
 # First, we need to re-parse 1.sans.txt to get the ordered list of words for each Sutra
-$sansWordsMap = @{}
+$sansWordsMap = [ordered]@{}
 $lines = Get-Content "1.sans.txt" -Encoding UTF8
 $currentId = $null
 $state = 0
@@ -197,14 +197,12 @@ if (Test-Path "7.dan.txt") {
             if ($parts.Length -eq 2) {
                 # $ocrKey = $parts[0] # The key in 7.dan.txt (might be typo like 'aiha')
                 $meaning = $parts[1]
-
-                $sutra = Get-OrCreateSutra $currentId
-                if (-not $sutra.ContainsKey("word_meanings")) {
-                    $sutra["word_meanings"] = @{}
+                if (-not $sutra.Contains("word_meanings")) {
+                    $sutra["word_meanings"] = [ordered]@{}
                 }
 
                 # Get the correct Sanskrit word from our map
-                if ($sansWordsMap.ContainsKey($currentId)) {
+                if ($sansWordsMap.Contains($currentId)) {
                     $wordList = $sansWordsMap[$currentId]
                     
                     if ($definitionIndex -lt $wordList.Count) {

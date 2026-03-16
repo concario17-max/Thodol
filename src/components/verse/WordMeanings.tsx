@@ -9,9 +9,7 @@ interface WordMeaningsProps {
 export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    if (!meanings || Object.keys(meanings).length === 0) return null;
-
-    const entries = Object.entries(meanings);
+    if (!meanings || meanings.length === 0) return null;
 
     return (
         <div className="w-full mb-8">
@@ -38,11 +36,12 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                 style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
             >
                 <div className="overflow-hidden">
+                    {/* 2-column layout on desktop, single on mobile. Grid-cols-1 vs md:grid-cols-2 */}
                     <div className="glass-panel rounded-2xl p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                        {entries.map(([word, meaning], index) => (
+                        {meanings.map(({ word, meaning }, index) => (
                             <div 
-                                key={word} 
-                                className="flex flex-col sm:flex-row sm:items-baseline py-3 border-b border-gold-primary/10 last:border-0 md:odd:border-r md:odd:pr-6 md:odd:border-b-0 md:even:border-b-0 md:border-b-0 group"
+                                key={`${word}-${index}`} 
+                                className="flex flex-col sm:flex-row sm:items-baseline py-3 border-b border-gold-primary/10 last:border-0 group"
                                 style={{ 
                                     animation: isOpen ? `reveal 0.6s var(--transition-lazy) ${index * 0.05}s forwards` : 'none',
                                     opacity: 0 
