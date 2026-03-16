@@ -63,7 +63,9 @@ export const SidebarLayout = React.memo(({
                     </div>
                 )}
 
-                {children}
+                <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain pb-safe-offset-4">
+                    {children}
+                </div>
             </aside>
         </>
     );

@@ -27,6 +27,22 @@
     /* Animation Tokens */
     --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     --transition-lazy: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Fluid Typography (Viewport based scaling) */
+    --font-size-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
+    --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
+    --font-size-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
+    --font-size-lg: clamp(1.1rem, 1rem + 0.5vw, 1.25rem);
+    --font-size-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+    --font-size-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);
+    --font-size-3xl: clamp(1.875rem, 1.6rem + 1.25vw, 2.5rem);
+    --font-size-huge: clamp(2.5rem, 2rem + 2.5vw, 4rem);
+
+    /* Dynamic Spacing */
+    --spacing-fluid-sm: clamp(0.5rem, 0.4rem + 0.5vw, 1rem);
+    --spacing-fluid-md: clamp(1rem, 0.8rem + 1vw, 2rem);
+    --spacing-fluid-lg: clamp(2rem, 1.5rem + 2vw, 4rem);
+    --spacing-fluid-xl: clamp(4rem, 3rem + 4vw, 8rem);
 }
 
 /* Tailwind 4 Dark Mode Configuration (Selector Strategy) */
@@ -102,7 +118,7 @@
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 1.0625rem !important; 
+    font-size: var(--font-size-base) !important; 
     line-height: 1.7;
     @apply bg-gold-bg text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
 }

@@ -9,6 +9,35 @@ import { TranslationSection } from '../components/verse/TranslationSection';
 import { SutraNavigation } from '../components/verse/SutraNavigation';
 import { WordMeanings } from '../components/verse/WordMeanings';
 import { useSutraNavigation } from '../hooks/useSutraNavigation';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.1
+        }
+    },
+    exit: {
+        opacity: 0,
+        y: -10,
+        transition: { duration: 0.3 }
+    }
+};
+
+const itemVariants: Variants = {
+    hidden: { y: 15, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.6,
+            ease: "easeOut"
+        }
+    }
+};
 
 const VerseView = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
@@ -81,68 +110,77 @@ const VerseView = () => {
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
 
     return (
-        <div className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-6">
-            <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6 space-y-12">
-                <div className="reveal-item" style={{ animationDelay: '0.1s' }}>
-                    <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
-                </div>
+        <AnimatePresence mode="wait">
+            <motion.div 
+                key={`${chapterNum}-${verseNum}`}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={containerVariants}
+                className="min-h-full flex flex-col justify-center font-crimson text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-6"
+            >
+                <div className="mx-auto w-full max-w-[1000px] px-4 sm:px-6 space-y-12">
+                    <motion.div variants={itemVariants}>
+                        <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
+                    </motion.div>
 
-                <div className="reveal-item" style={{ animationDelay: '0.2s' }}>
-                    <SutraContent 
-                        sanskrit={verseData.sanskrit}
-                        pronunciation={verseData.pronunciation}
-                        pronunciationKr={verseData.pronunciation_kr}
+                    <motion.div variants={itemVariants}>
+                        <SutraContent 
+                            sanskrit={verseData.sanskrit}
+                            pronunciation={verseData.pronunciation}
+                            pronunciationKr={verseData.pronunciation_kr}
+                        />
+                    </motion.div>
+
+                    <motion.div variants={itemVariants}>
+                        <WordMeanings meanings={verseData.word_meanings} />
+                    </motion.div>
+
+                    <audio
+                        ref={audioRef}
+                        src={audioSrc}
+                        onTimeUpdate={handleTimeUpdate}
+                        onLoadedMetadata={handleLoadedMetadata}
+                        onEnded={handleAudioEnded}
+                        className="hidden"
                     />
-                </div>
 
-                <div className="reveal-item" style={{ animationDelay: '0.25s' }}>
-                    <WordMeanings meanings={verseData.word_meanings} />
-                </div>
+                    <motion.div variants={itemVariants}>
+                        <AudioPlayer 
+                            isPlaying={isPlaying}
+                            togglePlay={togglePlay}
+                            currentTime={currentTime}
+                            duration={duration}
+                            progressPercent={progressPercent}
+                            formatTime={formatTime}
+                            onSeek={seek}
+                        />
+                    </motion.div>
 
-                <audio
-                    ref={audioRef}
-                    src={audioSrc}
-                    onTimeUpdate={handleTimeUpdate}
-                    onLoadedMetadata={handleLoadedMetadata}
-                    onEnded={handleAudioEnded}
-                    className="hidden"
-                />
+                    <motion.div variants={itemVariants}>
+                        <TranslationSection 
+                            english={verseData['2.english']}
+                            korean1={verseData['3.korean-1']}
+                            baeJik={verseData['5.bae_jik']}
+                            baeUu={verseData['6.bae_uu']}
+                            oxfordKr={verseData['8. ox']}
+                            oxfordEn={verseData['9. ox-en']}
+                        />
+                    </motion.div>
 
-                <div className="reveal-item" style={{ animationDelay: '0.3s' }}>
-                    <AudioPlayer 
-                        isPlaying={isPlaying}
-                        togglePlay={togglePlay}
-                        currentTime={currentTime}
-                        duration={duration}
-                        progressPercent={progressPercent}
-                        formatTime={formatTime}
-                        onSeek={seek}
-                    />
+                    <motion.div variants={itemVariants}>
+                        <SutraNavigation 
+                            chapterNum={chapterNum}
+                            verseRange={verseRange}
+                            onPrev={handlePrev}
+                            onNext={handleNext}
+                            isPrevDisabled={parseInt(chapterNum) === 1 && currentIndex === 0}
+                            isNextDisabled={parseInt(chapterNum) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                        />
+                    </motion.div>
                 </div>
-
-                <div className="reveal-item" style={{ animationDelay: '0.4s' }}>
-                    <TranslationSection 
-                        english={verseData['2.english']}
-                        korean1={verseData['3.korean-1']}
-                        baeJik={verseData['5.bae_jik']}
-                        baeUu={verseData['6.bae_uu']}
-                        oxfordKr={verseData['8. ox']}
-                        oxfordEn={verseData['9. ox-en']}
-                    />
-                </div>
-
-                <div className="reveal-item" style={{ animationDelay: '0.5s' }}>
-                    <SutraNavigation 
-                        chapterNum={chapterNum}
-                        verseRange={verseRange}
-                        onPrev={handlePrev}
-                        onNext={handleNext}
-                        isPrevDisabled={parseInt(chapterNum) === 1 && currentIndex === 0}
-                        isNextDisabled={parseInt(chapterNum) === 4 && currentIndex === currentChapter.sutras.length - 1}
-                    />
-                </div>
-            </div>
-        </div>
+            </motion.div>
+        </AnimatePresence>
     );
 };
 
