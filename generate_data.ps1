@@ -195,8 +195,10 @@ if (Test-Path "7.dan.txt") {
             
             $parts = $line -split ' ', 2
             if ($parts.Length -eq 2) {
-                # $ocrKey = $parts[0] # The key in 7.dan.txt (might be typo like 'aiha')
+                # [FIX]: Fetch the correct sutra object for the current ID
+                $sutra = Get-OrCreateSutra $currentId
                 $meaning = $parts[1]
+                
                 if (-not $sutra.Contains("word_meanings")) {
                     $sutra["word_meanings"] = [ordered]@{}
                 }
@@ -207,22 +209,11 @@ if (Test-Path "7.dan.txt") {
                     
                     if ($definitionIndex -lt $wordList.Count) {
                         $correctKey = $wordList[$definitionIndex]
-                        
-                        # Normalize key for consistency (remove diacritics for JS key matching if needed, 
-                        # but User wants correct 'atha' -> 'aiha' mapping. 
-                        # The JS likely normalizes input 'atha' to look up 'atha'.
-                        # So we should save the key as 'atha' (from 1.sans.txt)
-                        # We do minimal normalization here to match JS logic if it strips dots etc?
-                        # Actually 1.sans.txt has 'anuśāsanam', we want to save key 'anuśāsanam' 
-                        # OR valid IAST.
-                        # Let's clean the key slightly (lowercase, trim)
                         $cleanKey = $correctKey.ToLower().Trim(".,")
-                        
                         $sutra["word_meanings"][$cleanKey] = $meaning
                     }
                     else {
                         # Fallback if indices don't match (extra definition?)
-                        # Use the key from file
                         $sutra["word_meanings"][$parts[0]] = $meaning
                         Write-Warning "Sutra ${currentId}: Extra definition found at index $definitionIndex. Using OCR key '$($parts[0])'."
                     }
@@ -239,14 +230,16 @@ if (Test-Path "7.dan.txt") {
 }
 
 # 5. Sort and Save
+Write-Host "Summarizing and saving data..."
 $sortedIds = $sutras.Keys | Sort-Object { 
     $parts = $_.Split('.')
     [int]$parts[0] * 1000 + [int]$parts[1] 
 }
 
-$outputList = @()
+# Use Generic List for better performance
+$outputList = New-Object System.Collections.Generic.List[object]
 foreach ($id in $sortedIds) {
-    $outputList += $sutras[$id]
+    $outputList.Add($sutras[$id])
 }
 
 # Integrity Check
@@ -254,6 +247,7 @@ if ($outputList.Count -ne 196) {
     Write-Warning "Inconsistent Sutra Count: Found $($outputList.Count), Expected 196. Please Check 1.sans.txt or parsing logic."
 }
 
+# Convert to JSON (Depth 4 is required for word_meanings nesting)
 $json = $outputList | ConvertTo-Json -Depth 4 -Compress
 $jsContent = "const sutras = $json;"
 
