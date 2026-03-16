@@ -1,39 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-    /* ... existing theme variables ... */
-    --color-primary: #B8860B;
-    --color-primary-dark: #8B6508;
-    --color-primary-light: #D4AF37;
-    --color-background-light: #FBF9F2;
-    --color-background-paper: #F3EEE0;
-    --color-text-main: #2C2820;
-    --color-text-primary: #2C2820;
-    --color-text-secondary: #6B6455;
-    --color-text-muted: #6B6455;
-    --color-gold-accent: #B8860B;
-    --color-gold-primary: #B8860B;
-    --color-gold-light: #D4AF37;
-    --color-gold-bg: #F7F3E9;
-    --color-gold-surface: #EDE7D8;
-    --color-gold-border: #DBCFBA;
-    --color-dark-bg: #0A0A0A; /* 더 깊은 블랙 */
+    --color-primary: #b8860b;
+    --color-primary-dark: #8b6508;
+    --color-primary-light: #d4af37;
+    --color-background-light: #fbf9f2;
+    --color-background-paper: #f3eee0;
+    --color-text-main: #2c2820;
+    --color-text-primary: #2c2820;
+    --color-text-secondary: #6b6455;
+    --color-text-muted: #6b6455;
+    --color-gold-accent: #b8860b;
+    --color-gold-primary: #b8860b;
+    --color-gold-light: #d4af37;
+    --color-gold-bg: #f7f3e9;
+    --color-gold-surface: #ede7d8;
+    --color-gold-border: #dbcfba;
+    --color-dark-bg: #0a0a0a;
     --color-dark-surface: #141414;
     --color-dark-border: #262626;
-    --color-dark-text-primary: #E5DDCB;
-    --color-dark-text-secondary: #A09D96;
+    --color-dark-text-primary: #e5ddcb;
+    --color-dark-text-secondary: #a09d96;
     --color-ink: #161618;
-    
-    /* Font Families */
-    --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-    --font-display: "Pretendard Variable", Pretendard, system-ui, sans-serif;
-    --font-serif: "Crimson Pro", "Noto Serif KR", serif;
 
-    /* Animation Tokens */
+    --font-sans: "SUIT", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", sans-serif;
+    --font-display: "Cormorant Garamond", "Noto Serif KR", serif;
+    --font-serif: "Cormorant Garamond", "Noto Serif KR", serif;
+
     --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     --transition-lazy: cubic-bezier(0.2, 0, 0, 1);
 
-    /* Fluid Typography (Viewport based scaling) */
     --font-size-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
     --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
     --font-size-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
@@ -43,14 +39,12 @@
     --font-size-3xl: clamp(1.875rem, 1.6rem + 1.25vw, 2.5rem);
     --font-size-huge: clamp(2.5rem, 2rem + 2.5vw, 4rem);
 
-    /* Dynamic Spacing */
     --spacing-fluid-sm: clamp(0.5rem, 0.4rem + 0.5vw, 1rem);
     --spacing-fluid-md: clamp(1rem, 0.8rem + 1vw, 2rem);
     --spacing-fluid-lg: clamp(2rem, 1.5rem + 2vw, 4rem);
     --spacing-fluid-xl: clamp(4rem, 3rem + 4vw, 8rem);
 }
 
-/* Tailwind 4 Dark Mode Configuration (Selector Strategy) */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
@@ -90,7 +84,7 @@
     }
 
     .text-gold-gradient {
-        background: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #B8860B 100%);
+        background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -109,21 +103,27 @@
         box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.5);
     }
 
-    /* Meta-Design Animations */
     .reveal-item {
         animation: reveal 0.8s var(--transition-lazy) forwards;
     }
 
     @keyframes reveal {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 }
 
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: var(--font-size-base) !important; 
+    font-size: var(--font-size-base) !important;
     line-height: 1.7;
     font-family: var(--font-sans);
     @apply bg-gold-bg text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
@@ -131,7 +131,8 @@ body {
 
 .font-display {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
+    font-feature-settings: "liga" 1, "kern" 1;
 }
 
 .font-serif {
@@ -142,7 +143,15 @@ body {
     font-family: var(--font-sans);
 }
 
-.font-noto-kr, .font-kr-serif {
+.font-noto-kr,
+.font-kr-serif {
+    font-family: var(--font-sans);
     line-height: 1.9 !important;
     letter-spacing: -0.02em;
+}
+
+.font-serif-kr {
+    font-family: "Noto Serif KR", var(--font-display);
+    line-height: 1.9 !important;
+    letter-spacing: -0.01em;
 }
