@@ -159,9 +159,11 @@ foreach ($line in $lines) {
         }
         elseif ($state -eq 2) {
             # Pronunciation line - extract words
-            # This is "atha yoga anusasanam"
             if (-not [string]::IsNullOrWhiteSpace($line)) {
-                $sansWordsMap[$currentId] = $line -split "\s+"
+                # Remove symbols like |, ||, ., , and trim
+                $cleanLine = $line -replace '\|\|', '' -replace '\|', '' -replace '\.', '' -replace ',', ''
+                # Split by whitespace OR hyphen to handle compound words
+                $sansWordsMap[$currentId] = $cleanLine.Split(" -", [System.StringSplitOptions]::RemoveEmptyEntries)
             }
             $state = 0
         }

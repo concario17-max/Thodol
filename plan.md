@@ -139,8 +139,22 @@
 - [x] **렌더링 무결성 검증**
     - [x] 브라우저에서 3장 22절 및 주요 구절의 한글 발음 노출 여부 확인.
     - [x] `SutraContent.tsx` 내의 발음 정제 로직(하이픈 및 파이프 기호 제거)이 정상 작동하는지 재차 확인.
+- [x] **최종 배포 및 자동 커밋**
+    - [x] `feat: fix korean pronunciation display by unifying field names` 메시지로 커밋 및 푸시.
+
+## Phase 21: 단어 해석(Word-by-word) 매핑 정합성 수선
+- [x] **데이터 생성 파이프라인(`generate_data.ps1`) 단어 분절 로직 리팩토링**
+    - [x] 발음 열(`pronunciation`) 추출 시 문장 기호(`|`, `||`) 및 마침표(.) 등 불필요한 기호 전수 제거.
+    - [x] 산스크리트어 단어를 공백(`\s+`) 뿐만 아니라 하이픈(`-`) 기준으로도 분절하여 개별 단어 토큰 생성.
+- [x] **매핑 엔진 고도화 (`7.dan.txt` 처리 루틴)**
+    - [x] 분절된 산스크리트어 토큰 리스트와 `7.dan.txt` 해석 리스트의 1:1 순차 매핑 로직 안정화.
+    - [x] 기호에 대한 해석 할당 방지 로직 적용.
+- [x] **데이터 재생성 및 정합성 검증**
+    - [x] `data.js` 및 `public/data.json` 재생성.
+    - [x] 수트라 1.2 (`yogaś | citta-vṛtti-nirodhaḥ`) 등 복합어가 포함된 구절의 매핑 결과 전수 조사.
+    - [x] 3.22 등 신규 업데이트 구간 데이터의 단어 해석 일치 여부 확인.
 - [ ] **최종 배포 및 자동 커밋**
-    - [ ] `feat: fix korean pronunciation display by unifying field names` 메시지로 커밋 및 푸시.
+    - [ ] `feat: fix word-by-word mapping by filtering symbols and splitting compound words` 메시지로 커밋 및 푸시.
 
 ---
 
