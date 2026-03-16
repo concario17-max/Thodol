@@ -37,7 +37,6 @@ export interface YogaSutra {
     "9. ox-en"?: string;
     sanskrit: string;
     "3.korean-1"?: string;
-    "4.han bal"?: string;
     word_meanings?: WordMeaning;
     tokens?: Token[];
     compound_tokens_original?: CompoundToken[];

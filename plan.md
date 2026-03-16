@@ -127,12 +127,20 @@
 - [x] **데이터 생성 파이프라인(`generate_data.ps1`) 로직 강화**
     - [x] Sutra 총계(196개) 검증 로직 추가 및 3.22~3.36 구간 IAST 특수문자 파싱 오류 수정.
     - [x] `$PWD\data.js` 뿐만 아니라 `public/data.json`도 동시에 갱신하도록 동기화 코드 삽입.
-- [ ] **프론트엔드 데이터 로딩 로직 점검**
-    - [ ] `fetchYogaData`가 캐시된 예전 `data.json`을 참조하지 않도록 캐시 무효화 및 로딩 무결성 테스트.
-    - [ ] 데이터 부재 시 이전 구절을 보여주는 `getVerseInRange` 로직에 대한 경고 알림 또는 에러 처리 검토.
-- [ ] **최종 배포 및 검증**
-    - [ ] 3.22 페이지에서 `sopakrama...` 산스크리트어와 한글 발음이 정확히 일치하는지 전수 검사.
-    - [ ] `feat: fix data pipeline and achieve 100% sutra data integrity` 메시지로 커밋 및 푸시.
+
+## Phase 20: 한글 발음 필드명 정합성 및 렌더링 수선
+- [x] **프론트엔드 데이터 바인딩 수정 (`VerseView.tsx`)**
+    - [x] `SutraContent` 컴포넌트로 전달하는 `pronunciationKr` prop의 참조값을 `verseData['4.han bal']`에서 `verseData.pronunciation_kr`로 변경.
+- [x] **타입 정의 표준화 및 정화 (`src/types.ts`)**
+    - [x] `YogaSutra` 인터페이스에서 더 이상 사용하지 않는 `4.han bal` 옵셔널 필드 제거.
+    - [x] `pronunciation_kr` 필드를 필수 또는 표준 필드로 확정하여 타입 안정성 확보.
+- [x] **전역 타입 체크 및 사이드 이펙트 제거**
+    - [x] `npm run typecheck`를 실행하여 필드명 변경에 따른 컴파일 에러 전수 수정.
+- [x] **렌더링 무결성 검증**
+    - [x] 브라우저에서 3장 22절 및 주요 구절의 한글 발음 노출 여부 확인.
+    - [x] `SutraContent.tsx` 내의 발음 정제 로직(하이픈 및 파이프 기호 제거)이 정상 작동하는지 재차 확인.
+- [ ] **최종 배포 및 자동 커밋**
+    - [ ] `feat: fix korean pronunciation display by unifying field names` 메시지로 커밋 및 푸시.
 
 ---
 
