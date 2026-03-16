@@ -1,40 +1,53 @@
-# 단어 해석 순서 보장 및 데이터 무결성 개선 보고서
+# 요가 프로젝트(Yoga Sutras) 기술 및 아키텍처 상세 분석 보고서
 
-## 1. 분석 결과 (Analysis)
+## 1. 개요 (Overview)
+본 프로젝트는 고전인 '요가 수트라'를 현대적인 감각의 하이엔드 웹 환경으로 재해석한 플랫폼입니다. React 19와 Vite 7, Tailwind 4 등 최신 기술 스택을 기반으로 하며, "Ray Standard"라는 엄격한 코딩 규준과 Meta-Design 철학을 따르고 있습니다.
 
-### 문제 정의
-- 기존 `word_meanings` 데이터가 JavaScript 객체(`{}`) 형식으로 저장되어 있어, 동일한 단어가 한 구절 내에서 반복될 경우 데이터가 덮어씌워지는 현상 발생.
-- 객체 구조는 키(Key)의 순서를 엄격하게 보장하지 않으므로, 경전의 산스크리트어 어순과 단어 해석의 순서가 일치하지 않는 문제 확인.
-- `public/data.json` 소스가 최신 업데이트를 반영하지 못해 대다수 구절의 단어 해석이 누락됨.
+## 2. 기술 스택 (Technology Stack)
+- **Core**: React 19 (Hooks, Suspense, Lazy Loading)
+- **Tooling**: Vite 7, TypeScript, Vitest (TDD 인프라)
+- **Styling**: Tailwind CSS 4 (Selector-based Dark Mode, CSS Variable Tokens)
+- **Animation**: Framer Motion (Reveal 효과, 부드러운 트랜지션)
+- **Icons**: Lucide-React
+- **Persistence**: LocalStorage (인증, 사용자 세팅, 통찰 기록)
 
-### 기술적 부채
-- `Component` 내에서 `Object.entries()`를 사용하여 렌더링함으로써 런타임 오버헤드 및 순서 제어권 상실.
-- 타입 정의가 유연하지 못해 데이터 구조 변경 시 안정성 확보 어려움.
+## 3. 핵심 아키텍처 (Architecture)
 
-## 2. 해결 전략 (Solution)
+### A. Zero Monolith & Modular Design
+- **레이아웃 분리**: `AppShell`, `SidebarLayout` 등 구조적 틀을 담당하는 컴포넌트를 분리하여 비즈니스 로직과의 결합도를 낮춤.
+- **모듈화**: 기능별(verse, ui) 컴포넌트 분리 및 관심사 분리(SoC)를 철저히 이행. 파일당 800라인, 함수당 50라인 제한 규준 준수.
 
-### 데이터 레이어 정규화
-- **데이터 소스 교체**: 단어 해석이 100% 포함된 `public/data_updated_3_22_3_36.json`을 메인 소스로 채택.
-- **런타임 변환 (Normalization)**: `dataFetcher.ts`에서 데이터를 로드할 때, `word_meanings` 객체를 `{ word, meaning }` 형태의 배열로 즉시 변환. 이를 통해 원본 JSON에 정의된 작성 순서를 런타임 메모리에서도 완벽히 유지함.
+### B. 데이터 흐름 (Data Flow)
+1. **정적 데이터 소스**: `public/*.json` 파일에 경전 데이터 및 사전(Lexicon) 데이터가 저장됨.
+2. **Data Fetcher**: `dataFetcher.ts`에서 데이터를 로드하고 런타임에서 정규화(Normalization, 예: 객체->배열 변환)를 수행.
+3. **Custom Hooks**: `useYogaData`를 통해 전역적으로 데이터를 공급하며, `useAudio`, `useSutraNavigation` 등을 통해 기능별 로직을 캡슐화함.
 
-### 타입 시스템 강화
-- `types.ts`에서 `WordMeaning`을 배열 타입으로 재정의.
-- `RawSutra` 인터페이스를 도입하여 외부 데이터 로드 시의 타입 안정성 및 `any` 사용 지양(Ray Standard 준수).
+### C. 상태 관리 (State Management)
+- **UIContext**: 전역 Context API를 사용하여 반응형 사이드바, 우측 패널(Reflections, Commentary)의 상태를 통합 관리.
+- **Responsive Logic**: 데스크탑(고정/확장)과 모바일(드로워/오버레이)에 최적화된 동적 레이아웃 로직 구현.
 
-### UI/UX 리팩토링 (`WordMeanings.tsx`)
-- 배열 매핑 방식으로 전환하여 데이터 순서를 시각적으로 1:1 투영.
-- 2열 그리드(md:grid-cols-2) 환경에서도 사용자의 시선이 행(Row) 방향으로 자연스럽게 흐르도록 개별 아이템의 구분선과 간격을 조정.
-- 중복된 단어가 등장하더라도 고유한 키(`${word}-${index}`)를 생성하여 React 렌더링 최적화 및 경고 제거.
+## 4. 디자인 및 사용자 인터랙션 (Design & Interaction)
 
-## 3. 검증 결과 (Verification)
+### A. Meta-Design 가이드라인
+- **색상 체계**: Deep Gold (#B8860B)와 Anthracite Dark (#0A0A0A)를 기조로 한 럭셔리한 테마.
+- **시각 효과**: Glassmorphism (`glass-panel`), Radial Gradient 스포트라이트 배경, 미세한 조작 피드백(Scale/Color transition).
+- **타이포그래피**: 고전미와 현대미의 조화 (`Crimson Pro` 세리프와 `Inter` 산세리프, `Noto Sans KR` 사용).
 
-- **타입 체크**: `npm run typecheck` 통과. 전역 타입 정합성 확인.
-- **순서 검증**: 수트라 1.1, 1.2 등 주요 구절의 단어 해석 순서가 산스크리트어 원문 배치와 일치함을 확인.
-- **데이터 복구**: 이전 소스에서 누락되었던 3.22~3.36 등 모든 구절의 단어 해석이 정상적으로 노출됨을 확인.
+### B. 주요 기능 인터랙션
+- **Sutra Viewer**: 산스크리트어 원문, 다국어 발음, 단어별 해석, 다각도 번역(베일리, 서튼, 배철현) 노출.
+- **Audio Integration**: 구절별 오디오 파일 연동 및 커스텀 플레이어 UI.
+- **Reflections (통찰 기록)**: 사용자의 개인적 통찰을 기록하고 개별 또는 전체 내보내기(Export) 기능 제공.
+- **Password Gateway**: 프로젝트의 신성함과 프라이버시를 상징하는 테마형 진입 장벽.
 
-## 4. 결론
-이번 수정을 통해 요가 수트라 프로젝트의 핵심 기능인 '단어별 해석'의 무결성을 확보함. 단순한 버그 수정을 넘어 데이터 구조의 정규화를 통해 향후 유지보수성 및 확장성을 극대화함.
+## 5. 코딩 표준 (Ray Standard Compliance)
+- **Purity**: 모든 상태 업데이트는 불변성(Immutability)을 유지하며 스프레드 연산자를 활용.
+- **Efficiency**: `React.memo` 및 `useCallback`을 적극 활용하여 불필요한 리렌더링 방지.
+- **Cleanliness**: 모든 `console.log` 및 불필요한 주석 제거, 명확한 타입 정의(Type safety).
+- **TDD**: Vitest를 통한 핵심 비즈니스 로직의 단위 테스트 및 통합 테스트 구조 확보.
+
+## 6. 결론
+본 프로젝트는 높은 수준의 코드 무결성과 예술적인 UI를 동시에 추구하는 시각적/기능적 완성도가 매우 높은 수준의 웹 애플리케이션입니다. 특히 데이터의 정규화와 레이아웃의 유연한 대응 방식은 복잡한 텍스트 기반 콘텐츠를 처리하는 데 있어 최적의 사례를 보여줍니다.
 
 ---
-보고자: Antigravity (Ray Persona Enforcement)
+보고자: Antigravity (Advanced Agentic Coding Team)
 날짜: 2026-03-16
