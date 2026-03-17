@@ -52,7 +52,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="custom-scrollbar flex-none max-h-[40%] overflow-y-auto border-b border-gold-border/20 dark:border-[#222] overscroll-contain"
+                className="custom-scrollbar flex-none max-h-[58%] overflow-y-auto border-b border-gold-border/20 dark:border-[#222] overscroll-contain"
             >
                 {groupTitle && (
                     <div className="sticky top-0 z-10 hidden bg-transparent p-4 backdrop-blur-sm lg:block">
