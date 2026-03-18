@@ -1,11 +1,10 @@
-import { useState, useEffect, Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Reflections from './components/Reflections';
 import CommentarySidebar from './components/CommentarySidebar';
-import PasswordGateway from './components/PasswordGateway';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
@@ -66,28 +65,6 @@ const MainLayout = () => {
 };
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [isChecking, setIsChecking] = useState<boolean>(true);
-
-    useEffect(() => {
-        const authState = localStorage.getItem('yoga_authenticated') === 'true';
-        setIsAuthenticated(authState);
-        setIsChecking(false);
-    }, []);
-
-    const handleAuthenticate = () => {
-        localStorage.setItem('yoga_authenticated', 'true');
-        setIsAuthenticated(true);
-    };
-
-    if (isChecking) {
-        return <div className="min-h-screen bg-gold-bg dark:bg-dark-bg" />;
-    }
-
-    if (!isAuthenticated) {
-        return <PasswordGateway onAuthenticate={handleAuthenticate} />;
-    }
-
     return (
         <Router>
             <Routes>

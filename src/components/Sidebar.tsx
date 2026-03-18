@@ -91,14 +91,10 @@ const Sidebar = () => {
             onClose={() => setIsSidebarOpen(false)}
             title="챕터"
             position="left"
-            widthClass="w-80"
+            widthClass="w-[88vw] max-w-[360px]"
             desktopWidthClass="lg:w-80"
         >
-            <SidebarMenu
-                groups={groups}
-                onItemClick={() => setIsSidebarOpen(false)}
-                groupTitle="Chapters"
-            />
+            <SidebarMenu groups={groups} onItemClick={() => setIsSidebarOpen(false)} groupTitle="Chapters" />
         </SidebarLayout>
     );
 };

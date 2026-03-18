@@ -60,25 +60,25 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                     </div>
                 )}
 
-                <div className="space-y-0.5 px-2 py-1">
+                <div className="space-y-1 px-2 py-2 sm:space-y-0.5 sm:py-1">
                     {groups.map((group) => (
                         <motion.button
                             variants={itemVariants}
                             key={group.id}
                             onClick={group.onToggle}
-                            className={`w-full items-start justify-between gap-1.5 rounded-lg border px-2 py-1.5 text-left transition-colors active:scale-[0.98] sm:px-1.5 sm:py-1 ${
+                            className={`flex w-full items-start justify-between gap-2 rounded-xl border px-3 py-2.5 text-left transition-colors active:scale-[0.98] sm:gap-1.5 sm:rounded-lg sm:px-2 sm:py-1.5 ${
                                 group.isExpanded
                                     ? 'border-gold-primary/20 bg-white/60 text-[#1C2B36] shadow-sm dark:bg-dark-bg/60 dark:text-gold-light'
                                     : 'border-transparent text-[#5B7282] hover:bg-gold-surface/40 dark:text-dark-text-secondary dark:hover:bg-dark-bg/40'
-                            } flex`}
+                            }`}
                         >
-                            <div className="flex flex-1 flex-col pr-1 pt-0">
-                                <span className={`break-keep font-inter text-[14px] leading-snug sm:text-[13px] ${group.isExpanded ? 'font-bold text-[#1C2B36]' : 'font-bold'}`}>
+                            <div className="flex flex-1 flex-col pr-1">
+                                <span className={`break-keep text-[15px] leading-snug sm:text-[13px] ${group.isExpanded ? 'font-semibold text-[#1C2B36]' : 'font-semibold'}`}>
                                     {group.title}
                                 </span>
                                 {group.subtitle && (
                                     <span
-                                        className={`mt-0 break-keep font-inter text-[12px] sm:text-[11.5px] ${
+                                        className={`mt-0.5 break-keep text-[12px] sm:mt-0 sm:text-[11.5px] ${
                                             group.isExpanded ? 'font-medium text-[#1C2B36] opacity-50' : 'font-medium opacity-60'
                                         }`}
                                     >
@@ -87,7 +87,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                 )}
                             </div>
                             {group.badge && (
-                                <span className={`mt-0 shrink-0 rounded px-1.5 py-0.5 text-[11px] font-bold text-[#A68B5C] ${group.isExpanded ? 'opacity-100' : 'opacity-70'}`}>
+                                <span className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[11px] font-bold text-[#A68B5C] ${group.isExpanded ? 'opacity-100' : 'opacity-70'}`}>
                                     {group.badge}
                                 </span>
                             )}
@@ -97,7 +97,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
             </motion.div>
 
             <div className="custom-scrollbar flex-1 overflow-y-auto bg-transparent overscroll-contain">
-                <div className="space-y-0 px-2 py-1">
+                <div className="space-y-0.5 px-2 py-2 sm:space-y-0 sm:py-1">
                     {expandedGroup ? (
                         expandedGroup.items.map((item) => (
                             <NavLink
@@ -105,7 +105,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                 to={item.href}
                                 onClick={onItemClick}
                                 className={({ isActive }) =>
-                                    `flex items-start gap-2 rounded-lg border px-3 py-2 text-sm transition-all sm:px-2 sm:py-1.5 ${
+                                    `flex items-start gap-2 rounded-xl border px-3 py-2.5 text-sm transition-all sm:rounded-lg sm:px-2 sm:py-1.5 ${
                                         isActive || item.isActive
                                             ? 'border-gold-primary/30 bg-white/60 font-medium text-text-primary shadow-sm dark:border-gold-primary/20 dark:bg-dark-bg/60 dark:text-gold-light'
                                             : 'border-transparent text-text-secondary hover:bg-gold-surface/30 hover:text-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-bg/40'
@@ -113,21 +113,19 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                 }
                             >
                                 <span
-                                    className={`mt-[2px] min-w-[45px] whitespace-nowrap text-xs font-bold sm:text-[13px] ${
+                                    className={`mt-[2px] min-w-[46px] whitespace-nowrap text-[13px] font-bold sm:min-w-[45px] sm:text-[13px] ${
                                         item.isActive ? 'text-gold-primary' : 'text-text-secondary/60 dark:text-dark-text-secondary/60'
                                     }`}
                                 >
                                     {item.label}
                                 </span>
                                 {item.description && (
-                                    <span className="truncate font-inter text-[14px] leading-relaxed opacity-90 sm:text-[13px]">{item.description}</span>
+                                    <span className="line-clamp-1 text-[14px] leading-relaxed opacity-90 sm:text-[13px]">{item.description}</span>
                                 )}
                             </NavLink>
                         ))
                     ) : (
-                        <div className="p-8 text-center text-sm text-text-secondary dark:text-dark-text-secondary">
-                            챕터를 선택해 주세요.
-                        </div>
+                        <div className="p-8 text-center text-sm text-text-secondary dark:text-dark-text-secondary">챕터를 선택해 주세요.</div>
                     )}
                 </div>
             </div>
