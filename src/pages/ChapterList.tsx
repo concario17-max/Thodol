@@ -48,6 +48,16 @@ const itemVariants: Variants = {
     },
 };
 
+const renderChapterTitle = (title: string) => {
+    const lines = title.split(' ').filter(Boolean);
+
+    return lines.map((line, index) => (
+        <span key={`${line}-${index}`} className="block">
+            {line}
+        </span>
+    ));
+};
+
 const ChapterList = () => {
     const navigate = useNavigate();
     const { chapters } = useYogaData();
@@ -58,30 +68,35 @@ const ChapterList = () => {
     const [selectedVerse, setSelectedVerse] = useState<string>('');
 
     return (
-        <div className="container mx-auto max-w-6xl px-4 py-6 transition-colors duration-500 md:py-8">
-            <motion.div initial="hidden" animate="visible" variants={containerVariants} className="mb-8 flex flex-col items-center text-center md:mb-10">
+        <div className="container mx-auto max-w-6xl px-4 py-6 transition-colors duration-500 md:py-8 lg:flex lg:h-full lg:max-w-7xl lg:flex-col lg:overflow-hidden lg:py-4">
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+                className="mb-8 flex flex-col items-center text-center md:mb-10 lg:mb-4 lg:flex-none"
+            >
                 <motion.div
                     variants={itemVariants}
-                    className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-gold-border bg-gold-surface/50 dark:border-dark-border dark:bg-dark-surface"
+                    className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-gold-border bg-gold-surface/50 dark:border-dark-border dark:bg-dark-surface lg:mb-3"
                 >
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
                 </motion.div>
                 <motion.h1
                     variants={itemVariants}
-                    className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px]"
+                    className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px] lg:mb-3 lg:text-[54px]"
                 >
                     YOGA SUTRAS
                 </motion.h1>
                 <motion.p
                     variants={itemVariants}
-                    className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg"
+                    className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-6"
                 >
                     A reading space for sutra, sound, translation, and reflection
                 </motion.p>
 
                 <motion.div
                     variants={itemVariants}
-                    className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6"
+                    className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6 lg:mb-5"
                 >
                     <span onClick={() => setIsCompendiumOpen(true)} className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95">
                         Compendium
@@ -96,7 +111,7 @@ const ChapterList = () => {
                     </span>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-md items-center justify-center opacity-40">
+                <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-md items-center justify-center opacity-40 lg:mb-5">
                     <div className="h-px flex-1 bg-gold-border" />
                     <div className="mx-4 text-lg leading-none text-gold-primary">
                         <BookOpenText className="h-4 w-4" />
@@ -106,7 +121,7 @@ const ChapterList = () => {
 
                 <motion.div
                     variants={itemVariants}
-                    className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3"
+                    className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3 lg:mb-0"
                 >
                     <div className="flex w-full flex-1 flex-col items-start border-b border-gold-border/30 px-2 pb-2 sm:border-b-0 sm:border-r sm:px-4 sm:pb-0">
                         <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Chapter</span>
@@ -162,20 +177,23 @@ const ChapterList = () => {
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
+                className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-4 lg:items-stretch lg:gap-4 lg:px-0 lg:pb-4"
             >
                 {chapters.map((chapter) => {
                     const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
 
                     return (
-                        <motion.div key={chapter.chapter} variants={itemVariants}>
+                        <motion.div key={chapter.chapter} variants={itemVariants} className="lg:min-h-0">
                             <GlassCard
                                 href={`/chapter/${chapter.chapter}/verse/1`}
                                 icon={getChapterIcon(chapter.chapter)}
+                                className="lg:h-full"
                                 subtitle={`CHAPTER ${chapter.chapter}`}
                                 title={
                                     <>
-                                        <span className="font-display text-[30px] font-medium tracking-[0.04em] md:text-[34px]">{chapterInfo?.name_english || chapter.meta.name_english}</span>
+                                        <span className="font-display text-[30px] font-medium tracking-[0.04em] md:text-[34px]">
+                                            {renderChapterTitle(chapterInfo?.name_english || chapter.meta.name_english)}
+                                        </span>
                                         <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">{chapterInfo?.name_korean || chapter.meta.name_korean}</span>
                                     </>
                                 }

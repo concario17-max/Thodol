@@ -59,7 +59,7 @@ export const GlassCard = React.memo(({
         </>
     );
 
-    const baseStyle = `group relative flex flex-col items-center justify-start text-center p-5 sm:p-6 pt-10 sm:pt-14 bg-white/60 dark:bg-dark-surface/60 backdrop-blur-xl border border-gold-border/20 hover:border-gold-primary/40 rounded-3xl shadow-xl shadow-gold-primary/5 hover:shadow-[0_20px_50px_rgba(184,134,11,0.15)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 ease-[0.2,0,0,1] min-h-[460px] sm:min-h-[480px] overflow-hidden active:scale-[0.98] ${className}`;
+    const baseStyle = `group relative flex flex-col items-center justify-start overflow-hidden rounded-3xl border border-gold-border/20 bg-white/60 p-5 pt-10 text-center shadow-xl shadow-gold-primary/5 backdrop-blur-xl transition-all duration-700 ease-[0.2,0,0,1] hover:border-gold-primary/40 hover:shadow-[0_20px_50px_rgba(184,134,11,0.15)] active:scale-[0.98] dark:bg-dark-surface/60 dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] min-h-[380px] sm:min-h-[440px] sm:p-6 sm:pt-14 lg:min-h-[300px] lg:p-4 lg:pt-7 ${className}`;
 
     if (href) {
         return (
