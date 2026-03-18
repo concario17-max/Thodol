@@ -1,6 +1,6 @@
 # Yoga
 
-요가 수트라를 장별로 읽고, 발음과 번역을 비교하며, 개인 메모를 남길 수 있는 React 기반 정적 앱입니다.
+Yoga is a React-based reading app for the Yoga Sutras. It brings together Sanskrit text, pronunciation, multiple translations, word meanings, audio, and personal notes in one interface.
 
 ## Stack
 
@@ -10,36 +10,34 @@
 - Tailwind CSS 4
 - Framer Motion
 - Vitest
+- Playwright
 
-## Project Layout
+## Project layout
 
-- `src/`: 현재 운영 중인 프론트엔드 앱
-- `public/`: 앱이 직접 읽는 정적 자산과 데이터
-- `data-source/`: 원천 텍스트, 토큰 매칭, 백업 데이터
-- `scripts/`: 데이터 생성 및 검증 스크립트
-- `legacy/`: 과거 정적 구현 보관본
-- `docs/`: 조사 문서와 메모
+- `src/`: the active application code
+- `public/`: runtime assets such as `data.json`, `lexicon.json`, and `mp3/`
+- `data-source/`: source text files, token mapping JSON, and archived data snapshots
+- `scripts/`: data generation, verification, and browser QA scripts
+- `legacy/`: archived pre-React implementation kept for reference
+- `docs/`: supporting notes and reports
 
-## Data Flow
+## Runtime data flow
 
-앱의 기준 데이터는 `public/data.json`입니다.
+The app reads from `public/data.json`.
 
-- 로딩 코드: `src/utils/dataFetcher.ts`
-- 생성 스크립트: `scripts/generate_data.ps1`
-- 이전 백업: `data-source/archive/data_updated_3_22_3_36.json`
+- Loader: `src/utils/dataFetcher.ts`
+- Shared provider: `src/context/YogaDataContext.tsx`
+- Source generator: `scripts/generate_data.ps1`
+- Archived snapshot: `data-source/archive/data_updated_3_22_3_36.json`
 
-`dataFetcher`는 메모리 캐시와 in-flight 요청 캐시를 사용하므로, 여러 컴포넌트가 동시에 데이터를 요청해도 중복 네트워크 요청을 줄입니다.
-
-## Local Development
-
-Node가 시스템 PATH에 없으면 로컬 툴 경로를 먼저 잡아야 할 수 있습니다.
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-검증 명령:
+Core checks:
 
 ```bash
 npm run typecheck
@@ -47,51 +45,52 @@ npm run test -- --run
 npm run build
 ```
 
-브라우저 스모크 QA:
+Browser smoke QA:
 
 ```bash
 npm run dev -- --host 127.0.0.1 --port 4174
 BASE_URL=http://127.0.0.1:4174 npm run qa:browser
 ```
 
-## QA Notes
+## Current architecture notes
 
-최근 점검에서 아래 항목을 정리했습니다.
+- The live app is the React code under `src/`.
+- The password gateway has been removed. The app now opens directly.
+- Verse pages use a shared shell with a header, left chapter sidebar, and a right panel that switches between reflections and commentary.
+- Reflections are stored in `localStorage`.
+- Commentary is now a guided study panel rather than an empty placeholder.
+- Data access is centralized through `YogaDataProvider`, which reduces repeated fetch logic across pages and side panels.
 
-- 홈 화면, 챕터 화면, 사이드바, 오른쪽 패널의 깨진 문자열 복구
-- 상단 패널 토글 UI 개선
-- 모바일 드로어 상태 정리
-- 챕터 메타 데이터 복구
-- 노트 미리보기 텍스트 추출 로직 보정
+## Data pipeline
 
-남은 QA는 실제 배포 URL에서 최종 시각 검수 정도입니다.
+Source texts live in `data-source/`. The main generation script is:
 
-## Deployment Prep
+- `scripts/generate_data.ps1`
 
-이 프로젝트는 정적 빌드 결과물 `dist/`를 배포하면 됩니다.
+It parses the source `.txt` files and writes:
 
-기본 배포 순서:
+- `data.js`
+- `public/data.json`
 
-```bash
-npm install
-npm run build
-```
+More details are documented in `scripts/README.md`.
 
-배포 전 확인 항목:
+## Deployment
 
-- `public/data.json`이 최신인지 확인
-- `npm run typecheck`
-- `npm run test -- --run`
-- `npm run build`
-- 비밀번호 게이트용 `VITE_GATEWAY_PASSWORD` 설정 여부 확인
-
-Cloudflare Pages 같은 정적 호스팅을 사용할 경우:
+This is a static build.
 
 - Build command: `npm run build`
 - Output directory: `dist`
 
+Before deployment:
+
+- confirm `public/data.json` is current
+- run `npm run typecheck`
+- run `npm run test -- --run`
+- run `npm run build`
+- optionally run `npm run qa:browser`
+
 ## Notes
 
-- 비밀번호 게이트는 `localStorage` 기반의 가벼운 접근 제어입니다.
-- 레거시 구현은 참고용이며, 현재 기준 앱은 `src/` 아래 React 앱입니다.
-- 데이터 파이프라인 상세는 `scripts/README.md`에 정리되어 있습니다.
+- `legacy/legacy_web/` is reference material, not the active app.
+- `research.md` contains a deep architecture report for the repository.
+- `plan.md` tracks the implementation checklist derived from that report.

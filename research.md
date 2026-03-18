@@ -1,455 +1,535 @@
 # Yoga Project Research Report
 
-작성일: 2026-03-16
+작성일: 2026-03-18
 
-## 1. 프로젝트 정체성
+## 1. 개요
 
-이 저장소는 `Yoga Sutras` 텍스트를 읽고, 각 수트라의 산스크리트 원문, 발음, 단어별 뜻, 여러 번역문, 오디오, 개인 메모를 함께 탐색할 수 있게 만든 정적 웹 앱이다.
+이 저장소는 파탄잘리의 `Yoga Sutras`를 읽고, 산스크리트 원문과 발음, 여러 번역본, 단어 뜻, 오디오, 개인 메모를 한 화면에서 다루기 위한 정적 웹앱이다. 현재 운영 UI는 `Vite + React + TypeScript` 기반이며, 과거 정적 HTML/JS 구현은 `legacy/legacy_web/`에 보관되어 있다.
 
-현재 저장소 안에는 성격이 다른 세 층이 공존한다.
+이 프로젝트는 단순한 프론트엔드 하나가 아니라 아래 4개 층이 함께 있는 형태다.
 
-1. 현재 메인 앱: `src/` 기반의 `Vite + React + TypeScript` 앱
-2. 이전 구현: `legacy/legacy_web/` 아래의 정적 HTML/JS 버전
-3. 데이터 제작 파이프라인: 루트의 `.txt`, `.ps1`, `.cjs` 스크립트들과 `data.js`/`public/*.json`
+- 운영 앱: `src/` 아래 React 애플리케이션
+- 정적 자산: `public/` 아래 JSON, MP3, favicon
+- 데이터 제작 파이프라인: `scripts/`, `data-source/`, 루트 `data.js`
+- 레거시 보관물: `legacy/legacy_web/`
 
-즉, 이 프로젝트는 단순한 프론트엔드가 아니라, "콘텐츠 정제 + 정적 자산 보관 + 2세대 UI 구현"이 한 저장소에 같이 들어 있는 구조다.
+현재 앱이 실제로 읽는 기준 데이터는 `public/data.json`이다.
 
-## 2. 최상위 구조
+## 2. 현재 폴더 구조
 
-- `src/`: 현재 운영 대상으로 보이는 React 앱
-- `public/`: 배포되는 정적 데이터와 오디오
-- `legacy/legacy_web/`: 이전 세대의 브라우저 직접 구동형 앱
-- `design/`: 디자인 시안 산출물
-- `data-source/han-json/`: 챕터별 토큰 매칭 산출물
-- 루트 `.txt`: 원문/번역/발음/사전 원천 데이터
-- 루트 `.ps1`, `.cjs`: 데이터 생성, 검증, 정리용 유틸리티
+핵심 디렉터리는 다음처럼 역할이 나뉜다.
 
-특이점:
+- `src/`: 실제 운영 React 앱
+- `public/`: 앱이 직접 fetch하거나 브라우저가 바로 읽는 자산
+- `data-source/`: 원천 텍스트, 토큰 매핑 JSON, 과거 산출물 아카이브
+- `scripts/`: 데이터 생성, 검증, QA, 토큰 정리 스크립트
+- `legacy/legacy_web/`: 과거 정적 웹 구현
+- `docs/`: 보조 문서
+- `dist/`: 빌드 산출물
+- `design/`: 디자인 참고 자산
 
-- `node_modules/`가 커밋되어 있다.
-- `research.md`와 `docs/` 아래의 조사/기획 문서가 함께 있다.
-- `data.js`와 `public/data.json`이 현재 주 데이터 계층이고, 이전 버전 산출물은 `data-source/archive/data_updated_3_22_3_36.json`으로 이동해 보관 중이다.
+루트에는 `package.json`, `vite.config.ts`, `vitest.config.ts`, `data.js`, `README.md`, `research.md` 등이 있다.
 
 ## 3. 기술 스택
 
-`package.json` 기준 핵심 스택은 다음과 같다.
+`package.json` 기준 현재 앱 스택:
 
-- 런타임: `react 19`, `react-dom 19`
-- 라우팅: `react-router-dom 7`
-- 빌드: `vite 7`
-- 언어: `typescript 5`
-- 스타일: `tailwindcss 4`, `@tailwindcss/vite`
-- 모션: `framer-motion`
-- 아이콘: `lucide-react`
-- 테스트: `vitest`, `@testing-library/react`, `jsdom`
+- React 19
+- React Router 7
+- TypeScript 5
+- Vite 7
+- Tailwind CSS 4
+- Framer Motion
+- lucide-react
+- Vitest + Testing Library + jsdom
+- Playwright
 
-스크립트:
+주요 npm 스크립트:
 
-- `npm run dev`: Vite 개발 서버
+- `npm run dev`: 개발 서버
 - `npm run build`: `tsc -b && vite build`
 - `npm run preview`: 빌드 결과 미리보기
 - `npm run test`: Vitest
-- `npm run typecheck`: `tsc --noEmit`
+- `npm run typecheck`: 타입 검사
+- `npm run qa:browser`: Playwright 스모크 QA
 
-TypeScript 설정 특징:
+## 4. 진입점과 앱 셸
 
-- `strict` 계열 옵션이 강하게 켜져 있다.
-- `@/* -> src/*` alias가 있다.
-- 번들러 해석 방식(`moduleResolution: bundler`)을 사용한다.
+### 4.1 부트스트랩
 
-Vite 설정은 단순하다.
-
-- React 플러그인
-- Tailwind 플러그인
-- `@` alias
-- 출력 폴더 `dist`
-
-## 4. 현재 앱의 런타임 흐름
-
-### 4.1 부팅
-
-진입점은 `src/main.tsx`다.
+`src/main.tsx`는 앱을 다음 순서로 감싼다.
 
 - `StrictMode`
 - `ThemeProvider`
 - `UIProvider`
 - `App`
 
-이 순서로 앱이 감싸진다.
+즉 전역 상태는 크게 테마와 UI 레이아웃 상태 두 축으로 나뉜다.
 
-### 4.2 인증 게이트
+### 4.2 App 구조
 
-`src/App.tsx`는 앱 진입 직후 `localStorage`에서 `yoga_authenticated`를 읽는다.
-
-- 값이 `true`면 앱 본문으로 진입
-- 아니면 `PasswordGateway` 렌더
-
-암호는 `src/components/PasswordGateway.tsx`에서 검사한다.
-
-- 우선 `import.meta.env.VITE_GATEWAY_PASSWORD`
-- 없으면 기본값 `0228`
-
-성공 시:
-
-- `localStorage.setItem('yoga_authenticated', 'true')`
-- React 상태를 인증 완료로 전환
-
-즉, 현재 React 앱은 서버 인증이 아니라 클라이언트 로컬 스토리지 게이트다.
-
-### 4.3 라우팅
-
-라우트는 2개뿐이다.
+`src/App.tsx`는 `BrowserRouter`를 사용하며, 실제 라우트는 2개뿐이다.
 
 - `/` -> `ChapterList`
 - `/chapter/:chapterNum/verse/:verseNum` -> `VerseView`
 
-`MainLayout`은 현재 URL이 verse 화면인지 판별해서 레이아웃을 바꾼다.
+`MainLayout`이 현재 URL이 상세 보기인지 판별해서 셸 구성을 바꾼다.
 
-- verse 화면이면 상단 헤더, 좌측 사이드바, 우측 패널을 붙임
-- 홈 화면이면 메인 콘텐츠만 보여주고 우하단에 테마 토글 플로팅 버튼을 둠
+- 챕터 목록 페이지에서는 메인 콘텐츠만 렌더링
+- 상세 페이지에서는 `Header`, `Sidebar`, 오른쪽 패널(`Reflections`, `CommentarySidebar`)을 함께 렌더링
 
-## 5. 상태 관리 구조
+과거에 있던 비밀번호 게이트는 현재 앱에서 제거되어 있다. 이제 앱은 바로 진입된다.
+
+### 4.3 AppShell
+
+`src/components/ui/AppShell.tsx`는 전체 레이아웃의 공통 외곽이다.
+
+역할:
+
+- 100dvh 전체 높이 사용
+- 전역 배경과 오버레이 그라디언트 제공
+- 헤더, 좌측 사이드바, 메인 스크롤 영역, 우측 패널 배치
+- 모바일 패널이 열리면 메인 영역 스크롤 잠금
+- 비상시 floating action 배치
+
+실제 스크롤 컨테이너는 `#main-scroll-container`이다. 상세 페이지 전환 시 이 컨테이너를 직접 top으로 되돌린다.
+
+## 5. 전역 상태 관리
 
 ### 5.1 ThemeContext
 
 `src/context/ThemeContext.tsx`
 
-- 테마는 `light | dark`
-- 초기값은 `localStorage.theme`를 읽고, 없으면 `light`
-- `document.documentElement`에 `light` 또는 `dark` 클래스를 붙인다
+역할:
 
-Tailwind 4 설정에서 `@custom-variant dark (&:where(.dark, .dark *));`를 쓰므로, 이 클래스가 다크모드 스위치의 핵심이다.
+- `light | dark` 테마 유지
+- 초기값은 `localStorage.theme`
+- 값 변경 시 `document.documentElement`에 `light` 또는 `dark` 클래스 적용
+
+기본값은 `light`다. 시스템 다크모드를 자동 추종하지 않는다.
 
 ### 5.2 UIContext
 
 `src/context/UIContext.tsx`
 
-관리하는 상태:
+관리 상태:
 
-- 모바일 왼쪽 사이드바 열림 여부
-- 데스크탑 왼쪽 사이드바 열림 여부
-- 모바일 오른쪽 패널 활성 상태
-- 데스크탑 오른쪽 패널 활성 상태
+- `isSidebarOpen`: 모바일 좌측 드로어 열림 여부
+- `activeRightPanel`: 모바일 우측 패널 상태
+- `isDesktopSidebarOpen`: 데스크톱 좌측 사이드바 열림 여부
+- `activeDesktopRightPanel`: 데스크톱 우측 패널 상태
 
-오른쪽 패널 타입:
+우측 패널 타입:
 
 - `reflections`
 - `commentary`
 - `null`
 
-데스크탑 상태는 `localStorage`에 저장된다.
+영속화되는 localStorage 키:
 
 - `yoga-desktop-sidebar`
 - `yoga-desktop-right-panel`
 
-즉, 이 앱은 레이아웃 상태를 전역 컨텍스트로만 관리하고, 서버 상태 관리 라이브러리는 쓰지 않는다.
+중요한 동작:
 
-## 6. 데이터 구조와 로딩 방식
+- 화면 폭이 `lg` 이상이 되면 모바일 드로어 상태를 강제로 닫는다
+- 좌측 토글은 모바일에서는 drawer open/close, 데스크톱에서는 영구 패널 open/close
+- 우측 토글도 같은 방식으로 모바일/데스크톱 동작이 나뉜다
 
-### 6.1 핵심 데이터 파일
+## 6. 라우팅별 동작
 
-현재 React 앱은 `src/utils/dataFetcher.ts`에서 아래 파일을 읽는다.
+## 6.1 챕터 목록 페이지
 
-- `/data.json`
-
-즉, `public/data.json`이 현재 메인 데이터 소스다.
-
-### 6.2 데이터 타입
-
-`src/types.ts` 기준 수트라 데이터는 대략 다음 필드를 가진다.
-
-- `id`
-- `sanskrit`
-- `pronunciation`
-- `pronunciation_kr`
-- `2.english`
-- `3.korean-1`
-- `5.bae_jik`
-- `6.bae_uu`
-- `8. ox`
-- `9. ox-en`
-- `word_meanings`
-- `tokens`
-- `compound_tokens_original`
-
-이 네이밍은 "파일명 기반 키"가 그대로 데이터 모델에 섞여 들어온 형태다. 그래서 도메인 모델이 깔끔한 영문 키 체계로 정리되진 않았다.
-
-### 6.3 fetchYogaData 동작
-
-`fetchYogaData()`는 다음 일을 한다.
-
-1. JSON fetch
-2. 수트라 배열을 chapter별로 그룹화
-3. `word_meanings`가 객체면 배열로 정규화
-4. `4.han bal` 또는 `pronunciation_kr`를 `pronunciation_kr` 필드로 통합
-5. 각 챕터 수트라를 번호순 정렬
-6. 캐시 보관
-
-캐시:
-
-- 모듈 스코프 `cachedData`
-- `resetCache()` 테스트용 제공
-
-### 6.4 챕터 메타데이터
-
-메타데이터는 두 군데에서 나온다.
-
-1. `src/constants.ts`의 `YOGA_CHAPTERS_META`
-2. `dataFetcher.ts` 안의 `getChapterName`, `getChapterNameEn`
-
-이중화가 있다. 실제 홈 화면 카드 설명은 `constants.ts`를 더 우선해서 쓴다.
-
-### 6.5 수트라 범위 처리
-
-`useYogaData()`에는 특이한 로직이 있다.
-
-- `getVerseInRange(chapterNum, verseNum)`
-- `getVerseRangeText(chapter, sutra)`
-
-이 로직은 "다음 수트라 번호가 건너뛰는 경우" 현재 수트라가 하나의 범위를 대표한다고 본다.
-
-예:
-
-- 현재 ID가 `3.22`
-- 다음이 `3.37`
-
-그러면 현재 화면은 `3.22-36` 범위로 표현될 수 있다.
-
-즉, URL은 단일 수트라처럼 보여도, 실제 의미는 "시작 번호를 대표 키로 쓰는 범위형 묶음"을 지원한다.
-
-## 7. 화면별 동작
-
-### 7.1 홈 화면 `ChapterList`
+`src/pages/ChapterList.tsx`
 
 역할:
 
-- 데이터 로드 후 챕터 카드 렌더
-- 챕터/수트라 선택 셀렉트 제공
-- 3개 모달 열기
+- `fetchYogaData()`로 전체 데이터를 읽어 챕터 카드 생성
+- 챕터/구절 select로 빠른 이동
+- 세 가지 모달 진입점 제공
   - `CompendiumModal`
   - `LexiconModal`
   - `ReflectionsModal`
 
-구성 특징:
+UI 특징:
 
-- `framer-motion`으로 진입 애니메이션
-- 챕터별 아이콘을 `lucide-react`로 분기
-- 카드 클릭 시 해당 챕터 첫 수트라로 이동
+- `framer-motion`으로 인트로 애니메이션
+- 챕터별 아이콘 사용
+- 카드 클릭 시 해당 챕터 첫 구절로 이동
 
-### 7.2 수트라 화면 `VerseView`
+이 페이지는 `YOGA_CHAPTERS_META`를 기준으로 카드 제목과 설명을 표시한다.
 
-핵심 화면이다.
+## 6.2 구절 상세 페이지
 
-동작 순서:
+`src/pages/VerseView.tsx`
 
-1. URL 파라미터 읽기
-2. 데이터 로드
-3. 범위형 수트라라면 대표 시작 번호로 URL 교정
-4. 수트라 변경 시 스크롤 top, 오디오 reset
-5. 현재 수트라/챕터/인덱스 계산
-6. 이전/다음 탐색 훅 연결
+핵심 로직 순서:
 
-렌더 블록:
+1. URL 파라미터 `chapterNum`, `verseNum` 읽기
+2. `useYogaData()`로 전체 데이터를 확보
+3. `getVerseInRange()`로 현재 URL이 속하는 실제 sutra 엔트리 찾기
+4. URL이 범위 중간 번호를 가리키면 실제 시작 번호로 리다이렉트
+5. 이동 시 스크롤 top + 오디오 reset
+6. 현재 챕터 내 index 계산
+7. `useSutraNavigation()`으로 이전/다음 네비게이션 생성
+
+렌더링 블록:
 
 - `SutraHeader`
 - `SutraContent`
 - `WordMeanings`
-- 숨김 `<audio>`
+- 숨겨진 `<audio>`
 - `AudioPlayer`
 - `TranslationSection`
 - `SutraNavigation`
 
-오디오는 파일명 규칙이 고정이다.
+오디오 경로 규칙:
 
 - `/mp3/${chapterNum}-${actualVerse}.mp3`
 
-예: `1-1.mp3`
+즉 URL이 `3.24` 범위 내부를 가리켜도 실제 재생 파일은 해당 범위를 대표하는 시작 구절 번호를 따른다.
 
-## 8. 훅 분석
+## 7. 데이터 로딩 구조
 
-### 8.1 `useYogaData`
+### 7.1 기준 파일
+
+현재 운영 앱은 `src/utils/dataFetcher.ts`에서 `/data.json`을 fetch한다. 즉 실제 기준 데이터 파일은 `public/data.json`이다.
+
+### 7.2 fetchYogaData 동작
+
+`fetchYogaData()`는 다음 순서로 작동한다.
+
+1. 메모리 캐시 `cachedData` 확인
+2. 진행 중 요청 `pendingRequest` 확인
+3. `/data.json` fetch
+4. raw sutra 배열을 chapter 단위로 그룹핑
+5. `word_meanings` 객체를 배열 형태로 정규화
+6. `4.han bal` 또는 `pronunciation_kr`를 `pronunciation_kr`로 통합
+7. 구절 번호 기준 정렬
+8. 챕터별 `sutraCount` 계산
+9. 메모리 캐시에 저장
+
+이 함수는 중복 fetch를 줄이기 위해:
+
+- 완료 데이터 캐시
+- in-flight promise 캐시
+
+둘 다 사용한다.
+
+### 7.3 데이터 모델
+
+`src/types.ts` 기준 핵심 타입:
+
+- `YogaSutra`
+- `YogaChapter`
+- `ChapterMeta`
+- `Token`
+- `CompoundToken`
+- `WordMeaning`
+
+현재 `YogaSutra`는 원문 파일 이름 기반 필드를 그대로 노출한다.
+
+예:
+
+- `"2.english"`
+- `"3.korean-1"`
+- `"5.bae_jik"`
+- `"6.bae_uu"`
+- `"8. ox"`
+- `"9. ox-en"`
+
+이건 앱이 원천 데이터 구조에 꽤 강하게 결합되어 있다는 뜻이다.
+
+### 7.4 범위형 sutra 처리
+
+`useYogaData.ts`의 `getVerseInRange()`가 핵심이다.
+
+이 프로젝트는 일부 구절이 단일 번호가 아니라 범위를 대표하는 한 엔트리로 저장된다. 예를 들어 다음 엔트리 번호가 크게 뛰면 현재 엔트리가 그 사이 범위를 대표한다고 본다.
+
+예:
+
+- 현재 엔트리 `3.22`
+- 다음 엔트리 `3.37`
+
+그러면 UI는 `3.22-36` 범위처럼 보일 수 있다.
+
+이 처리는 다음 두 곳에서 쓰인다.
+
+- 상세 페이지 URL 보정
+- 사이드바 구절 라벨 생성
+
+## 8. 챕터 메타데이터
+
+`src/constants.ts`에 `YOGA_CHAPTERS_META`가 있다.
+
+의도된 챕터명은 사용자 요청에 맞춰 다음 개념을 반영한다.
+
+- 1장: 합일의 문제
+- 2장: 합일의 단계
+- 3장: 합일의 성취와 그 결과
+- 4장: 깨달음
+
+다만 이 파일은 현재 터미널 출력상 한국어 문자열이 깨져 보인다. 앱 렌더링상 일부는 정상처럼 보일 수 있어도, 소스 저장 인코딩 또는 과거 모지바케 흔적이 남아 있을 가능성이 높다. 이 파일은 별도 정밀 점검 대상이다.
+
+또 하나 중요한 점은 메타데이터의 `sutraCount`와 실제 데이터 수가 일치하지 않을 가능성이다. 코드와 정적 자산을 보면 3장은 실제 55개 단위로 다뤄지는데, 메타에는 다른 숫자가 남아 있을 여지가 보인다. 보고서 작성 시점 기준으로 이 값은 검증 필요 항목이다.
+
+## 9. 상세 페이지 컴포넌트 구조
+
+### 9.1 Header
+
+`src/components/Header.tsx`
+
+역할:
+
+- 좌측 메뉴 버튼
+- 홈 링크
+- 단일 우측 패널 토글 버튼
+- 테마 토글
+
+현재 우측 버튼은 하나뿐이며, 클릭할 때마다 `Reflections`와 `Commentary`를 번갈아 전환한다. 모바일과 데스크톱 모두 같은 개념을 쓴다.
+
+주의점:
+
+- `title`, 버튼 툴팁, 심볼 문자열 일부가 현재 터미널에서 모지바케로 보인다
+- 동작은 `UIContext`에 강하게 의존한다
+
+### 9.2 Sidebar / SidebarLayout / SidebarMenu
+
+`src/components/Sidebar.tsx`
+`src/components/ui/SidebarLayout.tsx`
+`src/components/ui/SidebarMenu.tsx`
+
+역할 분담:
+
+- `Sidebar`: 데이터를 가져와 그룹 구조 생성
+- `SidebarLayout`: 좌우 drawer 공통 껍데기
+- `SidebarMenu`: 실제 챕터/구절 리스트 UI
+
+현재 동작:
+
+- 챕터 선택 영역은 실제 높이 `30%`를 차지하도록 고정
+- 구절 영역은 나머지 `70%`
+- 모바일 drawer 폭은 `w-[88vw] max-w-[360px]`
+- 현재 챕터는 URL 기준 자동 확장
+- 챕터를 누르면 해당 챕터 `verse/1`로 이동
+
+구절 리스트는 `sutra.sanskrit` 첫 줄 일부를 프리뷰로 보여준다.
+
+### 9.3 SutraContent
+
+`src/components/verse/SutraContent.tsx`
 
 기능:
 
-- 전체 데이터 로드
-- 로딩 상태 제공
-- 범위형 수트라 찾기
-- 범위 텍스트 계산
+- 산스크리트 원문
+- 로마자 발음
+- 한글 발음
 
-특징:
+### 9.4 WordMeanings
 
-- 데이터 조회는 편하지만 에러 상태를 별도로 반환하지 않는다.
-
-### 8.2 `useSutraNavigation`
+`src/components/verse/WordMeanings.tsx`
 
 기능:
 
-- 이전 수트라 이동
-- 다음 수트라 이동
-- 챕터 경계 넘어가기
+- `word_meanings` 배열 표시
+- 용어별 의미를 아코디언 또는 리스트 성격으로 노출
 
-로직:
+### 9.5 TranslationSection
 
-- 현재 챕터 내부 이동 우선
-- 첫 항목에서 이전 클릭 시 이전 챕터 마지막으로
-- 마지막 항목에서 다음 클릭 시 다음 챕터 첫 수트라로
+`src/components/verse/TranslationSection.tsx`
 
-### 8.3 `useAudio`
+기능:
+
+- 여러 번역본을 섹션별로 렌더링
+- 영문/국문, 옥스퍼드 계열, 배 계열 번역 분리
+
+현 상태에서 이 파일 역시 텍스트 라벨 일부가 터미널에서 깨져 보인다. 구조와 렌더링 순서는 명확하지만, 사용자 노출 문구 품질은 재검토가 필요하다.
+
+### 9.6 AudioPlayer / useAudio
+
+`src/hooks/useAudio.ts`
+`src/components/verse/AudioPlayer.tsx`
 
 기능:
 
 - play/pause
-- time update
-- metadata 로딩
-- ended 처리
+- 현재 시간
+- duration
 - seek
-- reset
-- 시간 포맷
+- ended 처리
 
-특징:
+구현 특징:
 
-- 오디오 엘리먼트는 DOM ref 기반
-- 별도 커스텀 플레이어 UI를 위해 상태를 React로 노출
+- 오디오는 숨겨진 `<audio>` 엘리먼트를 ref로 제어
+- React state는 커스텀 플레이어 UI 표시용
 
-제한:
+잠재 리스크:
 
-- 재생 실패 에러 처리 없음
-- `togglePlay`가 `setIsPlaying(!isPlaying)`를 직접 사용해서, 극단적 연타 시 stale state 가능성은 있다
+- `togglePlay`가 `setIsPlaying(!isPlaying)` 패턴을 사용해 stale state 가능성이 있다
+- `play()` 실패 예외를 별도로 처리하지 않는다
 
-## 9. 주요 컴포넌트 분석
+## 10. 메모와 코멘터리 기능
 
-### 9.1 레이아웃
+### 10.1 Reflections
 
-`AppShell`
+`src/components/Reflections.tsx`
 
-- 전체 앱 shell
-- 배경 그라디언트 오버레이
-- 헤더/사이드바/메인/오른쪽 패널 배치
-- 모바일 패널 열릴 때 본문 스크롤 잠금
+기능:
 
-`SidebarLayout`
+- 구절 단위 메모 작성
+- `localStorage` 저장
+- 현재 메모 export
+- 전체 메모 export
 
-- 공용 drawer
-- 왼쪽/오른쪽 위치 대응
-- 모바일 오버레이 포함
+저장 키:
 
-`SidebarMenu`
+- `yoga-note-${chapter}-${verse}`
 
-- 챕터 그룹 목록
-- 확장된 챕터의 수트라 목록
-- 현재 항목 하이라이트
+모바일과 데스크톱 모두 우측 패널로 나타난다.
 
-### 9.2 내비게이션
+### 10.2 ReflectionsModal
 
-`Header`
+`src/components/ReflectionsModal.tsx`
 
-- 좌측 햄버거 버튼
-- 제목 링크
-- 우측 reflections/commentary 토글
-- 테마 토글
+기능:
 
-`Sidebar`
+- localStorage에 저장된 전체 메모 수집
+- `fetchYogaData()`로 각 메모의 산스크리트 미리보기 보강
+- 전체 메모 열람
 
-- 데이터를 다시 fetch해서 챕터 목록 생성
-- 현재 챕터를 자동 확장
-- 각 수트라 미리보기 텍스트는 산스크리트 첫 줄 일부
+이 모달은 단순 viewer이며 편집은 하지 않는다.
 
-여기서는 `fetchYogaData()`를 별도 호출하므로, 화면별 중복 접근이 있지만 모듈 캐시로 실제 비용은 줄어든다.
+### 10.3 CommentarySidebar
 
-### 9.3 수트라 콘텐츠
+`src/components/CommentarySidebar.tsx`
 
-`SutraContent`
+현 상태:
 
-- 산스크리트 원문
-- 영문 발음
-- 한글 발음
+- 우측 패널 UI는 존재
+- 실제 commentary 본문은 아직 비어 있음
+- placeholder 성격의 안내 문구만 렌더링
 
-발음 텍스트를 정리하는 간단한 문자열 정규화가 들어간다.
+즉 기능적으로는 “빈 껍데기”에 가깝다.
 
-`WordMeanings`
+## 11. 참조 자료 모달
 
-- 접이식 아코디언
-- 배열화된 `word_meanings` 렌더
+### 11.1 LexiconModal
 
-`TranslationSection`
+`src/components/LexiconModal.tsx`
 
-- 번역 섹션을 출처 그룹별로 분리
-- Bailey, Oxford, Bae 계열을 노출
-
-### 9.4 메모와 코멘터리
-
-`Reflections`
-
-- 수트라별 메모 저장
-- 키 형식: `yoga-note-${chapter}-${verse}`
-- 현재 노트 export
-- 전체 노트 export
-
-`CommentarySidebar`
-
-- 현재는 사실상 플레이스홀더
-- "commentary" 패널 UI만 있고 내용은 비어 있음
-
-`ReflectionsModal`
-
-- 로컬스토리지 전체 노트 모아 보기
-- 각 노트에 수트라 제목 일부 표시
-
-### 9.5 참고 자료 모달
-
-`CompendiumModal`
-
-- 앱 내 설명 텍스트 모달
-- 긴 설명문이 하드코딩되어 있다
-
-`LexiconModal`
+기능:
 
 - `/lexicon.json` fetch
 - 알파벳 인덱스 제공
-- 단어 뜻 사전 표시
+- 단어와 의미 렌더링
 
-## 10. 스타일 시스템
+최초 오픈 시 한 번만 로드하도록 구성되어 있다.
+
+### 11.2 CompendiumModal
+
+`src/components/CompendiumModal.tsx`
+
+이 파일은 이번 조사에서 세부 내용을 직접 다시 읽지는 않았지만, 챕터 목록 페이지에서 lazy import되는 참고 자료 모달이다. 하드코딩된 소개 텍스트를 담고 있을 가능성이 높고, 구조상 운영 핵심보다는 보조 콘텐츠 영역이다.
+
+## 12. 디자인 시스템과 스타일
 
 `src/index.css` 기준:
 
-- Tailwind 4의 `@theme` 토큰 사용
-- 금색/양피지/어두운 배경 중심 색 체계
-- `glass-panel` 유틸리티 제공
-- fluid typography와 spacing 토큰 정의
-- 다크모드 selector 전략 적용
+- Tailwind 4 토큰 사용
+- 금색 중심의 고전 문헌 분위기
+- 유리 질감 계열 `glass-panel`
+- 다크 모드 지원
+- fluid spacing / typography 변수 사용
 
-디자인 방향:
+최근 변경 이력상 현재 타이포 방향은 다음에 가깝다.
 
-- 종교/경전/고전 문헌 아카이브 톤
-- 금색 강조
-- 글래스모피즘
-- 부드러운 reveal 모션
+- 기본 UI/본문: `SUIT`
+- 제목/세리프 강조: `Cormorant Garamond`
+- 보조 세리프: `Noto Serif KR`
 
-## 11. 정적 자산
+실제 스타일 파일의 상세 확인은 이번 조사 범위 밖이지만, 앱 전체가 “명상서/문헌 아카이브” 같은 톤을 지향한다는 점은 코드와 UI 명명에서 일관되게 드러난다.
 
-### 11.1 오디오
+## 13. 정적 자산
 
-`public/mp3/`
+`public/` 아래 핵심 자산:
 
-- 챕터-수트라 규칙의 MP3 파일 다수 포함
-- 예: `1-1.mp3`, `2-55.mp3`, `4-34.mp3`
+- `data.json`: 운영 데이터
+- `lexicon.json`: 사전 데이터
+- `mp3/`: 챕터-구절 규칙 기반 오디오 파일
+- `favicon.png`
 
-### 11.2 데이터
+조사 시점 기준 `public/mp3/`에는 1장부터 4장까지 전 범위 오디오가 들어 있다. 파일명 규칙은 앱 코드와 정확히 연결되어 있다.
 
-- `public/data.json`
-- `data-source/archive/data_updated_3_22_3_36.json`
-- `public/lexicon.json`
+## 14. 데이터 제작 파이프라인
 
-현재 앱은 `data.json`을 읽고, 레거시 앱은 `data.js` 또는 `public/data.json` 계열에 의존한 흔적이 있다.
+### 14.1 원천 데이터
 
-## 12. 레거시 앱 분석
+`data-source/`에는 원천 텍스트가 있다.
 
-`legacy/legacy_web/`는 React 이전 세대 구현이다.
+- `1.sans.txt`
+- `2.english.txt`
+- `3.korean-1.txt`
+- `4.han bal.txt`
+- `5.bae_jik.txt`
+- `6.bae_uu.txt`
+- `7.dan.txt`
+- `8. ox.txt`
+- `9. ox-en.txt`
+- `10.sogae.txt`
+- `11. Lexicon.txt`
 
-구성:
+또한 `data-source/han-json/`에는 챕터별 토큰 매핑 JSON이 있다.
 
-- `index.html`: 랜딩/챕터 진입
-- `chapter.html`: 수트라 뷰어
+과거 산출물은 `data-source/archive/data_updated_3_22_3_36.json`에 보관 중이다.
+
+### 14.2 generate_data.ps1
+
+`scripts/generate_data.ps1`는 현재 파이프라인의 중심이다.
+
+동작 요약:
+
+1. `1.sans.txt`를 읽어 sutra ID, 산스크리트, 발음을 파싱
+2. 나머지 line-format 텍스트를 같은 sutra 객체에 병합
+3. block-format 텍스트를 별도 처리
+4. `7.dan.txt`를 순차 매핑해 `word_meanings` 구성
+5. 총 sutra를 정렬
+6. 산출물을 두 곳에 기록
+   - 루트 `data.js`
+   - `public/data.json`
+
+스크립트 내부에서 기대하는 총 sutra 수는 `196`이다.
+
+### 14.3 보조 스크립트
+
+`scripts/` 아래 보조 스크립트:
+
+- `merge_tokens.ps1`
+- `update_dictionary.ps1`
+- `update_dictionary.cjs`
+- `check_audio_mismatch.cjs`
+- `verify_data.cjs`
+- `verify_phase19.ps1`
+- `extract_322.ps1`
+- `reorder_tokens.ps1`
+- `split_iast*.ps1`
+- `normalize_files.ts`
+- `browser_smoke.mjs`
+
+성격별로 나누면:
+
+- 콘텐츠 생성/병합
+- 오디오/데이터 일치 검증
+- 토큰 정리
+- 브라우저 스모크 QA
+
+## 15. 레거시 앱
+
+`legacy/legacy_web/`는 과거 정적 구현을 보관한다.
+
+핵심 파일:
+
+- `index.html`
+- `chapter.html`
 - `styles.css`
 - `js/app.js`
 - `js/auth.js`
@@ -458,222 +538,143 @@ Tailwind 4 설정에서 `@custom-variant dark (&:where(.dark, .dark *));`를 쓰
 - `js/audio.js`
 - `js/modals.js`
 
-특징:
+이 레거시 구현은 다음 특징을 가졌을 것으로 보인다.
 
-- 브라우저 전역 함수에 기능을 바인딩
-- `data.js`를 `<script>`로 로드
 - DOM 직접 조작 중심
-- 라우터 대신 query string 사용
-- 메모 키는 `note-${sutraId}` 형식
+- 전역 함수 중심
+- `data.js`를 직접 로드
+- React 이전 아키텍처
 
-즉, 현재 React 앱의 기능 상당수는 이 레거시 앱을 재구현한 결과다.
+현재 운영 구조와의 관계:
 
-대응 관계:
+- 기능적 참고자료
+- 동작 비교 기준
+- 삭제 대상이 아니라 “보관 영역”
 
-- 레거시 `auth.js` -> React `PasswordGateway` + `App.tsx`
-- 레거시 `ui.js` -> React `VerseView`와 verse 컴포넌트들
-- 레거시 `modals.js` -> React 모달 컴포넌트들
-- 레거시 `navigation.js` -> `Sidebar`, `useSutraNavigation`
-- 레거시 `audio.js` -> `useAudio` + `AudioPlayer`
+즉, 현재 소스의 진실은 `src/`이고 `legacy/`는 참조용이다.
 
-차이점:
+## 16. 테스트와 검증 체계
 
-- 레거시는 DOM imperative
-- 현재 앱은 컴포넌트/훅/컨텍스트 구조
-- 레거시는 query string
-- 현재 앱은 path params
+### 16.1 단위 테스트
 
-## 13. 데이터 제작 파이프라인
+`src/utils/dataFetcher.test.ts`
 
-루트의 여러 파일은 콘텐츠 소스와 제작 도구다.
+현재 확인된 테스트 범위:
 
-### 13.1 원천 텍스트 파일
-
-- `data-source/1.sans.txt`: 산스크리트 원문 + 발음
-- `data-source/2.english.txt`
-- `data-source/3.korean-1.txt`
-- `data-source/4.han bal.txt`
-- `data-source/5.bae_jik.txt`
-- `data-source/6.bae_uu.txt`
-- `data-source/7.dan.txt`
-- `data-source/8. ox.txt`
-- `data-source/9. ox-en.txt`
-- `data-source/10.sogae.txt`
-- `data-source/11. Lexicon.txt`
-
-즉, 현재 앱 데이터는 여러 텍스트 파일을 조합해서 만들어진다.
-
-### 13.2 `scripts/generate_data.ps1`
-
-이 스크립트는 데이터 생성의 중심이다.
-
-주요 동작:
-
-1. 수트라 객체 맵 생성
-2. `data-source/1.sans.txt`에서 `sanskrit`, `pronunciation` 파싱
-3. 다른 `.txt` 파일을 언어 필드로 병합
-4. `4.han bal.txt`, `5.bae_jik.txt`, `6.bae_uu.txt`는 블록 형식으로 처리
-5. `7.dan.txt`를 `word_meanings`로 순차 매핑
-6. 최종 결과를
-   - `data.js`
-   - `public/data.json`
-   로 저장
-
-즉, `data.js`와 `public/data.json`은 빌드 산출물에 가깝다.
-
-### 13.3 보조 스크립트
-
-`scripts/update_dictionary.cjs`
-
-- `data-source/7.dan.txt`, `data-source/1.sans.txt`를 읽어 `data.js` 일부를 갱신
-
-`scripts/check_audio_mismatch.cjs`
-
-- 데이터 기준 기대 MP3와 실제 `public/mp3` 파일 매칭 검사
-
-`scripts/verify_data.cjs`
-
-- `public/data.json` 특정 범위를 검사하는 간단한 검증 스크립트
-
-그 외 PowerShell 스크립트:
-
-- `update_dictionary.ps1`
-- `check_mismatches.ps1`
-- `split_iast*.ps1`
-- `merge_tokens.ps1`
-- `reorder_tokens.ps1`
-- `normalize_files.ts`
-
-이들은 토큰 정렬, 사전 보정, 파일 정규화 등 "콘텐츠 편집 작업"을 위해 만든 도구들로 보인다.
-
-### 13.4 `data-source/han-json/`
-
-`data-source/han-json/yoga_sutra_ch*_tokens_MATCHED_TO_datajs.json`
-
-이 파일들은 챕터별 토큰 매칭 결과로 보인다.
-
-이는 `types.ts` 안의 `tokens`, `compound_tokens_original` 필드와 연결된다. 즉, 앱은 현재 단순 문자열 데이터만이 아니라, 향후 더 정교한 형태소/어휘 분석 UI로 확장될 여지도 가진다.
-
-## 14. 설계 의도와 실제 구현의 간극
-
-프로젝트는 명확히 "고급 독서 경험"을 지향한다.
-
-보이는 의도:
-
-- 고급스러운 디자인
-- 다중 번역 비교
-- 원문 + 발음 + 단어 뜻 + 오디오의 통합
-- 개인 메모
-- 사전/개론 제공
-
-하지만 구현을 읽어보면 몇 가지 과도기 흔적이 있다.
-
-1. 데이터 필드명이 파일명 기반이라 도메인 모델이 거칠다.
-2. 메타데이터가 두 군데(`constants.ts`, `dataFetcher.ts`)에 중복된다.
-3. 레거시 구현과 React 구현이 함께 남아 있어 저장소 응집도가 낮다.
-4. 코멘터리 패널은 아직 비어 있다.
-5. 데이터 파일이 복수 버전으로 공존한다.
-
-즉, 기능은 많이 갖췄지만 "정리/통합 리팩터링" 전 단계의 저장소다.
-
-## 15. 확인된 리스크와 주의점
-
-### 15.1 문자열 인코딩/모지바케 흔적
-
-터미널에서 확인한 다수의 TSX/상수 문자열에 깨진 한글이 보였다.
-
-예:
-
-- `src/constants.ts`
-- `src/components/*`
-- `legacy/legacy_web/*`
-
-반면 `data.js` 일부는 정상 한글이 보였다.
-
-가능성:
-
-- 일부 소스 파일 인코딩이 UTF-8이 아닐 수 있음
-- 혹은 저장소 안에서 이미 깨진 문자열이 커밋되었을 수 있음
-- 혹은 PowerShell 출력 인코딩과 실제 파일 인코딩이 불일치할 수 있음
-
-이 문제는 실제 앱 UI에서 한글이 깨져 보이는지 반드시 브라우저 기준으로 확인할 필요가 있다.
-
-### 15.2 인증 보안은 사실상 약함
-
-암호가 클라이언트에 있고 기본값이 `0228`이다.
-
-현재 구조는 "비공개 콘텐츠에 대한 약한 접근 제어" 정도이며, 진짜 보안 경계로 쓰면 안 된다.
-
-### 15.3 중복 데이터 소스
-
-현재 앱은 `public/data.json`을 쓰고, 생성 스크립트도 `public/data.json`을 갱신한다.
-
-즉:
-
-- 제작 파이프라인의 최신 산출물이 앱에서 실제 사용되는지 보장되지 않는다.
-- 다만 저장소 안에 이전 산출물 백업이 별도 보관되어 있으므로, 수정 시에는 현재 기준 파일과 아카이브 파일을 혼동하지 않도록 주의가 필요하다.
-
-### 15.4 코멘터리 패널 미완성
-
-`CommentarySidebar`는 UI 뼈대만 있고 실질 콘텐츠가 없다.
-
-### 15.5 메모 키 체계가 버전별로 다름
-
-- React 앱: `yoga-note-${chapter}-${verse}`
-- 레거시 앱: `note-${sutraId}`
-
-따라서 두 버전이 같은 사용자 브라우저에서 공존하면 메모 호환성이 없다.
-
-## 16. 테스트 및 검증 현황
-
-코드상 테스트 파일은 확인했다.
-
-- `src/utils/dataFetcher.test.ts`
-
-이 테스트는 아래만 검증한다.
-
-- fetch 성공 시 chapter 그룹화
+- fetch 성공 시 chapter 구조화
 - fetch 실패 시 빈 객체 반환
 
-즉, 핵심 UI 동작은 거의 테스트되지 않는다.
+테스트는 존재하지만 범위가 매우 좁다. UI 상호작용, hook 동작, routing, localStorage 복원은 단위 테스트로 거의 커버되지 않는다.
 
-실행 검증 시도 결과:
+### 16.2 브라우저 스모크 QA
 
-- `npm run typecheck`
-- `npm run test -- --run`
-- `npm run build`
+`scripts/browser_smoke.mjs`
 
-를 시도했으나, 이 환경에서는 기본 `npm`이 PATH에 없었다. 이후 로컬 Node 경로를 사용해 재시도했지만, 샌드박스 제약으로 `C:\Users\roadsea` 경로 `lstat` 단계에서 `EPERM`이 발생해 실행을 완료하지 못했다.
+Playwright 기반으로 다음 시나리오를 검사한다.
 
-따라서 이번 조사에서는 "코드를 정적으로 읽은 분석"은 충분히 했지만, 타입체크/테스트/빌드의 성공 여부는 최종 확인하지 못했다.
+- 데스크톱에서 홈 -> 구절 상세 진입
+- Reflections 열기
+- Commentary 전환
+- 새로고침 후 상태 복원 확인
+- 모바일에서 좌측 메뉴 열기
+- 모바일에서 우측 패널 열기/닫기
 
-## 17. 파일 기준 핵심 동작 요약
+기본 대상 URL:
 
-앱이 실제로 어떻게 움직이는지 가장 짧게 요약하면 아래 순서다.
+- `http://127.0.0.1:4174`
 
-1. `src/main.tsx`가 Theme/UI 컨텍스트와 함께 앱 부팅
-2. `src/App.tsx`가 로컬 스토리지 인증 상태 확인
-3. 홈이면 `ChapterList`, 상세면 `VerseView` 렌더
-4. `src/utils/dataFetcher.ts`가 `public/data.json`을 읽음
-5. `VerseView`가 현재 수트라를 찾고 MP3 경로를 계산
-6. `useAudio`가 오디오 상태를 관리
-7. `Reflections`가 로컬 스토리지에 사용자 메모 저장
-8. `LexiconModal`은 `public/lexicon.json`을 따로 읽음
+### 16.3 빌드/테스트 설정
 
-## 18. 종합 판단
+`vite.config.ts`
 
-이 프로젝트는 이미 사용자 경험 면에서 상당히 많은 요소를 갖춘 "콘텐츠 중심 정적 앱"이다. 특히 다음 점이 강하다.
+- React plugin
+- Tailwind plugin
+- `@ -> src`
+- output `dist`
 
-- 본문/발음/번역/단어 뜻/오디오를 한 화면에 통합
-- 레거시에서 React로 재구축하며 구조를 상당히 개선
-- 디자인 일관성이 뚜렷함
-- 데이터 제작용 스크립트가 별도로 존재해 콘텐츠를 계속 확장할 수 있음
+`vitest.config.ts`
 
-반대로 지금 가장 큰 숙제는 다음 네 가지다.
+- `jsdom`
+- `src/test/setup.ts`
+- `src/**/*.{test,spec}.{ts,tsx}`
 
-1. 실제 사용 데이터 소스 통합
-2. 인코딩/깨진 문자열 여부 확인
-3. 레거시 폴더와 현대 앱의 역할 정리
-4. 코멘터리/테스트 같은 미완성 영역 보강
+## 17. 현재 관찰된 문제와 리스크
 
-즉, "작동하는 앱"을 이미 넘어섰지만, 이제는 "운영 가능한 단일 체계"로 정리할 시점에 들어선 저장소라고 보는 것이 가장 정확하다.
+### 17.1 문자열/인코딩 문제
+
+이번 조사에서 가장 눈에 띈 문제는 한국어 및 일부 특수문자 리터럴이 여러 파일에서 깨져 보인다는 점이다.
+
+관찰 위치:
+
+- `src/constants.ts`
+- `src/components/Header.tsx`
+- `src/components/Sidebar.tsx`
+- `src/components/ui/SidebarLayout.tsx`
+- `src/components/ui/SidebarMenu.tsx`
+- `src/components/Reflections.tsx`
+- `src/components/CommentarySidebar.tsx`
+- `src/components/verse/TranslationSection.tsx`
+- `README.md`
+- 기존 `research.md`
+
+주의:
+
+- PowerShell 출력 인코딩 문제가 일부 과장해서 보일 수 있다
+- 그러나 문서와 코드 전반에 동일 패턴이 반복되어 실제 소스에 모지바케가 남아 있을 가능성도 크다
+
+따라서 “브라우저에서 정상이면 끝”이 아니라, 원본 파일 인코딩을 별도 점검해야 한다.
+
+### 17.2 챕터 메타데이터 신뢰도
+
+`YOGA_CHAPTERS_META`는 앱 전반에서 중요하지만, 문자열 품질과 `sutraCount` 값이 실제 데이터와 어긋날 여지가 있다. 이 객체는 카드, 사이드바, 상세 헤더 등 UI 곳곳에 영향을 주므로 우선순위가 높다.
+
+### 17.3 commentary 영역 미완성
+
+`CommentarySidebar`는 실제 콘텐츠가 없다. 버튼과 패널은 존재하지만 사용자 관점에서는 빈 기능이다.
+
+### 17.4 데이터 모델 결합도
+
+필드명이 원천 텍스트 파일명 기반이라 앱 코드가 데이터 정제 단계와 강하게 결합되어 있다. 장기적으로는 앱 내부용 도메인 모델로 한 번 더 매핑하는 편이 좋다.
+
+### 17.5 중복 데이터 접근
+
+`fetchYogaData()`는 캐시가 있어 큰 문제는 아니지만, `ChapterList`, `Sidebar`, `ReflectionsModal`, `useYogaData()` 등 여러 위치에서 개별적으로 호출된다. 성능보다도 데이터 접근 방식이 분산되어 있어 코드 추적성이 떨어진다.
+
+### 17.6 오디오 훅 안정성
+
+`useAudio()`의 `togglePlay`는 함수형 업데이트 대신 현재 클로저 상태를 사용한다. 아주 빠른 상호작용이나 재생 실패 상황에서 엣지 케이스가 생길 수 있다.
+
+## 18. 실제 동작 흐름 요약
+
+앱이 동작하는 실제 흐름을 한 줄로 요약하면 다음과 같다.
+
+1. `main.tsx`가 테마/UI 컨텍스트와 함께 앱 부트스트랩
+2. `App.tsx`가 홈 또는 상세 페이지 라우팅
+3. 상세 페이지면 `AppShell` 안에 헤더, 좌측 사이드바, 우측 패널 구조 생성
+4. 데이터는 모두 `public/data.json`에서 읽음
+5. `Sidebar`와 `VerseView`가 같은 데이터셋을 다른 방식으로 소비
+6. 메모는 `localStorage`
+7. 사전은 `public/lexicon.json`
+8. 오디오는 `public/mp3/*.mp3`
+9. 브라우저 QA는 Playwright 스크립트로 최소 동선 확인
+
+## 19. 종합 판단
+
+이 프로젝트는 현재 “운영 가능한 React 앱 + 유지용 데이터 제작 파이프라인 + 보관된 레거시 앱” 구조로 정리되어 있다. 전체 방향은 많이 정돈되었고, 데이터 기준 파일도 `public/data.json`으로 수렴해 있다.
+
+강점:
+
+- 앱 구조가 비교적 단순하고 추적 가능함
+- 정적 자산 기반이라 배포가 쉬움
+- 오디오, 번역, 단어 뜻, 메모까지 한 화면에서 통합됨
+- 브라우저 스모크 QA 스크립트가 이미 있음
+
+약점:
+
+- 문자열 인코딩/모지바케 흔적
+- commentary 미완성
+- 메타데이터 품질 검증 필요
+- 테스트 범위 부족
+- 데이터 모델이 원천 파일 구조에 과하게 묶여 있음
+
+결론적으로 이 저장소는 “무엇이 어디에 있는지”는 꽤 읽히는 상태지만, “문자열 품질과 데이터 모델” 측면에서는 아직 한 번 더 정리할 가치가 크다. 운영 기준 앱은 분명히 `src/` 아래 React 코드이며, `public/data.json`이 현재 런타임의 단일 데이터 소스라고 보는 것이 맞다.

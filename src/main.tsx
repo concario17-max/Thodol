@@ -4,12 +4,15 @@ import App from './App.tsx';
 import './index.css';
 import { ThemeProvider } from './context/ThemeContext.tsx';
 import { UIProvider } from './context/UIContext.tsx';
+import { YogaDataProvider } from './context/YogaDataContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ThemeProvider>
             <UIProvider>
-                <App />
+                <YogaDataProvider>
+                    <App />
+                </YogaDataProvider>
             </UIProvider>
         </ThemeProvider>
     </StrictMode>,

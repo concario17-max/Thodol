@@ -6,13 +6,43 @@ interface RawSutra {
     sanskrit: string;
     pronunciation: string;
     pronunciation_kr?: string;
+    '2.english'?: string;
+    '3.korean-1'?: string;
     '4.han bal'?: string;
+    '5.bae_jik'?: string;
+    '6.bae_uu'?: string;
+    '8. ox'?: string;
+    '9. ox-en'?: string;
     word_meanings?: Record<string, string>;
-    [key: string]: unknown;
 }
 
 let cachedData: Record<number, YogaChapter> | null = null;
 let pendingRequest: Promise<Record<number, YogaChapter>> | null = null;
+
+const normalizeWordMeanings = (meanings?: Record<string, string>): WordMeaning | undefined => {
+    if (!meanings) {
+        return undefined;
+    }
+
+    return Object.entries(meanings).map(([word, meaning]) => ({
+        word,
+        meaning,
+    }));
+};
+
+const normalizeSutra = (item: RawSutra): YogaSutra => ({
+    id: item.id,
+    sanskrit: item.sanskrit,
+    pronunciation: item.pronunciation,
+    pronunciation_kr: item['4.han bal'] || item.pronunciation_kr || '',
+    '2.english': item['2.english'],
+    '3.korean-1': item['3.korean-1'],
+    '5.bae_jik': item['5.bae_jik'],
+    '6.bae_uu': item['6.bae_uu'],
+    '8. ox': item['8. ox'],
+    '9. ox-en': item['9. ox-en'],
+    word_meanings: normalizeWordMeanings(item.word_meanings),
+});
 
 export const resetCache = () => {
     cachedData = null;
@@ -35,7 +65,7 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
                 throw new Error('Failed to fetch data');
             }
 
-            const rawSutras: RawSutra[] = await response.json();
+            const rawSutras = (await response.json()) as RawSutra[];
             const structuredData: Record<number, YogaChapter> = {};
 
             rawSutras.forEach((item) => {
@@ -56,28 +86,14 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
                     };
                 }
 
-                let normalizedMeanings: WordMeaning | undefined;
-                if (item.word_meanings && typeof item.word_meanings === 'object') {
-                    normalizedMeanings = Object.entries(item.word_meanings).map(([word, meaning]) => ({
-                        word,
-                        meaning: meaning as string,
-                    }));
-                }
-
-                const sutra: YogaSutra = {
-                    ...item,
-                    pronunciation_kr: item['4.han bal'] || item.pronunciation_kr || '',
-                    word_meanings: normalizedMeanings,
-                } as YogaSutra;
-
-                structuredData[chapterNum].sutras.push(sutra);
+                structuredData[chapterNum].sutras.push(normalizeSutra(item));
             });
 
             Object.values(structuredData).forEach((chapter) => {
-                chapter.sutras.sort((a, b) => {
-                    const aNum = parseInt(a.id.split('.')[1], 10);
-                    const bNum = parseInt(b.id.split('.')[1], 10);
-                    return aNum - bNum;
+                chapter.sutras.sort((left, right) => {
+                    const leftNum = parseInt(left.id.split('.')[1], 10);
+                    const rightNum = parseInt(right.id.split('.')[1], 10);
+                    return leftNum - rightNum;
                 });
                 chapter.meta.sutraCount = chapter.sutras.length;
             });

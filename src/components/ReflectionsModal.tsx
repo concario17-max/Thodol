@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { fetchYogaData } from '../utils/dataFetcher';
+import { useYogaData } from '../hooks/useYogaData';
 
 interface ReflectionsModalProps {
     isOpen: boolean;
@@ -17,62 +17,57 @@ interface ReflectionNote {
 
 const ReflectionsModal = ({ isOpen, onClose }: ReflectionsModalProps) => {
     const [notesData, setNotesData] = useState<ReflectionNote[]>([]);
+    const { allChapters } = useYogaData();
 
     useEffect(() => {
-        if (!isOpen) return;
+        if (!isOpen || !allChapters) return;
 
-        fetchYogaData()
-            .then((data) => {
-                if (!data) return;
+        const noteKeys = Object.keys(localStorage).filter((key) => key.startsWith('yoga-note-'));
 
-                const noteKeys = Object.keys(localStorage).filter((key) => key.startsWith('yoga-note-'));
+        noteKeys.sort((a, b) => {
+            const [, , chA, vA] = a.split('-');
+            const [, , chB, vB] = b.split('-');
+            if (parseInt(chA, 10) !== parseInt(chB, 10)) return parseInt(chA, 10) - parseInt(chB, 10);
+            return parseInt(vA, 10) - parseInt(vB, 10);
+        });
 
-                noteKeys.sort((a, b) => {
-                    const [, , chA, vA] = a.split('-');
-                    const [, , chB, vB] = b.split('-');
-                    if (parseInt(chA, 10) !== parseInt(chB, 10)) return parseInt(chA, 10) - parseInt(chB, 10);
-                    return parseInt(vA, 10) - parseInt(vB, 10);
-                });
+        const loadedNotes: ReflectionNote[] = [];
 
-                const loadedNotes: ReflectionNote[] = [];
+        noteKeys.forEach((key) => {
+            const [, , ch, v] = key.split('-');
+            const content = localStorage.getItem(key);
 
-                noteKeys.forEach((key) => {
-                    const [, , ch, v] = key.split('-');
-                    const content = localStorage.getItem(key);
+            if (content && content.trim()) {
+                let sanskritText = '';
+                const chapterData = allChapters[parseInt(ch, 10)];
 
-                    if (content && content.trim()) {
-                        let sanskritText = '';
-                        const chapterData = data[parseInt(ch, 10)];
+                if (chapterData?.sutras) {
+                    const sutraData = chapterData.sutras.find((sutra) => sutra.id.split('.')[1] === v);
+                    if (sutraData?.sanskrit) {
+                        const lines = sutraData.sanskrit
+                            .split('\n')
+                            .map((line) => line.trim())
+                            .filter(Boolean);
 
-                        if (chapterData?.sutras) {
-                            const sutraData = chapterData.sutras.find((sutra) => sutra.id.split('.')[1] === v);
-                            if (sutraData?.sanskrit) {
-                                const lines = sutraData.sanskrit
-                                    .split('\n')
-                                    .map((line) => line.trim())
-                                    .filter(Boolean);
-
-                                sanskritText = lines[1] || lines[0] || '';
-                                if (!sanskritText.trim()) {
-                                    sanskritText = `${sutraData.sanskrit.substring(0, 50)}...`;
-                                }
-                            }
+                        sanskritText = lines[1] || lines[0] || '';
+                        if (!sanskritText.trim()) {
+                            sanskritText = `${sutraData.sanskrit.substring(0, 50)}...`;
                         }
-
-                        loadedNotes.push({
-                            id: key,
-                            chapter: ch,
-                            verse: v,
-                            sanskrit: sanskritText.trim(),
-                            content: content.trim(),
-                        });
                     }
-                });
+                }
 
-                setNotesData(loadedNotes);
-            })
-            .catch((err) => console.error('Failed to load yoga data for reflections:', err));
-    }, [isOpen]);
+                loadedNotes.push({
+                    id: key,
+                    chapter: ch,
+                    verse: v,
+                    sanskrit: sanskritText.trim(),
+                    content: content.trim(),
+                });
+            }
+        });
+
+        setNotesData(loadedNotes);
+    }, [allChapters, isOpen]);
 
     if (!isOpen) return null;
 

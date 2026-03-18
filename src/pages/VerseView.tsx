@@ -48,7 +48,7 @@ const VerseView = () => {
         allChapters, 
         loading, 
         getVerseInRange, 
-        getVerseRangeText 
+        getVerseRangeLabel 
     } = useYogaData();
 
     const {
@@ -62,7 +62,8 @@ const VerseView = () => {
         reset,
         seek,
         formatTime,
-        progressPercent
+        progressPercent,
+        playbackError,
     } = useAudio(audioRef);
 
     // Initial load and URL sync
@@ -106,7 +107,7 @@ const VerseView = () => {
 
     if (!verseData || !currentChapter) return null;
 
-    const verseRange = getVerseRangeText(currentChapter, verseData);
+    const verseRange = getVerseRangeLabel(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
 
     return (
@@ -154,6 +155,7 @@ const VerseView = () => {
                             progressPercent={progressPercent}
                             formatTime={formatTime}
                             onSeek={seek}
+                            playbackError={playbackError}
                         />
                     </motion.div>
 

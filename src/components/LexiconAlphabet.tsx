@@ -1,28 +1,33 @@
 import React from 'react';
 
+interface LexiconWord {
+    word: string;
+    meaning: string;
+}
+
 interface LexiconAlphabetProps {
     alphabet: string[];
-    lexiconData: Record<string, any[]>;
+    lexiconData: Record<string, LexiconWord[]>;
     onLetterClick: (letter: string) => void;
 }
 
-// 알파벳 필터 렌더링 컴포넌트.
 const LexiconAlphabet = ({ alphabet, lexiconData, onLetterClick }: LexiconAlphabetProps) => {
     return (
-        <div className="flex flex-wrap gap-2 mb-12">
+        <div className="mb-12 flex flex-wrap gap-2">
             {alphabet.map((letter) => {
-                const hasWords = lexiconData[letter] && lexiconData[letter].length > 0;
+                const hasWords = Boolean(lexiconData[letter] && lexiconData[letter].length > 0);
+
                 return (
                     <button
+                        type="button"
                         key={letter}
                         onClick={() => hasWords && onLetterClick(letter)}
                         disabled={!hasWords}
-                        className={`w-9 h-9 flex items-center justify-center text-[13px] rounded-full transition-all duration-300 border
-                            ${hasWords
-                                ? 'bg-gold-bg dark:bg-dark-bg text-gold-primary border-gold-border/30 shadow-sm hover:shadow-md hover:scale-110 hover:border-gold-primary cursor-pointer'
-                                : 'bg-transparent text-gold-primary/20 border-transparent cursor-not-allowed opacity-50'
-                            }
-                        `}
+                        className={`flex h-9 w-9 items-center justify-center rounded-full border text-[13px] transition-all duration-300 ${
+                            hasWords
+                                ? 'cursor-pointer border-gold-border/30 bg-gold-bg text-gold-primary shadow-sm hover:scale-110 hover:border-gold-primary hover:shadow-md dark:bg-dark-bg'
+                                : 'cursor-not-allowed border-transparent bg-transparent text-gold-primary/20 opacity-50'
+                        }`}
                     >
                         {letter}
                     </button>

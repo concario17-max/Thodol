@@ -12,61 +12,62 @@ export interface SidebarLayoutProps {
     desktopWidthClass?: string;
 }
 
-/**
- * 범용 Drawer / Sidebar 레이아웃 (Zero Monolith)
- * - 배경 블러 효과 및 좌/우측 오버레이 트랜지션 로직 캡슐화
- */
-export const SidebarLayout = React.memo(({
-    isOpen,
-    isDesktopOpen,
-    onClose,
-    title,
-    children,
-    position = 'left',
-    widthClass = 'w-80',
-    desktopWidthClass = 'lg:w-80'
-}: SidebarLayoutProps) => {
+export const SidebarLayout = React.memo(
+    ({
+        isOpen,
+        isDesktopOpen,
+        onClose,
+        title,
+        children,
+        position = 'left',
+        widthClass = 'w-80',
+        desktopWidthClass = 'lg:w-80',
+    }: SidebarLayoutProps) => {
+        const isLeft = position === 'left';
+        const translateClosed = isLeft ? '-translate-x-full lg:-translate-x-10' : 'translate-x-full lg:translate-x-10';
+        const borderClass = isLeft ? 'border-r' : 'border-l';
+        const placementClass = isLeft ? 'left-0' : 'right-0';
 
-    const isLeft = position === 'left';
-    const translateClosed = isLeft ? '-translate-x-full lg:-translate-x-10' : 'translate-x-full lg:translate-x-10';
-    const borderClass = isLeft ? 'border-r' : 'border-l';
-    const placementClass = isLeft ? 'left-0' : 'right-0';
-
-    return (
-        <>
-            {isOpen && (
-                <div
-                    className="fixed inset-x-0 bottom-0 top-16 z-40 bg-black/50 backdrop-blur-sm opacity-100 transition-opacity duration-300 touch-none lg:hidden"
-                    onClick={onClose}
-                />
-            )}
-
-            <aside className={`fixed bottom-0 top-16 ${placementClass} z-50 bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md ${borderClass} border-gold-primary/20 dark:border-dark-border/50 h-[calc(100dvh-64px)] lg:h-[calc(100vh-64px)] lg:sticky lg:top-16 transform transition-all duration-300 flex flex-col font-pretendard overscroll-contain
-                ${isOpen ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none` : `w-[90vw] ${desktopWidthClass} ${translateClosed} lg:translate-x-0`}
-                ${isDesktopOpen ? `${desktopWidthClass} lg:opacity-100` : `lg:w-0 lg:opacity-0 lg:border-none p-0 px-0 overflow-hidden`}
-            `}>
-
-                {title && (
-                    <div className="lg:hidden flex items-center justify-between p-4 border-b border-gold-border/30 dark:border-[#333] shrink-0">
-                        <span className="font-crimson font-bold text-lg text-text-primary dark:text-dark-text-primary w-full">{title}</span>
-                        <button onClick={onClose} className="p-2 -mr-2 rounded-full hover:bg-gold-surface dark:hover:bg-dark-surface text-text-secondary dark:text-dark-text-secondary transition-colors absolute right-4">
-                            <X className="w-5 h-5" />
-                        </button>
-                    </div>
+        return (
+            <>
+                {isOpen && (
+                    <div
+                        className="fixed inset-x-0 bottom-0 top-16 z-40 touch-none bg-black/50 opacity-100 backdrop-blur-sm transition-opacity duration-300 lg:hidden"
+                        onClick={onClose}
+                    />
                 )}
 
-                {!title && (
-                    <div className="lg:hidden absolute top-4 right-4 z-50">
-                        <button onClick={onClose} className="p-2 rounded-full hover:bg-gold-surface dark:hover:bg-dark-surface text-text-secondary dark:text-dark-text-secondary transition-colors">
-                            <X className="w-5 h-5" />
-                        </button>
-                    </div>
-                )}
+                <aside
+                    className={`fixed bottom-0 top-16 ${placementClass} z-50 flex h-[calc(100dvh-64px)] flex-col overscroll-contain border-gold-primary/20 bg-white/40 font-pretendard backdrop-blur-md transition-all duration-300 dark:border-dark-border/50 dark:bg-dark-surface/40 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)] ${borderClass}
+                    ${isOpen ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none` : `w-[90vw] ${desktopWidthClass} ${translateClosed} lg:translate-x-0`}
+                    ${isDesktopOpen ? `${desktopWidthClass} lg:opacity-100` : 'overflow-hidden p-0 px-0 lg:w-0 lg:border-none lg:opacity-0'}`}
+                >
+                    {title ? (
+                        <div className="flex shrink-0 items-center justify-between border-b border-gold-border/30 p-4 dark:border-[#333] lg:hidden">
+                            <span className="w-full font-crimson text-lg font-bold text-text-primary dark:text-dark-text-primary">{title}</span>
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="absolute right-4 -mr-2 rounded-full p-2 text-text-secondary transition-colors hover:bg-gold-surface dark:text-dark-text-secondary dark:hover:bg-dark-surface"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="absolute right-4 top-4 z-50 lg:hidden">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="rounded-full p-2 text-text-secondary transition-colors hover:bg-gold-surface dark:text-dark-text-secondary dark:hover:bg-dark-surface"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+                    )}
 
-                <div className="flex-1 flex flex-col overflow-hidden pb-safe-offset-4">
-                    {children}
-                </div>
-            </aside>
-        </>
-    );
-});
+                    <div className="flex flex-1 flex-col overflow-hidden pb-safe-offset-4">{children}</div>
+                </aside>
+            </>
+        );
+    },
+);

@@ -52,7 +52,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="custom-scrollbar h-[30%] shrink-0 overflow-y-auto border-b border-gold-border/20 dark:border-[#222] overscroll-contain"
+                className="custom-scrollbar h-[30%] shrink-0 overflow-y-auto border-b border-gold-border/20 overscroll-contain dark:border-[#222]"
             >
                 {groupTitle && (
                     <div className="sticky top-0 z-10 hidden bg-transparent p-4 backdrop-blur-sm lg:block">
@@ -63,6 +63,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                 <div className="space-y-1 px-2 py-2 sm:space-y-0.5 sm:py-1">
                     {groups.map((group) => (
                         <motion.button
+                            type="button"
                             variants={itemVariants}
                             key={group.id}
                             onClick={group.onToggle}
@@ -119,9 +120,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                 >
                                     {item.label}
                                 </span>
-                                {item.description && (
-                                    <span className="line-clamp-1 text-[14px] leading-relaxed opacity-90 sm:text-[13px]">{item.description}</span>
-                                )}
+                                {item.description && <span className="line-clamp-1 text-[14px] leading-relaxed opacity-90 sm:text-[13px]">{item.description}</span>}
                             </NavLink>
                         ))
                     ) : (
