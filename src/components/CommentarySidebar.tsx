@@ -12,7 +12,7 @@ const CommentarySidebar = () => {
 
     const isOpen = activeRightPanel === 'commentary';
     const isDesktopOpen = activeDesktopRightPanel === 'commentary';
-    const desktopWidthClass = isDesktopSidebarOpen ? 'lg:w-[400px]' : 'lg:w-[720px]';
+    const desktopWidthClass = isDesktopSidebarOpen ? 'lg:w-[400px]' : 'lg:w-[800px]';
 
     return (
         <>

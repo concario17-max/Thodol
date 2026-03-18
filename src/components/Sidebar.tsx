@@ -68,7 +68,7 @@ const Sidebar = () => {
             title="챕터"
             position="left"
             widthClass="w-[88vw] max-w-[360px]"
-            desktopWidthClass="lg:w-80"
+            desktopWidthClass="lg:w-[400px]"
         >
             <SidebarMenu groups={groups} onItemClick={() => setIsSidebarOpen(false)} groupTitle="Chapters" />
         </SidebarLayout>
