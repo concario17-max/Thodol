@@ -19,13 +19,11 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel, isDesktopSidebarOpen } = useUI();
+    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
 
     const activePanel = activeRightPanel || activeDesktopRightPanel;
     const currentPanel = activePanel === 'commentary' ? 'commentary' : 'reflections';
     const nextPanel = activePanel === null ? 'reflections' : currentPanel === 'commentary' ? 'reflections' : 'commentary';
-    const desktopRightWidth =
-        activeDesktopRightPanel === 'commentary' ? (isDesktopSidebarOpen ? '25rem' : '45rem') : activeDesktopRightPanel === 'reflections' ? '25rem' : '7.5rem';
     const panelMeta =
         currentPanel === 'commentary'
             ? {
@@ -43,7 +41,7 @@ const Header = ({
         <header
             className={`glass-panel sticky top-0 z-50 w-full border-b border-gold-primary/20 shadow-sm transition-colors duration-500 dark:border-dark-border/60 ${className}`}
         >
-            <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-5 lg:hidden">
+            <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-5">
                 <div className="flex min-w-0 flex-1 items-center gap-1 text-text-primary dark:text-dark-text-primary sm:gap-2">
                     {showSidebarToggle && (
                         <button
@@ -58,7 +56,7 @@ const Header = ({
                     )}
 
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-1 truncate sm:gap-2.5">
-                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
+                        <span className="hidden shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6 sm:flex">
                             <BookOpenText className="h-6 w-6 sm:h-7 sm:w-7" />
                         </span>
                         <span className="mt-0.5 truncate font-display text-[18px] font-medium tracking-[0.03em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary sm:text-[24px] sm:tracking-[0.04em]">
@@ -86,54 +84,6 @@ const Header = ({
                     )}
 
                     <ThemeToggle className="ml-0 sm:ml-2" />
-                </div>
-            </div>
-
-            <div
-                className="hidden h-16 items-stretch lg:grid"
-                style={{ gridTemplateColumns: `${isDesktopSidebarOpen ? '20rem' : '4.5rem'} minmax(0, 1fr) ${desktopRightWidth}` }}
-            >
-                <div className="flex min-w-0 items-center border-r border-gold-primary/15 px-4 text-text-primary dark:border-dark-border/60 dark:text-dark-text-primary">
-                    {showSidebarToggle && (
-                        <button
-                            type="button"
-                            onClick={toggleSidebar}
-                            className="-ml-1 shrink-0 rounded-xl p-2 text-gold-primary transition-all duration-300 hover:bg-gold-surface/50 dark:text-gold-light dark:hover:bg-dark-surface/50"
-                            title="Open chapter sidebar"
-                            aria-label="Open chapter sidebar"
-                        >
-                            <Menu className="h-5 w-5" />
-                        </button>
-                    )}
-
-                    {isDesktopSidebarOpen && (
-                        <Link to={targetUrl} className="ml-2 min-w-0 truncate font-display text-[22px] font-medium tracking-[0.04em] text-text-primary transition-colors hover:text-gold-primary dark:text-dark-text-primary">
-                            {title}
-                        </Link>
-                    )}
-                </div>
-
-                <div />
-
-                <div className="flex items-center justify-end gap-3 border-l border-gold-primary/15 px-4 dark:border-dark-border/60">
-                    {rightContent}
-
-                    {showSidebarToggle && (
-                        <button
-                            type="button"
-                            onClick={() => toggleRightPanel(nextPanel)}
-                            className="group inline-flex h-11 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80"
-                            title={panelMeta.title}
-                            aria-label={panelMeta.title}
-                        >
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
-                                {panelMeta.icon}
-                            </span>
-                            <span>{panelMeta.label}</span>
-                        </button>
-                    )}
-
-                    <ThemeToggle className="border border-gold-primary/15 bg-white/50 p-2.5 hover:border-gold-primary/30 dark:border-dark-border/70 dark:bg-dark-surface/70" />
                 </div>
             </div>
         </header>
