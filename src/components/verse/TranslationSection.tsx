@@ -15,7 +15,7 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
 
         <div className="mb-[var(--spacing-fluid-lg)]">
             <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
-                Primary Translation
+                앨리스 A. 베일리
             </h2>
             <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6">
                 {english && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{english}</p>}
@@ -30,7 +30,7 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
         {(oxfordKr || oxfordEn) && (
             <div className="mb-[var(--spacing-fluid-lg)]">
                 <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
-                    Oxford Notes
+                    니콜라스 서튼
                 </h2>
                 <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6">
                     {oxfordEn && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{oxfordEn}</p>}
@@ -46,7 +46,7 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
         {(baeJik || baeUu) && (
             <div className="mb-[var(--spacing-fluid-lg)]">
                 <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
-                    Bae Translation
+                    배철현
                 </h2>
                 <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-md)] px-3 sm:px-6">
                     {baeJik && (

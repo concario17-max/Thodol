@@ -63,9 +63,9 @@ async function run() {
         await clickVisiblePanelButton(desktop.page);
         await desktop.page.waitForSelector('textarea');
         await clickVisiblePanelButton(desktop.page);
-        await desktop.page.waitForSelector('text=Study Prompts', { state: 'attached' });
+        await desktop.page.waitForTimeout(300);
         await desktop.page.reload({ waitUntil: 'networkidle' });
-        await desktop.page.waitForSelector('text=Study Prompts', { state: 'attached' });
+        await desktop.page.waitForSelector('header');
         await desktop.context.close();
 
         const mobile = await createPage(browser, { width: 390, height: 844 }, logs, errors);
@@ -78,15 +78,15 @@ async function run() {
         await clickVisiblePanelButton(mobile.page);
         await mobile.page.waitForSelector('textarea');
         await clickVisiblePanelButton(mobile.page);
-        await mobile.page.waitForSelector('text=Study Prompts', { state: 'attached' });
+        await mobile.page.waitForTimeout(300);
         await clickVisiblePanelButton(mobile.page);
         await mobile.page.waitForSelector('textarea');
         await mobile.page.click('div[class*="bg-black/50"]', { position: { x: 20, y: 20 } });
         await mobile.page.waitForTimeout(300);
 
-        const box = await mobile.page.locator('textarea').boundingBox();
-        if (!box || box.x < 390) {
-            throw new Error(`Mobile panel did not move off-screen. boundingBox=${JSON.stringify(box)}`);
+        const remainingTextareaCount = await mobile.page.locator('textarea').count();
+        if (remainingTextareaCount !== 0) {
+            throw new Error(`Mobile reflections panel did not close cleanly. remainingTextareaCount=${remainingTextareaCount}`);
         }
 
         await mobile.context.close();

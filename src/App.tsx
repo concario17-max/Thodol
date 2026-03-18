@@ -15,7 +15,10 @@ const VerseView = lazy(() => import('./pages/VerseView'));
 const MainLayout = () => {
     const location = useLocation();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, activeRightPanel, closeAllDrawers } = useUI();
+    const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, closeAllDrawers } = useUI();
+
+    const shouldRenderReflections = isVerseView && (activeRightPanel === 'reflections' || activeDesktopRightPanel === 'reflections');
+    const shouldRenderCommentary = isVerseView && (activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary');
 
     useEffect(() => {
         closeAllDrawers();
@@ -28,8 +31,8 @@ const MainLayout = () => {
             rightPanel={
                 isVerseView ? (
                     <>
-                        <Reflections />
-                        <CommentarySidebar />
+                        {shouldRenderReflections ? <Reflections /> : null}
+                        {shouldRenderCommentary ? <CommentarySidebar /> : null}
                     </>
                 ) : undefined
             }

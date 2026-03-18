@@ -23,7 +23,7 @@ const Header = ({
 
     const activePanel = activeRightPanel || activeDesktopRightPanel;
     const currentPanel = activePanel === 'commentary' ? 'commentary' : 'reflections';
-    const nextPanel = currentPanel === 'commentary' ? 'reflections' : 'commentary';
+    const nextPanel = activePanel === null ? 'reflections' : currentPanel === 'commentary' ? 'reflections' : 'commentary';
     const panelMeta =
         currentPanel === 'commentary'
             ? {

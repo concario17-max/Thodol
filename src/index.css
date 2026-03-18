@@ -50,7 +50,6 @@
 @layer base {
     * {
         @apply transition-colors duration-300 ease-in-out;
-        scrollbar-gutter: stable;
     }
 }
 
