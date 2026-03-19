@@ -19,14 +19,13 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel, isDesktopSidebarOpen } = useUI();
+    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
 
     const activePanel = activeRightPanel || activeDesktopRightPanel;
     const currentPanel = activePanel === 'commentary' ? 'commentary' : 'reflections';
     const nextPanel = activePanel === null ? 'reflections' : currentPanel === 'commentary' ? 'reflections' : 'commentary';
-    const desktopLeftOffset = isDesktopSidebarOpen ? 400 : 0;
-    const desktopRightOffset =
-        activeDesktopRightPanel === 'commentary' ? (isDesktopSidebarOpen ? 400 : 800) : activeDesktopRightPanel === 'reflections' ? 400 : 0;
+    const desktopLeftOffset = showSidebarToggle ? 400 : 0;
+    const desktopRightOffset = showSidebarToggle ? 400 : 0;
     const panelMeta =
         currentPanel === 'commentary'
             ? {
