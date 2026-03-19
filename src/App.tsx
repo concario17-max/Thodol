@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from 'rea
 import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import Reflections from './components/Reflections';
 import CommentarySidebar from './components/CommentarySidebar';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
@@ -17,7 +16,6 @@ const MainLayout = () => {
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
     const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, closeAllDrawers } = useUI();
 
-    const shouldRenderReflections = isVerseView && (activeRightPanel === 'reflections' || activeDesktopRightPanel === 'reflections');
     const shouldRenderCommentary = isVerseView && (activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary');
 
     useEffect(() => {
@@ -31,7 +29,6 @@ const MainLayout = () => {
             rightPanel={
                 isVerseView ? (
                     <>
-                        {shouldRenderReflections ? <Reflections /> : null}
                         {shouldRenderCommentary ? <CommentarySidebar /> : null}
                     </>
                 ) : undefined

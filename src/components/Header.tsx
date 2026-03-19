@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpenText, Edit3, Menu, MessageSquare } from 'lucide-react';
+import { BookOpenText, Menu, MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
 
@@ -22,22 +22,9 @@ const Header = ({
     const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
 
     const activePanel = activeRightPanel || activeDesktopRightPanel;
-    const currentPanel = activePanel === 'commentary' ? 'commentary' : 'reflections';
-    const nextPanel = activePanel === null ? 'reflections' : currentPanel === 'commentary' ? 'reflections' : 'commentary';
     const desktopLeftOffset = showSidebarToggle ? 400 : 0;
     const desktopRightOffset = showSidebarToggle ? 400 : 0;
-    const panelMeta =
-        currentPanel === 'commentary'
-            ? {
-                  label: 'Commentary',
-                  title: 'Switch to commentary panel',
-                  icon: <MessageSquare className="h-3.5 w-3.5" />,
-              }
-            : {
-                  label: 'Reflections',
-                  title: 'Switch to reflections panel',
-                  icon: <Edit3 className="h-3.5 w-3.5" />,
-              };
+    const isCommentaryOpen = activePanel === 'commentary';
 
     return (
         <header
@@ -73,15 +60,15 @@ const Header = ({
                     {showSidebarToggle && (
                         <button
                             type="button"
-                            onClick={() => toggleRightPanel(nextPanel)}
+                            onClick={() => toggleRightPanel('commentary')}
                             className="group inline-flex h-10 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80 sm:h-11 sm:px-4 sm:text-[11px] sm:tracking-[0.18em]"
-                            title={panelMeta.title}
-                            aria-label={panelMeta.title}
+                            title={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
+                            aria-label={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
                         >
                             <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
-                                {panelMeta.icon}
+                                <MessageSquare className="h-3.5 w-3.5" />
                             </span>
-                            <span className="hidden min-[420px]:inline">{panelMeta.label}</span>
+                            <span className="hidden min-[420px]:inline">Commentary</span>
                         </button>
                     )}
 
@@ -125,15 +112,15 @@ const Header = ({
                     {showSidebarToggle && (
                         <button
                             type="button"
-                            onClick={() => toggleRightPanel(nextPanel)}
+                            onClick={() => toggleRightPanel('commentary')}
                             className="group inline-flex h-11 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80"
-                            title={panelMeta.title}
-                            aria-label={panelMeta.title}
+                            title={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
+                            aria-label={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
                         >
                             <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
-                                {panelMeta.icon}
+                                <MessageSquare className="h-3.5 w-3.5" />
                             </span>
-                            <span>{panelMeta.label}</span>
+                            <span>Commentary</span>
                         </button>
                     )}
 

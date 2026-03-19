@@ -8,7 +8,6 @@ import { GlassCard } from '../components/ui/GlassCard';
 
 const CompendiumModal = lazy(() => import('../components/CompendiumModal'));
 const LexiconModal = lazy(() => import('../components/LexiconModal'));
-const ReflectionsModal = lazy(() => import('../components/ReflectionsModal'));
 
 const getChapterIcon = (chapter: number) => {
     switch (chapter) {
@@ -63,7 +62,6 @@ const ChapterList = () => {
     const { chapters } = useYogaData();
     const [isCompendiumOpen, setIsCompendiumOpen] = useState<boolean>(false);
     const [isLexiconOpen, setIsLexiconOpen] = useState<boolean>(false);
-    const [isReflectionsOpen, setIsReflectionsOpen] = useState<boolean>(false);
     const [selectedChapter, setSelectedChapter] = useState<string>('');
     const [selectedVerse, setSelectedVerse] = useState<string>('');
 
@@ -104,10 +102,6 @@ const ChapterList = () => {
                     <div className="h-1 w-1 rotate-45 bg-gold-border/50" />
                     <span onClick={() => setIsLexiconOpen(true)} className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95">
                         Lexicon
-                    </span>
-                    <div className="hidden h-1 w-1 rotate-45 bg-gold-border/50 sm:block" />
-                    <span onClick={() => setIsReflectionsOpen(true)} className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95">
-                        Reflections
                     </span>
                 </motion.div>
 
@@ -207,7 +201,6 @@ const ChapterList = () => {
             <Suspense fallback={null}>
                 {isCompendiumOpen && <CompendiumModal isOpen={isCompendiumOpen} onClose={() => setIsCompendiumOpen(false)} />}
                 {isLexiconOpen && <LexiconModal isOpen={isLexiconOpen} onClose={() => setIsLexiconOpen(false)} />}
-                {isReflectionsOpen && <ReflectionsModal isOpen={isReflectionsOpen} onClose={() => setIsReflectionsOpen(false)} />}
             </Suspense>
         </div>
     );

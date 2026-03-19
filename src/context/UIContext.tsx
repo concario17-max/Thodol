@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode, Dispatch, SetStateAction } from 'react';
 
-export type RightPanelType = 'reflections' | 'commentary' | null;
+export type RightPanelType = 'commentary' | null;
 
 interface UIContextType {
     isSidebarOpen: boolean;
@@ -11,7 +11,7 @@ interface UIContextType {
     setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     activeDesktopRightPanel: RightPanelType;
     setActiveDesktopRightPanel: Dispatch<SetStateAction<RightPanelType>>;
-    toggleRightPanel: (panel: 'reflections' | 'commentary') => void;
+    toggleRightPanel: (panel: 'commentary') => void;
     closeAllDrawers: () => void;
 }
 
@@ -36,7 +36,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     const [activeDesktopRightPanel, setActiveDesktopRightPanel] = useState<RightPanelType>(() => {
         if (typeof window !== 'undefined') {
             const saved = localStorage.getItem('yoga-desktop-right-panel');
-            if (saved === 'true') return 'reflections';
+            if (saved === 'true') return 'commentary';
             if (saved === 'false') return null;
             return saved !== null ? (JSON.parse(saved) as RightPanelType) : null;
         }
@@ -66,7 +66,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         localStorage.setItem('yoga-desktop-sidebar', JSON.stringify(newState));
     }, [isDesktopSidebarOpen]);
 
-    const toggleRightPanel = useCallback((panel: 'reflections' | 'commentary') => {
+    const toggleRightPanel = useCallback((panel: 'commentary') => {
         if (window.innerWidth < 1024) {
             setActiveRightPanel((prev) => (prev === panel ? null : panel));
             return;

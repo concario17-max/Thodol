@@ -28,51 +28,49 @@ const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
                 <div className="custom-scrollbar flex-1 overflow-y-auto p-4 sm:p-8">
                     <div className="prose max-w-none break-keep font-noto-kr text-[15px] leading-relaxed text-[#5B7282] dark:prose-invert sm:text-base">
                         <p>
-                            <strong className="text-[#1C2B36]">Yoga Sutras</strong>는 마음의 작용을 관찰하고 훈련하며, 점차 더 깊은 집중과 자유를 향해 가는 과정을 매우 압축된 문장으로 기록한 텍스트다.
+                            <strong className="text-[#1C2B36]">Yoga Sutras</strong>는 마음의 작용을 관찰하고, 집중과 자유를 향해 가는 길을 짧고 응축된 문장으로
+                            기록한 텍스트입니다.
                         </p>
 
                         <p>
-                            이 앱은 원문, 발음, 번역, 단어 뜻, 오디오, 개인 노트를 한 공간에 모아 두었다. 목적은 정답을 제공하는 것이 아니라, 한 구절을 여러 층위에서 천천히 읽을 수 있도록 돕는 것이다.
+                            이 공간은 수트라 원문, 발음, 번역, 어휘, 해설을 함께 보며 한 구절을 여러 층위에서 천천히 읽기 위한 자리입니다.
                         </p>
 
                         <div className="rounded-r-md border-l-4 border-gold-primary bg-[#F5EFE6] p-5 dark:bg-[#222]">
                             <h3 className="mb-2 font-bold text-[#1C2B36] dark:text-gold-light">읽는 방법</h3>
-                            <p className="m-0">
-                                먼저 산스크리트와 발음을 듣고, 그다음 여러 번역을 비교한 뒤, 마지막으로 자신의 언어로 메모를 남기는 흐름이 가장 자연스럽다.
-                            </p>
+                            <p className="m-0">먼저 수트라를 소리로 읽고, 여러 번역을 비교한 뒤, 해설을 참고하며 의미를 천천히 따라가 보세요.</p>
                         </div>
 
                         <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">네 개의 장</h3>
                         <ul className="list-disc space-y-3 pl-5 marker:text-gold-primary">
                             <li>
-                                <strong className="text-[#1C2B36]">1장, 합일의 문제</strong>
+                                <strong className="text-[#1C2B36]">1장. 삼매의 문제</strong>
                                 <br />
-                                요가가 무엇이며 마음을 어떻게 다루는지 전체 방향을 제시한다.
+                                요가가 무엇이며 마음이 어떻게 고요해지는지 전체 방향을 제시합니다.
                             </li>
                             <li>
-                                <strong className="text-[#1C2B36]">2장, 합일의 단계</strong>
+                                <strong className="text-[#1C2B36]">2장. 삼매의 단계</strong>
                                 <br />
-                                수행자의 태도, 훈련, 실천 구조를 좀 더 구체적으로 설명한다.
+                                수행자의 태도, 훈련, 실천 구조를 구체적으로 설명합니다.
                             </li>
                             <li>
-                                <strong className="text-[#1C2B36]">3장, 합일의 성취와 그 결과</strong>
+                                <strong className="text-[#1C2B36]">3장. 삼매의 성취와 결과</strong>
                                 <br />
-                                깊은 집중이 가져오는 변화와, 그 과정에서 필요한 분별을 다룬다.
+                                깊은 집중이 가져오는 변화와 그 과정에서 필요한 분별을 다룹니다.
                             </li>
                             <li>
-                                <strong className="text-[#1C2B36]">4장, 깨달음</strong>
+                                <strong className="text-[#1C2B36]">4장. 해탈</strong>
                                 <br />
-                                궁극적인 자유와 분리, 해방의 의미를 철학적으로 풀어낸다.
+                                궁극적인 자유와 분리, 존재의 본성을 철학적으로 탐구합니다.
                             </li>
                         </ul>
 
-                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">이 앱에서 권하는 사용 흐름</h3>
+                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">권장 사용 흐름</h3>
                         <ul className="list-disc space-y-2 pl-5 marker:text-gold-primary">
-                            <li>챕터를 선택하고 한 구절씩 읽는다.</li>
-                            <li>발음을 듣고, 단어 뜻을 열어 핵심 어휘를 확인한다.</li>
-                            <li>여러 번역을 비교해 강조점의 차이를 본다.</li>
-                            <li>Reflections 패널에 자신의 해석과 질문을 기록한다.</li>
-                            <li>Commentary 패널을 보며 구절을 읽는 관점을 확장한다.</li>
+                            <li>챕터와 구절을 선택해 읽습니다.</li>
+                            <li>발음과 어휘를 따라가며 핵심 단어를 확인합니다.</li>
+                            <li>여러 번역을 비교하며 강조점의 차이를 봅니다.</li>
+                            <li>Commentary 패널로 구절에 대한 관점을 확장합니다.</li>
                         </ul>
                     </div>
                 </div>
