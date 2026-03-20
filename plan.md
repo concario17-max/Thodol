@@ -1,231 +1,104 @@
-# Yoga Improvement Plan
+# Yoga Remediation Plan
 
-작성일: 2026-03-18
-상태: 완료
-
-이 문서는 `research.md`에서 도출한 작업 항목을 구현 계획으로 세분화한 뒤, 실제 완료 상태로 갱신한 기록이다.
-
-## 1. Scope and sources
-
-- [x] Confirmed the live application surface is `src/`.
-- [x] Confirmed runtime data sources are `public/data.json`, `public/lexicon.json`, and `public/mp3/`.
-- [x] Kept `legacy/legacy_web/` as reference-only material.
-- [x] Preserved the existing project structure while improving the live app.
-
-## 2. Text and encoding cleanup
-
-- [x] Rewrote broken user-facing strings in the header, sidebar, reflections panel, commentary panel, verse header, translation section, home page, and supporting modals.
-- [x] Replaced garbled documentation content in `README.md` and `scripts/README.md`.
-- [x] Removed `any` usage from the active `src/` tree.
-- [x] Removed `unknown` usage from the active `src/` tree.
-
-## 3. Chapter metadata integrity
-
-- [x] Restored chapter Korean titles to the requested wording.
-- [x] Rewrote chapter descriptions in `src/constants.ts`.
-- [x] Verified chapter counts against `public/data.json`.
-- [x] Corrected chapter 3 metadata count to `55`.
-
-## 4. Shared data access
-
-- [x] Added `YogaDataProvider` to centralize data loading.
-- [x] Updated `useYogaData` to read from shared context.
-- [x] Reduced repeated fetch patterns across page and panel code.
-- [x] Added shared range utilities in `src/utils/yogaData.ts`.
-
-## 5. Data model and fetch normalization
-
-- [x] Reworked `src/utils/dataFetcher.ts` to normalize the runtime sutra shape without `any` or `unknown`.
-- [x] Normalized word meanings in one place.
-- [x] Kept `public/data.json` as the single runtime source of truth.
-
-## 6. Verse page and navigation
-
-- [x] Kept range-aware verse lookup behavior.
-- [x] Moved verse range logic into reusable utilities.
-- [x] Moved previous/next target resolution into reusable navigation utilities.
-- [x] Updated `useSutraNavigation` to use tested pure helpers.
-
-## 7. Audio stability
-
-- [x] Reworked `useAudio` to avoid stale state toggling.
-- [x] Added playback failure handling.
-- [x] Added surfaced playback error messaging in the verse audio player.
-- [x] Kept reset and seek behavior in sync with page navigation.
-
-## 8. Notes and commentary
-
-- [x] Preserved the reflections storage format in `localStorage`.
-- [x] Cleaned the reflections panel text and export flow.
-- [x] Updated `ReflectionsModal` to consume shared yoga data instead of refetching.
-- [x] Replaced the empty commentary placeholder with a study guide panel using chapter context, verse text, and prompts.
-
-## 9. Sidebar and header UX
-
-- [x] Preserved the 30/70 chapter-to-verse split in the sidebar.
-- [x] Cleaned sidebar headings and empty-state text.
-- [x] Kept the single top-bar panel toggle behavior.
-- [x] Stabilized header button labels and tooltips for QA.
-
-## 10. Home page and study content
-
-- [x] Rewrote the chapter landing page copy.
-- [x] Rewrote the compendium modal with readable study guidance.
-- [x] Kept chapter/verse quick selection flow intact.
-
-## 11. Documentation
-
-- [x] Rewrote `README.md` to match the current architecture.
-- [x] Rewrote `scripts/README.md` to match the current data pipeline.
-- [x] Preserved `research.md` as the deeper architecture report.
-- [x] Updated this plan file to reflect completed work.
-
-## 12. Testing and QA
-
-- [x] Kept existing `dataFetcher` tests passing.
-- [x] Added utility tests for verse range logic.
-- [x] Added utility tests for sutra navigation logic.
-- [x] Updated the browser smoke script to match the current UI behavior.
-- [x] Ran `npm run typecheck`.
-- [x] Ran `npm run test -- --run`.
-- [x] Ran `npm run build`.
-- [x] Ran `npm run qa:browser`.
-
-## 13. Completion summary
-
-- [x] User-facing text recovery completed.
-- [x] Chapter metadata integrity completed.
-- [x] Shared data access refactor completed.
-- [x] Audio and notes stability completed.
-- [x] Commentary panel implementation completed.
-- [x] Documentation refresh completed.
-- [x] Test and browser QA completion completed.
-
-## 14. Desktop Layout Refactor TODO
-
-Status: pending
+Updated: 2026-03-20
+Status: completed
 Source of truth: `research.md`
 
-### 14.1 Discovery and guardrails
+This file tracks the full-project remediation pass requested after the latest repository-wide research review.
 
-- [ ] Reconfirm the desktop-only scope for the new `20 / 60 / 20` layout.
-- [ ] Freeze current mobile drawer behavior as a non-goal for the first refactor pass.
-- [ ] Capture the current desktop verse layout states that must still work:
-  - [ ] left open + commentary closed
-  - [ ] left open + commentary open
-  - [ ] left closed + commentary open
-  - [ ] route change after toggling either panel
-- [ ] Identify all remaining files with encoding-corrupted UI strings that could interfere with layout verification.
+## 1. Guardrails and sequencing
 
-### 14.2 Shared desktop frame model
+- [x] Freeze scope to code, documentation, QA, and content mismatches found in `research.md`.
+- [x] Avoid unrelated feature work during this pass.
+- [x] Keep runtime behavior stable unless a stronger fix is required.
+- [x] Execute work in this order:
+- [x] content and encoding cleanup
+- [x] stale documentation repair
+- [x] stale QA and browser smoke repair
+- [x] commentary and layout consistency cleanup
+- [x] final verification sweep
 
-- [ ] Decision lock: make `AppShell` the single owner of desktop frame geometry.
-- [ ] Decision lock: store desktop frame values in one shared helper/module consumed by both `AppShell` and `Header`.
-- [ ] Introduce one shared desktop layout model for verse pages.
-- [ ] Define explicit desktop width variables or helpers for:
-  - [ ] left panel width
-  - [ ] main panel width
-  - [ ] right panel width
-  - [ ] header left inset
-  - [ ] header right inset
-- [ ] Encode the two primary desktop states:
-  - [ ] default: `20 / 60 / 20`
-  - [ ] left closed: `0 / 60 / 40`
-- [ ] Decision lock: use ratio-first desktop columns, but allow guarded `minmax` only if testing shows unreadable compression near the `1024px` boundary.
-- [ ] Keep the model independent from mobile drawer widths.
+## 2. Encoding and content cleanup
 
-### 14.3 App shell restructuring
+- [x] Audit the active `src/` tree for remaining encoding-corrupted user-facing strings.
+- [x] Fix chapter metadata copy in `src/constants.ts`.
+- [x] Fix the sidebar title in `src/components/Sidebar.tsx`.
+- [x] Fix the sidebar empty state in `src/components/ui/SidebarMenu.tsx`.
+- [x] Fix translation section headings in `src/components/verse/TranslationSection.tsx`.
+- [x] Fix malformed and corrupted compendium copy in `src/components/CompendiumModal.tsx`.
+- [x] Fix commentary study prompt copy in `src/components/CommentarySidebar.tsx`.
+- [x] Normalize corrupted labels in active test fixtures.
 
-- [ ] Refactor `src/components/ui/AppShell.tsx` so desktop verse pages are driven by the shared frame instead of `flex-1 + fixed side widths`.
-- [ ] Decide whether to use:
-  - [ ] CSS grid columns
-  - [ ] CSS variables applied to a shared desktop frame
-- [ ] Ensure `main-scroll-container` remains the scroll target after layout changes.
-- [ ] Preserve the existing mobile `overflow-hidden` behavior when drawers are open.
+## 3. Metadata integrity
 
-### 14.4 Header restructuring
+- [x] Re-audit `YOGA_CHAPTERS_META`.
+- [x] Confirm Korean chapter names match the intended wording.
+- [x] Confirm English chapter names still match the runtime cards and sidebar labels.
+- [x] Confirm descriptions are readable and free from encoding artifacts.
+- [x] Reconfirm sutra counts match `public/data.json`.
 
-- [ ] Refactor `src/components/Header.tsx` so desktop alignment is derived from the same frame as the body.
-- [ ] Remove duplicated desktop geometry assumptions from the header.
-- [ ] Place the left header group on the inner-left edge of the main panel.
-- [ ] Place the right header group on the inner-right edge of the main panel.
-- [ ] Keep both groups visually fixed across:
-  - [ ] left panel open/close
-  - [ ] commentary panel open/close
-- [ ] Verify the desktop header no longer depends on hard-coded `400px` padding logic.
+## 4. Data loading and fallback quality
 
-### 14.5 Left panel refactor
+- [x] Re-review `src/utils/dataFetcher.ts` fetch-failure behavior.
+- [x] Replace silent `{}` fallback with a thrown load error.
+- [x] Surface provider load failures through `YogaDataContext`.
+- [x] Show load error UI on the landing page in `src/pages/ChapterList.tsx`.
+- [x] Show load error UI on the verse page in `src/pages/VerseView.tsx`.
+- [x] Add explicit lexicon load failure UI in `src/components/LexiconModal.tsx`.
+- [x] Update `src/utils/dataFetcher.test.ts` to reflect the stronger failure contract.
 
-- [ ] Refactor `src/components/Sidebar.tsx` so desktop width is controlled by the shared frame, not `lg:w-[400px]`.
-- [ ] Preserve mobile width behavior in the sidebar drawer.
-- [ ] Confirm chapter expansion and verse navigation still behave the same.
-- [ ] Review `src/components/ui/SidebarMenu.tsx` for width-sensitive issues once the outer desktop width changes.
+## 5. Commentary panel reality check
 
-### 14.6 Right panel refactor
+- [x] Reject the empty commentary shell as insufficient.
+- [x] Define a minimum viable study-guide contract for commentary.
+- [x] Implement chapter frame, key line, study prompts, and usage guidance in `src/components/CommentarySidebar.tsx`.
+- [x] Keep mobile and desktop commentary drawer behavior unchanged while improving content.
+- [x] Align documentation and QA expectations with the real commentary panel.
 
-- [ ] Refactor `src/components/CommentarySidebar.tsx` so desktop width comes from the shared frame.
-- [ ] Remove the current `400px / 800px` branching rule.
-- [ ] Implement the requested desktop state behavior:
-  - [ ] default right panel width = `20%`
-  - [ ] left panel closed right panel width = `40%`
-- [ ] Preserve mobile commentary drawer behavior.
+## 6. Documentation accuracy
 
-### 14.7 Sidebar shell responsibilities
+- [x] Rewrite `README.md` to match the live app.
+- [x] Remove stale reflections references from `README.md`.
+- [x] Document the commentary-only right panel and current desktop frame rules.
+- [x] Confirm build and QA commands in `README.md` match `package.json`.
+- [x] Audit `docs/` for stale conflicting guidance.
+- [x] Mark `docs/리서치.md` as historical.
+- [x] Mark `docs/plan.md` as historical.
 
-- [ ] Revisit `src/components/ui/SidebarLayout.tsx` responsibility split.
-- [ ] Keep mobile fixed drawer transitions inside `SidebarLayout`.
-- [ ] Reduce or remove desktop width ownership from `SidebarLayout`.
-- [ ] Ensure sticky positioning still works after desktop frame ownership moves upward.
+## 7. Browser smoke QA repair
 
-### 14.8 Main content width review
+- [x] Audit `scripts/browser_smoke.mjs` against the live UI.
+- [x] Remove stale reflections and `textarea` assumptions.
+- [x] Rewrite the smoke flow around:
+- [x] landing page navigation
+- [x] verse route loading
+- [x] desktop commentary availability and persistence
+- [x] mobile sidebar open and route selection
+- [x] mobile commentary drawer open and close
+- [x] Fix the storage-reset bug in the smoke script so reload-based persistence checks stay valid.
 
-- [ ] Refactor `src/pages/VerseView.tsx` so desktop verse content participates correctly in the new main panel geometry.
-- [ ] Decision lock: make `VerseView` outer width responsive to the shared desktop frame instead of unconditional `mx-auto max-w-[1000px]`.
-- [ ] Decision lock: keep readability constraints selectively, not globally.
-- [ ] Review whether `max-w-[1000px]` should remain unconditional.
-- [ ] Review nested desktop width constraints in:
-  - [ ] `src/components/verse/SutraContent.tsx`
-  - [ ] `src/components/verse/TranslationSection.tsx`
-  - [ ] `src/components/verse/AudioPlayer.tsx`
-  - [ ] `src/components/verse/SutraHeader.tsx`
-  - [ ] `src/components/verse/SutraNavigation.tsx`
-  - [ ] `src/components/verse/WordMeanings.tsx`
-- [ ] Decision lock: only keep centered/narrow inner widths for elements that benefit from readability, and remove unconditional `mx-auto max-w-*` from containers that should visually follow the main panel width.
-- [ ] Decide which elements should remain centered for readability and which should expand with the main panel.
+## 8. Layout and shared-frame follow-up
 
-### 14.9 State-flow validation
+- [x] Reconfirm the desktop frame still uses:
+- [x] `20 / 60 / 20`
+- [x] `0 / 60 / 40`
+- [x] `20 / 80 / 0`
+- [x] `0 / 100 / 0`
+- [x] Verify main-panel expansion still works when commentary is hidden.
+- [x] Verify commentary gap fixes remain intact.
+- [x] Keep reading-column padding readable after the earlier gap repair.
+- [x] Add a targeted test for `desktopVerseLayout.ts`.
 
-- [ ] Confirm `UIContext` still expresses only open/close state and not geometry.
-- [ ] Verify desktop panel persistence in `localStorage` after the refactor.
-- [ ] Verify route changes still close only mobile drawers.
-- [ ] Confirm the layout remains correct when `activeDesktopRightPanel` is `null`.
+## 9. Verification
 
-### 14.10 Desktop QA matrix
+- [x] Run `npm run typecheck`.
+- [x] Run `npm run test -- --run`.
+- [x] Run `npm run build`.
+- [x] Run `npm run qa:browser`.
 
-- [ ] Verify layout at desktop breakpoints and common widths:
-  - [ ] 1024px
-  - [ ] 1280px
-  - [ ] 1440px
-  - [ ] 1600px
-  - [ ] ultrawide
-- [ ] Verify the following desktop interaction states:
-  - [ ] left open + commentary closed
-  - [ ] left open + commentary open
-  - [ ] left closed + commentary open
-  - [ ] left reopened after commentary expansion
-- [ ] Verify header controls remain pinned to main-panel inner edges in all desktop states.
-- [ ] Verify commentary does not visually crush the main reading column.
+## 10. Closeout
 
-### 14.11 Mobile regression pass
-
-- [ ] Confirm mobile left drawer still opens and closes correctly.
-- [ ] Confirm mobile commentary drawer still opens and closes correctly.
-- [ ] Confirm mobile verse layout spacing remains unchanged unless explicitly intended.
-- [ ] Confirm landing page behavior remains unaffected.
-
-### 14.12 Cleanup and documentation
-
-- [ ] Clean remaining encoding-corrupted strings in layout-adjacent files.
-- [ ] Update `research.md` if the implementation direction changes from the current recommendation.
-- [ ] Add a concise implementation summary after the refactor is complete.
-- [ ] Record final verification notes and known tradeoffs.
+- [x] Update `research.md` to reflect the remediated repository state.
+- [x] Rewrite `plan.md` so completion status is readable and current.
+- [x] Keep historical notes in `docs/` but remove them as active guidance.
+- [x] Record final scope and verification status in repository docs.

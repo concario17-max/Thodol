@@ -1,640 +1,424 @@
-# Yoga Layout Research
+# Yoga Project Research
 
-## Goal
+Updated: 2026-03-20
+Status: post-remediation
+Workspace: `C:\Users\roadsea\Desktop\yoga`
 
-The requested target desktop behavior is:
+## Scope
 
-- Left panel: `20%`
-- Main panel: `60%`
-- Right panel: `20%`
+This report reflects a direct read of the live repository after the latest remediation pass. It covers the active React/Vite app, its runtime data flow, shared layout system, QA scripts, and the cleanup work completed during this pass.
 
-When the left panel closes:
+The active surfaces are:
 
-- Right panel expands to `40%`
-- Main panel shifts left by the amount the left panel released
-- Header elements stay pinned to the inner left/right edges of the main panel
+- `src/`
+- `public/`
+- `scripts/`
+- root docs such as `README.md`, `plan.md`, and `reuse-guide.md`
 
-This report explains how the current project works, where the current layout logic lives, what blocks the target behavior, and how to implement the new model safely.
+Historical notes remain in `docs/`, but they are no longer treated as current guidance.
 
-## High-Level Architecture
+## Executive summary
 
-The verse-reading screen is assembled in four layers:
+This repository is a static React 19 + Vite reading application for the Yoga Sutras. The live app now provides:
 
-1. Routing and page composition
-2. Global UI state
-3. Outer shell layout
-4. Inner panel and content layout
+- a landing page with chapter cards and quick chapter-to-verse selection
+- a verse reading page with Sanskrit, pronunciation, audio, word meanings, translations, and a commentary study panel
+- a lexicon modal and a compendium modal
+- a shared desktop frame model for sidebar, main reading column, and commentary panel
+- synchronized desktop/mobile panel state through `UIContext`
 
-The key files are:
+The most important remediation results from this pass are:
 
-- `src/App.tsx`
-- `src/context/UIContext.tsx`
-- `src/components/ui/AppShell.tsx`
-- `src/components/Header.tsx`
-- `src/components/Sidebar.tsx`
-- `src/components/CommentarySidebar.tsx`
-- `src/components/ui/SidebarLayout.tsx`
-- `src/pages/VerseView.tsx`
-- `src/components/verse/SutraContent.tsx`
-- `src/components/verse/TranslationSection.tsx`
-- `src/components/verse/AudioPlayer.tsx`
-- `src/components/ui/SidebarMenu.tsx`
+- user-facing encoding corruption in active code paths was cleaned up
+- data-loading failures are now surfaced to users instead of being silently softened
+- the commentary panel is now a real study guide instead of an empty shell
+- `README.md` and the browser smoke script now match the live application
+- historical docs were explicitly marked as historical instead of silently conflicting with current behavior
+- the verification stack now passes:
+  - `npm run typecheck`
+  - `npm run test -- --run`
+  - `npm run build`
+  - `npm run qa:browser`
 
-## Current Screen Assembly
+## Stack
 
-### 1. `src/App.tsx`
+From `package.json`:
 
-`MainLayout` determines whether the current route is a verse page:
+- React 19
+- React Router DOM 7
+- TypeScript 5
+- Vite 7
+- Tailwind CSS 4
+- Framer Motion
+- Vitest
+- Playwright
 
-- `isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/')`
+Scripts:
 
-If true, it renders:
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run test`
+- `npm run typecheck`
+- `npm run qa:browser`
 
-- `header={<Header ... />}`
-- `sidebar={<Sidebar />}`
-- `rightPanel={<CommentarySidebar />}` only when commentary is active
+TypeScript is configured in strict mode with `noImplicitAny`, `noUnusedLocals`, `noUnusedParameters`, and related checks. The current remediation pass did not introduce `any` or `unknown` in active TypeScript code.
 
-Important detail:
+## Repository structure
 
-- `App.tsx` does not decide widths.
-- It only decides whether each region exists.
+Important top-level locations:
 
-### 2. `src/context/UIContext.tsx`
+- `src/`: live application code
+- `public/`: runtime JSON and MP3 assets
+- `data-source/`: source text and intermediate artifacts
+- `scripts/`: generation, verification, and browser QA scripts
+- `legacy/legacy_web/`: archived pre-React implementation
+- `docs/`: historical notes only
+- `plan.md`: active remediation log
+- `research.md`: current architecture and status report
+- `reuse-guide.md`: layout reuse guide for other projects
 
-This file owns all open/close state:
+## Boot and provider model
+
+Entry point: `src/main.tsx`
+
+Provider order:
+
+1. `ThemeProvider`
+2. `UIProvider`
+3. `YogaDataProvider`
+4. `App`
+
+Implications:
+
+- theme state is globally available before rendering route content
+- UI state drives panel behavior independently of route content
+- yoga data is fetched once and shared through context
+
+## Routing and shell composition
+
+`src/App.tsx` uses `BrowserRouter` with two routes:
+
+- `/`
+- `/chapter/:chapterNum/verse/:verseNum`
+
+`MainLayout` wraps both routes and decides whether the shared verse shell should render. Verse routes receive:
+
+- `Header`
+- left `Sidebar`
+- optional right `CommentarySidebar`
+- `AppShell` with desktop grid geometry
+
+The landing page does not use the verse shell and instead receives a floating theme toggle.
+
+## Desktop and mobile layout system
+
+### App shell
+
+`src/components/ui/AppShell.tsx` is the main frame. It owns:
+
+- full-height application layout
+- background treatment
+- the sticky header slot
+- optional left and right side panels
+- `main-scroll-container`
+- optional floating action content
+
+### Desktop frame model
+
+`src/components/ui/desktopVerseLayout.ts` is the source of truth for desktop verse column ratios.
+
+Current supported states:
+
+- left open + commentary open: `20% 60% 20%`
+- left closed + commentary open: `0% 60% 40%`
+- left open + commentary closed: `20% 80% 0%`
+- left closed + commentary closed: `0% 100% 0%`
+
+This model is now covered by a targeted unit test in:
+
+- `src/components/ui/desktopVerseLayout.test.ts`
+
+### Header
+
+`src/components/Header.tsx` uses the same desktop frame model so the verse-page header aligns with the main reading column instead of full-window edges.
+
+Desktop behavior:
+
+- the left `Menu + title` cluster stays pinned to the main column
+- the right `Commentary + theme` cluster stays pinned to the opposite inner edge
+- header alignment stays stable across left-panel open/close and commentary open/close states
+
+### Shared panel wrapper
+
+`src/components/ui/SidebarLayout.tsx` handles:
+
+- left/right placement
+- mobile overlay drawers
+- sticky desktop panel behavior
+- desktop hidden-state collapse without leftover translate offsets
+
+This file remains important because it cleanly separates mobile transition logic from desktop width ownership.
+
+## UI state model
+
+`src/context/UIContext.tsx` separates mobile and desktop panel state:
 
 - `isSidebarOpen`: mobile left drawer
-- `isDesktopSidebarOpen`: desktop left panel
 - `activeRightPanel`: mobile right drawer
+- `isDesktopSidebarOpen`: desktop left panel
 - `activeDesktopRightPanel`: desktop right panel
 
-Important behaviors:
+Persistence:
 
-- Desktop/mobile split happens at `window.innerWidth < 1024`
-- Desktop left panel state is persisted in `localStorage`
-- Desktop right panel state is persisted in `localStorage`
-
-This means the layout is state-driven, but the state only says open/closed and active panel type. It does not define proportions.
-
-## Current Outer Layout Model
-
-### 3. `src/components/ui/AppShell.tsx`
-
-Current shell structure:
-
-```tsx
-<div className="relative flex flex-1 overflow-hidden">
-  {sidebar}
-  <main className="min-w-0 flex-1 ...">{children}</main>
-  {rightPanel}
-</div>
-```
-
-This is the most important structural fact in the app.
-
-What it means:
-
-- Layout is currently `flex` based, not ratio/grid based
-- Left and right panels take their own explicit widths
-- Main panel just gets the leftover space with `flex-1`
-
-So the app is currently using:
-
-- `fixed-width left`
-- `remaining-width main`
-- `fixed-width right`
-
-This is the opposite of the requested target, which is ratio-based.
-
-### 4. `src/components/ui/SidebarLayout.tsx`
-
-This file is the reusable shell for the left sidebar.
-
-Important details:
-
-- Mobile uses `fixed top-16`
-- Desktop uses `lg:sticky lg:top-16`
-- Width is injected from parent using `widthClass` and `desktopWidthClass`
-- Closed desktop state collapses to `lg:w-0 lg:opacity-0`
-
-This component does not know about proportions. It only knows:
-
-- open vs closed
-- left vs right
-- width classes passed in by parent
-
-## Current Left Panel
-
-### 5. `src/components/Sidebar.tsx`
-
-The left panel currently uses:
-
-- mobile: `w-[88vw] max-w-[360px]`
-- desktop: `lg:w-[400px]`
-
-So the left panel is currently:
-
-- not percentage based
-- fixed `400px` on desktop
+- `yoga-desktop-sidebar` in `localStorage`
+- `yoga-desktop-right-panel` in `localStorage`
 
 Behavior:
 
-- It reads `isDesktopSidebarOpen` from `UIContext`
-- It passes `desktopWidthClass="lg:w-[400px]"` into `SidebarLayout`
-- It does navigation and chapter expansion locally
+- desktop toggles persist
+- route changes close only mobile drawers
+- resize into desktop width clears temporary mobile drawer state
 
-Important implication:
+## Theme system
 
-- Your requested `20%` cannot be achieved by tweaking `AppShell` alone
-- `Sidebar.tsx` must stop injecting a fixed `400px` desktop width
+`src/context/ThemeContext.tsx` stores a `light` or `dark` theme in `localStorage` and mirrors it to `document.documentElement.classList`.
 
-## Current Right Panel
+`src/components/ThemeToggle.tsx` is the shared visible control surface.
 
-### 6. `src/components/CommentarySidebar.tsx`
+## Data model and runtime loading
 
-The right panel currently has custom shell logic instead of reusing `SidebarLayout`.
+Types live in `src/types.ts`.
 
-Current desktop width logic:
+Important runtime types:
 
-```tsx
-const desktopWidthClass = isDesktopSidebarOpen ? 'lg:w-[400px]' : 'lg:w-[800px]';
-```
+- `YogaChapter`
+- `YogaSutra`
+- `ChapterMeta`
+- `WordMeaning`
 
-Meaning:
+### Runtime data source
 
-- left open => right panel `400px`
-- left closed => right panel `800px`
+The live app reads:
 
-This is the current source of many layout distortions.
+- `public/data.json`
 
-It creates a layout model of:
+Primary loader:
 
-- left `400px`
-- right `400px` or `800px`
-- main gets remainder
+- `src/utils/dataFetcher.ts`
 
-That directly conflicts with the desired behavior:
+### Loader behavior
 
-- base: `20 / 60 / 20`
-- left closed: `0 / 60 shifted left / 40`
+`fetchYogaData()` now:
 
-Important implication:
+- fetches `/data.json`
+- normalizes raw sutra rows
+- groups them by chapter
+- injects metadata from `YOGA_CHAPTERS_META`
+- sorts sutras
+- caches successful results in memory
+- throws a descriptive error when fetch fails
 
-- current right-panel logic is state-coupled to the left panel width
-- but it is implemented as hard-coded pixels, not ratios
+This stronger failure contract replaced the older silent empty-object fallback.
 
-## Current Header Model
+### Shared provider
 
-### 7. `src/components/Header.tsx`
+`src/context/YogaDataContext.tsx` now exposes:
 
-Current desktop header alignment:
+- `allChapters`
+- `chapters`
+- `loading`
+- `error`
+- `getVerseInRange`
+- `getVerseRangeLabel`
 
-```tsx
-const desktopLeftOffset = showSidebarToggle ? 400 : 0;
-const desktopRightOffset = showSidebarToggle ? 400 : 0;
-```
+The provider surfaces real load failure state instead of hiding it.
 
-Then:
+### User-facing failure handling
 
-```tsx
-style={{
-  paddingLeft: `calc(${desktopLeftOffset}px + 1.25rem)`,
-  paddingRight: `calc(${desktopRightOffset}px + 1.25rem)`,
-}}
-```
+Failure UI is now present in:
 
-Meaning:
+- `src/pages/ChapterList.tsx`
+- `src/pages/VerseView.tsx`
+- `src/components/LexiconModal.tsx`
 
-- Header is not actually aware of current layout geometry
-- It simulates alignment using fixed left/right padding
-- It assumes left and right side spacing are both `400px`
+So the app no longer leaves users with silent empty data or indefinite ambiguity when runtime assets fail to load.
 
-This currently works only because the layout has been manually coerced to match it.
+## Static metadata
 
-It will not survive a real `20/60/20` system unless the header is refactored.
+`src/constants.ts` contains `YOGA_CHAPTERS_META`.
 
-### Header Behavior Today
+Current state after cleanup:
 
-The header currently places:
+- Korean chapter titles are readable
+- English chapter titles match the app surfaces
+- descriptions are readable and no longer carry encoding artifacts
+- sutra counts remain aligned with `public/data.json`
 
-- left group: menu + icon + title
-- right group: commentary toggle + theme toggle
+## Page flows
 
-But their placement is based on fixed `paddingLeft` / `paddingRight`, not the real main panel edges.
+### Landing page
 
-For the requested design, the header should instead be derived from the same frame geometry as the body.
+`src/pages/ChapterList.tsx`
 
-## Current Main Content Model
+Features:
 
-### 8. `src/pages/VerseView.tsx`
+- animated title and hero copy
+- `Compendium` modal trigger
+- `Lexicon` modal trigger
+- quick chapter selector
+- quick verse selector
+- chapter cards generated from shared provider data
+- explicit loading and error states
 
-The main content wrapper is:
+### Verse page
 
-```tsx
-<div className="mx-auto w-full max-w-[1000px] ...">
-```
+`src/pages/VerseView.tsx`
 
-This means:
+Responsibilities:
 
-- even if the main panel is visually wide
-- the actual readable content is capped at `1000px`
-- and centered with `mx-auto`
+- resolve canonical sutra targets from route params
+- redirect to the correct range owner when necessary
+- reset scroll and audio on sutra changes
+- render:
+  - `SutraHeader`
+  - `SutraContent`
+  - `WordMeanings`
+  - `AudioPlayer`
+  - `TranslationSection`
+  - `SutraNavigation`
+- show loading and failure states when shared data is unavailable
 
-This is why the body can look disconnected from the panel geometry.
+## Verse subcomponents
 
-### 9. Inner Verse Components
+### `SutraContent`
 
-Several inner components also re-impose their own width limits:
+Renders:
 
-- `src/components/verse/SutraContent.tsx`
-  - `max-w-3xl mx-auto`
-- `src/components/verse/TranslationSection.tsx`
-  - `mx-auto max-w-3xl`
-- `src/components/verse/AudioPlayer.tsx`
-  - `max-w-[400px]`
-- `src/components/verse/SutraNavigation.tsx`
-  - centered navigation control
-- `src/components/verse/SutraHeader.tsx`
-  - centered header block
+- Sanskrit
+- romanized pronunciation
+- Korean pronunciation
 
-Implication:
+It also normalizes display strings before rendering.
 
-- Even after outer panel ratios are changed, inner content may still look centered and narrow
-- If the new design wants the main panel itself to visually define the readable column, these inner `max-width` constraints will need review
+### `WordMeanings`
 
-## Current Sidebar Menu Model
+Renders a collapsible word-by-word glossary only when meanings exist.
 
-### 10. `src/components/ui/SidebarMenu.tsx`
+### `AudioPlayer`
 
-The left panel content is split vertically like this:
+Uses `useAudio` for play/pause, seek, progress, time formatting, and error display.
 
-- top section: `h-[30%]`
-- bottom section: `flex-1`
+### `TranslationSection`
 
-This is not directly part of the 20/60/20 layout request, but it matters because:
+Renders multiple translation sources and now uses cleaned, readable source labels.
 
-- the sidebar has its own internal layout assumptions
-- when the outer width becomes ratio-based, cramped or overly roomy internals may become more visible
+### `SutraNavigation`
 
-Also notable:
+Uses `useSutraNavigation` and the pure utilities in `src/utils/sutraNavigation.ts`.
 
-- There are visible encoding issues in this file
-- Empty-state Korean text is garbled
+## Commentary panel
 
-## Current Landing Page
+`src/components/CommentarySidebar.tsx` is now a meaningful study surface.
 
-### 11. `src/pages/ChapterList.tsx`
+It renders:
 
-This page is separate from the verse-reading layout.
+- chapter frame summary
+- key line fallback chain
+- study prompts
+- a short “how to use this panel” guidance block
 
-It uses:
+This is a meaningful improvement over the earlier empty shell and now matches the live product description in docs and QA.
 
-- centered intro block
-- centered chapter picker
-- responsive chapter card grid
+## Modals
 
-It does not participate in the left/main/right reading shell.
+### Compendium
 
-So the requested 20/60/20 design only affects verse pages, not the landing page.
+`src/components/CompendiumModal.tsx` is now free of the earlier malformed and corrupted body copy.
 
-## What the Current Layout Really Is
+### Lexicon
 
-On desktop verse pages, the current app is effectively:
+`src/components/LexiconModal.tsx` lazily loads `/lexicon.json` and now surfaces a user-facing error state if the fetch fails.
 
-- left panel: fixed `400px`
-- main panel: `flex-1`
-- right panel:
-  - `400px` when left is open
-  - `800px` when left is closed
+## Scripts and QA
 
-Header simulates alignment with:
+### Data pipeline
 
-- left padding: `400px`
-- right padding: `400px`
+The runtime app still depends on the generated `public/data.json`, with generation and verification scripts under `scripts/`.
 
-Main content then narrows itself again using:
+### Browser smoke script
 
-- `max-w-[1000px]`
-- several nested `max-w-3xl` wrappers
+`scripts/browser_smoke.mjs` was fully realigned with the live app.
 
-So there are **three independent layout systems** currently stacked together:
+It now checks:
 
-1. outer shell widths
-2. header pseudo-alignment
-3. inner content width constraints
+- landing page navigation into a verse route
+- desktop commentary availability and persistence behavior
+- mobile sidebar open and verse selection flow
+- mobile commentary drawer open and close behavior
 
-This is the main architectural reason layout changes have been fragile.
+The previous stale assumptions about reflections and `textarea` elements are gone.
 
-## Gap Between Current State and Requested State
+An additional smoke-script bug was fixed during remediation:
 
-### Requested
+- storage reset now happens once per new browser context instead of on every reload
 
-Base desktop:
+That fix was necessary for the desktop persistence check to be valid.
 
-- left: `20%`
-- main: `60%`
-- right: `20%`
+## Tests
 
-When left closes:
+Passing test surfaces now include:
 
-- left: `0%`
-- main: visually shifts left
-- right: `40%`
+- `src/utils/dataFetcher.test.ts`
+- `src/utils/yogaData.test.ts`
+- `src/utils/sutraNavigation.test.ts`
+- `src/components/ui/desktopVerseLayout.test.ts`
 
-Header:
+Verified commands during this pass:
 
-- left controls pinned to main panel inner-left edge
-- right controls pinned to main panel inner-right edge
-- these positions remain stable according to the layout frame, not arbitrary panel toggles
+- `npm run typecheck`
+- `npm run test -- --run`
+- `npm run build`
+- `npm run qa:browser`
 
-### Current
+## Documentation state
 
-- left: fixed pixels
-- right: fixed pixels
-- main: leftover width
-- header: fixed offsets, not frame-derived
-- inner content: separate max-width rules
+Current guidance is now split cleanly:
 
-Therefore the requested design requires a **layout model rewrite**, not a small CSS tweak.
+- root `README.md`: current usage and architecture overview
+- root `plan.md`: active remediation log and completion state
+- root `research.md`: current deep report
+- `docs/리서치.md`: historical note
+- `docs/plan.md`: historical note
 
-## Exact Areas That Must Change
+This removes the previous ambiguity where older docs looked current even when they no longer matched the app.
 
-### A. Introduce a Shared Desktop Frame Model
+## Remaining tradeoffs
 
-Recommended new source of truth:
+The repository is in much better shape after this pass, but a few non-blocking tradeoffs still exist:
 
-- one layout constants/helper module
-- returns widths or CSS variables for:
-  - left width
-  - main width
-  - right width
-  - header left inset
-  - header right inset
+- visual styling is still mostly encoded inline in component class strings rather than a more formal token system
+- some reading-column width decisions still live in multiple verse subcomponents
+- the smoke test is intentionally lightweight and validates core flows rather than deep content semantics
 
-Suggested shape:
+These are maintainability considerations, not active breakages.
 
-```ts
-type DesktopFrame = {
-  left: string;
-  main: string;
-  right: string;
-  headerLeftInset: string;
-  headerRightInset: string;
-};
-```
+## Bottom line
 
-Behavior:
+The project now has a coherent live contract across:
 
-- default: `20 / 60 / 20`
-- left closed: `0 / 60 / 40`
+- runtime behavior
+- user-facing copy
+- failure handling
+- browser QA
+- repository documentation
 
-Important:
+The main earlier mismatches from the previous research pass were resolved:
 
-- percentages should be calculated in one place
-- header and body must consume the same frame data
+- encoding-corrupted active UI copy
+- stale reflections references
+- stale browser smoke assumptions
+- empty commentary shell
+- weak load-failure surfacing
 
-### B. Refactor `AppShell.tsx`
-
-Current:
-
-- plain flex row with `sidebar`, `main`, `rightPanel`
-
-Target:
-
-- explicit desktop grid or explicit width variables
-
-Recommended desktop structure:
-
-```tsx
-<div className="lg:grid" style={{ gridTemplateColumns: '20% 60% 20%' }}>
-```
-
-Then switch to:
-
-- `0% 60% 40%` when left panel is closed
-
-Reason:
-
-- grid expresses the target requirement directly
-- easier to align header to main panel edges
-
-### C. Refactor `Header.tsx`
-
-Current:
-
-- fixed `paddingLeft` / `paddingRight`
-
-Target:
-
-- header should use the same desktop grid frame as the body
-- or consume CSS variables produced by that frame
-
-Best approach:
-
-- render desktop header as a three-column grid
-- left controls live in column 2 start edge
-- right controls live in column 2 end edge
-- side columns mirror left/right panel widths
-
-That would make the header naturally follow:
-
-- `20 / 60 / 20`
-- `0 / 60 / 40`
-
-without special-case arithmetic inside the header.
-
-### D. Refactor `Sidebar.tsx`
-
-Current desktop width:
-
-- `lg:w-[400px]`
-
-Target:
-
-- width should no longer be injected as a fixed pixel class
-- desktop width should be controlled by the outer layout frame
-
-Likely change:
-
-- keep mobile width in `SidebarLayout`
-- stop assigning fixed desktop width here
-- let shell grid column define desktop width instead
-
-### E. Refactor `CommentarySidebar.tsx`
-
-Current desktop width:
-
-- `400px` or `800px`
-
-Target:
-
-- right panel width should also come from the shared frame
-- base: `20%`
-- expanded when left closed: `40%`
-
-Likely change:
-
-- remove local width branching from `CommentarySidebar.tsx`
-- let shell grid/body frame decide its desktop width
-
-### F. Revisit `SidebarLayout.tsx`
-
-This component currently mixes:
-
-- mobile fixed drawer behavior
-- desktop sticky side panel width handling
-
-For the new system:
-
-- mobile behavior can stay mostly as-is
-- desktop width control should be reduced here
-- desktop width should come from parent layout, not internal `desktopWidthClass`
-
-This file may need a split in responsibility:
-
-- mobile drawer transitions remain here
-- desktop width ownership moves up
-
-### G. Revisit `VerseView.tsx` and Inner Verse Components
-
-Even after shell refactor, visual balance will still be affected by:
-
-- `max-w-[1000px]`
-- nested `max-w-3xl`
-- centered audio player
-- centered section titles
-
-Decision needed:
-
-- keep a narrower readable column inside the 60% main panel
-- or let content use more of the panel width
-
-If the visual goal is "main panel itself defines the reading column", then these constraints need to become conditional or be widened.
-
-## State and Interaction Behavior That Must Be Preserved
-
-These flows should continue to work after refactor:
-
-- Mobile left drawer open/close
-- Mobile commentary drawer open/close
-- Desktop left panel persistence in localStorage
-- Desktop commentary panel persistence in localStorage
-- Route change closes mobile drawers via `closeAllDrawers()`
-- `main-scroll-container` remains the scroll target for verse navigation reset
-
-## Risks and Edge Cases
-
-### 1. Header/body drift
-
-If header and body still calculate layout separately, they will drift again.
-
-### 2. Sticky + grid interaction
-
-`SidebarLayout.tsx` currently uses `lg:sticky`.
-If desktop panels move into a grid-based frame, sticky behavior must be retested carefully.
-
-### 3. Inner content still looks narrow
-
-Even after outer ratios are correct, the verse body can still appear visually too narrow due to nested `max-width` rules.
-
-### 4. Very wide screens
-
-Pure percentages may make side panels too wide or too narrow depending on viewport.
-You may still want min/max bounds even in a percentage system.
-
-Example:
-
-- left: `minmax(280px, 20%)`
-- main: `minmax(640px, 60%)`
-- right: `minmax(320px, 20%)`
-
-But this must be balanced against the user's request for strict ratios.
-
-### 5. 1024px boundary behavior
-
-Desktop logic activates at `1024px`.
-The new percentage layout should be tested at:
-
-- 1024
-- 1280
-- 1440
-- 1600
-- ultrawide
-
-## Recommended Implementation Order
-
-1. Introduce a shared desktop frame configuration
-2. Refactor `AppShell.tsx` to own desktop columns
-3. Refactor `Header.tsx` to consume the same frame
-4. Remove fixed desktop widths from `Sidebar.tsx`
-5. Remove fixed desktop widths from `CommentarySidebar.tsx`
-6. Simplify desktop responsibility inside `SidebarLayout.tsx`
-7. Revisit `VerseView.tsx` and inner content width constraints
-8. Test at multiple desktop widths and mobile breakpoints
-
-## Suggested Technical Direction
-
-The cleanest design is:
-
-- mobile: keep current drawer system
-- desktop: use one shared grid frame for header + body
-
-Recommended desktop frame:
-
-```css
-grid-template-columns:
-  var(--left-panel-width)
-  var(--main-panel-width)
-  var(--right-panel-width);
-```
-
-State mapping:
-
-- default:
-  - `--left-panel-width: 20%`
-  - `--main-panel-width: 60%`
-  - `--right-panel-width: 20%`
-- left closed:
-  - `--left-panel-width: 0%`
-  - `--main-panel-width: 60%`
-  - `--right-panel-width: 40%`
-
-Then:
-
-- body grid uses these variables
-- header desktop grid uses these variables
-- left/right controls align to the inner edges of the main column automatically
-
-## Additional Code Quality Notes
-
-During research, several files showed visible encoding corruption in terminal output:
-
-- `src/components/Sidebar.tsx`
-- `src/components/ui/SidebarMenu.tsx`
-- `src/components/verse/TranslationSection.tsx`
-
-These are not the core reason the layout behaves the way it does, but they are maintenance risks and should be cleaned up during or after the layout refactor.
-
-## Final Assessment
-
-The requested layout change is feasible, but it is not a one-line width adjustment.
-
-The current app is based on:
-
-- fixed left width
-- fixed right width
-- leftover main width
-- simulated header alignment
-
-The desired app should be based on:
-
-- one shared desktop frame
-- ratio-driven panel widths
-- header aligned from the same frame
-- optional inner content width rules on top of that frame
-
-The critical implementation principle is:
-
-**do not let `Header`, `Sidebar`, `CommentarySidebar`, and `AppShell` each define desktop geometry independently.**
-
-If one shared frame is introduced and consumed everywhere, the requested behavior becomes straightforward and stable.
+At this point the live app, tests, smoke QA, and docs are aligned.

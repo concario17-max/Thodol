@@ -17,14 +17,14 @@ const containerVariants: Variants = {
         opacity: 1,
         transition: {
             staggerChildren: 0.08,
-            delayChildren: 0.1
-        }
+            delayChildren: 0.1,
+        },
     },
     exit: {
         opacity: 0,
         y: -10,
-        transition: { duration: 0.3 }
-    }
+        transition: { duration: 0.3 },
+    },
 };
 
 const itemVariants: Variants = {
@@ -34,9 +34,9 @@ const itemVariants: Variants = {
         opacity: 1,
         transition: {
             duration: 0.6,
-            ease: "easeOut"
-        }
-    }
+            ease: 'easeOut',
+        },
+    },
 };
 
 const VerseView = () => {
@@ -44,12 +44,7 @@ const VerseView = () => {
     const navigate = useNavigate();
     const audioRef = useRef<HTMLAudioElement>(null);
 
-    const { 
-        allChapters, 
-        loading, 
-        getVerseInRange, 
-        getVerseRangeLabel 
-    } = useYogaData();
+    const { allChapters, loading, error, getVerseInRange, getVerseRangeLabel } = useYogaData();
 
     const {
         isPlaying,
@@ -66,9 +61,10 @@ const VerseView = () => {
         playbackError,
     } = useAudio(audioRef);
 
-    // Initial load and URL sync
     useEffect(() => {
-        if (!chapterNum || !verseNum || !allChapters) return;
+        if (!chapterNum || !verseNum || !allChapters) {
+            return;
+        }
 
         const verseData = getVerseInRange(chapterNum, verseNum);
         if (verseData) {
@@ -79,7 +75,6 @@ const VerseView = () => {
         }
     }, [chapterNum, verseNum, allChapters, getVerseInRange, navigate]);
 
-    // Reset audio and scroll to top on navigation
     useEffect(() => {
         const scrollContainer = document.getElementById('main-scroll-container');
         if (scrollContainer) {
@@ -88,24 +83,34 @@ const VerseView = () => {
         reset();
     }, [chapterNum, verseNum, reset]);
 
-    // Calculate index and get navigation hook at top level to satisfy Rules of Hooks
-    const verseData = (chapterNum && verseNum) ? getVerseInRange(chapterNum, verseNum) : null;
-    const currentChapter = (allChapters && chapterNum) ? allChapters[parseInt(chapterNum, 10)] : null;
-    const currentIndex = (currentChapter && verseData) 
-        ? currentChapter.sutras.findIndex(s => s.id === verseData.id) 
-        : -1;
-    
+    const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
+    const currentChapter = allChapters && chapterNum ? allChapters[parseInt(chapterNum, 10)] : null;
+    const currentIndex = currentChapter && verseData ? currentChapter.sutras.findIndex((sutra) => sutra.id === verseData.id) : -1;
+
     const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
 
-    if (loading || !allChapters || !chapterNum || !verseNum) {
+    if (error) {
         return (
-            <div className="min-h-full flex items-center justify-center bg-gold-bg dark:bg-dark-bg">
-                <div className="w-8 h-8 border-4 border-gold-primary border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex min-h-full items-center justify-center px-6">
+                <div className="max-w-lg rounded-2xl border border-gold-border/30 bg-white/75 p-6 text-center shadow-lg backdrop-blur-sm dark:bg-dark-surface/75">
+                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this sutra</h1>
+                    <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
+                </div>
             </div>
         );
     }
 
-    if (!verseData || !currentChapter) return null;
+    if (loading || !allChapters || !chapterNum || !verseNum) {
+        return (
+            <div className="flex min-h-full items-center justify-center bg-gold-bg dark:bg-dark-bg">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
+            </div>
+        );
+    }
+
+    if (!verseData || !currentChapter) {
+        return null;
+    }
 
     const verseRange = getVerseRangeLabel(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
@@ -118,7 +123,7 @@ const VerseView = () => {
                 animate="visible"
                 exit="exit"
                 variants={containerVariants}
-                className="min-h-full flex flex-col justify-center font-display text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-4 sm:py-6"
+                className="min-h-full flex flex-col justify-center font-display text-text-primary transition-colors duration-500 dark:text-dark-text-primary py-4 sm:py-6"
             >
                 <div className="mx-auto w-full max-w-[1180px] space-y-8 px-4 sm:space-y-12 sm:px-6 lg:max-w-none lg:px-8">
                     <motion.div variants={itemVariants}>
@@ -126,11 +131,7 @@ const VerseView = () => {
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
-                        <SutraContent 
-                            sanskrit={verseData.sanskrit}
-                            pronunciation={verseData.pronunciation}
-                            pronunciationKr={verseData.pronunciation_kr}
-                        />
+                        <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
@@ -147,7 +148,7 @@ const VerseView = () => {
                     />
 
                     <motion.div variants={itemVariants}>
-                        <AudioPlayer 
+                        <AudioPlayer
                             isPlaying={isPlaying}
                             togglePlay={togglePlay}
                             currentTime={currentTime}
@@ -160,7 +161,7 @@ const VerseView = () => {
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
-                        <TranslationSection 
+                        <TranslationSection
                             english={verseData['2.english']}
                             korean1={verseData['3.korean-1']}
                             baeJik={verseData['5.bae_jik']}
@@ -171,7 +172,7 @@ const VerseView = () => {
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
-                        <SutraNavigation 
+                        <SutraNavigation
                             chapterNum={chapterNum}
                             verseRange={verseRange}
                             onPrev={handlePrev}

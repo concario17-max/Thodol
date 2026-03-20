@@ -33,6 +33,7 @@ export const YogaDataProvider = ({ children }: YogaDataProviderProps) => {
                 }
 
                 setAllChapters(data);
+                setError(null);
                 setLoading(false);
             })
             .catch(() => {
@@ -40,6 +41,7 @@ export const YogaDataProvider = ({ children }: YogaDataProviderProps) => {
                     return;
                 }
 
+                setAllChapters(null);
                 setError('Unable to load yoga data.');
                 setLoading(false);
             });

@@ -62,7 +62,7 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
         try {
             const response = await fetch('/data.json');
             if (!response.ok) {
-                throw new Error('Failed to fetch data');
+                throw new Error(`Failed to fetch data: ${response.status}`);
             }
 
             const rawSutras = (await response.json()) as RawSutra[];
@@ -102,7 +102,7 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
             return structuredData;
         } catch (error) {
             console.error('Error fetching yoga data:', error);
-            return {};
+            throw error instanceof Error ? error : new Error('Unknown yoga data fetch failure');
         } finally {
             pendingRequest = null;
         }

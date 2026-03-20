@@ -1,6 +1,6 @@
 # Yoga
 
-Yoga is a React-based reading app for the Yoga Sutras. It brings together Sanskrit text, pronunciation, multiple translations, word meanings, audio, and personal notes in one interface.
+Yoga is a React-based reading app for the Yoga Sutras. It brings together Sanskrit text, pronunciation, multiple translations, word meanings, audio, and a commentary study panel in one interface.
 
 ## Stack
 
@@ -14,12 +14,12 @@ Yoga is a React-based reading app for the Yoga Sutras. It brings together Sanskr
 
 ## Project layout
 
-- `src/`: the active application code
+- `src/`: active application code
 - `public/`: runtime assets such as `data.json`, `lexicon.json`, and `mp3/`
 - `data-source/`: source text files, token mapping JSON, and archived data snapshots
 - `scripts/`: data generation, verification, and browser QA scripts
 - `legacy/`: archived pre-React implementation kept for reference
-- `docs/`: supporting notes and reports
+- `docs/`: supporting notes and historical reports
 
 ## Runtime data flow
 
@@ -56,10 +56,14 @@ BASE_URL=http://127.0.0.1:4174 npm run qa:browser
 
 - The live app is the React code under `src/`.
 - The password gateway has been removed. The app now opens directly.
-- Verse pages use a shared shell with a header, left chapter sidebar, and a right panel that switches between reflections and commentary.
-- Reflections are stored in `localStorage`.
-- Commentary is now a guided study panel rather than an empty placeholder.
-- Data access is centralized through `YogaDataProvider`, which reduces repeated fetch logic across pages and side panels.
+- Verse pages use a shared shell with a header, left chapter sidebar, and an optional right commentary panel.
+- Desktop verse layout uses a shared frame model:
+  - left open + commentary open: `20 / 60 / 20`
+  - left closed + commentary open: `0 / 60 / 40`
+  - left open + commentary closed: `20 / 80 / 0`
+  - left closed + commentary closed: `0 / 100 / 0`
+- Desktop sidebar and right-panel preferences are stored in `localStorage`.
+- Data access is centralized through `YogaDataProvider`, which reduces repeated fetch logic across pages, panels, and modals.
 
 ## Data pipeline
 
@@ -92,5 +96,6 @@ Before deployment:
 ## Notes
 
 - `legacy/legacy_web/` is reference material, not the active app.
-- `research.md` contains a deep architecture report for the repository.
-- `plan.md` tracks the implementation checklist derived from that report.
+- `research.md` contains the current deep architecture report for the repository.
+- `plan.md` tracks the remediation checklist and completion status for the current pass.
+- `reuse-guide.md` explains how to port the desktop layout system into another project.

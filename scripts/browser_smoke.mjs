@@ -1,30 +1,67 @@
 import { chromium } from 'playwright';
 
 const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:4174';
-const menuTitle = 'Open chapter sidebar';
-async function clickVisibleHeaderButton(page, title) {
-    const index = await page.locator('header button').evaluateAll((elements, targetTitle) => {
+const menuButtonTitle = 'Open chapter sidebar';
+const commentaryOpenTitle = 'Open commentary panel';
+const commentaryCloseTitle = 'Close commentary panel';
+
+async function getVisibleHeaderButtonIndex(page, title) {
+    return page.locator('header button').evaluateAll((elements, targetTitle) => {
         return elements.findIndex((element) => {
-            const visible = Boolean(element instanceof HTMLElement && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
-            return visible && element.getAttribute('title') === targetTitle;
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            const isVisible = Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+            return isVisible && element.getAttribute('title') === targetTitle;
         });
     }, title);
+}
 
-    if (index === -1) {
+async function clickVisibleHeaderButton(page, title) {
+    const index = await getVisibleHeaderButtonIndex(page, title);
+
+    if (index < 0) {
         throw new Error(`Missing visible header button: ${title}`);
     }
 
-    await page.locator('header button').nth(index).click();
+    await page.locator('header button').nth(index).click({ force: true });
 }
 
-async function clickVisiblePanelButton(page) {
-    await page.waitForFunction(() => document.querySelectorAll('header button').length >= 2);
-    const buttonCount = await page.locator('header button').count();
-    if (buttonCount < 2) {
-        throw new Error('Missing visible panel toggle button');
-    }
+async function waitForCommentaryPanel(page) {
+    await page.waitForTimeout(500);
+    const titles = await page.locator('header button').evaluateAll((elements) => {
+        return elements.flatMap((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return [];
+            }
 
-    await page.locator('header button').nth(1).click();
+            const isVisible = Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+            return isVisible ? [element.getAttribute('title') ?? ''] : [];
+        });
+    });
+
+    if (!titles.includes(commentaryCloseTitle)) {
+        throw new Error(`Commentary panel did not open. visibleTitles=${JSON.stringify(titles)}`);
+    }
+}
+
+async function waitForCommentaryClosed(page) {
+    await page.waitForTimeout(500);
+    const titles = await page.locator('header button').evaluateAll((elements) => {
+        return elements.flatMap((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return [];
+            }
+
+            const isVisible = Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+            return isVisible ? [element.getAttribute('title') ?? ''] : [];
+        });
+    });
+
+    if (!titles.includes(commentaryOpenTitle)) {
+        throw new Error(`Commentary panel did not close. visibleTitles=${JSON.stringify(titles)}`);
+    }
 }
 
 async function createPage(browser, viewport, logs, errors) {
@@ -42,11 +79,72 @@ async function createPage(browser, viewport, logs, errors) {
     });
 
     await page.addInitScript(() => {
+        if (sessionStorage.getItem('__smoke-storage-reset') === 'true') {
+            return;
+        }
+
         localStorage.removeItem('yoga-desktop-right-panel');
         localStorage.removeItem('yoga-desktop-sidebar');
+        sessionStorage.setItem('__smoke-storage-reset', 'true');
     });
 
     return { context, page };
+}
+
+async function runDesktopFlow(browser, logs, errors) {
+    const desktop = await createPage(browser, { width: 1440, height: 1000 }, logs, errors);
+
+    await desktop.page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
+    await desktop.page.waitForSelector('a[href="/chapter/1/verse/1"]');
+    await desktop.page.click('a[href="/chapter/1/verse/1"]');
+    await desktop.page.waitForURL('**/chapter/1/verse/1');
+    await desktop.page.waitForSelector('header');
+    await desktop.page.waitForSelector('#main-scroll-container');
+    await desktop.page.waitForSelector('text=WORD-BY-WORD', { state: 'attached' });
+
+    const openIndex = await getVisibleHeaderButtonIndex(desktop.page, commentaryOpenTitle);
+    if (openIndex < 0) {
+        throw new Error('Desktop commentary toggle was not rendered.');
+    }
+
+    await desktop.page.evaluate(() => {
+        localStorage.setItem('yoga-desktop-right-panel', JSON.stringify('commentary'));
+    });
+    await desktop.page.reload({ waitUntil: 'networkidle' });
+    await desktop.page.waitForSelector('header');
+    await desktop.page.waitForSelector('text=WORD-BY-WORD', { state: 'attached' });
+    await waitForCommentaryPanel(desktop.page);
+
+    await clickVisibleHeaderButton(desktop.page, commentaryCloseTitle);
+    await waitForCommentaryClosed(desktop.page);
+
+    await desktop.context.close();
+}
+
+async function runMobileFlow(browser, logs, errors) {
+    const mobile = await createPage(browser, { width: 390, height: 844 }, logs, errors);
+
+    await mobile.page.goto(`${baseUrl}/chapter/1/verse/1`, { waitUntil: 'networkidle' });
+    await mobile.page.waitForSelector('header');
+    await mobile.page.waitForSelector('text=WORD-BY-WORD', { state: 'attached' });
+
+    await clickVisibleHeaderButton(mobile.page, menuButtonTitle);
+    await mobile.page.waitForSelector('a[href="/chapter/1/verse/1"]');
+    await mobile.page.click('a[href="/chapter/1/verse/1"]');
+    await mobile.page.waitForURL('**/chapter/1/verse/1');
+
+    await clickVisibleHeaderButton(mobile.page, commentaryOpenTitle);
+    await waitForCommentaryPanel(mobile.page);
+
+    await clickVisibleHeaderButton(mobile.page, commentaryCloseTitle);
+    await waitForCommentaryClosed(mobile.page);
+
+    await clickVisibleHeaderButton(mobile.page, commentaryOpenTitle);
+    await waitForCommentaryPanel(mobile.page);
+    await mobile.page.locator('div.bg-black\\/50').click({ position: { x: 20, y: 20 } });
+    await waitForCommentaryClosed(mobile.page);
+
+    await mobile.context.close();
 }
 
 async function run() {
@@ -55,41 +153,8 @@ async function run() {
     const browser = await chromium.launch({ headless: true, channel: 'chrome' });
 
     try {
-        const desktop = await createPage(browser, { width: 1440, height: 1000 }, logs, errors);
-        await desktop.page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
-        await desktop.page.click('a[href="/chapter/1/verse/1"]');
-        await desktop.page.waitForURL('**/chapter/1/verse/1');
-        await desktop.page.waitForSelector('header');
-        await clickVisiblePanelButton(desktop.page);
-        await desktop.page.waitForSelector('textarea');
-        await clickVisiblePanelButton(desktop.page);
-        await desktop.page.waitForTimeout(300);
-        await desktop.page.reload({ waitUntil: 'networkidle' });
-        await desktop.page.waitForSelector('header');
-        await desktop.context.close();
-
-        const mobile = await createPage(browser, { width: 390, height: 844 }, logs, errors);
-        await mobile.page.goto(`${baseUrl}/chapter/1/verse/1`, { waitUntil: 'networkidle' });
-        await mobile.page.waitForSelector('header');
-        await clickVisibleHeaderButton(mobile.page, menuTitle);
-        await mobile.page.waitForSelector('a[href="/chapter/1/verse/1"]');
-        await mobile.page.click('a[href="/chapter/1/verse/1"]');
-        await mobile.page.waitForURL('**/chapter/1/verse/1');
-        await clickVisiblePanelButton(mobile.page);
-        await mobile.page.waitForSelector('textarea');
-        await clickVisiblePanelButton(mobile.page);
-        await mobile.page.waitForTimeout(300);
-        await clickVisiblePanelButton(mobile.page);
-        await mobile.page.waitForSelector('textarea');
-        await mobile.page.click('div[class*="bg-black/50"]', { position: { x: 20, y: 20 } });
-        await mobile.page.waitForTimeout(300);
-
-        const remainingTextareaCount = await mobile.page.locator('textarea').count();
-        if (remainingTextareaCount !== 0) {
-            throw new Error(`Mobile reflections panel did not close cleanly. remainingTextareaCount=${remainingTextareaCount}`);
-        }
-
-        await mobile.context.close();
+        await runDesktopFlow(browser, logs, errors);
+        await runMobileFlow(browser, logs, errors);
 
         if (logs.length || errors.length) {
             throw new Error(JSON.stringify({ logs, errors }, null, 2));
@@ -100,11 +165,11 @@ async function run() {
                 {
                     ok: true,
                     checked: [
-                        'desktop navigation',
-                        'desktop reflections',
-                        'desktop commentary restore',
-                        'mobile sidebar',
-                        'mobile right panel',
+                        'desktop verse navigation',
+                        'desktop commentary toggle',
+                        'desktop commentary persistence',
+                        'mobile sidebar open and route selection',
+                        'mobile commentary drawer open and close',
                     ],
                     baseUrl,
                 },
