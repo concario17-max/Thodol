@@ -84,48 +84,50 @@ const Header = ({
                 }`}
                 style={desktopGridStyle}
             >
-                <div className="col-start-2 flex min-w-0 items-center gap-2 pl-5 text-text-primary dark:text-dark-text-primary">
-                    {showSidebarToggle && (
-                        <button
-                            type="button"
-                            onClick={toggleSidebar}
-                            className="shrink-0 rounded-xl p-2 text-gold-primary transition-all duration-300 hover:bg-gold-surface/50 dark:text-gold-light dark:hover:bg-dark-surface/50"
-                            title="Open chapter sidebar"
-                            aria-label="Open chapter sidebar"
-                        >
-                            <Menu className="h-5 w-5" />
-                        </button>
-                    )}
+                <div className="col-start-2 flex min-w-0 items-center justify-between gap-6 px-5">
+                    <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
+                        {showSidebarToggle && (
+                            <button
+                                type="button"
+                                onClick={toggleSidebar}
+                                className="shrink-0 rounded-xl p-2 text-gold-primary transition-all duration-300 hover:bg-gold-surface/50 dark:text-gold-light dark:hover:bg-dark-surface/50"
+                                title="Open chapter sidebar"
+                                aria-label="Open chapter sidebar"
+                            >
+                                <Menu className="h-5 w-5" />
+                            </button>
+                        )}
 
-                    <Link to={targetUrl} className="group flex min-w-0 items-center gap-2.5 truncate">
-                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
-                            <BookOpenText className="h-7 w-7" />
-                        </span>
-                        <span className="mt-0.5 truncate font-display text-[24px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
-                            {title}
-                        </span>
-                    </Link>
-                </div>
-
-                <div className="col-start-2 row-start-1 flex shrink-0 items-center justify-self-end gap-3 pr-5">
-                    {rightContent}
-
-                    {showSidebarToggle && (
-                        <button
-                            type="button"
-                            onClick={() => toggleRightPanel('commentary')}
-                            className="group inline-flex h-11 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80"
-                            title={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
-                            aria-label={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
-                        >
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
-                                <MessageSquare className="h-3.5 w-3.5" />
+                        <Link to={targetUrl} className="group flex min-w-0 items-center gap-2.5 truncate">
+                            <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
+                                <BookOpenText className="h-7 w-7" />
                             </span>
-                            <span>Commentary</span>
-                        </button>
-                    )}
+                            <span className="mt-0.5 truncate font-display text-[24px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
+                                {title}
+                            </span>
+                        </Link>
+                    </div>
 
-                    <ThemeToggle className="ml-0" />
+                    <div className="flex shrink-0 items-center gap-3">
+                        {rightContent}
+
+                        {showSidebarToggle && (
+                            <button
+                                type="button"
+                                onClick={() => toggleRightPanel('commentary')}
+                                className="group inline-flex h-11 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80"
+                                title={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
+                                aria-label={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
+                            >
+                                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
+                                    <MessageSquare className="h-3.5 w-3.5" />
+                                </span>
+                                <span>Commentary</span>
+                            </button>
+                        )}
+
+                        <ThemeToggle className="ml-0" />
+                    </div>
                 </div>
             </div>
         </header>
