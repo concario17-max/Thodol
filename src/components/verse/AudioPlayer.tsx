@@ -22,7 +22,7 @@ export const AudioPlayer = ({
     playbackError,
 }: AudioPlayerProps) => (
     <div className="mb-10 flex flex-col items-center gap-3">
-        <div className="flex w-full max-w-[400px] items-center justify-between rounded-full border border-gold-primary/20 bg-white/40 px-5 py-2.5 shadow-sm transition-all hover:border-gold-primary/40 hover:shadow-md dark:border-dark-border/50 dark:bg-[#111]/40 dark:hover:border-gold-primary/30">
+        <div className="flex w-full max-w-[400px] items-center justify-between rounded-full border border-gold-primary/20 bg-white/40 px-5 py-2.5 shadow-sm transition-all hover:border-gold-primary/40 hover:shadow-md dark:border-dark-border/50 dark:bg-[#111]/40 dark:hover:border-gold-primary/30 lg:max-w-[560px]">
             <button
                 type="button"
                 onClick={() => {

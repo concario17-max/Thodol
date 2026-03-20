@@ -7,6 +7,7 @@ import CommentarySidebar from './components/CommentarySidebar';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
+import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 
 const ChapterList = lazy(() => import('./pages/ChapterList'));
 const VerseView = lazy(() => import('./pages/VerseView'));
@@ -14,9 +15,10 @@ const VerseView = lazy(() => import('./pages/VerseView'));
 const MainLayout = () => {
     const location = useLocation();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, closeAllDrawers } = useUI();
+    const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, closeAllDrawers, isDesktopSidebarOpen } = useUI();
 
     const shouldRenderCommentary = isVerseView && (activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary');
+    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen) : undefined;
 
     useEffect(() => {
         closeAllDrawers();
@@ -34,6 +36,7 @@ const MainLayout = () => {
                 ) : undefined
             }
             isMobilePanelOpen={isSidebarOpen || activeRightPanel !== null}
+            desktopGridColumns={desktopGridColumns}
             floatingAction={
                 !isVerseView ? (
                     <ThemeToggle className="border border-gold-primary/20 bg-white/80 p-3 shadow-xl shadow-black/5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-gold-primary/40 active:scale-90 dark:border-gold-primary/10 dark:bg-[#111]/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)]" />

@@ -17,7 +17,7 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
             <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
                 앨리스 A. 베일리
             </h2>
-            <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6">
+            <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
                 {english && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{english}</p>}
                 {korean1 && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{korean1}</p>}
             </div>
@@ -32,7 +32,7 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
                 <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
                     니콜라스 서튼
                 </h2>
-                <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6">
+                <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
                     {oxfordEn && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{oxfordEn}</p>}
                     {oxfordKr && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{oxfordKr}</p>}
                 </div>
@@ -48,7 +48,7 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
                 <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
                     배철현
                 </h2>
-                <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-md)] px-3 sm:px-6">
+                <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-md)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
                     {baeJik && (
                         <div>
                             <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">Literal</h3>

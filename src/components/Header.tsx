@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpenText, Menu, MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
+import { getDesktopVerseColumns } from './ui/desktopVerseLayout';
 
 interface HeaderProps {
     title?: ReactNode;
@@ -19,12 +20,13 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
+    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel, isDesktopSidebarOpen } = useUI();
 
     const activePanel = activeRightPanel || activeDesktopRightPanel;
-    const desktopLeftOffset = showSidebarToggle ? 400 : 0;
-    const desktopRightOffset = showSidebarToggle ? 400 : 0;
     const isCommentaryOpen = activePanel === 'commentary';
+    const desktopGridStyle = showSidebarToggle
+        ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen) } as CSSProperties)
+        : undefined;
 
     return (
         <header
@@ -77,13 +79,12 @@ const Header = ({
             </div>
 
             <div
-                className="hidden h-16 items-center justify-between lg:flex"
-                style={{
-                    paddingLeft: `calc(${desktopLeftOffset}px + 1.25rem)`,
-                    paddingRight: `calc(${desktopRightOffset}px + 1.25rem)`,
-                }}
+                className={`hidden h-16 items-center lg:grid ${
+                    showSidebarToggle ? 'lg:[grid-template-columns:var(--desktop-verse-columns)]' : 'lg:grid-cols-1'
+                }`}
+                style={desktopGridStyle}
             >
-                <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
+                <div className="col-start-2 flex min-w-0 items-center gap-2 pl-5 text-text-primary dark:text-dark-text-primary">
                     {showSidebarToggle && (
                         <button
                             type="button"
@@ -106,7 +107,7 @@ const Header = ({
                     </Link>
                 </div>
 
-                <div className="ml-3 flex shrink-0 items-center gap-3">
+                <div className="col-start-2 row-start-1 flex shrink-0 items-center justify-self-end gap-3 pr-5">
                     {rightContent}
 
                     {showSidebarToggle && (
