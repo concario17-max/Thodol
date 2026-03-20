@@ -120,7 +120,7 @@ const VerseView = () => {
                 variants={containerVariants}
                 className="min-h-full flex flex-col justify-center font-display text-text-primary dark:text-dark-text-primary transition-colors duration-500 py-4 sm:py-6"
             >
-                <div className="mx-auto w-full max-w-[1180px] space-y-8 px-4 sm:space-y-12 sm:px-6 lg:max-w-none lg:px-8">
+                <div className="mx-auto w-full max-w-[1180px] space-y-8 px-4 sm:space-y-12 sm:px-6 lg:max-w-none lg:px-6">
                     <motion.div variants={itemVariants}>
                         <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
                     </motion.div>

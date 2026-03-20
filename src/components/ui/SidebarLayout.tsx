@@ -24,9 +24,15 @@ export const SidebarLayout = React.memo(
         desktopWidthClass = 'lg:w-80',
     }: SidebarLayoutProps) => {
         const isLeft = position === 'left';
-        const translateClosed = isLeft ? '-translate-x-full lg:-translate-x-10' : 'translate-x-full lg:translate-x-10';
+        const mobileTranslateClosed = isLeft ? '-translate-x-full' : 'translate-x-full';
         const borderClass = isLeft ? 'border-r' : 'border-l';
         const placementClass = isLeft ? 'left-0' : 'right-0';
+        const mobileStateClass = isOpen
+            ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none`
+            : `w-[90vw] ${mobileTranslateClosed}`;
+        const desktopStateClass = isDesktopOpen
+            ? `${desktopWidthClass} lg:translate-x-0 lg:opacity-100`
+            : 'overflow-hidden p-0 px-0 lg:w-0 lg:border-none lg:translate-x-0 lg:opacity-0';
 
         return (
             <>
@@ -39,8 +45,8 @@ export const SidebarLayout = React.memo(
 
                 <aside
                     className={`fixed bottom-0 top-16 ${placementClass} z-50 flex h-[calc(100dvh-64px)] flex-col overscroll-contain border-gold-primary/20 bg-white/40 font-pretendard backdrop-blur-md transition-all duration-300 dark:border-dark-border/50 dark:bg-dark-surface/40 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)] ${borderClass}
-                    ${isOpen ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none` : `w-[90vw] ${desktopWidthClass} ${translateClosed} lg:translate-x-0`}
-                    ${isDesktopOpen ? `${desktopWidthClass} lg:opacity-100` : 'overflow-hidden p-0 px-0 lg:w-0 lg:border-none lg:opacity-0'}`}
+                    ${mobileStateClass}
+                    ${desktopStateClass}`}
                 >
                     {title ? (
                         <div className="flex shrink-0 items-center justify-between border-b border-gold-border/30 p-4 dark:border-[#333] lg:hidden">
