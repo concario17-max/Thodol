@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { BookOpenText, Menu, MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
-import { getDesktopVerseColumns } from './ui/desktopVerseLayout';
+import { DESKTOP_VERSE_COLUMNS_DEFAULT } from './ui/desktopVerseLayout';
 
 interface HeaderProps {
     title?: ReactNode;
@@ -20,12 +20,12 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel, isDesktopSidebarOpen } = useUI();
+    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
 
     const activePanel = activeRightPanel || activeDesktopRightPanel;
     const isCommentaryOpen = activePanel === 'commentary';
     const desktopGridStyle = showSidebarToggle
-        ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen) } as CSSProperties)
+        ? ({ '--desktop-verse-columns': DESKTOP_VERSE_COLUMNS_DEFAULT } as CSSProperties)
         : undefined;
 
     return (
