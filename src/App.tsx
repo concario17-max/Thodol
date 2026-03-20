@@ -18,7 +18,7 @@ const MainLayout = () => {
     const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, closeAllDrawers, isDesktopSidebarOpen } = useUI();
 
     const shouldRenderCommentary = isVerseView && (activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary');
-    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen) : undefined;
+    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, activeDesktopRightPanel === 'commentary') : undefined;
 
     useEffect(() => {
         closeAllDrawers();
