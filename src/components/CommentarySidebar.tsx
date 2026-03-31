@@ -1,44 +1,83 @@
+import { CSSProperties } from 'react';
 import { useParams } from 'react-router-dom';
 import { MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { SidebarLayout } from './ui/SidebarLayout';
 import { chapter1Commentary, type Chapter1CommentaryVerseKey, type CommentaryBlock } from '../data/chapter1Commentary';
 
+type RenderableTable = {
+    headers: readonly string[];
+    rows: ReadonlyArray<readonly string[] | { label: string; value: string }>;
+};
+
 const isChapter1CommentaryVerseKey = (key: string): key is Chapter1CommentaryVerseKey =>
     Object.prototype.hasOwnProperty.call(chapter1Commentary, key);
+
+const isTableRowObject = (row: readonly string[] | { label: string; value: string }): row is { label: string; value: string } =>
+    !Array.isArray(row);
+
+const toCells = (row: readonly string[] | { label: string; value: string }) => {
+    if (isTableRowObject(row)) {
+        return [row.label, row.value];
+    }
+
+    return [...row];
+};
+
+const renderTable = (table: RenderableTable) => {
+    const rowCellCount = table.rows.reduce((max, row) => Math.max(max, toCells(row).length), 0);
+    const columnCount = Math.max(table.headers.length, rowCellCount, 1);
+    const gridStyle: CSSProperties = {
+        gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+    };
+
+    return (
+        <div className="overflow-hidden rounded-xl border border-gold-border/20 bg-white/75 dark:border-dark-border/50 dark:bg-dark-bg/60">
+            <div className="grid border-b border-gold-border/20 bg-gold-surface/40 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:bg-dark-surface/80 dark:text-gold-light" style={gridStyle}>
+                {Array.from({ length: columnCount }).map((_, index) => (
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/20 dark:border-dark-border/50' : ''}`}>
+                        {table.headers[index] ?? ''}
+                    </div>
+                ))}
+            </div>
+
+            {table.rows.map((row, rowIndex) => {
+                const cells = toCells(row);
+                const paddedCells = Array.from({ length: columnCount }, (_, index) => cells[index] ?? '');
+
+                return (
+                    <div key={`row-${rowIndex}`} className="grid border-b border-gold-border/10 last:border-b-0" style={gridStyle}>
+                        {paddedCells.map((cell, cellIndex) => (
+                            <div
+                                key={`cell-${rowIndex}-${cellIndex}`}
+                                className={`px-3 py-3 text-sm leading-relaxed ${cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''} ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
+                            >
+                                {cell}
+                            </div>
+                        ))}
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
 
 const renderBlock = (block: CommentaryBlock) => (
     <section key={block.title} className="space-y-3 rounded-2xl border border-gold-border/20 bg-white/65 p-4 dark:border-dark-border/50 dark:bg-dark-surface/55">
         <h3 className="text-sm font-semibold text-[#1C2B36] dark:text-dark-text-primary">{block.title}</h3>
 
-        {block.paragraphs?.map((paragraph) => (
-            <p key={paragraph} className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
+        {block.paragraphs?.map((paragraph, index) => (
+            <p key={`${block.title}-p-${index}`} className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
                 {paragraph}
             </p>
         ))}
 
-        {block.table ? (
-            <div className="overflow-hidden rounded-xl border border-gold-border/20 bg-white/75 dark:border-dark-border/50 dark:bg-dark-bg/60">
-                <div className="grid grid-cols-2 border-b border-gold-border/20 bg-gold-surface/40 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:bg-dark-surface/80 dark:text-gold-light">
-                    <div className="px-3 py-2">{block.table.headers[0]}</div>
-                    <div className="border-l border-gold-border/20 px-3 py-2 dark:border-dark-border/50">{block.table.headers[1]}</div>
-                </div>
-
-                {block.table.rows.map((row) => (
-                    <div key={row.label} className="grid grid-cols-2 border-b border-gold-border/10 last:border-b-0">
-                        <div className="px-3 py-3 text-sm font-medium text-text-primary dark:text-dark-text-primary">{row.label}</div>
-                        <div className="border-l border-gold-border/10 px-3 py-3 text-sm leading-relaxed text-text-secondary dark:border-dark-border/40 dark:text-dark-text-secondary">
-                            {row.value}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        ) : null}
+        {block.table ? renderTable(block.table) : null}
 
         {block.bullets ? (
             <ul className="space-y-2 text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                {block.bullets.map((item) => (
-                    <li key={item} className="rounded-xl border border-gold-border/20 bg-white/60 px-3 py-2.5 dark:bg-dark-surface/60">
+                {block.bullets.map((item, index) => (
+                    <li key={`${block.title}-b-${index}`} className="rounded-xl border border-gold-border/20 bg-white/60 px-3 py-2.5 dark:bg-dark-surface/60">
                         · {item}
                     </li>
                 ))}
@@ -58,8 +97,7 @@ const CommentarySidebar = () => {
     const isOpen = activeRightPanel === 'commentary';
     const isDesktopOpen = activeDesktopRightPanel === 'commentary';
     const verseKey = `${chapterNum}.${verseNum}`;
-    const commentaryBlocks =
-        chapterNum === '1' && isChapter1CommentaryVerseKey(verseKey) ? chapter1Commentary[verseKey] : null;
+    const commentaryBlocks = chapterNum === '1' && isChapter1CommentaryVerseKey(verseKey) ? chapter1Commentary[verseKey] : null;
 
     return (
         <SidebarLayout

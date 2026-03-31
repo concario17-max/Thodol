@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: chapter 1 commentary updated from ODT source with metadata and source-footer markers removed.
+Completed: chapter 1 commentary restored from the original ODT structure with real tables and bullet markers preserved.
 
 ## Route
 Route B
@@ -15,9 +15,9 @@ worker_feature: done
 Completed.
 
 ## Write Sets
-- worker_shared: generate chapter 1 commentary data from `요가수트라 해설_1. 합일의 문제.odt` into a typed source module under `src/data/`
-- worker_feature: refactor `src/components/CommentarySidebar.tsx` to render chapter 1 from the generated data and remove existing hardcoded content
-- reviewer: verify type safety, marker stripping, rendering structure, and no `any`/`unknown` additions
+- worker_shared: rebuilt `src/data/chapter1Commentary.ts` from the ODT source with table objects and list bullets preserved
+- worker_feature: simplified `src/components/CommentarySidebar.tsx` to render the restored data structure directly
+- reviewer: passed
 
 ## Reviewer
 passed
