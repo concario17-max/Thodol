@@ -1,26 +1,22 @@
 # State
 
 ## Current Task
-Completed: chapter 1 commentary restored from the original ODT structure with real tables and bullet markers preserved.
+Completed: removed leftover reference-style lines from chapter 1 commentary data.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
-main: done
-worker_shared: done
-worker_feature: done
+main: closed
 
 ## Contract Freeze
 Completed.
 
 ## Write Sets
-- worker_shared: rebuilt `src/data/chapter1Commentary.ts` from the ODT source with table objects and list bullets preserved
-- worker_feature: simplified `src/components/CommentarySidebar.tsx` to render the restored data structure directly
-- reviewer: passed
+- main: completed cleanup of `src/data/chapter1Commentary.ts`
 
 ## Reviewer
-passed
+not required for Route A
 
 ## Last Update
 2026-03-31
