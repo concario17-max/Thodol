@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: removed leftover reference-style lines from chapter 1 commentary data.
+Completed: showed the first chapter 1 commentary title inline next to the verse number in the commentary header.
 
 ## Route
 Route A
@@ -13,7 +13,7 @@ main: closed
 Completed.
 
 ## Write Sets
-- main: completed cleanup of `src/data/chapter1Commentary.ts`
+- main: completed inline heading update in `src/components/CommentarySidebar.tsx`
 
 ## Reviewer
 not required for Route A

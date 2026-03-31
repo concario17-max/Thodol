@@ -98,6 +98,8 @@ const CommentarySidebar = () => {
     const isDesktopOpen = activeDesktopRightPanel === 'commentary';
     const verseKey = `${chapterNum}.${verseNum}`;
     const commentaryBlocks = chapterNum === '1' && isChapter1CommentaryVerseKey(verseKey) ? chapter1Commentary[verseKey] : null;
+    const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
+    const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
 
     return (
         <SidebarLayout
@@ -115,13 +117,18 @@ const CommentarySidebar = () => {
                     <h2 className="text-sm font-bold tracking-wide text-[#1C2B36] dark:text-dark-text-primary">Commentary</h2>
                 </div>
 
-                <div className="mb-2 text-xs font-bold tracking-wider text-[#8FA0AD]">
-                    {chapterNum}.{verseNum}
+                <div className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-bold tracking-wider text-[#8FA0AD]">
+                    <span>{chapterNum}.{verseNum}</span>
+                    {inlineHeading ? (
+                        <span className="text-sm font-semibold tracking-normal text-[#1C2B36] dark:text-dark-text-primary">
+                            {inlineHeading}
+                        </span>
+                    ) : null}
                 </div>
 
                 <div className="custom-scrollbar flex-1 overflow-y-auto rounded-2xl border border-gold-primary/20 bg-white/70 p-5 shadow-inner backdrop-blur-sm transition-all dark:border-dark-border/60 dark:bg-dark-bg/60">
-                    {commentaryBlocks && commentaryBlocks.length > 0 ? (
-                        <div className="space-y-6">{commentaryBlocks.map(renderBlock)}</div>
+                    {bodyBlocks && bodyBlocks.length > 0 ? (
+                        <div className="space-y-6">{bodyBlocks.map(renderBlock)}</div>
                     ) : (
                         <div className="flex h-full items-center justify-center text-center text-sm text-text-secondary dark:text-dark-text-secondary">
                             <div className="space-y-2">
