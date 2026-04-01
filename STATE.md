@@ -1,10 +1,10 @@
 # State
 
 ## Current Task
-Completed: showed the first chapter 1 commentary title inline next to the verse number in the commentary header.
+Completed: removed trailing reference blocks from chapter 2 commentary data and kept chapter 2 aligned with chapter 1 cleanup rules.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: closed
@@ -13,10 +13,10 @@ main: closed
 Completed.
 
 ## Write Sets
-- main: completed inline heading update in `src/components/CommentarySidebar.tsx`
+- main: completed chapter 2 commentary cleanup in `src/data/chapter2Commentary.ts` and `src/components/CommentarySidebar.tsx`
 
 ## Reviewer
-not required for Route A
+manual verification completed
 
 ## Last Update
-2026-03-31
+2026-04-01

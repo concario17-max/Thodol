@@ -3,15 +3,13 @@ import { useParams } from 'react-router-dom';
 import { MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { SidebarLayout } from './ui/SidebarLayout';
-import { chapter1Commentary, type Chapter1CommentaryVerseKey, type CommentaryBlock } from '../data/chapter1Commentary';
+import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
+import { chapter2Commentary } from '../data/chapter2Commentary';
 
 type RenderableTable = {
     headers: readonly string[];
     rows: ReadonlyArray<readonly string[] | { label: string; value: string }>;
 };
-
-const isChapter1CommentaryVerseKey = (key: string): key is Chapter1CommentaryVerseKey =>
-    Object.prototype.hasOwnProperty.call(chapter1Commentary, key);
 
 const isTableRowObject = (row: readonly string[] | { label: string; value: string }): row is { label: string; value: string } =>
     !Array.isArray(row);
@@ -96,8 +94,10 @@ const CommentarySidebar = () => {
 
     const isOpen = activeRightPanel === 'commentary';
     const isDesktopOpen = activeDesktopRightPanel === 'commentary';
-    const verseKey = `${chapterNum}.${verseNum}`;
-    const commentaryBlocks = chapterNum === '1' && isChapter1CommentaryVerseKey(verseKey) ? chapter1Commentary[verseKey] : null;
+    const commentarySource: Record<string, CommentaryBlock[]> | null =
+        chapterNum === '1' ? chapter1Commentary : chapterNum === '2' ? chapter2Commentary : null;
+    const commentaryKey = chapterNum === '1' ? `${chapterNum}.${verseNum}` : verseNum;
+    const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
     const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
 
