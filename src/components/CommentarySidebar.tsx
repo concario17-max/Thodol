@@ -132,7 +132,7 @@ const CommentarySidebar = () => {
                     : chapterNum === '4'
                         ? chapter4Commentary
                         : null;
-    const commentaryKey = chapterNum === '1' ? `${chapterNum}.${verseNum}` : verseNum;
+    const commentaryKey = chapterNum === '1' || chapterNum === '4' ? `${chapterNum}.${verseNum}` : verseNum;
     const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
     const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
@@ -168,8 +168,8 @@ const CommentarySidebar = () => {
                     ) : (
                         <div className="flex h-full items-center justify-center text-center text-sm text-text-secondary dark:text-dark-text-secondary">
                             <div className="space-y-2">
-                                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">내용 없음</p>
-                                <p>아직 코멘터리 원고가 준비되지 않았습니다.</p>
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">{'\uB0B4\uC6A9 \uC5C6\uC74C'}</p>
+                                <p>{'\uC544\uC9C1 \uCF54\uBA58\uD130\uB9AC \uC6D0\uACE0\uAC00 \uC900\uBE44\uB418\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.'}</p>
                             </div>
                         </div>
                     )}
