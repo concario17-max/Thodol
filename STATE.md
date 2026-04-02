@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: restored missing chapter 2 verse 4 commentary data so `2.4` renders with its own block instead of being skipped.
+Completed: preserved numbered list items in commentary rendering instead of forcing every list line to a dot bullet.
 
 ## Route
 Route B
@@ -14,8 +14,8 @@ worker_shared: completed
 Completed.
 
 ## Write Sets
-- worker_shared: completed restoration of `2.4` commentary block in `src/data/chapter2Commentary.ts`
-- reviewer: completed verification that `2.4` now renders and chapter 2 key ordering remains correct
+- worker_shared: completed numbered-list rendering update in `src/components/CommentarySidebar.tsx`
+- reviewer: completed verification that numbered bullets keep their numeric prefixes while ordinary bullets still use dot markers
 
 ## Reviewer
 completed

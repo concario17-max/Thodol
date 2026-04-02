@@ -11,6 +11,11 @@ type RenderableTable = {
     rows: ReadonlyArray<readonly string[] | { label: string; value: string }>;
 };
 
+type RenderedBulletItem = {
+    marker: string;
+    text: string;
+};
+
 const isTableRowObject = (row: readonly string[] | { label: string; value: string }): row is { label: string; value: string } =>
     !Array.isArray(row);
 
@@ -20,6 +25,22 @@ const toCells = (row: readonly string[] | { label: string; value: string }) => {
     }
 
     return [...row];
+};
+
+const renderBulletItem = (item: string): RenderedBulletItem => {
+    const match = item.match(/^(\d+)\.\s+(.*)$/);
+
+    if (match) {
+        return {
+            marker: `${match[1]}.`,
+            text: match[2],
+        };
+    }
+
+    return {
+        marker: '\u00b7',
+        text: item,
+    };
 };
 
 const renderTable = (table: RenderableTable) => {
@@ -74,11 +95,16 @@ const renderBlock = (block: CommentaryBlock) => (
 
         {block.bullets ? (
             <ul className="space-y-2 text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                {block.bullets.map((item, index) => (
-                    <li key={`${block.title}-b-${index}`} className="rounded-xl border border-gold-border/20 bg-white/60 px-3 py-2.5 dark:bg-dark-surface/60">
-                        · {item}
-                    </li>
-                ))}
+                {block.bullets.map((item, index) => {
+                    const bullet = renderBulletItem(item);
+
+                    return (
+                        <li key={`${block.title}-b-${index}`} className="flex rounded-xl border border-gold-border/20 bg-white/60 px-3 py-2.5 dark:bg-dark-surface/60">
+                            <span className="mr-2 shrink-0 font-semibold text-[#1C2B36] dark:text-dark-text-primary">{bullet.marker}</span>
+                            <span className="min-w-0 flex-1 break-words">{bullet.text}</span>
+                        </li>
+                    );
+                })}
             </ul>
         ) : null}
     </section>
