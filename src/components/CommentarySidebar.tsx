@@ -6,6 +6,7 @@ import { SidebarLayout } from './ui/SidebarLayout';
 import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
 import { chapter2Commentary } from '../data/chapter2Commentary';
 import { chapter3Commentary } from '../data/chapter3Commentary';
+import { chapter4Commentary } from '../data/chapter4Commentary';
 
 type RenderableTable = {
     headers: readonly string[];
@@ -122,7 +123,15 @@ const CommentarySidebar = () => {
     const isOpen = activeRightPanel === 'commentary';
     const isDesktopOpen = activeDesktopRightPanel === 'commentary';
     const commentarySource: Record<string, CommentaryBlock[]> | null =
-        chapterNum === '1' ? chapter1Commentary : chapterNum === '2' ? chapter2Commentary : chapterNum === '3' ? chapter3Commentary : null;
+        chapterNum === '1'
+            ? chapter1Commentary
+            : chapterNum === '2'
+                ? chapter2Commentary
+                : chapterNum === '3'
+                    ? chapter3Commentary
+                    : chapterNum === '4'
+                        ? chapter4Commentary
+                        : null;
     const commentaryKey = chapterNum === '1' ? `${chapterNum}.${verseNum}` : verseNum;
     const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
     const inlineHeading = commentaryBlocks?.[0]?.title ?? null;

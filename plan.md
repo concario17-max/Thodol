@@ -102,3 +102,26 @@ This file tracks the full-project remediation pass requested after the latest re
 - [x] Rewrite `plan.md` so completion status is readable and current.
 - [x] Keep historical notes in `docs/` but remove them as active guidance.
 - [x] Record final scope and verification status in repository docs.
+
+## 11. Chapter 4 Commentary Import
+
+- [ ] Inspect `요가수트라 해설_4. 깨달음.odt` structure and confirm verse boundaries before generating any new data file.
+- [ ] Extract chapter 4 commentary into a new `src/data/chapter4Commentary.ts` file using the shared `CommentaryBlock` / `CommentaryTable` structure.
+- [ ] Preserve real tables as `table` blocks instead of flattening them into paragraphs.
+- [ ] Preserve numbered list items so the shared sidebar can render `1. 2. 3.` markers rather than collapsing them into dot bullets.
+- [ ] Remove non-content artifacts from the ODT import:
+- [ ] `Plaintext` markers
+- [ ] `Online Mode` / `Offline Mode` lines
+- [ ] `참조 출처` / `Verified Sources`
+- [ ] search-strategy and web-search meta labels
+- [ ] other trailing reference/footer blocks that are not real commentary
+- [ ] Verify chapter 4 verse keys align with the source document and that no verse numbers are skipped like the earlier missing chapter 2 verse 4 issue.
+- [ ] Add chapter 4 support to the shared lookup in `src/components/CommentarySidebar.tsx` while keeping chapter 1/2/3 behavior unchanged.
+- [ ] Keep the existing inline heading rule so the first title shows next to the `4.x` verse number and is not duplicated in the block list.
+- [ ] Run a focused encoding audit on the generated chapter 4 file before merging, because the current `src/data/chapter3Commentary.ts` shows mojibake and the same generation path could repeat that corruption.
+- [ ] Run `npm.cmd run typecheck`.
+- [ ] Run `npm.cmd run build`.
+- [ ] Smoke-check a few representative chapter 4 verses after import:
+- [ ] one verse with a table
+- [ ] one verse with numbered list items
+- [ ] one verse with a trailing reference block removed
