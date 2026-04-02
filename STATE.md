@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: audited commentary data integrity across chapters 1-4, fixed chapter 4 commentary key mapping, and repaired commentary empty-state copy.
+Completed: removed residual source/meta leakage from chapter 4 commentary data and verified the cleanup.
 
 ## Route
 Route A
@@ -10,14 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The final scoped work stayed within `src/components/CommentarySidebar.tsx`: fix chapter 4 commentary lookup to use `4.x` keys and repair empty-state copy with Unicode-safe literals, while preserving existing structure, styles, and types.
+Completed. The task stayed within `src/data/chapter4Commentary.ts`: remove leftover source/reference/meta blocks and lines, then verify cleanup with repository checks.
 
 ## Write Sets
-- main: completed `src/components/CommentarySidebar.tsx`
-- reviewer: completed integrity review, count parity review, and verification pass
+- main: completed `src/data/chapter4Commentary.ts`
 
 ## Reviewer
-completed
+completed by main verification
 
 ## Last Update
-2026-04-02 - Route A closed after integrity audit plus successful `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-04-02 - Route A closed after cleanup plus successful `npm.cmd run typecheck` and `npm.cmd run build`.
