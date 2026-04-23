@@ -9,6 +9,7 @@ interface HeaderProps {
     title?: ReactNode;
     targetUrl?: string;
     showSidebarToggle?: boolean;
+    selectionControls?: ReactNode;
     rightContent?: ReactNode;
     className?: string;
 }
@@ -17,6 +18,7 @@ const Header = ({
     title = 'Yoga Sutras',
     targetUrl = '/',
     showSidebarToggle = false,
+    selectionControls,
     rightContent,
     className = '',
 }: HeaderProps) => {
@@ -50,10 +52,12 @@ const Header = ({
                         <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
                             <BookOpenText className="h-6 w-6 sm:h-7 sm:w-7" />
                         </span>
-                        <span className="mt-0.5 truncate font-display text-[18px] font-medium tracking-[0.03em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary sm:text-[24px] sm:tracking-[0.04em]">
+                        <span className="mt-0.5 hidden truncate font-display text-[18px] font-medium tracking-[0.03em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary sm:inline sm:text-[24px] sm:tracking-[0.04em]">
                             {title}
                         </span>
                     </Link>
+
+                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                 </div>
 
                 <div className="ml-2 flex shrink-0 items-center gap-1.5 sm:ml-3 sm:gap-3">
@@ -106,6 +110,8 @@ const Header = ({
                                 {title}
                             </span>
                         </Link>
+
+                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                     </div>
 
                     <div className="flex shrink-0 items-center gap-3">

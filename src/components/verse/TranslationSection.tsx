@@ -10,7 +10,7 @@ interface TranslationSectionProps {
 export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, oxfordEn }: TranslationSectionProps) => (
     <section className="mb-8 sm:mb-10">
         <div className="mb-5 flex items-center justify-center sm:mb-6">
-            <span className="text-xs tracking-[8px] text-gold-muted/40 dark:text-gold-muted/30">TEXTS</span>
+            <span className="text-xs tracking-[8px] text-gold-muted/40 dark:text-gold-muted/30">번역문</span>
         </div>
 
         <div className="mb-[var(--spacing-fluid-lg)]">
@@ -51,13 +51,13 @@ export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, 
                 <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-md)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
                     {baeJik && (
                         <div>
-                            <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">Literal</h3>
+                            <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">직역</h3>
                             <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{baeJik}</p>
                         </div>
                     )}
                     {baeUu && (
                         <div>
-                            <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">Interpretive</h3>
+                            <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">의역</h3>
                             <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{baeUu}</p>
                         </div>
                     )}

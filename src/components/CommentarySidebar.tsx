@@ -154,12 +154,10 @@ const CommentarySidebar = () => {
                 </div>
 
                 <div className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-bold tracking-wider text-[#8FA0AD]">
-                    <span>{chapterNum}.{verseNum}</span>
-                    {inlineHeading ? (
-                        <span className="text-sm font-semibold tracking-normal text-[#1C2B36] dark:text-dark-text-primary">
-                            {inlineHeading}
-                        </span>
-                    ) : null}
+                    <span>
+                        {chapterNum}.{verseNum}
+                    </span>
+                    {inlineHeading ? <span className="text-sm font-semibold tracking-normal text-[#1C2B36] dark:text-dark-text-primary">{inlineHeading}</span> : null}
                 </div>
 
                 <div className="custom-scrollbar flex-1 overflow-y-auto rounded-2xl border border-gold-primary/20 bg-white/70 p-5 shadow-inner backdrop-blur-sm transition-all dark:border-dark-border/60 dark:bg-dark-bg/60">
@@ -168,8 +166,8 @@ const CommentarySidebar = () => {
                     ) : (
                         <div className="flex h-full items-center justify-center text-center text-sm text-text-secondary dark:text-dark-text-secondary">
                             <div className="space-y-2">
-                                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">{'\uB0B4\uC6A9 \uC5C6\uC74C'}</p>
-                                <p>{'\uC544\uC9C1 \uCF54\uBA58\uD130\uB9AC \uC6D0\uACE0\uAC00 \uC900\uBE44\uB418\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.'}</p>
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">준비 중</p>
+                                <p>아직 코멘터리가 없습니다.</p>
                             </div>
                         </div>
                     )}

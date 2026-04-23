@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: removed residual source/meta leakage from chapter 4 commentary data and verified the cleanup.
+Completed: the header-driven chapter selector, fixed left reading card, translation labels, and browser smoke visibility checks are all in place and verified.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The task stayed within `src/data/chapter4Commentary.ts`: remove leftover source/reference/meta blocks and lines, then verify cleanup with repository checks.
+Completed. The verse route now uses header-driven chapter/verse selection, the left panel is a fixed reading card, and `scripts/browser_smoke.mjs` verifies visible sidebar and translation content.
 
 ## Write Sets
-- main: completed `src/data/chapter4Commentary.ts`
+- main: completed `src/App.tsx`, `src/components/Header.tsx`, `src/components/Sidebar.tsx`, `src/components/verse/SutraHeader.tsx`, `src/components/verse/TranslationSection.tsx`, `src/components/CommentarySidebar.tsx`, `src/pages/VerseView.tsx`, `scripts/browser_smoke.mjs`
 
 ## Reviewer
-completed by main verification
+reviewed by `Gauss`
 
 ## Last Update
-2026-04-02 - Route A closed after cleanup plus successful `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-04-23 - Header selector, left reading card, translation labels, and browser smoke checks verified with `typecheck`, `build`, and `qa:browser`.

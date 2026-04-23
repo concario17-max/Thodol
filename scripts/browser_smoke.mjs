@@ -1,9 +1,6 @@
 import { chromium } from 'playwright';
 
 const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:4174';
-const menuButtonTitle = 'Open chapter sidebar';
-const commentaryOpenTitle = 'Open commentary panel';
-const commentaryCloseTitle = 'Close commentary panel';
 
 async function getVisibleHeaderButtonIndex(page, title) {
     return page.locator('header button').evaluateAll((elements, targetTitle) => {
@@ -28,40 +25,114 @@ async function clickVisibleHeaderButton(page, title) {
     await page.locator('header button').nth(index).click({ force: true });
 }
 
-async function waitForCommentaryPanel(page) {
-    await page.waitForTimeout(500);
-    const titles = await page.locator('header button').evaluateAll((elements) => {
-        return elements.flatMap((element) => {
-            if (!(element instanceof HTMLElement)) {
-                return [];
-            }
+async function ensureSidebarOpen(page) {
+    const visibleSidebar = page.locator('aside:visible, [role="complementary"]:visible, [data-sidebar]:visible, [data-drawer]:visible');
 
-            const isVisible = Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-            return isVisible ? [element.getAttribute('title') ?? ''] : [];
-        });
-    });
-
-    if (!titles.includes(commentaryCloseTitle)) {
-        throw new Error(`Commentary panel did not open. visibleTitles=${JSON.stringify(titles)}`);
+    if ((await visibleSidebar.count()) === 0) {
+        await clickVisibleHeaderButton(page, 'Open chapter sidebar');
     }
 }
 
-async function waitForCommentaryClosed(page) {
-    await page.waitForTimeout(500);
-    const titles = await page.locator('header button').evaluateAll((elements) => {
-        return elements.flatMap((element) => {
+async function waitForHomeSelects(page) {
+    const comboboxes = page.getByRole('combobox');
+    await comboboxes.nth(0).waitFor({ state: 'visible' });
+    await comboboxes.nth(1).waitFor({ state: 'visible' });
+}
+
+async function getVisibleElementIndex(page, selector) {
+    return page.locator(selector).evaluateAll((elements) => {
+        return elements.findIndex((element) => {
             if (!(element instanceof HTMLElement)) {
-                return [];
+                return false;
             }
 
-            const isVisible = Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-            return isVisible ? [element.getAttribute('title') ?? ''] : [];
+            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
         });
     });
+}
 
-    if (!titles.includes(commentaryOpenTitle)) {
-        throw new Error(`Commentary panel did not close. visibleTitles=${JSON.stringify(titles)}`);
+async function goFromHomeToVerse(page, chapterValue, verseValue) {
+    const comboboxes = page.getByRole('combobox');
+    const chapterSelect = comboboxes.nth(0);
+    const verseSelect = comboboxes.nth(1);
+
+    await chapterSelect.selectOption(chapterValue);
+    await page.waitForFunction((targetVerse) => {
+        const verseSelectElement = document.querySelectorAll('select')[1];
+
+        return Boolean(
+            verseSelectElement &&
+                !verseSelectElement.hasAttribute('disabled') &&
+                verseSelectElement.querySelector(`option[value="${targetVerse}"]`),
+        );
+    }, verseValue);
+    await verseSelect.selectOption(verseValue);
+    await page.waitForURL(`**/chapter/${chapterValue}/verse/${verseValue}`);
+    await page.waitForFunction(() =>
+        Array.from(document.querySelectorAll('#chapter-picker')).some((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        }),
+    );
+    await page.waitForFunction(() =>
+        Array.from(document.querySelectorAll('#verse-picker')).some((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        }),
+    );
+}
+
+async function selectVisibleHeaderChapter(page, chapterValue) {
+    const chapterPickerIndex = await getVisibleElementIndex(page, '#chapter-picker');
+
+    if (chapterPickerIndex < 0) {
+        throw new Error('Missing visible chapter picker.');
     }
+
+    await page.locator('#chapter-picker').nth(chapterPickerIndex).selectOption(chapterValue);
+    await page.waitForURL(`**/chapter/${chapterValue}/verse/1`);
+    await page.waitForFunction(() =>
+        Array.from(document.querySelectorAll('#chapter-picker')).some((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        }),
+    );
+    await page.waitForFunction(() =>
+        Array.from(document.querySelectorAll('#verse-picker')).some((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        }),
+    );
+}
+
+async function waitForSidebarReadingCard(page) {
+    const sidebarCard = page.locator('aside:visible, [role="complementary"]:visible, [data-sidebar]:visible, [data-drawer]:visible').first();
+
+    await sidebarCard.waitFor({ state: 'visible' });
+    await sidebarCard.getByText('Chapter 3', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('Sutra 9', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('Sanskrit', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('English', { exact: true }).waitFor({ state: 'visible' });
+    await sidebarCard.getByText('Korean', { exact: true }).waitFor({ state: 'visible' });
+}
+
+async function waitForTranslationLabels(page) {
+    await page.locator('section h2').nth(0).waitFor({ state: 'visible' });
+    await page.locator('section h2').nth(1).waitFor({ state: 'visible' });
+    await page.locator('section h3').nth(0).waitFor({ state: 'visible' });
+    await page.locator('section h3').nth(1).waitFor({ state: 'visible' });
 }
 
 async function createPage(browser, viewport, logs, errors) {
@@ -95,28 +166,15 @@ async function runDesktopFlow(browser, logs, errors) {
     const desktop = await createPage(browser, { width: 1440, height: 1000 }, logs, errors);
 
     await desktop.page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
-    await desktop.page.waitForSelector('a[href="/chapter/1/verse/1"]');
-    await desktop.page.click('a[href="/chapter/1/verse/1"]');
-    await desktop.page.waitForURL('**/chapter/1/verse/1');
-    await desktop.page.waitForSelector('header');
-    await desktop.page.waitForSelector('#main-scroll-container');
-    await desktop.page.waitForSelector('text=WORD-BY-WORD', { state: 'attached' });
+    await waitForHomeSelects(desktop.page);
+    await goFromHomeToVerse(desktop.page, '3', '9');
+    await waitForHomeSelects(desktop.page);
 
-    const openIndex = await getVisibleHeaderButtonIndex(desktop.page, commentaryOpenTitle);
-    if (openIndex < 0) {
-        throw new Error('Desktop commentary toggle was not rendered.');
-    }
+    await ensureSidebarOpen(desktop.page);
+    await waitForSidebarReadingCard(desktop.page);
 
-    await desktop.page.evaluate(() => {
-        localStorage.setItem('yoga-desktop-right-panel', JSON.stringify('commentary'));
-    });
-    await desktop.page.reload({ waitUntil: 'networkidle' });
-    await desktop.page.waitForSelector('header');
-    await desktop.page.waitForSelector('text=WORD-BY-WORD', { state: 'attached' });
-    await waitForCommentaryPanel(desktop.page);
-
-    await clickVisibleHeaderButton(desktop.page, commentaryCloseTitle);
-    await waitForCommentaryClosed(desktop.page);
+    await selectVisibleHeaderChapter(desktop.page, '1');
+    await waitForTranslationLabels(desktop.page);
 
     await desktop.context.close();
 }
@@ -124,25 +182,16 @@ async function runDesktopFlow(browser, logs, errors) {
 async function runMobileFlow(browser, logs, errors) {
     const mobile = await createPage(browser, { width: 390, height: 844 }, logs, errors);
 
-    await mobile.page.goto(`${baseUrl}/chapter/1/verse/1`, { waitUntil: 'networkidle' });
-    await mobile.page.waitForSelector('header');
-    await mobile.page.waitForSelector('text=WORD-BY-WORD', { state: 'attached' });
+    await mobile.page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
+    await waitForHomeSelects(mobile.page);
+    await goFromHomeToVerse(mobile.page, '3', '9');
+    await waitForHomeSelects(mobile.page);
 
-    await clickVisibleHeaderButton(mobile.page, menuButtonTitle);
-    await mobile.page.waitForSelector('a[href="/chapter/1/verse/1"]');
-    await mobile.page.click('a[href="/chapter/1/verse/1"]');
-    await mobile.page.waitForURL('**/chapter/1/verse/1');
+    await ensureSidebarOpen(mobile.page);
+    await waitForSidebarReadingCard(mobile.page);
 
-    await clickVisibleHeaderButton(mobile.page, commentaryOpenTitle);
-    await waitForCommentaryPanel(mobile.page);
-
-    await clickVisibleHeaderButton(mobile.page, commentaryCloseTitle);
-    await waitForCommentaryClosed(mobile.page);
-
-    await clickVisibleHeaderButton(mobile.page, commentaryOpenTitle);
-    await waitForCommentaryPanel(mobile.page);
-    await mobile.page.locator('div.bg-black\\/50').click({ position: { x: 20, y: 20 } });
-    await waitForCommentaryClosed(mobile.page);
+    await selectVisibleHeaderChapter(mobile.page, '1');
+    await waitForTranslationLabels(mobile.page);
 
     await mobile.context.close();
 }
@@ -165,11 +214,16 @@ async function run() {
                 {
                     ok: true,
                     checked: [
-                        'desktop verse navigation',
-                        'desktop commentary toggle',
-                        'desktop commentary persistence',
-                        'mobile sidebar open and route selection',
-                        'mobile commentary drawer open and close',
+                        'desktop home chapter select',
+                        'desktop home verse select',
+                        'desktop verse header selects',
+                        'desktop left reading card',
+                        'desktop translation labels',
+                        'mobile home chapter select',
+                        'mobile home verse select',
+                        'mobile verse header selects',
+                        'mobile left reading card',
+                        'mobile translation labels',
                     ],
                     baseUrl,
                 },

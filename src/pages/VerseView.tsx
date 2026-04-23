@@ -127,7 +127,7 @@ const VerseView = () => {
             >
                 <div className="mx-auto w-full max-w-[1180px] space-y-8 px-4 sm:space-y-12 sm:px-6 lg:max-w-none lg:px-8">
                     <motion.div variants={itemVariants}>
-                        <SutraHeader chapterNum={chapterNum} verseRange={verseRange} />
+                        <SutraHeader chapterNum={String(currentChapter.chapter)} chapterTitle={currentChapter.meta.name_korean} verseRange={verseRange} />
                     </motion.div>
 
                     <motion.div variants={itemVariants}>

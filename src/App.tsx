@@ -1,5 +1,5 @@
-import { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from 'react-router-dom';
+import { Suspense, lazy, useMemo } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -8,25 +8,104 @@ import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
 import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
+import { useYogaData } from './hooks/useYogaData';
 
 const ChapterList = lazy(() => import('./pages/ChapterList'));
 const VerseView = lazy(() => import('./pages/VerseView'));
 
 const MainLayout = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
+    const { chapters, allChapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, closeAllDrawers, isDesktopSidebarOpen } = useUI();
+    const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, isDesktopSidebarOpen } = useUI();
 
     const shouldRenderCommentary = isVerseView && (activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary');
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, activeDesktopRightPanel === 'commentary') : undefined;
+    const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
+    const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
-    useEffect(() => {
-        closeAllDrawers();
-    }, [location.pathname, closeAllDrawers]);
+    const chapterOptions = useMemo(
+        () =>
+            chapters.map((chapter) => ({
+                value: String(chapter.chapter),
+                label: `${chapter.chapter}. ${chapter.meta.name_korean}`,
+            })),
+        [chapters],
+    );
+
+    const verseOptions = useMemo(() => {
+        if (!currentChapter) {
+            return [];
+        }
+
+        return currentChapter.sutras.map((sutra, index) => {
+            const sutraNumberText = sutra.id.split('.')[1];
+            const sutraNumber = Number.parseInt(sutraNumberText, 10);
+            const nextSutra = currentChapter.sutras[index + 1];
+            const label =
+                nextSutra && Number.parseInt(nextSutra.id.split('.')[1], 10) > sutraNumber + 1
+                    ? `${currentChapter.chapter}.${sutraNumber}-${Number.parseInt(nextSutra.id.split('.')[1], 10) - 1}`
+                    : `${currentChapter.chapter}.${sutraNumberText}`;
+
+            return {
+                value: sutraNumberText,
+                label,
+            };
+        });
+    }, [currentChapter]);
+
+    const selectionControls =
+        isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
+            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden sm:gap-2">
+                <label className="sr-only" htmlFor="chapter-picker">
+                    Chapter
+                </label>
+                <select
+                    id="chapter-picker"
+                    value={chapterNum ?? ''}
+                    onChange={(event) => {
+                        const nextChapter = event.target.value;
+                        if (nextChapter) {
+                            navigate(`/chapter/${nextChapter}/verse/1`);
+                        }
+                    }}
+                    className="h-10 w-[6.5rem] shrink-0 rounded-full border border-gold-primary/18 bg-white/80 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-text-primary shadow-sm outline-none transition-all duration-300 hover:border-gold-primary/35 focus:border-gold-primary/50 focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/60 dark:bg-dark-surface/80 dark:text-dark-text-primary sm:h-11 sm:w-36 sm:text-[11px]"
+                >
+                    {chapterOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+
+                <label className="sr-only" htmlFor="verse-picker">
+                    Sutra
+                </label>
+                <select
+                    id="verse-picker"
+                    value={verseNum ?? ''}
+                    onChange={(event) => {
+                        const nextVerse = event.target.value;
+                        if (nextVerse) {
+                            navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`);
+                        }
+                    }}
+                    className="h-10 w-[5.75rem] shrink-0 rounded-full border border-gold-primary/18 bg-white/80 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-text-primary shadow-sm outline-none transition-all duration-300 hover:border-gold-primary/35 focus:border-gold-primary/50 focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/60 dark:bg-dark-surface/80 dark:text-dark-text-primary sm:h-11 sm:w-28 sm:text-[11px]"
+                >
+                    {verseOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        ) : undefined;
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle /> : undefined}
+            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             rightPanel={
                 isVerseView ? (
@@ -35,7 +114,7 @@ const MainLayout = () => {
                     </>
                 ) : undefined
             }
-            isMobilePanelOpen={isSidebarOpen || activeRightPanel !== null}
+            isMobilePanelOpen={isVerseView && (isSidebarOpen || activeRightPanel !== null)}
             desktopGridColumns={desktopGridColumns}
             floatingAction={
                 !isVerseView ? (
