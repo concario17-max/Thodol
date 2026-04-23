@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpenText, Menu } from 'lucide-react';
+import { BookOpenText } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
 import { DESKTOP_VERSE_COLUMNS_DEFAULT } from './ui/desktopVerseLayout';
@@ -22,7 +22,7 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, activeVerseContentMode, setActiveVerseContentMode } = useUI();
+    const { activeVerseContentMode, setActiveVerseContentMode } = useUI();
     const desktopGridStyle = showSidebarToggle
         ? ({ '--desktop-verse-columns': DESKTOP_VERSE_COLUMNS_DEFAULT } as CSSProperties)
         : undefined;
@@ -60,18 +60,6 @@ const Header = ({
         >
             <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-5 lg:hidden">
                 <div className="flex min-w-0 flex-1 items-center gap-1 text-text-primary dark:text-dark-text-primary sm:gap-2">
-                    {showSidebarToggle && (
-                        <button
-                            type="button"
-                            onClick={toggleSidebar}
-                            className="-ml-1 shrink-0 rounded-xl p-2 text-gold-primary transition-all duration-300 hover:bg-gold-surface/50 dark:text-gold-light dark:hover:bg-dark-surface/50"
-                            title="Open chapter sidebar"
-                            aria-label="Open chapter sidebar"
-                        >
-                            <Menu className="h-5 w-5" />
-                        </button>
-                    )}
-
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-1 truncate sm:gap-2.5">
                         <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
                             <BookOpenText className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -101,18 +89,6 @@ const Header = ({
             >
                 <div className="col-start-2 flex min-w-0 items-center justify-between gap-6 px-5">
                     <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
-                        {showSidebarToggle && (
-                            <button
-                                type="button"
-                                onClick={toggleSidebar}
-                                className="shrink-0 rounded-xl p-2 text-gold-primary transition-all duration-300 hover:bg-gold-surface/50 dark:text-gold-light dark:hover:bg-dark-surface/50"
-                                title="Open chapter sidebar"
-                                aria-label="Open chapter sidebar"
-                            >
-                                <Menu className="h-5 w-5" />
-                            </button>
-                        )}
-
                         <Link to={targetUrl} className="group flex min-w-0 items-center gap-2.5 truncate">
                             <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
                                 <BookOpenText className="h-7 w-7" />

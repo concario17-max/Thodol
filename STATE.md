@@ -1,22 +1,22 @@
 # State
 
 ## Current Task
-Completed: the verse route now swaps body and commentary in the main area via the `본문 / 해설` header toggle, with the right commentary panel removed and browser smoke verifying the real UI.
+Active: remove the hamburger menu icon from the header title area while keeping the verse/body toggle and layout unchanged.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: closed
+main: implementation
 
 ## Contract Freeze
-Completed. The verse route swaps body/commentary in the main area, keeps the audio state coherent across mode changes, and `scripts/browser_smoke.mjs` verifies the real UI behavior.
+Frozen. Remove only the header hamburger icon next to the title; keep the chapter selector, body/commentary toggle, and existing layout intact.
 
 ## Write Sets
-- main: completed `src/App.tsx`, `src/components/Header.tsx`, `src/context/UIContext.tsx`, `src/pages/VerseView.tsx`, `scripts/browser_smoke.mjs`
+- main: `src/components/Header.tsx`
 
 ## Reviewer
-reviewed by `Turing`
+not required for single-file Route A
 
 ## Last Update
-2026-04-23 - Body/commentary toggle completed, audio state preserved across mode changes, and verification passed with `typecheck`, `build`, and `qa:browser`.
+2026-04-23 - Route A selected to remove the header hamburger icon only.
