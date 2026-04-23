@@ -1,12 +1,34 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode, Dispatch, SetStateAction } from 'react';
 
 export type RightPanelType = 'commentary' | null;
+export type VerseContentMode = 'body' | 'commentary';
+
+const VERSE_CONTENT_MODE_STORAGE_KEY = 'yoga-verse-content-mode';
+
+const isVerseContentMode = (value: string | null): value is VerseContentMode => value === 'body' || value === 'commentary';
+
+const readSavedVerseContentMode = (): VerseContentMode => {
+    try {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem(VERSE_CONTENT_MODE_STORAGE_KEY);
+            if (isVerseContentMode(saved)) {
+                return saved;
+            }
+        }
+    } catch (error) {
+        console.warn('Unable to access localStorage:', error);
+    }
+
+    return 'body';
+};
 
 interface UIContextType {
     isSidebarOpen: boolean;
     setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
     isDesktopSidebarOpen: boolean;
     toggleSidebar: () => void;
+    activeVerseContentMode: VerseContentMode;
+    setActiveVerseContentMode: Dispatch<SetStateAction<VerseContentMode>>;
     activeRightPanel: RightPanelType;
     setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     activeDesktopRightPanel: RightPanelType;
@@ -23,6 +45,7 @@ interface UIProviderProps {
 
 export const UIProvider = ({ children }: UIProviderProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+    const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(readSavedVerseContentMode);
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
@@ -42,6 +65,14 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         }
         return null;
     });
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(VERSE_CONTENT_MODE_STORAGE_KEY, activeVerseContentMode);
+        } catch (error) {
+            console.warn('Unable to access localStorage:', error);
+        }
+    }, [activeVerseContentMode]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -89,6 +120,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 setIsSidebarOpen,
                 isDesktopSidebarOpen,
                 toggleSidebar,
+                activeVerseContentMode,
+                setActiveVerseContentMode,
                 activeRightPanel,
                 setActiveRightPanel,
                 activeDesktopRightPanel,

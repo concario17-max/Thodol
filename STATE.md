@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the header-driven chapter selector, fixed left reading card, translation labels, and browser smoke visibility checks are all in place and verified.
+Completed: the verse route now swaps body and commentary in the main area via the `본문 / 해설` header toggle, with the right commentary panel removed and browser smoke verifying the real UI.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The verse route now uses header-driven chapter/verse selection, the left panel is a fixed reading card, and `scripts/browser_smoke.mjs` verifies visible sidebar and translation content.
+Completed. The verse route swaps body/commentary in the main area, keeps the audio state coherent across mode changes, and `scripts/browser_smoke.mjs` verifies the real UI behavior.
 
 ## Write Sets
-- main: completed `src/App.tsx`, `src/components/Header.tsx`, `src/components/Sidebar.tsx`, `src/components/verse/SutraHeader.tsx`, `src/components/verse/TranslationSection.tsx`, `src/components/CommentarySidebar.tsx`, `src/pages/VerseView.tsx`, `scripts/browser_smoke.mjs`
+- main: completed `src/App.tsx`, `src/components/Header.tsx`, `src/context/UIContext.tsx`, `src/pages/VerseView.tsx`, `scripts/browser_smoke.mjs`
 
 ## Reviewer
-reviewed by `Gauss`
+reviewed by `Turing`
 
 ## Last Update
-2026-04-23 - Header selector, left reading card, translation labels, and browser smoke checks verified with `typecheck`, `build`, and `qa:browser`.
+2026-04-23 - Body/commentary toggle completed, audio state preserved across mode changes, and verification passed with `typecheck`, `build`, and `qa:browser`.

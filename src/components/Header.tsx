@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpenText, Menu, MessageSquare } from 'lucide-react';
+import { BookOpenText, Menu } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import ThemeToggle from './ThemeToggle';
 import { DESKTOP_VERSE_COLUMNS_DEFAULT } from './ui/desktopVerseLayout';
@@ -22,13 +22,37 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { toggleSidebar, toggleRightPanel, activeRightPanel, activeDesktopRightPanel } = useUI();
-
-    const activePanel = activeRightPanel || activeDesktopRightPanel;
-    const isCommentaryOpen = activePanel === 'commentary';
+    const { toggleSidebar, activeVerseContentMode, setActiveVerseContentMode } = useUI();
     const desktopGridStyle = showSidebarToggle
         ? ({ '--desktop-verse-columns': DESKTOP_VERSE_COLUMNS_DEFAULT } as CSSProperties)
         : undefined;
+    const renderVerseModeToggle = () =>
+        showSidebarToggle ? (
+            <div className="inline-flex items-center rounded-full border border-gold-primary/18 bg-white/78 p-1 shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm dark:border-dark-border/70 dark:bg-dark-surface/80">
+                {[
+                    { mode: 'body' as const, label: '본문' },
+                    { mode: 'commentary' as const, label: '해설' },
+                ].map((option) => {
+                    const isActive = activeVerseContentMode === option.mode;
+
+                    return (
+                        <button
+                            key={option.mode}
+                            type="button"
+                            onClick={() => setActiveVerseContentMode(option.mode)}
+                            aria-pressed={isActive}
+                            className={`min-w-[3.5rem] rounded-full px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] transition-all duration-300 sm:text-[11px] ${
+                                isActive
+                                    ? 'bg-gold-primary text-white shadow-sm dark:bg-gold-light dark:text-[#2a2116]'
+                                    : 'text-gold-primary hover:bg-gold-surface/60 dark:text-gold-light dark:hover:bg-dark-bg/70'
+                            }`}
+                        >
+                            {option.label}
+                        </button>
+                    );
+                })}
+            </div>
+        ) : null;
 
     return (
         <header
@@ -63,20 +87,7 @@ const Header = ({
                 <div className="ml-2 flex shrink-0 items-center gap-1.5 sm:ml-3 sm:gap-3">
                     {rightContent}
 
-                    {showSidebarToggle && (
-                        <button
-                            type="button"
-                            onClick={() => toggleRightPanel('commentary')}
-                            className="group inline-flex h-10 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80 sm:h-11 sm:px-4 sm:text-[11px] sm:tracking-[0.18em]"
-                            title={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
-                            aria-label={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
-                        >
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
-                                <MessageSquare className="h-3.5 w-3.5" />
-                            </span>
-                            <span className="hidden min-[420px]:inline">Commentary</span>
-                        </button>
-                    )}
+                    {renderVerseModeToggle()}
 
                     <ThemeToggle className="ml-0 sm:ml-2" />
                 </div>
@@ -117,20 +128,7 @@ const Header = ({
                     <div className="flex shrink-0 items-center gap-3">
                         {rightContent}
 
-                        {showSidebarToggle && (
-                            <button
-                                type="button"
-                                onClick={() => toggleRightPanel('commentary')}
-                                className="group inline-flex h-11 items-center gap-2 rounded-full border border-gold-primary/18 bg-white/78 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm transition-all duration-300 hover:border-gold-primary/35 hover:bg-gold-surface/80 dark:border-dark-border/70 dark:bg-dark-surface/80 dark:text-gold-light dark:hover:border-gold-primary/30 dark:hover:bg-dark-bg/80"
-                                title={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
-                                aria-label={isCommentaryOpen ? 'Close commentary panel' : 'Open commentary panel'}
-                            >
-                                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gold-primary/20 bg-white/85 text-[#8A7756] transition-colors group-hover:border-gold-primary/35 group-hover:text-gold-primary dark:border-dark-border dark:bg-dark-bg/70 dark:text-gold-light">
-                                    <MessageSquare className="h-3.5 w-3.5" />
-                                </span>
-                                <span>Commentary</span>
-                            </button>
-                        )}
+                        {renderVerseModeToggle()}
 
                         <ThemeToggle className="ml-0" />
                     </div>

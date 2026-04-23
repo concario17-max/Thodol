@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Outlet, useNavigat
 import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import CommentarySidebar from './components/CommentarySidebar';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
@@ -19,10 +18,9 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters, allChapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, activeRightPanel, activeDesktopRightPanel, isDesktopSidebarOpen } = useUI();
+    const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
-    const shouldRenderCommentary = isVerseView && (activeRightPanel === 'commentary' || activeDesktopRightPanel === 'commentary');
-    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, activeDesktopRightPanel === 'commentary') : undefined;
+    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
     const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
@@ -107,14 +105,7 @@ const MainLayout = () => {
         <AppShell
             header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
-            rightPanel={
-                isVerseView ? (
-                    <>
-                        {shouldRenderCommentary ? <CommentarySidebar /> : null}
-                    </>
-                ) : undefined
-            }
-            isMobilePanelOpen={isVerseView && (isSidebarOpen || activeRightPanel !== null)}
+            isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
             floatingAction={
                 !isVerseView ? (

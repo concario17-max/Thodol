@@ -25,6 +25,114 @@ async function clickVisibleHeaderButton(page, title) {
     await page.locator('header button').nth(index).click({ force: true });
 }
 
+async function getVerseModeToggleButtons(page) {
+    return page.locator('header button[aria-pressed]:visible');
+}
+
+async function getVisibleMain(page) {
+    return page.locator('main#main-scroll-container');
+}
+
+async function expectVisible(locator, message) {
+    if (!(await locator.first().isVisible())) {
+        throw new Error(message);
+    }
+}
+
+async function expectHidden(locator, message) {
+    if (await locator.first().isVisible()) {
+        throw new Error(message);
+    }
+}
+
+async function expectSingleAudio(page, label) {
+    const audioCount = await page.locator('audio').count();
+
+    if (audioCount !== 1) {
+        throw new Error(`Expected a single audio element ${label}, found ${audioCount}.`);
+    }
+}
+
+async function expectNoVisibleCommentaryPanel(page) {
+    const visibleCommentaryPanels = page.locator('aside:visible').filter({ hasText: 'Commentary' });
+    const panelCount = await visibleCommentaryPanels.count();
+
+    if (panelCount !== 0) {
+        throw new Error(`Expected no visible commentary side panel on verse routes, found ${panelCount}.`);
+    }
+
+    const visibleCommentaryHeaderButtons = page.locator('header button:visible').filter({ hasText: 'Commentary' });
+    const buttonCount = await visibleCommentaryHeaderButtons.count();
+
+    if (buttonCount !== 0) {
+        throw new Error(`Expected no visible commentary header button on verse routes, found ${buttonCount}.`);
+    }
+}
+
+async function expectBodyModeUi(page) {
+    const main = await getVisibleMain(page);
+    const bodyMarker = main.locator('section').getByText('Word-by-word', { exact: true });
+    const commentaryMarker = main.locator('section').getByText('3.9', { exact: true });
+
+    await expectVisible(bodyMarker, 'Expected Word-by-word to be visible in body mode.');
+
+    const bodySectionHidden = await main.locator('section').first().evaluate((element) => {
+        if (!(element instanceof HTMLElement)) {
+            return false;
+        }
+
+        return element.classList.contains('hidden');
+    });
+
+    if (bodySectionHidden) {
+        throw new Error('Expected the verse body section to stay visible in body mode.');
+    }
+
+    await expectHidden(commentaryMarker, 'Expected commentary marker 3.9 to stay hidden in body mode.');
+}
+
+async function expectCommentaryModeUi(page) {
+    const main = await getVisibleMain(page);
+    const bodyMarker = main.locator('section').getByText('Word-by-word', { exact: true });
+    const commentaryMarker = main.locator('section').getByText('3.9', { exact: true });
+
+    await expectHidden(bodyMarker, 'Expected Word-by-word to be hidden in commentary mode.');
+
+    const bodySectionHidden = await main.locator('section').first().evaluate((element) => {
+        if (!(element instanceof HTMLElement)) {
+            return false;
+        }
+
+        return element.classList.contains('hidden');
+    });
+
+    if (!bodySectionHidden) {
+        throw new Error('Expected the verse body section to be hidden in commentary mode.');
+    }
+
+    await expectVisible(commentaryMarker, 'Expected commentary marker 3.9 to be visible in commentary mode.');
+}
+
+async function toggleVerseMode(page, modeIndex) {
+    const buttons = await getVerseModeToggleButtons(page);
+    await buttons.nth(modeIndex).click({ force: true });
+}
+
+async function waitForVerseMode(page, modeIndex) {
+    await page.waitForFunction((targetIndex) => {
+        const buttons = Array.from(document.querySelectorAll('header button[aria-pressed]')).filter((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        });
+        const targetButton = buttons[targetIndex];
+
+        return targetButton instanceof HTMLElement && targetButton.getAttribute('aria-pressed') === 'true';
+    }, modeIndex);
+}
+
 async function ensureSidebarOpen(page) {
     const visibleSidebar = page.locator('aside:visible, [role="complementary"]:visible, [data-sidebar]:visible, [data-drawer]:visible');
 
@@ -135,6 +243,36 @@ async function waitForTranslationLabels(page) {
     await page.locator('section h3').nth(1).waitFor({ state: 'visible' });
 }
 
+async function verifyVerseModePersistence(page) {
+    await expectNoVisibleCommentaryPanel(page);
+    await expectBodyModeUi(page);
+    await expectSingleAudio(page, 'before switching modes');
+
+    await toggleVerseMode(page, 1);
+    await waitForVerseMode(page, 1);
+
+    await expectNoVisibleCommentaryPanel(page);
+    await expectCommentaryModeUi(page);
+    await expectSingleAudio(page, 'after switching to commentary mode');
+
+    const storedMode = await page.evaluate(() => localStorage.getItem('yoga-verse-content-mode'));
+    if (storedMode !== 'commentary') {
+        throw new Error(`Expected localStorage to store commentary mode, found ${storedMode ?? 'null'}.`);
+    }
+
+    await page.reload({ waitUntil: 'networkidle' });
+    await waitForVerseMode(page, 1);
+    await expectNoVisibleCommentaryPanel(page);
+    await expectCommentaryModeUi(page);
+    await expectSingleAudio(page, 'after reload in commentary mode');
+
+    await toggleVerseMode(page, 0);
+    await waitForVerseMode(page, 0);
+    await expectNoVisibleCommentaryPanel(page);
+    await expectBodyModeUi(page);
+    await expectSingleAudio(page, 'after returning to body mode');
+}
+
 async function createPage(browser, viewport, logs, errors) {
     const context = await browser.newContext({ viewport });
     const page = await context.newPage();
@@ -154,6 +292,7 @@ async function createPage(browser, viewport, logs, errors) {
             return;
         }
 
+        localStorage.removeItem('yoga-verse-content-mode');
         localStorage.removeItem('yoga-desktop-right-panel');
         localStorage.removeItem('yoga-desktop-sidebar');
         sessionStorage.setItem('__smoke-storage-reset', 'true');
@@ -169,6 +308,7 @@ async function runDesktopFlow(browser, logs, errors) {
     await waitForHomeSelects(desktop.page);
     await goFromHomeToVerse(desktop.page, '3', '9');
     await waitForHomeSelects(desktop.page);
+    await verifyVerseModePersistence(desktop.page);
 
     await ensureSidebarOpen(desktop.page);
     await waitForSidebarReadingCard(desktop.page);
@@ -186,6 +326,7 @@ async function runMobileFlow(browser, logs, errors) {
     await waitForHomeSelects(mobile.page);
     await goFromHomeToVerse(mobile.page, '3', '9');
     await waitForHomeSelects(mobile.page);
+    await verifyVerseModePersistence(mobile.page);
 
     await ensureSidebarOpen(mobile.page);
     await waitForSidebarReadingCard(mobile.page);
@@ -217,11 +358,21 @@ async function run() {
                         'desktop home chapter select',
                         'desktop home verse select',
                         'desktop verse header selects',
+                        'desktop verse no visible commentary panel',
+                        'desktop verse body mode markers',
+                        'desktop verse commentary mode markers',
+                        'desktop verse audio persists through toggles',
+                        'desktop verse mode persistence',
                         'desktop left reading card',
                         'desktop translation labels',
                         'mobile home chapter select',
                         'mobile home verse select',
                         'mobile verse header selects',
+                        'mobile verse no visible commentary panel',
+                        'mobile verse body mode markers',
+                        'mobile verse commentary mode markers',
+                        'mobile verse audio persists through toggles',
+                        'mobile verse mode persistence',
                         'mobile left reading card',
                         'mobile translation labels',
                     ],
