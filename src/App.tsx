@@ -77,7 +77,7 @@ const MainLayout = () => {
 
     const selectionControls =
         isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
-            <div className="flex min-w-0 items-center gap-1.5 overflow-hidden sm:gap-2">
+            <div className="flex w-full min-w-0 flex-wrap items-stretch gap-1.5 overflow-visible sm:w-auto sm:flex-nowrap sm:items-center sm:gap-2">
                 <label className="sr-only" htmlFor="chapter-picker">
                     Chapter
                 </label>
@@ -90,7 +90,7 @@ const MainLayout = () => {
                             navigate(`/chapter/${nextChapter}/verse/1`);
                         }
                     }}
-                    className={`${selectClassName} w-[6.5rem] sm:w-36`}
+                    className={`${selectClassName} w-full min-w-0 sm:w-36`}
                 >
                     {chapterOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -111,7 +111,7 @@ const MainLayout = () => {
                             navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`);
                         }
                     }}
-                    className={`${selectClassName} w-[5.75rem] sm:w-28`}
+                    className={`${selectClassName} w-full min-w-0 sm:w-28`}
                 >
                     {verseOptions.map((option) => (
                         <option key={option.value} value={option.value}>

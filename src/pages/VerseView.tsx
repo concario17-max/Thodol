@@ -251,7 +251,7 @@ const VerseView = () => {
                 animate="visible"
                 exit="exit"
                 variants={containerVariants}
-                className="min-h-full flex flex-col justify-center font-display text-text-primary transition-colors duration-500 dark:text-dark-text-primary py-4 sm:py-6"
+                className="min-h-full flex flex-col justify-start font-display text-text-primary transition-colors duration-500 dark:text-dark-text-primary py-4 sm:py-6 lg:justify-center lg:py-6"
             >
                 <div className="mx-auto w-full max-w-[1180px] space-y-8 px-4 sm:space-y-12 sm:px-6 lg:max-w-none lg:px-8">
                     <motion.div variants={itemVariants}>

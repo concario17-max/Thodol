@@ -44,8 +44,8 @@ const Sidebar = () => {
             desktopWidthClass="lg:w-[360px]"
             desktopMinWidthClass="lg:min-w-[340px]"
         >
-            <div className="custom-scrollbar flex h-full flex-col overflow-y-auto px-3 py-4">
-                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6">
+            <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
+                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-5 sm:gap-6">
                     <div className="relative overflow-hidden border-b border-gold-border/25 pb-4 dark:border-dark-border/30">
                         <span className="absolute left-0 top-0 h-full w-[3px] rounded-full bg-gradient-to-b from-gold-primary via-gold-primary/70 to-transparent shadow-[0_0_18px_rgba(166,139,92,0.45)] dark:from-gold-light dark:via-gold-light/70" />
                         <div className="pl-5">

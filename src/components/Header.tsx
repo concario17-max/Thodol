@@ -58,8 +58,8 @@ const Header = ({
         <header
             className={`glass-panel sticky top-0 z-50 w-full border-b border-gold-primary/20 bg-white/55 shadow-[0_8px_30px_-18px_rgba(0,0,0,0.35)] transition-colors duration-500 backdrop-blur-xl dark:border-dark-border/60 dark:bg-dark-surface/85 ${className}`}
         >
-            <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-5 lg:hidden">
-                <div className="flex min-w-0 flex-1 items-center gap-1 text-text-primary dark:text-dark-text-primary sm:gap-2">
+            <div className="container mx-auto flex max-w-7xl flex-col gap-3 px-3 py-3 sm:px-5 lg:hidden">
+                <div className="flex min-w-0 items-center gap-1 text-text-primary dark:text-dark-text-primary sm:gap-2">
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-1 truncate sm:gap-2.5">
                         <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
                             <BookOpenText className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -70,7 +70,7 @@ const Header = ({
                     </Link>
                 </div>
 
-                <div className="ml-2 flex shrink-0 items-center gap-1.5 rounded-full border border-gold-primary/15 bg-white/65 p-1 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.32)] backdrop-blur-md sm:ml-3 sm:gap-2.5 dark:border-dark-border/60 dark:bg-[#1b1815]/82">
+                <div className="flex w-full max-w-full flex-wrap items-start justify-start gap-1.5 rounded-full border border-gold-primary/15 bg-white/65 p-1 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.32)] backdrop-blur-md sm:items-center sm:justify-end sm:gap-2.5 dark:border-dark-border/60 dark:bg-[#1b1815]/82">
                     {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                     {rightContent}
 
@@ -99,10 +99,10 @@ const Header = ({
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
                     <div className="flex items-center gap-2 rounded-full border border-gold-primary/15 bg-white/65 p-1 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.32)] backdrop-blur-md dark:border-dark-border/60 dark:bg-[#1b1815]/82">
-                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
-                    {rightContent}
+                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
+                        {rightContent}
 
-                    {renderVerseModeToggle()}
+                        {renderVerseModeToggle()}
                     </div>
 
                     <ThemeToggle className="ml-0" />
