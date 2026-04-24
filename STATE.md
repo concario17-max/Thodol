@@ -1,22 +1,22 @@
 # State
 
 ## Current Task
-Active: remove the hamburger menu icon from the header title area while keeping the verse/body toggle and layout unchanged.
+Completed: the header title/icon stay left-aligned while the remaining controls are right-aligned.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: implementation
+main: closed
 
 ## Contract Freeze
-Frozen. Remove only the header hamburger icon next to the title; keep the chapter selector, body/commentary toggle, and existing layout intact.
+Completed. The header title/icon remain left-aligned and the selection controls, verse/body toggle, and theme toggle are right-aligned.
 
 ## Write Sets
-- main: `src/components/Header.tsx`
+- main: completed `src/components/Header.tsx`
 
 ## Reviewer
 not required for single-file Route A
 
 ## Last Update
-2026-04-23 - Route A selected to remove the header hamburger icon only.
+2026-04-24 - Header alignment completed and verified with `typecheck` and `build`.

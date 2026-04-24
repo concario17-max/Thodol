@@ -68,11 +68,10 @@ const Header = ({
                             {title}
                         </span>
                     </Link>
-
-                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                 </div>
 
                 <div className="ml-2 flex shrink-0 items-center gap-1.5 sm:ml-3 sm:gap-3">
+                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                     {rightContent}
 
                     {renderVerseModeToggle()}
@@ -97,11 +96,10 @@ const Header = ({
                                 {title}
                             </span>
                         </Link>
-
-                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                     </div>
 
                     <div className="flex shrink-0 items-center gap-3">
+                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                         {rightContent}
 
                         {renderVerseModeToggle()}
