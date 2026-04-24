@@ -46,11 +46,11 @@ const Sidebar = () => {
         >
             <div className="custom-scrollbar flex h-full flex-col overflow-y-auto px-3 py-4">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6">
-                    <div className="relative overflow-hidden border-b border-gold-border/20 pb-4 dark:border-dark-border/25">
+                    <div className="relative overflow-hidden border-b border-gold-border/25 pb-4 dark:border-dark-border/30">
                         <span className="absolute left-0 top-0 h-full w-[3px] rounded-full bg-gradient-to-b from-gold-primary via-gold-primary/70 to-transparent shadow-[0_0_18px_rgba(166,139,92,0.45)] dark:from-gold-light dark:via-gold-light/70" />
                         <div className="pl-5">
                             <div className="flex items-baseline gap-2">
-                                <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 dark:text-gold-light/75">
+                                <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.42em] text-gold-primary/85 dark:text-gold-light/82">
                                     Chapter
                                 </p>
                                 <p className="font-display text-[28px] font-semibold leading-none tracking-[0.12em] text-text-primary dark:text-dark-text-primary">
@@ -58,11 +58,11 @@ const Sidebar = () => {
                                 </p>
                             </div>
                             <div className="mt-3 flex items-center gap-3">
-                                <span className="h-px w-8 bg-gold-primary/45 dark:bg-gold-light/45" />
-                                <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.34em] text-text-secondary/55 dark:text-dark-text-secondary/55">
+                                <span className="h-px w-8 bg-gold-primary/55 dark:bg-gold-light/50" />
+                                <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.34em] text-text-secondary/70 dark:text-dark-text-secondary/75">
                                     Sutra
                                 </p>
-                                <p className="font-display text-[18px] font-medium leading-none tracking-[0.18em] text-gold-primary/90 dark:text-gold-light/90">
+                                <p className="font-display text-[18px] font-semibold leading-none tracking-[0.18em] text-gold-primary/95 dark:text-gold-light/92">
                                     {verseMeta}
                                 </p>
                             </div>
@@ -71,26 +71,26 @@ const Sidebar = () => {
 
                     <div className="space-y-6">
                         <section className="relative pl-4">
-                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-gold-primary/45 dark:bg-gold-light/45" />
-                            <p className="whitespace-pre-line break-keep font-display text-[17px] leading-[1.95] tracking-[0.02em] text-gold-primary/90 dark:text-gold-light/90 sm:text-[18px]">
+                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-gold-primary/50 dark:bg-gold-light/50" />
+                            <p className="whitespace-pre-line break-keep font-display text-[17px] leading-[1.95] tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[18px]">
                                 {verseData.sanskrit}
                             </p>
                         </section>
 
-                        <div className="h-px bg-gradient-to-r from-gold-border/30 via-gold-border/12 to-transparent dark:from-dark-border/30 dark:via-dark-border/12" />
+                        <div className="h-px bg-gradient-to-r from-gold-border/35 via-gold-border/16 to-transparent dark:from-dark-border/30 dark:via-dark-border/14" />
 
                         <section className="relative pl-4">
-                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-text-secondary/35 dark:bg-dark-text-secondary/35" />
-                            <p className="whitespace-pre-line break-keep font-serif text-[15px] leading-[1.9] tracking-[0.01em] text-text-primary/90 dark:text-dark-text-primary/90 sm:text-[16px]">
+                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-text-secondary/50 dark:bg-dark-text-secondary/45" />
+                            <p className="whitespace-pre-line break-keep font-serif text-[15px] leading-[1.9] tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
                                 {verseData['2.english'] ?? ''}
                             </p>
                         </section>
 
-                        <div className="h-px bg-gradient-to-r from-gold-border/30 via-gold-border/12 to-transparent dark:from-dark-border/30 dark:via-dark-border/12" />
+                        <div className="h-px bg-gradient-to-r from-gold-border/35 via-gold-border/16 to-transparent dark:from-dark-border/30 dark:via-dark-border/14" />
 
                         <section className="relative pl-4">
-                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-text-primary/25 dark:bg-dark-text-primary/25" />
-                            <p className="whitespace-pre-line break-keep font-pretendard text-[14px] leading-[1.95] tracking-[0.005em] text-text-secondary/90 dark:text-dark-text-secondary/90 sm:text-[15px]">
+                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-text-primary/40 dark:bg-dark-text-primary/30" />
+                            <p className="whitespace-pre-line break-keep font-pretendard text-[14px] leading-[1.95] tracking-[0.005em] text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                                 {verseData['3.korean-1'] ?? ''}
                             </p>
                         </section>

@@ -1,23 +1,22 @@
 # State
 
 ## Current Task
-Completed: the chapter/verse selector group and verse mode toggle now feel more cohesive, premium, and less visually busy.
+Completed: the left sidebar text contrast is stronger so the reading content is easier to see.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
-Completed. The chapter/verse selector group and the body/commentary toggle now share a premium, consistent header treatment while keeping behavior and layout structure unchanged.
+Completed. The left sidebar text contrast was raised so the reading content is easier to read.
 
 ## Write Sets
-- worker_shared: completed `src/App.tsx`
-- worker_ui: completed `src/components/Header.tsx`
+- main: completed `src/components/Sidebar.tsx`
 
 ## Reviewer
-reviewed with one density note
+manual verification
 
 ## Last Update
-2026-04-24 - Header controls now share a unified premium treatment.
+2026-04-24 - The left sidebar text now reads more clearly against the background.
