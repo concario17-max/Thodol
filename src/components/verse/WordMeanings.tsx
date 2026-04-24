@@ -81,17 +81,17 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                         variants={containerVariants}
                         className="overflow-hidden"
                     >
-                        <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 rounded-2xl p-6 sm:p-8 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="mx-auto mt-8 grid w-full max-w-4xl grid-cols-1 gap-x-6 gap-y-3 rounded-2xl px-4 py-5 sm:px-5 sm:py-6 md:grid-cols-2 lg:grid-cols-3">
                             {meanings.map(({ word, meaning }, index: number) => (
                                 <motion.div 
                                     key={`${word}-${index}`} 
                                     variants={itemVariants}
-                                    className="flex flex-col sm:flex-row sm:items-baseline py-3 border-b border-gold-primary/10 last:border-0 group"
+                                    className="group flex flex-col border-b border-gold-primary/10 py-2.5 last:border-0 sm:flex-row sm:items-baseline sm:py-2"
                                 >
-                                    <span className="font-serif italic text-gold-primary dark:text-gold-light text-base sm:text-lg mb-1 sm:mb-0 sm:mr-4 flex-shrink-0">
+                                    <span className="mb-1 flex-shrink-0 font-serif text-base italic text-gold-primary dark:text-gold-light sm:mb-0 sm:mr-3 sm:text-lg">
                                         {word}
                                     </span>
-                            <span className="text-text-secondary dark:text-dark-text-secondary text-sm sm:text-[15px] leading-relaxed break-keep font-noto-kr">
+                                    <span className="break-keep font-noto-kr text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                                         {formatMeaning(meaning)}
                                     </span>
                                 </motion.div>
