@@ -55,6 +55,9 @@ export const UIProvider = ({ children }: UIProviderProps) => {
 
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
+            if (window.innerWidth >= 1024) {
+                return true;
+            }
             const saved = localStorage.getItem('yoga-desktop-sidebar');
             return saved !== null ? JSON.parse(saved) : true;
         }
@@ -82,8 +85,10 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
+                setIsDesktopSidebarOpen(true);
                 setIsSidebarOpen(false);
                 setActiveRightPanel(null);
+                localStorage.setItem('yoga-desktop-sidebar', 'true');
                 return;
             }
 
@@ -100,9 +105,10 @@ export const UIProvider = ({ children }: UIProviderProps) => {
             return;
         }
 
-        const newState = !isDesktopSidebarOpen;
-        setIsDesktopSidebarOpen(newState);
-        localStorage.setItem('yoga-desktop-sidebar', JSON.stringify(newState));
+        if (!isDesktopSidebarOpen) {
+            setIsDesktopSidebarOpen(true);
+            localStorage.setItem('yoga-desktop-sidebar', 'true');
+        }
     }, [isDesktopSidebarOpen]);
 
     const toggleRightPanel = useCallback((panel: 'commentary') => {

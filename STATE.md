@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the title and left panel now stay visible in the browser even when the viewport narrows, so the web layout no longer disappears below the lg breakpoint.
+Completed: the desktop verse layout now stays open on lg+ widths so the left panel and title cannot disappear because of a stored closed state.
 
 ## Route
 Route A
@@ -10,14 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The responsive behavior now keeps the title visible on web widths below lg and syncs the left panel open state when the browser narrows.
+Completed. The desktop sidebar now opens automatically whenever the browser is at lg+ width, overriding any stored closed state so the title and left panel remain visible on desktop widths.
 
 ## Write Sets
-- main: completed `src/components/Header.tsx`
 - main: completed `src/context/UIContext.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - The browser-width visibility fix now keeps the title visible and preserves the left panel when resizing narrower.
+2026-04-24 - Desktop widths now force the sidebar open so the title cannot disappear.
