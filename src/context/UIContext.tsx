@@ -44,7 +44,12 @@ interface UIProviderProps {
 }
 
 export const UIProvider = ({ children }: UIProviderProps) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
+        if (typeof window !== 'undefined') {
+            return window.innerWidth < 1024;
+        }
+        return false;
+    });
     const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(readSavedVerseContentMode);
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
@@ -79,12 +84,15 @@ export const UIProvider = ({ children }: UIProviderProps) => {
             if (window.innerWidth >= 1024) {
                 setIsSidebarOpen(false);
                 setActiveRightPanel(null);
+                return;
             }
+
+            setIsSidebarOpen(isDesktopSidebarOpen);
         };
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [isDesktopSidebarOpen]);
 
     const toggleSidebar = useCallback(() => {
         if (window.innerWidth < 1024) {

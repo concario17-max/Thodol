@@ -64,7 +64,7 @@ const Header = ({
                         <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
                             <BookOpenText className="h-6 w-6 sm:h-7 sm:w-7" />
                         </span>
-                        <span className="mt-0.5 hidden truncate font-display text-[18px] font-medium tracking-[0.03em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary sm:inline sm:text-[24px] sm:tracking-[0.04em]">
+                        <span className="mt-0.5 truncate font-display text-[16px] font-medium tracking-[0.03em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary sm:text-[24px] sm:tracking-[0.04em]">
                             {title}
                         </span>
                     </Link>

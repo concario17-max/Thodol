@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the left panel meta now clearly distinguishes chapter and sutra so the hierarchy is obvious at a glance.
+Completed: the title and left panel now stay visible in the browser even when the viewport narrows, so the web layout no longer disappears below the lg breakpoint.
 
 ## Route
 Route A
@@ -10,13 +10,14 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The left panel meta now separates chapter and sutra into distinct hierarchy levels instead of an ambiguous compressed notation.
+Completed. The responsive behavior now keeps the title visible on web widths below lg and syncs the left panel open state when the browser narrows.
 
 ## Write Sets
-- main: completed `src/components/Sidebar.tsx`
+- main: completed `src/components/Header.tsx`
+- main: completed `src/context/UIContext.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - The left panel meta hierarchy is now explicit and easier to read.
+2026-04-24 - The browser-width visibility fix now keeps the title visible and preserves the left panel when resizing narrower.
