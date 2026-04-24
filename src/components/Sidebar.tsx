@@ -49,21 +49,22 @@ const Sidebar = () => {
                     <div className="relative overflow-hidden border-b border-gold-border/20 pb-4 dark:border-dark-border/25">
                         <span className="absolute left-0 top-0 h-full w-[3px] rounded-full bg-gradient-to-b from-gold-primary via-gold-primary/70 to-transparent shadow-[0_0_18px_rgba(166,139,92,0.45)] dark:from-gold-light dark:via-gold-light/70" />
                         <div className="pl-5">
-                            <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 dark:text-gold-light/75">
-                                Chapter
-                            </p>
-                            <div className="mt-1 flex items-end gap-3">
-                                <p className="font-display text-[44px] font-semibold leading-none tracking-[0.12em] text-text-primary dark:text-dark-text-primary">
+                            <div className="flex items-baseline gap-2">
+                                <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 dark:text-gold-light/75">
+                                    Chapter
+                                </p>
+                                <p className="font-display text-[28px] font-semibold leading-none tracking-[0.12em] text-text-primary dark:text-dark-text-primary">
                                     {chapterMeta}
                                 </p>
-                                <div className="pb-1">
-                                    <p className="font-inter text-[11px] uppercase tracking-[0.34em] text-text-secondary/55 dark:text-dark-text-secondary/55">
-                                        Sutra
-                                    </p>
-                                    <p className="mt-1 font-display text-[16px] font-medium tracking-[0.16em] text-gold-primary/90 dark:text-gold-light/90">
-                                        {verseMeta}
-                                    </p>
-                                </div>
+                            </div>
+                            <div className="mt-3 flex items-center gap-3">
+                                <span className="h-px w-8 bg-gold-primary/45 dark:bg-gold-light/45" />
+                                <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.34em] text-text-secondary/55 dark:text-dark-text-secondary/55">
+                                    Sutra
+                                </p>
+                                <p className="font-display text-[18px] font-medium leading-none tracking-[0.18em] text-gold-primary/90 dark:text-gold-light/90">
+                                    {verseMeta}
+                                </p>
                             </div>
                         </div>
                     </div>

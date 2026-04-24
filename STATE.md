@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the left panel's card-like meta block has been replaced with a more editorial, high-contrast header treatment that feels visually anchored rather than boxed.
+Completed: the left panel meta now clearly distinguishes chapter and sutra so the hierarchy is obvious at a glance.
 
 ## Route
 Route A
@@ -10,7 +10,7 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The chapter/sutra block is now a prominent editorial header with stronger hierarchy, a visible accent, and no boxed surface.
+Completed. The left panel meta now separates chapter and sutra into distinct hierarchy levels instead of an ambiguous compressed notation.
 
 ## Write Sets
 - main: completed `src/components/Sidebar.tsx`
@@ -19,4 +19,4 @@ Completed. The chapter/sutra block is now a prominent editorial header with stro
 manual verification
 
 ## Last Update
-2026-04-24 - The left panel meta now reads as an editorial header instead of a card.
+2026-04-24 - The left panel meta hierarchy is now explicit and easier to read.
