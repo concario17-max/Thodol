@@ -46,11 +46,23 @@ const Sidebar = () => {
         >
             <div className="custom-scrollbar flex h-full flex-col overflow-y-auto px-3 py-4">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6">
-                    <div className="flex items-end justify-between border-b border-gold-border/20 pb-3 dark:border-dark-border/25">
-                        <p className="font-display text-[26px] font-semibold leading-none tracking-[0.18em] text-text-primary dark:text-dark-text-primary">
-                            {chapterMeta} / {verseMeta}
-                        </p>
-                        <span className="ml-4 h-px flex-1 bg-gradient-to-r from-gold-border/30 via-gold-border/10 to-transparent dark:from-dark-border/30 dark:via-dark-border/10" />
+                    <div className="rounded-[24px] border border-gold-primary/12 bg-white/50 px-4 py-3 shadow-[0_10px_30px_-22px_rgba(166,139,92,0.55)] backdrop-blur-sm dark:border-dark-border/25 dark:bg-dark-surface/25">
+                        <div className="flex items-end justify-between gap-4">
+                            <div className="space-y-1">
+                                <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/70 dark:text-gold-light/75">
+                                    Chapter
+                                </p>
+                                <div className="flex items-baseline gap-2">
+                                    <p className="font-display text-[34px] font-semibold leading-none tracking-[0.16em] text-text-primary dark:text-dark-text-primary">
+                                        {chapterMeta}
+                                    </p>
+                                    <span className="pb-1 font-inter text-[11px] uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/60">
+                                        / Sutra {verseMeta}
+                                    </span>
+                                </div>
+                            </div>
+                            <span className="h-px flex-1 bg-gradient-to-r from-gold-primary/45 via-gold-border/10 to-transparent dark:from-gold-light/40 dark:via-dark-border/10" />
+                        </div>
                     </div>
 
                     <div className="space-y-6">
