@@ -21,7 +21,8 @@ const Sidebar = () => {
                 title="읽기 카드"
                 position="left"
                 widthClass="w-[88vw] max-w-[360px]"
-                desktopWidthClass="lg:w-full"
+                desktopWidthClass="lg:w-[360px]"
+                desktopMinWidthClass="lg:min-w-[340px]"
             >
                 <div className="flex h-full items-center justify-center px-4">
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
@@ -40,7 +41,8 @@ const Sidebar = () => {
             title="읽기 카드"
             position="left"
             widthClass="w-[88vw] max-w-[360px]"
-            desktopWidthClass="lg:w-full"
+            desktopWidthClass="lg:w-[360px]"
+            desktopMinWidthClass="lg:min-w-[340px]"
         >
             <div className="custom-scrollbar flex h-full flex-col overflow-y-auto px-3 py-4">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-4">

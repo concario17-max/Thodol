@@ -1,7 +1,7 @@
-export const DESKTOP_VERSE_COLUMNS_DEFAULT = '20% 60% 20%';
-export const DESKTOP_VERSE_COLUMNS_LEFT_CLOSED = '0% 60% 40%';
-export const DESKTOP_VERSE_COLUMNS_NO_RIGHT = '20% 80% 0%';
-export const DESKTOP_VERSE_COLUMNS_FULL_WIDTH = '0% 100% 0%';
+export const DESKTOP_VERSE_COLUMNS_DEFAULT = '360px minmax(0, 1fr)';
+export const DESKTOP_VERSE_COLUMNS_LEFT_CLOSED = '0px minmax(0, 1fr)';
+export const DESKTOP_VERSE_COLUMNS_NO_RIGHT = '360px minmax(0, 1fr)';
+export const DESKTOP_VERSE_COLUMNS_FULL_WIDTH = '0px minmax(0, 1fr)';
 
 export const getDesktopVerseColumns = (isDesktopSidebarOpen: boolean, isDesktopRightPanelOpen: boolean) => {
     if (!isDesktopRightPanelOpen) {

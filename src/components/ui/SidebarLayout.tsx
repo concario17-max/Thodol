@@ -10,6 +10,7 @@ export interface SidebarLayoutProps {
     position?: 'left' | 'right';
     widthClass?: string;
     desktopWidthClass?: string;
+    desktopMinWidthClass?: string;
 }
 
 export const SidebarLayout = React.memo(
@@ -22,6 +23,7 @@ export const SidebarLayout = React.memo(
         position = 'left',
         widthClass = 'w-80',
         desktopWidthClass = 'lg:w-80',
+        desktopMinWidthClass = '',
     }: SidebarLayoutProps) => {
         const isLeft = position === 'left';
         const mobileTranslateClosed = isLeft ? '-translate-x-full' : 'translate-x-full';
@@ -31,8 +33,8 @@ export const SidebarLayout = React.memo(
             ? `${widthClass} translate-x-0 overflow-hidden shadow-2xl lg:shadow-none`
             : `w-[90vw] ${mobileTranslateClosed}`;
         const desktopStateClass = isDesktopOpen
-            ? `${desktopWidthClass} lg:translate-x-0 lg:opacity-100`
-            : 'overflow-hidden p-0 px-0 lg:w-0 lg:border-none lg:translate-x-0 lg:opacity-0';
+            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:translate-x-0 lg:opacity-100`
+            : 'overflow-hidden p-0 px-0 lg:w-0 lg:min-w-0 lg:border-none lg:translate-x-0 lg:opacity-0';
 
         return (
             <>

@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the header title/icon stay left-aligned while the remaining controls are right-aligned.
+Completed: the verse layout now uses a fixed 360px left panel on lg+ screens, and the header aligns to the same grid without reserving space when the sidebar is closed.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The header title/icon remain left-aligned and the selection controls, verse/body toggle, and theme toggle are right-aligned.
+Completed. The verse layout uses a 360px left panel and a fluid main area on lg+ screens, and the header uses the same grid so its alignment stays correct when the sidebar opens or closes.
 
 ## Write Sets
-- main: completed `src/components/Header.tsx`
+- main: completed `src/components/Header.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/desktopVerseLayout.ts`, `src/components/Sidebar.tsx`
 
 ## Reviewer
-not required for single-file Route A
+reviewed by `Ptolemy`
 
 ## Last Update
-2026-04-24 - Header alignment completed and verified with `typecheck` and `build`.
+2026-04-24 - Header alignment now matches the fixed 360px left-panel grid and passed verification.
