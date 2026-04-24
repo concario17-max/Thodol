@@ -81,7 +81,7 @@ const Sidebar = () => {
 
                         <section className="relative pl-4">
                             <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-text-secondary/50 dark:bg-dark-text-secondary/45" />
-                            <p className="whitespace-pre-line break-keep font-serif text-[15px] leading-[1.9] tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                            <p className="whitespace-pre-line break-keep font-inter text-[15px] leading-[1.9] tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
                                 {verseData['2.english'] ?? ''}
                             </p>
                         </section>

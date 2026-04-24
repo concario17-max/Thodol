@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: removed the redundant "번역문" label from the verse translation section.
+Completed: improve readability of the English text in the left reading panel.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The verse translation section no longer shows the redundant "번역문" label; the rest of the block is unchanged.
+Completed. The English text in the left reading panel now uses a more readable font; Sanskrit and Korean styling were left unchanged.
 
 ## Write Sets
-- main: completed `src/components/verse/TranslationSection.tsx`
+- main: completed `src/components/Sidebar.tsx`
 
 ## Reviewer
 manual verification done
 
 ## Last Update
-2026-04-24 - Removed the redundant translation label from the verse body and verified the build.
+2026-04-24 - Switched the left-panel English text to a more readable font and verified the build.
