@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the desktop header now uses the full-width fixed 360px + fluid grid and reaches the viewport edge instead of stopping inside a centered container.
+Completed: the left reading panel now feels like part of the background instead of a separate card, while keeping its content and behavior intact.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The lg+ header no longer uses a centered max-width wrapper; it spans the full viewport width and aligns title and controls to the same fixed 360px left-panel grid used by the verse layout.
+Completed. The left reading panel no longer reads as a separate card; the heavy borders, shadows, and rounded surface treatment were removed while preserving content layout and mobile behavior.
 
 ## Write Sets
-- main: completed `src/components/Header.tsx`
+- main: completed `src/components/Sidebar.tsx`
 
 ## Reviewer
-reviewed by `manual verification`
+manual verification
 
 ## Last Update
-2026-04-24 - Desktop header now spans the full width and aligns with the fixed 360px left-panel grid.
+2026-04-24 - The left reading panel now blends into the background instead of looking like a separate card.
