@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: improve readability of the English text in the left reading panel.
+Completed: remove the small `1.1` label above the commentary title.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The English text in the left reading panel now uses a more readable font; Sanskrit and Korean styling were left unchanged.
+Completed. The small `1.1` label above the commentary title has been removed; the rest of the commentary layout is unchanged.
 
 ## Write Sets
-- main: completed `src/components/Sidebar.tsx`
+- main: completed `src/pages/VerseView.tsx`
 
 ## Reviewer
 manual verification done
 
 ## Last Update
-2026-04-24 - Switched the left-panel English text to a more readable font and verified the build.
+2026-04-24 - Removed the small commentary label above the title and verified the build.

@@ -142,12 +142,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
 
     return (
         <section className="space-y-5 sm:space-y-6">
-            <div className="space-y-2">
-                <p className="text-xs font-bold tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
-                    {chapterNum}.{verseNum}
-                </p>
-                {inlineHeading ? <h2 className="text-2xl font-semibold leading-tight text-text-primary dark:text-dark-text-primary">{inlineHeading}</h2> : null}
-            </div>
+            {inlineHeading ? <h2 className="text-2xl font-semibold leading-tight text-text-primary dark:text-dark-text-primary">{inlineHeading}</h2> : null}
 
             {bodyBlocks && bodyBlocks.length > 0 ? (
                 <div className="space-y-4 sm:space-y-6">{bodyBlocks.map(renderCommentaryBlock)}</div>
