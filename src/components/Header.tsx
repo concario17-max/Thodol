@@ -81,31 +81,29 @@ const Header = ({
             </div>
 
             <div
-                className={`hidden h-16 items-center lg:grid ${
+                className={`hidden h-16 w-full items-center lg:grid ${
                     showSidebarToggle ? 'lg:[grid-template-columns:var(--desktop-verse-columns)]' : 'lg:grid-cols-1'
                 }`}
                 style={desktopGridStyle}
             >
-                <div className="col-start-2 flex min-w-0 items-center justify-between gap-6 px-5">
-                    <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
-                        <Link to={targetUrl} className="group flex min-w-0 items-center gap-2.5 truncate">
-                            <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
-                                <BookOpenText className="h-7 w-7" />
-                            </span>
-                            <span className="mt-0.5 truncate font-display text-[24px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
-                                {title}
-                            </span>
-                        </Link>
-                    </div>
+                <div className="flex min-w-0 items-center px-5">
+                    <Link to={targetUrl} className="group flex min-w-0 items-center gap-2.5 truncate text-text-primary dark:text-dark-text-primary">
+                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
+                            <BookOpenText className="h-7 w-7" />
+                        </span>
+                        <span className="mt-0.5 truncate font-display text-[24px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
+                            {title}
+                        </span>
+                    </Link>
+                </div>
 
-                    <div className="flex shrink-0 items-center gap-3">
-                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
-                        {rightContent}
+                <div className="flex min-w-0 items-center justify-end gap-3 px-5">
+                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
+                    {rightContent}
 
-                        {renderVerseModeToggle()}
+                    {renderVerseModeToggle()}
 
-                        <ThemeToggle className="ml-0" />
-                    </div>
+                    <ThemeToggle className="ml-0" />
                 </div>
             </div>
         </header>
