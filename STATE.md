@@ -1,28 +1,24 @@
 # State
 
 ## Current Task
-Completed: fix garbled verse-body text and labels in the reading view.
+Completed: reorder the translation labels to match the requested display order.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
-Frozen scope:
-- Repair the garbled visible text in the verse reading view.
-- Fix the broken labels and headings in `src/pages/VerseView.tsx` and `src/components/verse/TranslationSection.tsx`.
-- Keep layout, data flow, and content structure unchanged unless a string repair requires a minimal local adjustment.
+Frozen scope: reorder only the visible labels in `src/components/verse/TranslationSection.tsx` to `니콜라스 서튼`, `배철현`, `직역`, `의역`; keep layout and content structure unchanged.
 
-Completed. The reading view labels and commentary fallback text now render cleanly again.
+Completed. The translation section labels now follow the requested order.
 
 ## Write Sets
-- worker_verse: completed `src/pages/VerseView.tsx`
-- worker_translation: completed `src/components/verse/TranslationSection.tsx`
+- main: completed `src/components/verse/TranslationSection.tsx`
 
 ## Reviewer
-reviewer done
+manual verification done
 
 ## Last Update
-2026-04-24 - Resolved the garbled verse-text cleanup and verified typecheck and build.
+2026-04-24 - Reordered the translation section labels and verified the build.
