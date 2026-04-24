@@ -1,5 +1,5 @@
 import { Suspense, lazy, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -9,8 +9,26 @@ import { AppShell } from './components/ui/AppShell';
 import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 
-const ChapterList = lazy(() => import('./pages/ChapterList'));
 const VerseView = lazy(() => import('./pages/VerseView'));
+
+const DefaultVerseRedirect = () => {
+    const { chapters, loading } = useYogaData();
+
+    if (loading) {
+        return (
+            <div className="flex h-full items-center justify-center bg-transparent">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
+            </div>
+        );
+    }
+
+    const firstChapter = chapters[0];
+    const firstSutra = firstChapter?.sutras[0];
+    const chapterNum = firstChapter?.chapter ?? 1;
+    const verseNum = firstSutra?.id.split('.')[1] ?? '1';
+
+    return <Navigate to={`/chapter/${chapterNum}/verse/${verseNum}`} replace />;
+};
 
 const MainLayout = () => {
     const location = useLocation();
@@ -142,7 +160,7 @@ function App() {
         <Router>
             <Routes>
                 <Route element={<MainLayout />}>
-                    <Route path="/" element={<ChapterList />} />
+                    <Route path="/" element={<DefaultVerseRedirect />} />
                     <Route path="/chapter/:chapterNum/verse/:verseNum" element={<VerseView />} />
                 </Route>
             </Routes>

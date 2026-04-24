@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the desktop verse layout now stays open on lg+ widths so the left panel and title cannot disappear because of a stored closed state.
+Completed: the app no longer uses a landing page; the root route now redirects straight into the reading view.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The desktop sidebar now opens automatically whenever the browser is at lg+ width, overriding any stored closed state so the title and left panel remain visible on desktop widths.
+Completed. The root route now redirects directly into the reading view, removing the landing page from the default flow.
 
 ## Write Sets
-- main: completed `src/context/UIContext.tsx`
+- main: completed `src/App.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - Desktop widths now force the sidebar open so the title cannot disappear.
+2026-04-24 - The app now skips the landing page and goes straight into the reading view.
