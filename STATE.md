@@ -1,22 +1,22 @@
 # State
 
 ## Current Task
-In progress: commit and push the VerseView prop cleanup so deployment gets the same TranslationSection call signature as local builds.
+Completed: trailing etymology fragments are trimmed from word meanings so only the core gloss is shown in the Word-by-word panel.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: active
+main: closed
 
 ## Contract Freeze
-Commit and push the already-fixed VerseView call site so the remote build no longer sees stale `english` / `korean1` props.
+Render only the core gloss in Word-by-word entries by trimming the trailing etymology fragment that follows the first ` < ` marker.
 
 ## Write Sets
-- main: `src/pages/VerseView.tsx`
+- main: `src/components/verse/WordMeanings.tsx`
 
 ## Reviewer
-not started
+manual verification
 
 ## Last Update
-2026-04-24 - The local VerseView fix exists, but it still needs to be committed and pushed for deployment.
+2026-04-24 - Word meanings now drop trailing etymology fragments after the first ` < ` marker.

@@ -7,6 +7,17 @@ interface WordMeaningsProps {
     meanings?: WordMeaning;
 }
 
+const formatMeaning = (meaning: string) => {
+    const etymologySeparator = ' < ';
+    const separatorIndex = meaning.indexOf(etymologySeparator);
+
+    if (separatorIndex === -1) {
+        return meaning;
+    }
+
+    return meaning.slice(0, separatorIndex).trim();
+};
+
 const containerVariants: Variants = {
     hidden: { opacity: 0, height: 0 },
     visible: { 
@@ -80,8 +91,8 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                                     <span className="font-serif italic text-gold-primary dark:text-gold-light text-base sm:text-lg mb-1 sm:mb-0 sm:mr-4 flex-shrink-0">
                                         {word}
                                     </span>
-                                    <span className="text-text-secondary dark:text-dark-text-secondary text-sm sm:text-[15px] leading-relaxed break-keep font-noto-kr">
-                                        {meaning}
+                            <span className="text-text-secondary dark:text-dark-text-secondary text-sm sm:text-[15px] leading-relaxed break-keep font-noto-kr">
+                                        {formatMeaning(meaning)}
                                     </span>
                                 </motion.div>
                             ))}
