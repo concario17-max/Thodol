@@ -109,7 +109,7 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
             <ul className="space-y-2 text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
                 {block.bullets.map((item, index) => {
                     const match = item.match(/^(\d+)\.\s+(.*)$/);
-                    const marker = match ? `${match[1]}.` : '·';
+                    const marker = match ? `${match[1]}.` : '•';
                     const text = match ? match[2] : item;
 
                     return (
@@ -148,7 +148,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                 <div className="space-y-4 sm:space-y-6">{bodyBlocks.map(renderCommentaryBlock)}</div>
             ) : (
                 <div className="rounded-2xl border border-gold-border/20 bg-white/65 p-5 text-sm leading-relaxed text-text-secondary dark:border-dark-border/50 dark:bg-dark-surface/55 dark:text-dark-text-secondary">
-                    이 절에는 해설이 없다.
+                    아직 코멘터리가 없습니다.
                 </div>
             )}
         </section>

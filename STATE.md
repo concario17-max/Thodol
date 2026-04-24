@@ -1,22 +1,28 @@
 # State
 
 ## Current Task
-Completed: remove the small `1.1` label above the commentary title.
+Completed: fix garbled verse-body text and labels in the reading view.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
-Completed. The small `1.1` label above the commentary title has been removed; the rest of the commentary layout is unchanged.
+Frozen scope:
+- Repair the garbled visible text in the verse reading view.
+- Fix the broken labels and headings in `src/pages/VerseView.tsx` and `src/components/verse/TranslationSection.tsx`.
+- Keep layout, data flow, and content structure unchanged unless a string repair requires a minimal local adjustment.
+
+Completed. The reading view labels and commentary fallback text now render cleanly again.
 
 ## Write Sets
-- main: completed `src/pages/VerseView.tsx`
+- worker_verse: completed `src/pages/VerseView.tsx`
+- worker_translation: completed `src/components/verse/TranslationSection.tsx`
 
 ## Reviewer
-manual verification done
+reviewer done
 
 ## Last Update
-2026-04-24 - Removed the small commentary label above the title and verified the build.
+2026-04-24 - Resolved the garbled verse-text cleanup and verified typecheck and build.
