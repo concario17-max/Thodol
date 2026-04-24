@@ -1,30 +1,14 @@
 interface TranslationSectionProps {
-    english?: string;
-    korean1?: string;
     baeJik?: string;
     baeUu?: string;
     oxfordKr?: string;
     oxfordEn?: string;
 }
 
-export const TranslationSection = ({ english, korean1, baeJik, baeUu, oxfordKr, oxfordEn }: TranslationSectionProps) => (
+export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: TranslationSectionProps) => (
     <section className="mb-8 sm:mb-10">
         <div className="mb-5 flex items-center justify-center sm:mb-6">
             <span className="text-xs tracking-[8px] text-gold-muted/40 dark:text-gold-muted/30">번역문</span>
-        </div>
-
-        <div className="mb-[var(--spacing-fluid-lg)]">
-            <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
-                앨리스 A. 베일리
-            </h2>
-            <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
-                {english && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{english}</p>}
-                {korean1 && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{korean1}</p>}
-            </div>
-        </div>
-
-        <div className="mb-8 flex items-center justify-center opacity-30 sm:mb-10">
-            <div className="h-px w-12 bg-gold-primary" />
         </div>
 
         {(oxfordKr || oxfordEn) && (

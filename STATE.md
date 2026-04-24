@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the chapter/verse card above the verse body has been removed and only a centered icon remains.
+Completed: the duplicate Alice A. Bailey intro has been removed from the main translation section and the original Korean section labels are restored.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The verse header area above the body now shows only a centered icon, with the chapter/verse card removed.
+Remove the Alice A. Bailey intro text from the main translation section, keeping the left panel as the only place that shows that content. Preserve the Oxford Notes and Bae translations in the body.
 
 ## Write Sets
-- main: completed `src/components/verse/SutraHeader.tsx`
+- main: `src/components/verse/TranslationSection.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - The verse header now shows only a centered icon.
+2026-04-24 - Bailey intro removed from the main translation section and labels restored to Korean.
