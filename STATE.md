@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: Sanskrit text now shares one accent color across the left sidebar and the main verse body.
+Completed: removed the redundant "번역문" label from the verse translation section.
 
 ## Route
 Route A
@@ -10,15 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The left sidebar and main verse body now use the same Sanskrit accent color, while translation text stays neutral.
+Completed. The verse translation section no longer shows the redundant "번역문" label; the rest of the block is unchanged.
 
 ## Write Sets
-- main: completed `src/index.css`
-- main: completed `src/components/Sidebar.tsx`
-- main: completed `src/components/verse/SutraContent.tsx`
+- main: completed `src/components/verse/TranslationSection.tsx`
 
 ## Reviewer
-manual verification
+manual verification done
 
 ## Last Update
-2026-04-24 - Sanskrit now uses one shared accent color across both the sidebar and the verse body.
+2026-04-24 - Removed the redundant translation label from the verse body and verified the build.
