@@ -63,8 +63,8 @@ const renderTable = (table: RenderableTable) => {
     };
 
     return (
-        <div className="overflow-hidden rounded-xl border border-gold-border/20 bg-white/75 dark:border-dark-border/50 dark:bg-dark-bg/60">
-            <div className="grid border-b border-gold-border/20 bg-gold-surface/40 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:bg-dark-surface/80 dark:text-gold-light" style={gridStyle}>
+        <div className="overflow-hidden border-y border-gold-border/15 dark:border-dark-border/40">
+            <div className="grid border-b border-gold-border/15 bg-transparent text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
                 {Array.from({ length: columnCount }).map((_, index) => (
                     <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/20 dark:border-dark-border/50' : ''}`}>
                         {table.headers[index] ?? ''}
@@ -94,11 +94,13 @@ const renderTable = (table: RenderableTable) => {
 };
 
 const renderCommentaryBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 rounded-2xl border border-gold-border/20 bg-white/65 p-4 dark:border-dark-border/50 dark:bg-dark-surface/55">
-        <h3 className="text-sm font-semibold text-[#1C2B36] dark:text-dark-text-primary">{block.title}</h3>
+    <section key={block.title} className="space-y-3 border-l border-gold-border/20 pl-4 dark:border-dark-border/40 sm:pl-5">
+        <h3 className="font-inter text-[15px] font-semibold leading-snug text-[#1C2B36] dark:text-dark-text-primary sm:text-base">
+            {block.title}
+        </h3>
 
         {block.paragraphs?.map((paragraph, index) => (
-            <p key={`${block.title}-p-${index}`} className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
+            <p key={`${block.title}-p-${index}`} className="font-inter text-[15px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px] lg:text-[16px]">
                 {paragraph}
             </p>
         ))}
@@ -106,15 +108,15 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
         {block.table ? renderTable(block.table) : null}
 
         {block.bullets ? (
-            <ul className="space-y-2 text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
+            <ul className="space-y-3 font-inter text-[15px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px] lg:text-[16px]">
                 {block.bullets.map((item, index) => {
                     const match = item.match(/^(\d+)\.\s+(.*)$/);
                     const marker = match ? `${match[1]}.` : '•';
                     const text = match ? match[2] : item;
 
                     return (
-                        <li key={`${block.title}-b-${index}`} className="flex rounded-xl border border-gold-border/20 bg-white/60 px-3 py-2.5 dark:bg-dark-surface/60">
-                            <span className="mr-2 shrink-0 font-semibold text-[#1C2B36] dark:text-dark-text-primary">{marker}</span>
+                        <li key={`${block.title}-b-${index}`} className="flex gap-3">
+                            <span className="shrink-0 font-semibold text-[#1C2B36] dark:text-dark-text-primary">{marker}</span>
                             <span className="min-w-0 flex-1 break-words">{text}</span>
                         </li>
                     );
@@ -142,12 +144,12 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
 
     return (
         <section className="mx-auto w-full max-w-3xl space-y-5 px-4 sm:space-y-6 sm:px-6 lg:max-w-[52rem] lg:px-8">
-            {inlineHeading ? <h2 className="text-2xl font-semibold leading-tight text-text-primary dark:text-dark-text-primary">{inlineHeading}</h2> : null}
+            {inlineHeading ? <h2 className="font-inter text-xl font-semibold leading-tight text-text-primary dark:text-dark-text-primary sm:text-2xl">{inlineHeading}</h2> : null}
 
             {bodyBlocks && bodyBlocks.length > 0 ? (
                 <div className="space-y-4 sm:space-y-6">{bodyBlocks.map(renderCommentaryBlock)}</div>
             ) : (
-                <div className="rounded-2xl border border-gold-border/20 bg-white/65 p-5 text-sm leading-relaxed text-text-secondary dark:border-dark-border/50 dark:bg-dark-surface/55 dark:text-dark-text-secondary">
+                <div className="border-l border-gold-border/20 pl-4 font-inter text-[15px] leading-7 text-text-secondary dark:border-dark-border/40 dark:text-dark-text-secondary sm:pl-5">
                     아직 코멘터리가 없습니다.
                 </div>
             )}

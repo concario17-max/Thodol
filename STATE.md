@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: match the commentary layout width to the main body layout.
+Completed: restyle the commentary view into a cleaner editorial layout.
 
 ## Route
 Route A
@@ -10,9 +10,7 @@ Route A
 main: closed
 
 ## Contract Freeze
-Frozen scope: wrap the commentary content in `src/pages/VerseView.tsx` with the same centered width rules used by the main body; keep content and behavior unchanged.
-
-Completed. The commentary content now uses the same centered width rules as the main body.
+Completed. The commentary view no longer uses card-style blocks and now uses clearer typography and spacing while preserving behavior.
 
 ## Write Sets
 - main: completed `src/pages/VerseView.tsx`
@@ -21,4 +19,4 @@ Completed. The commentary content now uses the same centered width rules as the 
 manual verification done
 
 ## Last Update
-2026-04-24 - Aligned the commentary width with the main body layout and verified the build.
+2026-04-24 - Restyled the commentary view into a cleaner editorial layout and verified the build.
