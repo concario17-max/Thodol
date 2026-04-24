@@ -141,7 +141,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
 
     return (
-        <section className="space-y-5 sm:space-y-6">
+        <section className="mx-auto w-full max-w-3xl space-y-5 px-4 sm:space-y-6 sm:px-6 lg:max-w-[52rem] lg:px-8">
             {inlineHeading ? <h2 className="text-2xl font-semibold leading-tight text-text-primary dark:text-dark-text-primary">{inlineHeading}</h2> : null}
 
             {bodyBlocks && bodyBlocks.length > 0 ? (

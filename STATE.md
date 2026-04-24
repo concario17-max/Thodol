@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: reorder the translation labels to match the requested display order.
+Completed: match the commentary layout width to the main body layout.
 
 ## Route
 Route A
@@ -10,15 +10,15 @@ Route A
 main: closed
 
 ## Contract Freeze
-Frozen scope: reorder only the visible labels in `src/components/verse/TranslationSection.tsx` to `니콜라스 서튼`, `배철현`, `직역`, `의역`; keep layout and content structure unchanged.
+Frozen scope: wrap the commentary content in `src/pages/VerseView.tsx` with the same centered width rules used by the main body; keep content and behavior unchanged.
 
-Completed. The translation section labels now follow the requested order.
+Completed. The commentary content now uses the same centered width rules as the main body.
 
 ## Write Sets
-- main: completed `src/components/verse/TranslationSection.tsx`
+- main: completed `src/pages/VerseView.tsx`
 
 ## Reviewer
 manual verification done
 
 ## Last Update
-2026-04-24 - Reordered the translation section labels and verified the build.
+2026-04-24 - Aligned the commentary width with the main body layout and verified the build.
