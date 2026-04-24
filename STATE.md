@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the left reading panel now feels more editorial and modern, with a more prominent top meta block and subtle visual cues for Sanskrit, English, and Korean.
+Completed: the left panel's card-like meta block has been replaced with a more editorial, high-contrast header treatment that feels visually anchored rather than boxed.
 
 ## Route
 Route A
@@ -10,7 +10,7 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The left reading panel now uses a stronger chapter/sutra meta block and distinguishes the Sanskrit, English, and Korean blocks with typography, spacing, color, and thin separators instead of explicit language labels.
+Completed. The chapter/sutra block is now a prominent editorial header with stronger hierarchy, a visible accent, and no boxed surface.
 
 ## Write Sets
 - main: completed `src/components/Sidebar.tsx`
@@ -19,4 +19,4 @@ Completed. The left reading panel now uses a stronger chapter/sutra meta block a
 manual verification
 
 ## Last Update
-2026-04-24 - The left reading panel meta block is now more prominent while keeping the language blocks label-free.
+2026-04-24 - The left panel meta now reads as an editorial header instead of a card.

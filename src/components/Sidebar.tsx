@@ -46,22 +46,25 @@ const Sidebar = () => {
         >
             <div className="custom-scrollbar flex h-full flex-col overflow-y-auto px-3 py-4">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6">
-                    <div className="rounded-[24px] border border-gold-primary/12 bg-white/50 px-4 py-3 shadow-[0_10px_30px_-22px_rgba(166,139,92,0.55)] backdrop-blur-sm dark:border-dark-border/25 dark:bg-dark-surface/25">
-                        <div className="flex items-end justify-between gap-4">
-                            <div className="space-y-1">
-                                <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/70 dark:text-gold-light/75">
-                                    Chapter
+                    <div className="relative overflow-hidden border-b border-gold-border/20 pb-4 dark:border-dark-border/25">
+                        <span className="absolute left-0 top-0 h-full w-[3px] rounded-full bg-gradient-to-b from-gold-primary via-gold-primary/70 to-transparent shadow-[0_0_18px_rgba(166,139,92,0.45)] dark:from-gold-light dark:via-gold-light/70" />
+                        <div className="pl-5">
+                            <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 dark:text-gold-light/75">
+                                Chapter
+                            </p>
+                            <div className="mt-1 flex items-end gap-3">
+                                <p className="font-display text-[44px] font-semibold leading-none tracking-[0.12em] text-text-primary dark:text-dark-text-primary">
+                                    {chapterMeta}
                                 </p>
-                                <div className="flex items-baseline gap-2">
-                                    <p className="font-display text-[34px] font-semibold leading-none tracking-[0.16em] text-text-primary dark:text-dark-text-primary">
-                                        {chapterMeta}
+                                <div className="pb-1">
+                                    <p className="font-inter text-[11px] uppercase tracking-[0.34em] text-text-secondary/55 dark:text-dark-text-secondary/55">
+                                        Sutra
                                     </p>
-                                    <span className="pb-1 font-inter text-[11px] uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/60">
-                                        / Sutra {verseMeta}
-                                    </span>
+                                    <p className="mt-1 font-display text-[16px] font-medium tracking-[0.16em] text-gold-primary/90 dark:text-gold-light/90">
+                                        {verseMeta}
+                                    </p>
                                 </div>
                             </div>
-                            <span className="h-px flex-1 bg-gradient-to-r from-gold-primary/45 via-gold-border/10 to-transparent dark:from-gold-light/40 dark:via-dark-border/10" />
                         </div>
                     </div>
 
