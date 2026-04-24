@@ -72,6 +72,9 @@ const MainLayout = () => {
         });
     }, [currentChapter]);
 
+    const selectClassName =
+        'h-10 shrink-0 rounded-full border border-gold-primary/18 bg-white/78 px-3 pr-8 text-[10px] font-semibold uppercase tracking-[0.14em] text-text-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.85)] backdrop-blur-sm outline-none transition-all duration-300 hover:border-gold-primary/35 hover:bg-white/88 focus:border-gold-primary/45 focus:bg-white/92 focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/60 dark:bg-dark-surface/78 dark:text-dark-text-primary dark:shadow-[0_10px_24px_-20px_rgba(0,0,0,0.65)] dark:hover:border-gold-primary/28 dark:hover:bg-dark-bg/84 dark:focus:border-gold-primary/35 dark:focus:bg-dark-bg/88 sm:h-11 sm:text-[11px]';
+
     const selectionControls =
         isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
             <div className="flex min-w-0 items-center gap-1.5 overflow-hidden sm:gap-2">
@@ -87,7 +90,7 @@ const MainLayout = () => {
                             navigate(`/chapter/${nextChapter}/verse/1`);
                         }
                     }}
-                    className="h-10 w-[6.5rem] shrink-0 rounded-full border border-gold-primary/18 bg-white/80 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-text-primary shadow-sm outline-none transition-all duration-300 hover:border-gold-primary/35 focus:border-gold-primary/50 focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/60 dark:bg-dark-surface/80 dark:text-dark-text-primary sm:h-11 sm:w-36 sm:text-[11px]"
+                    className={`${selectClassName} w-[6.5rem] sm:w-36`}
                 >
                     {chapterOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -108,7 +111,7 @@ const MainLayout = () => {
                             navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`);
                         }
                     }}
-                    className="h-10 w-[5.75rem] shrink-0 rounded-full border border-gold-primary/18 bg-white/80 px-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-text-primary shadow-sm outline-none transition-all duration-300 hover:border-gold-primary/35 focus:border-gold-primary/50 focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/60 dark:bg-dark-surface/80 dark:text-dark-text-primary sm:h-11 sm:w-28 sm:text-[11px]"
+                    className={`${selectClassName} w-[5.75rem] sm:w-28`}
                 >
                     {verseOptions.map((option) => (
                         <option key={option.value} value={option.value}>

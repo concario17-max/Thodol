@@ -28,7 +28,7 @@ const Header = ({
         : undefined;
     const renderVerseModeToggle = () =>
         showSidebarToggle ? (
-            <div className="inline-flex items-center rounded-full border border-gold-primary/18 bg-white/78 p-1 shadow-[0_10px_24px_-20px_rgba(166,139,92,0.9)] backdrop-blur-sm dark:border-dark-border/70 dark:bg-dark-surface/80">
+            <div className="inline-flex items-center rounded-full border border-gold-primary/18 bg-white/72 p-1 shadow-[0_12px_28px_-22px_rgba(166,139,92,0.95)] backdrop-blur-md dark:border-dark-border/70 dark:bg-[#1b1815]/82">
                 {[
                     { mode: 'body' as const, label: '본문' },
                     { mode: 'commentary' as const, label: '해설' },
@@ -43,8 +43,8 @@ const Header = ({
                             aria-pressed={isActive}
                             className={`min-w-[3.5rem] rounded-full px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] transition-all duration-300 sm:text-[11px] ${
                                 isActive
-                                    ? 'bg-gold-primary text-white shadow-sm dark:bg-gold-light dark:text-[#2a2116]'
-                                    : 'text-gold-primary hover:bg-gold-surface/60 dark:text-gold-light dark:hover:bg-dark-bg/70'
+                                    ? 'bg-gold-primary text-white shadow-[0_6px_16px_-8px_rgba(166,139,92,0.95)] dark:bg-gold-light dark:text-[#2a2116]'
+                                    : 'text-gold-primary hover:bg-gold-surface/65 dark:text-gold-light dark:hover:bg-white/6'
                             }`}
                         >
                             {option.label}
@@ -56,7 +56,7 @@ const Header = ({
 
     return (
         <header
-            className={`glass-panel sticky top-0 z-50 w-full border-b border-gold-primary/20 shadow-sm transition-colors duration-500 dark:border-dark-border/60 ${className}`}
+            className={`glass-panel sticky top-0 z-50 w-full border-b border-gold-primary/20 bg-white/55 shadow-[0_8px_30px_-18px_rgba(0,0,0,0.35)] transition-colors duration-500 backdrop-blur-xl dark:border-dark-border/60 dark:bg-dark-surface/85 ${className}`}
         >
             <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-5 lg:hidden">
                 <div className="flex min-w-0 flex-1 items-center gap-1 text-text-primary dark:text-dark-text-primary sm:gap-2">
@@ -70,7 +70,7 @@ const Header = ({
                     </Link>
                 </div>
 
-                <div className="ml-2 flex shrink-0 items-center gap-1.5 sm:ml-3 sm:gap-3">
+                <div className="ml-2 flex shrink-0 items-center gap-1.5 rounded-full border border-gold-primary/15 bg-white/65 p-1 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.32)] backdrop-blur-md sm:ml-3 sm:gap-2.5 dark:border-dark-border/60 dark:bg-[#1b1815]/82">
                     {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                     {rightContent}
 
@@ -98,10 +98,12 @@ const Header = ({
                 </div>
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
+                    <div className="flex items-center gap-2 rounded-full border border-gold-primary/15 bg-white/65 p-1 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.32)] backdrop-blur-md dark:border-dark-border/60 dark:bg-[#1b1815]/82">
                     {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                     {rightContent}
 
                     {renderVerseModeToggle()}
+                    </div>
 
                     <ThemeToggle className="ml-0" />
                 </div>

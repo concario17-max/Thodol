@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the dark mode is slightly lighter now, so the UI feels less boxed in without changing layout.
+Completed: the chapter/verse selector group and verse mode toggle now feel more cohesive, premium, and less visually busy.
 
 ## Route
 Route B
@@ -10,14 +10,14 @@ Route B
 main: closed
 
 ## Contract Freeze
-Completed. Dark mode surfaces were lifted slightly and the main reading surface was softened without changing layout or light-mode styling.
+Completed. The chapter/verse selector group and the body/commentary toggle now share a premium, consistent header treatment while keeping behavior and layout structure unchanged.
 
 ## Write Sets
-- worker_shared: completed `src/index.css`
-- worker_ui: completed `src/components/ui/AppShell.tsx`
+- worker_shared: completed `src/App.tsx`
+- worker_ui: completed `src/components/Header.tsx`
 
 ## Reviewer
-reviewed with one haze note
+reviewed with one density note
 
 ## Last Update
-2026-04-24 - The dark mode easing pass is complete; both shared CSS and AppShell were tuned.
+2026-04-24 - Header controls now share a unified premium treatment.
