@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the Word-by-word grid now feels denser and easier to scan at a glance.
+Completed: Sanskrit text now shares one accent color across the left sidebar and the main verse body.
 
 ## Route
 Route A
@@ -10,13 +10,15 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The Word-by-word grid width and spacing were tightened so the three columns read more compactly without changing the content.
+Completed. The left sidebar and main verse body now use the same Sanskrit accent color, while translation text stays neutral.
 
 ## Write Sets
-- main: completed `src/components/verse/WordMeanings.tsx`
+- main: completed `src/index.css`
+- main: completed `src/components/Sidebar.tsx`
+- main: completed `src/components/verse/SutraContent.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - The Word-by-word grid is now tighter and more compact.
+2026-04-24 - Sanskrit now uses one shared accent color across both the sidebar and the verse body.

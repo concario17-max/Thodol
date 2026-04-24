@@ -13,6 +13,7 @@
     --color-gold-accent: #b8860b;
     --color-gold-primary: #b8860b;
     --color-gold-light: #d4af37;
+    --color-sanskrit-accent: #b8860b;
     --color-gold-bg: #f1eadf;
     --color-gold-surface: #e4dac8;
     --color-gold-border: #cdbfa7;
@@ -87,6 +88,18 @@
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+    }
+
+    .text-sanskrit-accent {
+        color: var(--color-sanskrit-accent);
+    }
+
+    .bg-sanskrit-accent {
+        background-color: var(--color-sanskrit-accent);
+    }
+
+    .border-sanskrit-accent {
+        border-color: var(--color-sanskrit-accent);
     }
 
     .glass-panel {

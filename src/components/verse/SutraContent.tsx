@@ -20,7 +20,7 @@ export const SutraContent = ({
     return (
         <>
             <section className="mx-auto mb-[var(--spacing-fluid-sm)] max-w-3xl px-4 text-center sm:px-6 lg:max-w-[52rem]">
-                <p className="font-serif text-[#8B6508] dark:text-[#B8860B] text-[var(--font-size-2xl)] md:text-[var(--font-size-3xl)] leading-relaxed whitespace-pre-line tracking-wide font-bold drop-shadow-sm">
+                <p className="font-serif text-sanskrit-accent text-[var(--font-size-2xl)] md:text-[var(--font-size-3xl)] leading-relaxed whitespace-pre-line tracking-wide font-bold drop-shadow-sm">
                     {sanskrit}
                 </p>
             </section>

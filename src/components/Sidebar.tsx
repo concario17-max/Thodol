@@ -71,8 +71,8 @@ const Sidebar = () => {
 
                     <div className="space-y-6">
                         <section className="relative pl-4">
-                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-gold-primary/50 dark:bg-gold-light/50" />
-                            <p className="whitespace-pre-line break-keep font-display text-[17px] leading-[1.95] tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[18px]">
+                            <span className="absolute left-0 top-2 h-[calc(100%-0.5rem)] w-[2px] rounded-full bg-sanskrit-accent/50 dark:bg-sanskrit-accent/45" />
+                            <p className="whitespace-pre-line break-keep font-display text-[17px] leading-[1.95] tracking-[0.02em] text-sanskrit-accent dark:text-sanskrit-accent sm:text-[18px]">
                                 {verseData.sanskrit}
                             </p>
                         </section>
