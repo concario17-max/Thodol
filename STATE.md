@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: trailing etymology fragments are trimmed from word meanings so only the core gloss is shown in the Word-by-word panel.
+Completed: the Word-by-word panel now uses a 3-column layout on web widths while keeping mobile behavior unchanged.
 
 ## Route
 Route A
@@ -10,7 +10,7 @@ Route A
 main: closed
 
 ## Contract Freeze
-Render only the core gloss in Word-by-word entries by trimming the trailing etymology fragment that follows the first ` < ` marker.
+Keep the Word-by-word panel on one column for mobile and use a 3-column grid on web widths.
 
 ## Write Sets
 - main: `src/components/verse/WordMeanings.tsx`
@@ -19,4 +19,4 @@ Render only the core gloss in Word-by-word entries by trimming the trailing etym
 manual verification
 
 ## Last Update
-2026-04-24 - Word meanings now drop trailing etymology fragments after the first ` < ` marker.
+2026-04-24 - The Word-by-word panel now uses 3 columns on web widths.

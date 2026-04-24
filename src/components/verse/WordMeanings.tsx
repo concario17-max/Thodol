@@ -81,7 +81,7 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                         variants={containerVariants}
                         className="overflow-hidden"
                     >
-                        <div className="mt-8 glass-panel rounded-2xl p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+                        <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 rounded-2xl p-6 sm:p-8 md:grid-cols-2 lg:grid-cols-3">
                             {meanings.map(({ word, meaning }, index: number) => (
                                 <motion.div 
                                     key={`${word}-${index}`} 
