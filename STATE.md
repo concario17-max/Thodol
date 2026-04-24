@@ -1,23 +1,23 @@
 # State
 
 ## Current Task
-Completed: make the UI less bright and improve text contrast so the reading experience feels denser and easier on the eyes.
+Completed: the dark mode is slightly lighter now, so the UI feels less boxed in without changing layout.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
-Completed. Shared background, glass-panel, and text-surface styling were tuned to lower brightness and strengthen contrast without changing app structure.
+Completed. Dark mode surfaces were lifted slightly and the main reading surface was softened without changing layout or light-mode styling.
 
 ## Write Sets
-- main: completed `src/index.css`
-- main: completed `src/components/ui/AppShell.tsx`
+- worker_shared: completed `src/index.css`
+- worker_ui: completed `src/components/ui/AppShell.tsx`
 
 ## Reviewer
-reviewed with one dark-mode caution
+reviewed with one haze note
 
 ## Last Update
-2026-04-24 - Reduced UI brightness and increased text contrast with shared theme adjustments.
+2026-04-24 - The dark mode easing pass is complete; both shared CSS and AppShell were tuned.
