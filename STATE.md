@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the app no longer uses a landing page; the root route now redirects straight into the reading view.
+Completed: the chapter/verse card above the verse body has been removed and only a centered icon remains.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Completed. The root route now redirects directly into the reading view, removing the landing page from the default flow.
+Completed. The verse header area above the body now shows only a centered icon, with the chapter/verse card removed.
 
 ## Write Sets
-- main: completed `src/App.tsx`
+- main: completed `src/components/verse/SutraHeader.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - The app now skips the landing page and goes straight into the reading view.
+2026-04-24 - The verse header now shows only a centered icon.
