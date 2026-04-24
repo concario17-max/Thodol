@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the duplicate Alice A. Bailey intro has been removed from the main translation section and the original Korean section labels are restored.
+Completed: the VerseView compile error from stale english/korean1 props is resolved and the build passes again.
 
 ## Route
 Route A
@@ -10,13 +10,13 @@ Route A
 main: closed
 
 ## Contract Freeze
-Remove the Alice A. Bailey intro text from the main translation section, keeping the left panel as the only place that shows that content. Preserve the Oxford Notes and Bae translations in the body.
+Completed. The stale `english` and `korean1` props are no longer passed to TranslationSection, and the build passes again.
 
 ## Write Sets
-- main: `src/components/verse/TranslationSection.tsx`
+- main: `src/pages/VerseView.tsx`
 
 ## Reviewer
 manual verification
 
 ## Last Update
-2026-04-24 - Bailey intro removed from the main translation section and labels restored to Korean.
+2026-04-24 - VerseView no longer passes removed TranslationSection props and the build is green again.
