@@ -4,18 +4,18 @@
     --color-primary: #b8860b;
     --color-primary-dark: #8b6508;
     --color-primary-light: #d4af37;
-    --color-background-light: #fbf9f2;
-    --color-background-paper: #f3eee0;
-    --color-text-main: #2c2820;
-    --color-text-primary: #2c2820;
-    --color-text-secondary: #6b6455;
-    --color-text-muted: #6b6455;
+    --color-background-light: #f5f0e6;
+    --color-background-paper: #ece4d5;
+    --color-text-main: #221f18;
+    --color-text-primary: #221f18;
+    --color-text-secondary: #5b5344;
+    --color-text-muted: #5b5344;
     --color-gold-accent: #b8860b;
     --color-gold-primary: #b8860b;
     --color-gold-light: #d4af37;
-    --color-gold-bg: #f7f3e9;
-    --color-gold-surface: #ede7d8;
-    --color-gold-border: #dbcfba;
+    --color-gold-bg: #f1eadf;
+    --color-gold-surface: #e4dac8;
+    --color-gold-border: #cdbfa7;
     --color-dark-bg: #0a0a0a;
     --color-dark-surface: #141414;
     --color-dark-border: #262626;
@@ -90,16 +90,16 @@
     }
 
     .glass-panel {
-        background: rgba(247, 243, 233, 0.7);
-        backdrop-filter: blur(20px) saturate(180%);
-        border: 1px solid rgba(184, 134, 11, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(184, 134, 11, 0.1);
+        background: rgba(241, 234, 223, 0.88);
+        backdrop-filter: blur(18px) saturate(140%);
+        border: 1px solid rgba(164, 122, 28, 0.18);
+        box-shadow: 0 10px 28px 0 rgba(96, 72, 21, 0.08);
     }
 
     .dark .glass-panel {
-        background: rgba(10, 10, 10, 0.8);
-        border: 1px solid rgba(184, 134, 11, 0.25);
-        box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.5);
+        background: rgba(12, 12, 12, 0.88);
+        border: 1px solid rgba(184, 134, 11, 0.2);
+        box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.56);
     }
 
     .reveal-item {
@@ -125,7 +125,10 @@ body {
     font-size: var(--font-size-base) !important;
     line-height: 1.78;
     font-family: var(--font-sans);
-    @apply bg-gold-bg text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
+    background:
+        radial-gradient(circle at top, rgba(255, 248, 235, 0.72), transparent 55%),
+        linear-gradient(180deg, #f4eee3 0%, #ede4d7 100%);
+    @apply text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
 }
 
 .font-display {

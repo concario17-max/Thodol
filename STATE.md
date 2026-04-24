@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the Word-by-word panel now uses a 3-column layout on web widths while keeping mobile behavior unchanged.
+Completed: make the UI less bright and improve text contrast so the reading experience feels denser and easier on the eyes.
 
 ## Route
 Route A
@@ -10,13 +10,14 @@ Route A
 main: closed
 
 ## Contract Freeze
-Keep the Word-by-word panel on one column for mobile and use a 3-column grid on web widths.
+Completed. Shared background, glass-panel, and text-surface styling were tuned to lower brightness and strengthen contrast without changing app structure.
 
 ## Write Sets
-- main: `src/components/verse/WordMeanings.tsx`
+- main: completed `src/index.css`
+- main: completed `src/components/ui/AppShell.tsx`
 
 ## Reviewer
-manual verification
+reviewed with one dark-mode caution
 
 ## Last Update
-2026-04-24 - The Word-by-word panel now uses 3 columns on web widths.
+2026-04-24 - Reduced UI brightness and increased text contrast with shared theme adjustments.

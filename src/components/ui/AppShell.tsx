@@ -17,8 +17,8 @@ export const AppShell = React.memo(
             : undefined;
 
         return (
-            <div className="relative flex h-[100dvh] flex-col overflow-hidden bg-gold-bg text-text-primary transition-colors duration-500 selection:bg-gold-primary/20 selection:text-text-primary dark:bg-dark-bg dark:text-dark-text-primary dark:selection:text-dark-text-primary">
-                <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.65)_0%,_transparent_80%)] dark:bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.04)_0%,_transparent_80%)]" />
+            <div className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#f3ead9] text-text-primary transition-colors duration-500 selection:bg-gold-primary/25 selection:text-text-primary dark:bg-[#11110f] dark:text-dark-text-primary dark:selection:text-dark-text-primary">
+                <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,248,236,0.42)_0%,_rgba(255,248,236,0.16)_34%,_transparent_78%)] dark:bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.035)_0%,_rgba(255,255,255,0.01)_34%,_transparent_78%)]" />
 
                 <div className="relative z-10 flex h-full flex-1 flex-col overflow-hidden">
                     {header}
@@ -31,7 +31,7 @@ export const AppShell = React.memo(
                         {sidebar}
                         <main
                             id="main-scroll-container"
-                            className={`custom-scrollbar min-w-0 flex-1 ${
+                            className={`custom-scrollbar min-w-0 flex-1 bg-white/18 backdrop-blur-[2px] ${
                                 isMobilePanelOpen ? 'touch-none overflow-hidden' : 'overflow-y-auto'
                             } ${desktopGridColumns ? 'lg:col-start-2 lg:w-full' : ''}`}
                         >
