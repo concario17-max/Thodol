@@ -294,8 +294,6 @@ const VerseView = () => {
 
                         <motion.div variants={itemVariants}>
                             <TranslationSection
-                                english={verseData['2.english']}
-                                korean1={verseData['3.korean-1']}
                                 baeJik={verseData['5.bae_jik']}
                                 baeUu={verseData['6.bae_uu']}
                                 oxfordKr={verseData['8. ox']}

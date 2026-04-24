@@ -1,22 +1,22 @@
 # State
 
 ## Current Task
-Completed: the VerseView compile error from stale english/korean1 props is resolved and the build passes again.
+In progress: commit and push the VerseView prop cleanup so deployment gets the same TranslationSection call signature as local builds.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: closed
+main: active
 
 ## Contract Freeze
-Completed. The stale `english` and `korean1` props are no longer passed to TranslationSection, and the build passes again.
+Commit and push the already-fixed VerseView call site so the remote build no longer sees stale `english` / `korean1` props.
 
 ## Write Sets
 - main: `src/pages/VerseView.tsx`
 
 ## Reviewer
-manual verification
+not started
 
 ## Last Update
-2026-04-24 - VerseView no longer passes removed TranslationSection props and the build is green again.
+2026-04-24 - The local VerseView fix exists, but it still needs to be committed and pushed for deployment.
