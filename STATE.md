@@ -1,31 +1,28 @@
 # State
 
 ## Current Task
-Completed: fix the mobile reading flow so the left panel appears before the main body and the header is cleaner, including the mobile selector controls.
+Completed: change the verse desktop layout to a 22rem-29rem left column with the right side taking the remaining space.
 
 ## Route
 Route B
-Reason: User explicitly constrained the work to the shared Route B write set only.
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
 Frozen scope:
-- Make the mobile reading flow show the left reading panel before the main body instead of behaving like a hidden drawer.
-- Keep the mobile sidebar from consuming the full viewport height so the body can follow beneath it.
-- Tweak the header so the mobile controls fit the new order cleanly.
-- Make the mobile header controls wrap cleanly and stay usable.
-- Keep desktop behavior intact unless a shared layout primitive needs a minimal adjustment.
+- Set the verse desktop column contract to `minmax(22rem, 29rem) minmax(0, 1fr)`.
+- Remove the hard 360px sidebar cap so the left column can breathe up to 29rem.
+- Keep mobile as a single stacked column.
+- Keep the rest of the layout behavior unchanged.
 
-Completed. The mobile reading flow now stacks the left panel before the main body, and the mobile controls wrap cleanly.
+Completed. The verse desktop layout now uses a 22rem-29rem left column and a flexible right side, with mobile still stacked.
 
 ## Write Sets
-- worker_shared: `src/components/ui/AppShell.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/Header.tsx`
-- worker_feature: `src/App.tsx`
+- worker_shared: completed `src/components/ui/desktopVerseLayout.ts`, `src/components/Sidebar.tsx`
 
 ## Reviewer
 reviewer done
 
 ## Last Update
-2026-04-24 - Finished the mobile reading-flow cleanup and verified typecheck/build.
+2026-05-04 - Finished adjusting the verse desktop layout to a wider, minmax-based left column.
