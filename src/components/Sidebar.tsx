@@ -47,41 +47,37 @@ const Sidebar = () => {
         >
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-4 sm:gap-5">
-                    <div className="rounded-[1.25rem] border border-gold-border/18 bg-white/72 p-4 shadow-[0_18px_40px_-34px_rgba(0,0,0,0.35)] dark:border-dark-border/55 dark:bg-dark-surface/60">
-                        <div className="flex items-baseline justify-between gap-3">
-                            <div>
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-gold-primary/80 dark:text-gold-light/80">
-                                    Chapter
-                                </p>
-                                <p className="mt-2 font-display text-[30px] font-semibold leading-none tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
-                                    {chapterMeta}
-                                </p>
-                            </div>
-                            <div className="text-right">
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-text-secondary/65 dark:text-dark-text-secondary/70">
-                                    Sutra
-                                </p>
-                                <p className="mt-2 font-display text-[22px] font-semibold leading-none tracking-[0.12em] text-gold-primary dark:text-gold-light">
-                                    {verseMeta}
-                                </p>
-                            </div>
+                    <div className="flex items-end justify-between gap-3 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/75 dark:text-gold-light/75">
+                                Chapter
+                            </p>
+                            <p className="mt-1 font-display text-[28px] font-semibold leading-none tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
+                                {chapterMeta}
+                            </p>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-text-secondary/60 dark:text-dark-text-secondary/65">
+                                Sutra
+                            </p>
+                            <p className="mt-1 font-display text-[20px] font-semibold leading-none tracking-[0.12em] text-gold-primary dark:text-gold-light">
+                                {verseMeta}
+                            </p>
                         </div>
                     </div>
 
-                    <div className="space-y-3">
-                        <section className="rounded-[1.1rem] border border-gold-border/16 bg-white/68 p-4 dark:border-dark-border/50 dark:bg-dark-surface/58">
-                            <div className="mb-2 flex items-center justify-between">
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/80 dark:text-gold-light/80">
-                                    Sanskrit
-                                </p>
-                            </div>
-                            <p className="whitespace-pre-line break-keep font-display text-[18px] leading-[1.9] tracking-[0.02em] text-sanskrit-accent dark:text-sanskrit-accent sm:text-[19px]">
+                    <div className="space-y-4">
+                        <section className="space-y-2 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-primary/75 dark:text-gold-light/75">
+                                Sanskrit
+                            </p>
+                            <p className="whitespace-pre-line break-keep font-display text-[18px] leading-[1.95] tracking-[0.02em] text-sanskrit-accent dark:text-sanskrit-accent sm:text-[19px]">
                                 {verseData.sanskrit}
                             </p>
                         </section>
 
-                        <section className="rounded-[1.1rem] border border-gold-border/16 bg-white/68 p-4 dark:border-dark-border/50 dark:bg-dark-surface/58">
-                            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                        <section className="space-y-2 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/65">
                                 English
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[1.9] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
@@ -89,8 +85,8 @@ const Sidebar = () => {
                             </p>
                         </section>
 
-                        <section className="rounded-[1.1rem] border border-gold-border/16 bg-white/68 p-4 dark:border-dark-border/50 dark:bg-dark-surface/58">
-                            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                        <section className="space-y-2 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/65">
                                 Korean
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[14px] leading-[1.95] text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">

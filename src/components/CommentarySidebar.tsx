@@ -13,8 +13,7 @@ type RenderableTable = {
     rows: ReadonlyArray<readonly string[] | { label: string; value: string }>;
 };
 
-const isTableRowObject = (row: readonly string[] | { label: string; value: string }): row is { label: string; value: string } =>
-    !Array.isArray(row);
+const isTableRowObject = (row: readonly string[] | { label: string; value: string }): row is { label: string; value: string } => !Array.isArray(row);
 
 const toCells = (row: readonly string[] | { label: string; value: string }) => (isTableRowObject(row) ? [row.label, row.value] : [...row]);
 
@@ -42,13 +41,10 @@ const renderTable = (table: RenderableTable) => {
     };
 
     return (
-        <div className="overflow-hidden rounded-[1rem] border border-gold-border/16 bg-white/70 dark:border-dark-border/50 dark:bg-dark-surface/55">
-            <div
-                className="grid border-b border-gold-border/16 bg-gold-surface/30 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:bg-dark-surface/80 dark:text-gold-light"
-                style={gridStyle}
-            >
+        <div className="overflow-hidden border-y border-gold-border/12 dark:border-dark-border/45">
+            <div className="grid border-b border-gold-border/12 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
                 {Array.from({ length: columnCount }).map((_, index) => (
-                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/16 dark:border-dark-border/50' : ''}`}>
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
                         {table.headers[index] ?? ''}
                     </div>
                 ))}
@@ -78,13 +74,13 @@ const renderTable = (table: RenderableTable) => {
 };
 
 const renderBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 rounded-[1.1rem] border border-gold-border/16 bg-white/70 p-4 dark:border-dark-border/50 dark:bg-dark-surface/58">
-        <h3 className="font-sans text-[14px] font-semibold leading-snug text-text-primary dark:text-dark-text-primary">
+    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+        <h3 className="font-sans text-[13px] font-semibold leading-snug tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[14px]">
             {block.title}
         </h3>
 
         {block.paragraphs?.map((paragraph, index) => (
-            <p key={`${block.title}-p-${index}`} className="font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary">
+            <p key={`${block.title}-p-${index}`} className="font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {paragraph}
             </p>
         ))}
@@ -92,12 +88,12 @@ const renderBlock = (block: CommentaryBlock) => (
         {block.table ? renderTable(block.table) : null}
 
         {block.bullets ? (
-            <ul className="space-y-2 font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary">
+            <ul className="space-y-2 font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {block.bullets.map((item, index) => {
                     const bullet = renderBulletItem(item);
 
                     return (
-                        <li key={`${block.title}-b-${index}`} className="flex gap-3 rounded-[0.9rem] border border-gold-border/14 bg-white/60 px-3 py-2.5 dark:border-dark-border/40 dark:bg-dark-surface/55">
+                        <li key={`${block.title}-b-${index}`} className="flex gap-3">
                             <span className="shrink-0 font-semibold text-text-primary dark:text-dark-text-primary">{bullet.marker}</span>
                             <span className="min-w-0 flex-1 break-words">{bullet.text}</span>
                         </li>
@@ -144,10 +140,10 @@ const CommentarySidebar = () => {
             desktopWidthClass="lg:w-full"
         >
             <div className="relative flex h-full min-h-0 flex-col p-4">
-                <div className="mb-4 flex shrink-0 items-center gap-2 rounded-[1rem] border border-gold-border/16 bg-white/72 px-4 py-3 dark:border-dark-border/50 dark:bg-dark-surface/58">
+                <div className="mb-4 flex shrink-0 items-center gap-2 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
                     <MessageSquare className="h-5 w-5 text-gold-primary dark:text-gold-light" />
                     <div className="min-w-0">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/80 dark:text-gold-light/80">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                             Commentary
                         </p>
                         <p className="mt-1 text-sm font-medium text-text-primary dark:text-dark-text-primary">
@@ -156,20 +152,20 @@ const CommentarySidebar = () => {
                     </div>
                 </div>
 
-                <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.18em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.18em] text-text-secondary/65 dark:text-dark-text-secondary/65">
                     <span>
                         {chapterNum}.{verseNum}
                     </span>
                     {inlineHeading ? <span className="text-sm font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">{inlineHeading}</span> : null}
                 </div>
 
-                <div className="custom-scrollbar flex-1 overflow-y-auto rounded-[1.15rem] border border-gold-border/16 bg-white/70 p-4 shadow-[0_18px_38px_-34px_rgba(0,0,0,0.35)] backdrop-blur-sm dark:border-dark-border/50 dark:bg-dark-surface/58">
+                <div className="custom-scrollbar flex-1 overflow-y-auto">
                     {bodyBlocks && bodyBlocks.length > 0 ? (
-                        <div className="space-y-3">{bodyBlocks.map(renderBlock)}</div>
+                        <div className="space-y-4">{bodyBlocks.map(renderBlock)}</div>
                     ) : (
                         <div className="flex h-full items-center justify-center text-center text-sm text-text-secondary dark:text-dark-text-secondary">
                             <div className="space-y-2">
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/65 dark:text-gold-light/65">
                                     No commentary
                                 </p>
                                 <p>Commentary is not available for this sutra.</p>

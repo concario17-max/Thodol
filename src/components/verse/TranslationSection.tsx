@@ -7,9 +7,9 @@ interface TranslationSectionProps {
     oxfordEn?: string;
 }
 
-const Card = ({ label, children }: { label: string; children: ReactNode }) => (
-    <section className="rounded-[1.15rem] border border-gold-border/16 bg-white/72 p-4 shadow-[0_18px_38px_-34px_rgba(0,0,0,0.35)] dark:border-dark-border/50 dark:bg-dark-surface/58 sm:p-5">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/80 dark:text-gold-light/80">{label}</p>
+const Block = ({ label, children }: { label: string; children: ReactNode }) => (
+    <section className="border-t border-gold-border/10 pt-4 dark:border-dark-border/45">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">{label}</p>
         <div className="mt-3 space-y-3">{children}</div>
     </section>
 );
@@ -23,19 +23,19 @@ export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: Transl
     }
 
     return (
-        <section className="space-y-4">
+        <section className="mx-auto w-full max-w-[58rem] space-y-4 px-4 sm:px-6 lg:px-8">
             {hasOxford ? (
-                <Card label="Oxford translation">
+                <Block label="Oxford translation">
                     {oxfordEn ? <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{oxfordEn}</p> : null}
                     {oxfordKr ? <p className="whitespace-pre-line break-keep font-sans text-[15px] font-medium leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">{oxfordKr}</p> : null}
-                </Card>
+                </Block>
             ) : null}
 
             {hasBae ? (
-                <Card label="Baejik / Baeuu">
+                <Block label="Baejik / Baeuu">
                     {baeJik ? (
                         <div className="space-y-1.5">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/65 dark:text-dark-text-secondary/65">
                                 Baejik
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{baeJik}</p>
@@ -43,13 +43,13 @@ export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: Transl
                     ) : null}
                     {baeUu ? (
                         <div className="space-y-1.5">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/65 dark:text-dark-text-secondary/65">
                                 Baeuu
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{baeUu}</p>
                         </div>
                     ) : null}
-                </Card>
+                </Block>
             ) : null}
         </section>
     );

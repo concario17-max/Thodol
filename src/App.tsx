@@ -73,11 +73,11 @@ const MainLayout = () => {
     }, [currentChapter]);
 
     const selectClassName =
-        'h-10 w-full min-w-0 rounded-full border border-gold-border/20 bg-white/82 px-4 pr-9 text-[11px] font-medium tracking-[0.12em] text-text-primary shadow-[0_10px_22px_-22px_rgba(96,72,21,0.35)] backdrop-blur-sm outline-none transition-all duration-300 hover:border-gold-primary/35 hover:bg-white/92 focus:border-gold-primary/45 focus:bg-white focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/70 dark:bg-dark-surface/78 dark:text-dark-text-primary dark:shadow-[0_10px_22px_-22px_rgba(0,0,0,0.65)] dark:hover:border-gold-primary/28 dark:hover:bg-dark-bg/84 dark:focus:border-gold-primary/35 dark:focus:bg-dark-bg/88 sm:h-11 sm:text-[12px]';
+        'h-8 w-full min-w-0 rounded-full border border-transparent bg-transparent px-3 pr-8 text-[10px] font-medium tracking-[0.12em] text-text-primary outline-none transition-all duration-300 placeholder:text-text-secondary/60 hover:bg-white/55 focus:bg-white/75 focus:ring-1 focus:ring-gold-primary/15 dark:text-dark-text-primary dark:hover:bg-white/6 dark:focus:bg-white/8 sm:h-9 sm:px-3.5 sm:text-[11px]';
 
     const selectionControls =
         isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
-            <div className="flex w-full min-w-0 flex-col gap-2 sm:w-auto sm:flex-row sm:flex-nowrap sm:items-center sm:gap-2">
+            <div className="flex w-full min-w-0 flex-col gap-1 rounded-full border border-gold-border/12 bg-white/56 p-1 backdrop-blur-sm dark:border-dark-border/60 dark:bg-[#1b1815]/78 sm:w-auto sm:flex-row sm:items-stretch">
                 <label className="sr-only" htmlFor="chapter-picker">
                     Chapter
                 </label>

@@ -63,13 +63,10 @@ const renderTable = (table: RenderableTable) => {
     };
 
     return (
-        <div className="overflow-hidden rounded-[1rem] border border-gold-border/16 bg-white/70 dark:border-dark-border/50 dark:bg-dark-surface/55">
-            <div
-                className="grid border-b border-gold-border/16 bg-gold-surface/30 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:bg-dark-surface/80 dark:text-gold-light"
-                style={gridStyle}
-            >
+        <div className="overflow-hidden border-y border-gold-border/12 dark:border-dark-border/45">
+            <div className="grid border-b border-gold-border/12 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
                 {Array.from({ length: columnCount }).map((_, index) => (
-                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/16 dark:border-dark-border/50' : ''}`}>
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
                         {table.headers[index] ?? ''}
                     </div>
                 ))}
@@ -99,8 +96,8 @@ const renderTable = (table: RenderableTable) => {
 };
 
 const renderCommentaryBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 rounded-[1.1rem] border border-gold-border/16 bg-white/70 p-4 dark:border-dark-border/50 dark:bg-dark-surface/58">
-        <h3 className="font-sans text-[14px] font-semibold leading-snug text-text-primary dark:text-dark-text-primary sm:text-[15px]">
+    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+        <h3 className="font-sans text-[13px] font-semibold leading-snug tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[14px]">
             {block.title}
         </h3>
 
@@ -120,7 +117,7 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
                     const text = match ? match[2] : item;
 
                     return (
-                        <li key={`${block.title}-b-${index}`} className="flex gap-3 rounded-[0.9rem] border border-gold-border/14 bg-white/60 px-3 py-2.5 dark:border-dark-border/40 dark:bg-dark-surface/55">
+                        <li key={`${block.title}-b-${index}`} className="flex gap-3">
                             <span className="shrink-0 font-semibold text-text-primary dark:text-dark-text-primary">{marker}</span>
                             <span className="min-w-0 flex-1 break-words">{text}</span>
                         </li>
@@ -148,23 +145,23 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
 
     return (
-        <section className="mx-auto w-full max-w-4xl space-y-4 px-4 sm:space-y-5 sm:px-6 lg:max-w-[58rem] lg:px-8">
-            <div className="rounded-[1.2rem] border border-gold-border/16 bg-white/72 px-4 py-4 shadow-[0_18px_38px_-34px_rgba(0,0,0,0.35)] dark:border-dark-border/50 dark:bg-dark-surface/58">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/80 dark:text-gold-light/80">
+        <section className="mx-auto w-full max-w-[58rem] space-y-4 px-4 sm:space-y-5 sm:px-6 lg:px-8">
+            <div className="border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/70 dark:text-gold-light/70">
                     Commentary
                 </p>
                 <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <span className="font-display text-[22px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
+                    <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
                         {chapterNum}.{verseNum}
                     </span>
-                    {inlineHeading ? <span className="font-sans text-[15px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
+                    {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
                 </div>
             </div>
 
             {bodyBlocks && bodyBlocks.length > 0 ? (
                 <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
             ) : (
-                <div className="rounded-[1rem] border border-gold-border/16 bg-white/68 px-4 py-5 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/50 dark:bg-dark-surface/58 dark:text-dark-text-secondary sm:text-[15px]">
+                <div className="border-l border-gold-border/12 pl-4 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[15px]">
                     No commentary is available for this sutra.
                 </div>
             )}
@@ -234,7 +231,7 @@ const VerseView = () => {
     if (error) {
         return (
             <div className="flex min-h-full items-center justify-center px-6">
-                <div className="max-w-lg rounded-2xl border border-gold-border/30 bg-white/75 p-6 text-center shadow-lg backdrop-blur-sm dark:bg-dark-surface/75">
+                <div className="max-w-lg text-center">
                     <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this sutra</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
                 </div>
@@ -256,7 +253,7 @@ const VerseView = () => {
 
     const verseRange = getVerseRangeLabel(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
-    const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-4 sm:space-y-5';
+    const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
 
     return (
         <AnimatePresence mode="wait">
@@ -268,7 +265,7 @@ const VerseView = () => {
                 variants={containerVariants}
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
-                <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6 px-4 sm:gap-8 sm:px-6 lg:max-w-[72rem] lg:px-8">
+                <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
                     <motion.div variants={itemVariants}>
                         <SutraHeader />
                     </motion.div>

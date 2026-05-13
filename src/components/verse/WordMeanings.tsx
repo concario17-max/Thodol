@@ -55,17 +55,17 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
     if (!meanings || meanings.length === 0) return null;
 
     return (
-        <section className="rounded-[1.2rem] border border-gold-border/16 bg-white/72 px-4 py-4 shadow-[0_18px_38px_-34px_rgba(0,0,0,0.35)] dark:border-dark-border/50 dark:bg-dark-surface/58 sm:px-5">
+        <section className="mx-auto w-full max-w-[58rem] px-4 sm:px-6 lg:px-8">
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex w-full items-center justify-between gap-3 rounded-[0.95rem] border border-gold-border/14 bg-white/66 px-4 py-3 text-left transition-all duration-300 hover:border-gold-primary/30 hover:bg-white/82 active:scale-[0.99] dark:border-dark-border/45 dark:bg-dark-surface/55 dark:hover:border-gold-primary/22"
+                className="flex w-full items-center justify-between gap-3 border-t border-gold-border/10 pt-4 text-left dark:border-dark-border/45"
             >
                 <div className="min-w-0">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/80 dark:text-gold-light/80">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                         Word meanings
                     </p>
-                    <p className="mt-1 text-[14px] font-medium text-text-primary dark:text-dark-text-primary">
+                    <p className="mt-1 text-[13px] font-medium text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
                         Tap to expand the lexical breakdown
                     </p>
                 </div>
@@ -73,7 +73,7 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                 <motion.span
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.35, ease: [0.2, 0, 0, 1] }}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold-border/16 text-gold-primary dark:border-dark-border/45 dark:text-gold-light"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center text-gold-primary dark:text-gold-light"
                 >
                     <ChevronDown className="h-4 w-4" />
                 </motion.span>
@@ -82,13 +82,9 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
             <AnimatePresence>
                 {isOpen ? (
                     <motion.div initial="hidden" animate="visible" exit="exit" variants={containerVariants} className="overflow-hidden">
-                        <div className="mt-4 grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="mt-4 grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {meanings.map(({ word, meaning }, index: number) => (
-                                <motion.div
-                                    key={`${word}-${index}`}
-                                    variants={itemVariants}
-                                    className="rounded-[0.95rem] border border-gold-border/14 bg-white/60 px-4 py-3 dark:border-dark-border/40 dark:bg-dark-surface/55"
-                                >
+                                <motion.div key={`${word}-${index}`} variants={itemVariants} className="border-l border-gold-border/10 pl-4 dark:border-dark-border/45">
                                     <div className="flex flex-col gap-1">
                                         <span className="font-display text-[16px] italic text-gold-primary dark:text-gold-light">
                                             {word}
