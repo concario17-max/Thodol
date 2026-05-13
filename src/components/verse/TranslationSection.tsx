@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 interface TranslationSectionProps {
     baeJik?: string;
     baeUu?: string;
@@ -5,44 +7,50 @@ interface TranslationSectionProps {
     oxfordEn?: string;
 }
 
-export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: TranslationSectionProps) => (
-    <section className="mb-8 sm:mb-10">
-        {(oxfordKr || oxfordEn) && (
-            <div className="mb-[var(--spacing-fluid-lg)]">
-                <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
-                    니콜라스 서튼
-                </h2>
-                <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-sm)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
-                    {oxfordEn && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{oxfordEn}</p>}
-                    {oxfordKr && <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{oxfordKr}</p>}
-                </div>
-            </div>
-        )}
-
-        <div className="mb-8 flex items-center justify-center opacity-30 sm:mb-10">
-            <div className="h-px w-12 bg-gold-primary" />
-        </div>
-
-        {(baeJik || baeUu) && (
-            <div className="mb-[var(--spacing-fluid-lg)]">
-                <h2 className="mb-[var(--spacing-fluid-sm)] text-center font-pretendard text-[var(--font-size-xs)] font-semibold uppercase tracking-[0.18em] text-gold-primary opacity-80 dark:text-gold-light">
-                    배철현
-                </h2>
-                <div className="mx-auto max-w-3xl space-y-[var(--spacing-fluid-md)] px-3 sm:px-6 lg:max-w-[52rem] lg:px-8">
-                    {baeJik && (
-                        <div>
-                            <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">직역</h3>
-                            <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{baeJik}</p>
-                        </div>
-                    )}
-                    {baeUu && (
-                        <div>
-                            <h3 className="mb-1.5 text-center font-sans text-[11px] font-bold uppercase tracking-widest text-gold-muted opacity-70 dark:text-gold-muted">의역</h3>
-                            <p className="whitespace-pre-line break-keep font-sans text-[var(--font-size-base)] font-medium leading-relaxed text-text-primary dark:text-dark-text-primary lg:text-[var(--font-size-lg)]">{baeUu}</p>
-                        </div>
-                    )}
-                </div>
-            </div>
-        )}
+const Card = ({ label, children }: { label: string; children: ReactNode }) => (
+    <section className="rounded-[1.15rem] border border-gold-border/16 bg-white/72 p-4 shadow-[0_18px_38px_-34px_rgba(0,0,0,0.35)] dark:border-dark-border/50 dark:bg-dark-surface/58 sm:p-5">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/80 dark:text-gold-light/80">{label}</p>
+        <div className="mt-3 space-y-3">{children}</div>
     </section>
 );
+
+export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: TranslationSectionProps) => {
+    const hasOxford = Boolean(oxfordKr || oxfordEn);
+    const hasBae = Boolean(baeJik || baeUu);
+
+    if (!hasOxford && !hasBae) {
+        return null;
+    }
+
+    return (
+        <section className="space-y-4">
+            {hasOxford ? (
+                <Card label="Oxford translation">
+                    {oxfordEn ? <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{oxfordEn}</p> : null}
+                    {oxfordKr ? <p className="whitespace-pre-line break-keep font-sans text-[15px] font-medium leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">{oxfordKr}</p> : null}
+                </Card>
+            ) : null}
+
+            {hasBae ? (
+                <Card label="Baejik / Baeuu">
+                    {baeJik ? (
+                        <div className="space-y-1.5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                                Baejik
+                            </p>
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{baeJik}</p>
+                        </div>
+                    ) : null}
+                    {baeUu ? (
+                        <div className="space-y-1.5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                                Baeuu
+                            </p>
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{baeUu}</p>
+                        </div>
+                    ) : null}
+                </Card>
+            ) : null}
+        </section>
+    );
+};

@@ -22,31 +22,30 @@ export const SidebarLayout = React.memo(
         children,
         position = 'left',
         widthClass = 'w-80',
-        desktopWidthClass = 'lg:w-80',
-        desktopMinWidthClass = '',
+        desktopWidthClass = 'lg:w-[19.5rem]',
+        desktopMinWidthClass = 'lg:min-w-[19.5rem]',
     }: SidebarLayoutProps) => {
         const isLeft = position === 'left';
-        const borderClass = isLeft ? 'border-b lg:border-r' : 'border-b lg:border-l';
         const placementClass = isLeft ? 'lg:left-0' : 'lg:right-0';
-        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden shadow-2xl lg:shadow-none` : 'hidden';
+        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden` : 'hidden';
         const desktopStateClass = isDesktopOpen
             ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:translate-x-0 lg:opacity-100`
-            : 'overflow-hidden p-0 px-0 lg:flex lg:w-0 lg:min-w-0 lg:border-none lg:translate-x-0 lg:opacity-0';
+            : 'overflow-hidden p-0 px-0 lg:flex lg:w-0 lg:min-w-0 lg:translate-x-0 lg:opacity-0';
 
         return (
             <>
                 <aside
-                    className={`relative z-50 h-auto flex-col overscroll-contain border-gold-primary/20 bg-white/40 font-pretendard backdrop-blur-md transition-all duration-300 dark:border-dark-border/50 dark:bg-dark-surface/40 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)] ${borderClass} ${placementClass}
+                    className={`relative z-50 h-auto flex-col overscroll-contain bg-[#f6efe4]/92 font-pretendard backdrop-blur-[1px] transition-all duration-300 dark:bg-[#14110f]/90 lg:sticky lg:top-4 lg:h-[calc(100dvh-2rem)] ${placementClass}
                     ${mobileStateClass}
                     ${desktopStateClass}`}
                 >
                     {title ? (
-                        <div className="flex shrink-0 items-center justify-between border-b border-gold-border/30 p-4 dark:border-[#333] lg:hidden">
+                        <div className="flex shrink-0 items-center justify-between px-4 pb-3 pt-4 lg:hidden">
                             <span className="w-full font-crimson text-lg font-bold text-text-primary dark:text-dark-text-primary">{title}</span>
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="absolute right-4 -mr-2 rounded-full p-2 text-text-secondary transition-colors hover:bg-gold-surface dark:text-dark-text-secondary dark:hover:bg-dark-surface"
+                                className="absolute right-4 top-3 rounded-full p-2 text-text-secondary transition-colors hover:bg-[#eadfcd] dark:text-dark-text-secondary dark:hover:bg-white/5"
                             >
                                 <X className="h-5 w-5" />
                             </button>
@@ -56,7 +55,7 @@ export const SidebarLayout = React.memo(
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="rounded-full p-2 text-text-secondary transition-colors hover:bg-gold-surface dark:text-dark-text-secondary dark:hover:bg-dark-surface"
+                                className="rounded-full p-2 text-text-secondary transition-colors hover:bg-[#eadfcd] dark:text-dark-text-secondary dark:hover:bg-white/5"
                             >
                                 <X className="h-5 w-5" />
                             </button>

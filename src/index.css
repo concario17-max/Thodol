@@ -1,28 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #b8860b;
-    --color-primary-dark: #8b6508;
-    --color-primary-light: #d4af37;
-    --color-background-light: #f5f0e6;
-    --color-background-paper: #ece4d5;
-    --color-text-main: #221f18;
-    --color-text-primary: #221f18;
-    --color-text-secondary: #5b5344;
-    --color-text-muted: #5b5344;
-    --color-gold-accent: #b8860b;
-    --color-gold-primary: #b8860b;
-    --color-gold-light: #d4af37;
-    --color-sanskrit-accent: #b8860b;
-    --color-gold-bg: #f1eadf;
-    --color-gold-surface: #e4dac8;
-    --color-gold-border: #cdbfa7;
-    --color-dark-bg: #111111;
-    --color-dark-surface: #181818;
-    --color-dark-border: #2d2d2d;
-    --color-dark-text-primary: #e9e2d4;
-    --color-dark-text-secondary: #b0aba2;
-    --color-ink: #161618;
+    --color-primary: #9a6d15;
+    --color-primary-dark: #75520f;
+    --color-primary-light: #c59a36;
+    --color-background-light: #f3ede4;
+    --color-background-paper: #ede5d8;
+    --color-text-main: #1f1c17;
+    --color-text-primary: #1f1c17;
+    --color-text-secondary: #61584b;
+    --color-text-muted: #61584b;
+    --color-gold-accent: #9a6d15;
+    --color-gold-primary: #9a6d15;
+    --color-gold-light: #c59a36;
+    --color-sanskrit-accent: #9a6d15;
+    --color-gold-bg: #f5efe6;
+    --color-gold-surface: #e7dfd1;
+    --color-gold-border: #d6c8b4;
+    --color-dark-bg: #11100e;
+    --color-dark-surface: #171411;
+    --color-dark-border: #27231f;
+    --color-dark-text-primary: #ede5d8;
+    --color-dark-text-secondary: #b2aaa0;
+    --color-ink: #151311;
 
     --font-sans: "SUIT", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", sans-serif;
     --font-display: "Cormorant Garamond", "Noto Serif KR", serif;
@@ -103,17 +103,17 @@
     }
 
     .glass-panel {
-        background: rgba(241, 234, 223, 0.88);
-        backdrop-filter: blur(18px) saturate(140%);
-        border: 1px solid rgba(164, 122, 28, 0.18);
-        box-shadow: 0 10px 28px 0 rgba(96, 72, 21, 0.08);
+        background: rgba(247, 242, 232, 0.84);
+        backdrop-filter: blur(12px) saturate(118%);
+        border: 1px solid rgba(147, 122, 82, 0.1);
+        box-shadow: none;
     }
 
     .dark .glass-panel {
-        background: rgba(17, 17, 17, 0.84);
-        backdrop-filter: blur(18px) saturate(150%);
-        border: 1px solid rgba(184, 134, 11, 0.16);
-        box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.46);
+        background: rgba(20, 17, 15, 0.86);
+        backdrop-filter: blur(12px) saturate(110%);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: none;
     }
 
     .reveal-item {
@@ -140,8 +140,8 @@ body {
     line-height: 1.78;
     font-family: var(--font-sans);
     background:
-        radial-gradient(circle at top, rgba(255, 248, 235, 0.72), transparent 55%),
-        linear-gradient(180deg, #f4eee3 0%, #ede4d7 100%);
+        radial-gradient(circle at top, rgba(255, 249, 240, 0.72), transparent 56%),
+        linear-gradient(180deg, #f3ede4 0%, #ece3d5 100%);
     @apply text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
 }
 

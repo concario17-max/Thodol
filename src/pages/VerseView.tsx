@@ -22,7 +22,7 @@ const containerVariants: Variants = {
         opacity: 1,
         transition: {
             staggerChildren: 0.08,
-            delayChildren: 0.1,
+            delayChildren: 0.08,
         },
     },
     exit: {
@@ -33,12 +33,12 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-    hidden: { y: 15, opacity: 0 },
+    hidden: { y: 14, opacity: 0 },
     visible: {
         y: 0,
         opacity: 1,
         transition: {
-            duration: 0.6,
+            duration: 0.55,
             ease: 'easeOut',
         },
     },
@@ -63,10 +63,13 @@ const renderTable = (table: RenderableTable) => {
     };
 
     return (
-        <div className="overflow-hidden border-y border-gold-border/15 dark:border-dark-border/40">
-            <div className="grid border-b border-gold-border/15 bg-transparent text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
+        <div className="overflow-hidden rounded-[1rem] border border-gold-border/16 bg-white/70 dark:border-dark-border/50 dark:bg-dark-surface/55">
+            <div
+                className="grid border-b border-gold-border/16 bg-gold-surface/30 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:bg-dark-surface/80 dark:text-gold-light"
+                style={gridStyle}
+            >
                 {Array.from({ length: columnCount }).map((_, index) => (
-                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/20 dark:border-dark-border/50' : ''}`}>
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/16 dark:border-dark-border/50' : ''}`}>
                         {table.headers[index] ?? ''}
                     </div>
                 ))}
@@ -81,7 +84,9 @@ const renderTable = (table: RenderableTable) => {
                         {paddedCells.map((cell, cellIndex) => (
                             <div
                                 key={`cell-${rowIndex}-${cellIndex}`}
-                                className={`px-3 py-3 text-sm leading-relaxed ${cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''} ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
+                                className={`px-3 py-3 text-sm leading-relaxed ${
+                                    cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''
+                                } ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
                             >
                                 {cell}
                             </div>
@@ -94,13 +99,13 @@ const renderTable = (table: RenderableTable) => {
 };
 
 const renderCommentaryBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 border-l border-gold-border/20 pl-4 dark:border-dark-border/40 sm:pl-5">
-        <h3 className="font-inter text-[15px] font-semibold leading-snug text-[#1C2B36] dark:text-dark-text-primary sm:text-base">
+    <section key={block.title} className="space-y-3 rounded-[1.1rem] border border-gold-border/16 bg-white/70 p-4 dark:border-dark-border/50 dark:bg-dark-surface/58">
+        <h3 className="font-sans text-[14px] font-semibold leading-snug text-text-primary dark:text-dark-text-primary sm:text-[15px]">
             {block.title}
         </h3>
 
         {block.paragraphs?.map((paragraph, index) => (
-            <p key={`${block.title}-p-${index}`} className="font-inter text-[15px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px] lg:text-[16px]">
+            <p key={`${block.title}-p-${index}`} className="font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {paragraph}
             </p>
         ))}
@@ -108,15 +113,15 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
         {block.table ? renderTable(block.table) : null}
 
         {block.bullets ? (
-            <ul className="space-y-3 font-inter text-[15px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px] lg:text-[16px]">
+            <ul className="space-y-2 font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {block.bullets.map((item, index) => {
                     const match = item.match(/^(\d+)\.\s+(.*)$/);
-                    const marker = match ? `${match[1]}.` : '•';
+                    const marker = match ? `${match[1]}.` : '-';
                     const text = match ? match[2] : item;
 
                     return (
-                        <li key={`${block.title}-b-${index}`} className="flex gap-3">
-                            <span className="shrink-0 font-semibold text-[#1C2B36] dark:text-dark-text-primary">{marker}</span>
+                        <li key={`${block.title}-b-${index}`} className="flex gap-3 rounded-[0.9rem] border border-gold-border/14 bg-white/60 px-3 py-2.5 dark:border-dark-border/40 dark:bg-dark-surface/55">
+                            <span className="shrink-0 font-semibold text-text-primary dark:text-dark-text-primary">{marker}</span>
                             <span className="min-w-0 flex-1 break-words">{text}</span>
                         </li>
                     );
@@ -143,14 +148,24 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
 
     return (
-        <section className="mx-auto w-full max-w-3xl space-y-5 px-4 sm:space-y-6 sm:px-6 lg:max-w-[52rem] lg:px-8">
-            {inlineHeading ? <h2 className="font-inter text-xl font-semibold leading-tight text-text-primary dark:text-dark-text-primary sm:text-2xl">{inlineHeading}</h2> : null}
+        <section className="mx-auto w-full max-w-4xl space-y-4 px-4 sm:space-y-5 sm:px-6 lg:max-w-[58rem] lg:px-8">
+            <div className="rounded-[1.2rem] border border-gold-border/16 bg-white/72 px-4 py-4 shadow-[0_18px_38px_-34px_rgba(0,0,0,0.35)] dark:border-dark-border/50 dark:bg-dark-surface/58">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/80 dark:text-gold-light/80">
+                    Commentary
+                </p>
+                <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <span className="font-display text-[22px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
+                        {chapterNum}.{verseNum}
+                    </span>
+                    {inlineHeading ? <span className="font-sans text-[15px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
+                </div>
+            </div>
 
             {bodyBlocks && bodyBlocks.length > 0 ? (
-                <div className="space-y-4 sm:space-y-6">{bodyBlocks.map(renderCommentaryBlock)}</div>
+                <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
             ) : (
-                <div className="border-l border-gold-border/20 pl-4 font-inter text-[15px] leading-7 text-text-secondary dark:border-dark-border/40 dark:text-dark-text-secondary sm:pl-5">
-                    아직 코멘터리가 없습니다.
+                <div className="rounded-[1rem] border border-gold-border/16 bg-white/68 px-4 py-5 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/50 dark:bg-dark-surface/58 dark:text-dark-text-secondary sm:text-[15px]">
+                    No commentary is available for this sutra.
                 </div>
             )}
         </section>
@@ -241,7 +256,7 @@ const VerseView = () => {
 
     const verseRange = getVerseRangeLabel(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
-    const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
+    const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-4 sm:space-y-5';
 
     return (
         <AnimatePresence mode="wait">
@@ -251,9 +266,9 @@ const VerseView = () => {
                 animate="visible"
                 exit="exit"
                 variants={containerVariants}
-                className="min-h-full flex flex-col justify-start font-display text-text-primary transition-colors duration-500 dark:text-dark-text-primary py-4 sm:py-6 lg:justify-center lg:py-6"
+                className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
-                <div className="mx-auto w-full max-w-[1180px] space-y-8 px-4 sm:space-y-12 sm:px-6 lg:max-w-none lg:px-8">
+                <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6 px-4 sm:gap-8 sm:px-6 lg:max-w-[72rem] lg:px-8">
                     <motion.div variants={itemVariants}>
                         <SutraHeader />
                     </motion.div>

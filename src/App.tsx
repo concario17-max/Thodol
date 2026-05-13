@@ -73,11 +73,11 @@ const MainLayout = () => {
     }, [currentChapter]);
 
     const selectClassName =
-        'h-10 shrink-0 rounded-full border border-gold-primary/18 bg-white/78 px-3 pr-8 text-[10px] font-semibold uppercase tracking-[0.14em] text-text-primary shadow-[0_10px_24px_-20px_rgba(166,139,92,0.85)] backdrop-blur-sm outline-none transition-all duration-300 hover:border-gold-primary/35 hover:bg-white/88 focus:border-gold-primary/45 focus:bg-white/92 focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/60 dark:bg-dark-surface/78 dark:text-dark-text-primary dark:shadow-[0_10px_24px_-20px_rgba(0,0,0,0.65)] dark:hover:border-gold-primary/28 dark:hover:bg-dark-bg/84 dark:focus:border-gold-primary/35 dark:focus:bg-dark-bg/88 sm:h-11 sm:text-[11px]';
+        'h-10 w-full min-w-0 rounded-full border border-gold-border/20 bg-white/82 px-4 pr-9 text-[11px] font-medium tracking-[0.12em] text-text-primary shadow-[0_10px_22px_-22px_rgba(96,72,21,0.35)] backdrop-blur-sm outline-none transition-all duration-300 hover:border-gold-primary/35 hover:bg-white/92 focus:border-gold-primary/45 focus:bg-white focus:ring-2 focus:ring-gold-primary/10 dark:border-dark-border/70 dark:bg-dark-surface/78 dark:text-dark-text-primary dark:shadow-[0_10px_22px_-22px_rgba(0,0,0,0.65)] dark:hover:border-gold-primary/28 dark:hover:bg-dark-bg/84 dark:focus:border-gold-primary/35 dark:focus:bg-dark-bg/88 sm:h-11 sm:text-[12px]';
 
     const selectionControls =
         isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
-            <div className="flex w-full min-w-0 flex-wrap items-stretch gap-1.5 overflow-visible sm:w-auto sm:flex-nowrap sm:items-center sm:gap-2">
+            <div className="flex w-full min-w-0 flex-col gap-2 sm:w-auto sm:flex-row sm:flex-nowrap sm:items-center sm:gap-2">
                 <label className="sr-only" htmlFor="chapter-picker">
                     Chapter
                 </label>
@@ -90,7 +90,7 @@ const MainLayout = () => {
                             navigate(`/chapter/${nextChapter}/verse/1`);
                         }
                     }}
-                    className={`${selectClassName} w-full min-w-0 sm:w-36`}
+                    className={`${selectClassName} sm:w-40`}
                 >
                     {chapterOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -111,7 +111,7 @@ const MainLayout = () => {
                             navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`);
                         }
                     }}
-                    className={`${selectClassName} w-full min-w-0 sm:w-28`}
+                    className={`${selectClassName} sm:w-32`}
                 >
                     {verseOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -130,7 +130,7 @@ const MainLayout = () => {
             desktopGridColumns={desktopGridColumns}
             floatingAction={
                 !isVerseView ? (
-                    <ThemeToggle className="border border-gold-primary/20 bg-white/80 p-3 shadow-xl shadow-black/5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-gold-primary/40 active:scale-90 dark:border-gold-primary/10 dark:bg-[#111]/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)]" />
+                    <ThemeToggle className="border border-gold-primary/20 bg-white/82 p-3 shadow-xl shadow-black/5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-gold-primary/40 active:scale-90 dark:border-gold-primary/10 dark:bg-[#111]/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)]" />
                 ) : undefined
             }
         >
