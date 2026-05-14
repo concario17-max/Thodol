@@ -1,6 +1,8 @@
-import { Suspense, lazy, useMemo } from 'react';
+import { CSSProperties, Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
+import { ChevronDown } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import ThemeToggle from './components/ThemeToggle';
@@ -28,6 +30,219 @@ const DefaultVerseRedirect = () => {
     const verseNum = firstSutra?.id.split('.')[1] ?? '1';
 
     return <Navigate to={`/chapter/${chapterNum}/verse/${verseNum}`} replace />;
+};
+
+interface ContextOption {
+    value: string;
+    label: string;
+}
+
+interface ContextPillPickerProps {
+    chapterNum?: string;
+    verseNum?: string;
+    chapterOptions: ContextOption[];
+    verseOptions: ContextOption[];
+    onChangeChapter: (chapter: string) => void;
+    onChangeVerse: (verse: string) => void;
+}
+
+const ContextPillPicker = ({
+    chapterNum,
+    verseNum,
+    chapterOptions,
+    verseOptions,
+    onChangeChapter,
+    onChangeVerse,
+}: ContextPillPickerProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const rootRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const panelRef = useRef<HTMLDivElement>(null);
+    const chapterSelectRef = useRef<HTMLSelectElement>(null);
+    const verseSelectRef = useRef<HTMLSelectElement>(null);
+    const [panelStyle, setPanelStyle] = useState<CSSProperties | null>(null);
+
+    useEffect(() => {
+        setIsOpen(false);
+    }, [chapterNum, verseNum]);
+
+    useLayoutEffect(() => {
+        if (!isOpen || !triggerRef.current) {
+            return;
+        }
+
+        const updatePosition = () => {
+            const rect = triggerRef.current?.getBoundingClientRect();
+
+            if (!rect) {
+                return;
+            }
+
+            const panelWidth = Math.min(352, window.innerWidth - 16);
+            const left = Math.min(Math.max(rect.left, 8), window.innerWidth - panelWidth - 8);
+            const top = rect.bottom + 8;
+
+            setPanelStyle({
+                position: 'fixed',
+                top: `${Math.round(top)}px`,
+                left: `${Math.round(left)}px`,
+                width: `${Math.round(panelWidth)}px`,
+            });
+        };
+
+        updatePosition();
+        window.addEventListener('resize', updatePosition);
+        window.addEventListener('scroll', updatePosition, true);
+
+        return () => {
+            window.removeEventListener('resize', updatePosition);
+            window.removeEventListener('scroll', updatePosition, true);
+        };
+    }, [isOpen]);
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        const handlePointerDown = (event: PointerEvent) => {
+            const target = event.target as Node;
+
+            if (
+                rootRef.current &&
+                !rootRef.current.contains(target) &&
+                !panelRef.current?.contains(target) &&
+                !chapterSelectRef.current?.contains(target) &&
+                !verseSelectRef.current?.contains(target)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('pointerdown', handlePointerDown);
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('pointerdown', handlePointerDown);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen]);
+
+    useEffect(() => {
+        if (isOpen) {
+            chapterSelectRef.current?.focus();
+        }
+    }, [isOpen]);
+
+    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '장';
+    const activeVerseLabel = verseNum ?? '절';
+
+    const selectClassName =
+        'h-10 w-full rounded-full border border-gold-border/12 bg-white/72 px-3.5 pr-8 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/20 hover:bg-white focus:border-gold-primary/30 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-white/6 dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
+
+    const panel = isOpen ? (
+        <div
+            role="dialog"
+            aria-label="Context picker"
+            ref={panelRef}
+            style={panelStyle ?? undefined}
+            className="z-[60] rounded-[1.4rem] border border-gold-border/12 bg-shell-main/98 p-3 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.55)] backdrop-blur-xl dark:border-dark-border/70 dark:bg-shell-main-dark/98"
+        >
+            <div className="mb-3 flex items-center justify-between gap-2">
+                <div>
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/80 dark:text-dark-text-secondary/80">
+                        Context
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-text-secondary dark:text-dark-text-secondary">
+                        Chapter and sutra
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-full border border-transparent px-2 py-1 text-[10px] font-semibold tracking-[0.14em] text-text-secondary transition-colors hover:border-gold-border/15 hover:bg-gold-surface/60 hover:text-text-primary dark:text-dark-text-secondary dark:hover:border-dark-border/70 dark:hover:bg-white/6 dark:hover:text-dark-text-primary"
+                >
+                    Close
+                </button>
+            </div>
+
+            <div className="space-y-3">
+                <label className="block">
+                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.22em] text-text-secondary/80 dark:text-dark-text-secondary/80">
+                        Chapter
+                    </span>
+                    <select
+                        ref={chapterSelectRef}
+                        value={chapterNum ?? ''}
+                        onChange={(event) => {
+                            const nextChapter = event.target.value;
+                            if (nextChapter) {
+                                onChangeChapter(nextChapter);
+                                setIsOpen(false);
+                            }
+                        }}
+                        className={selectClassName}
+                    >
+                        {chapterOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+
+                <label className="block">
+                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.22em] text-text-secondary/80 dark:text-dark-text-secondary/80">
+                        Sutra
+                    </span>
+                    <select
+                        ref={verseSelectRef}
+                        value={verseNum ?? ''}
+                        onChange={(event) => {
+                            const nextVerse = event.target.value;
+                            if (nextVerse) {
+                                onChangeVerse(nextVerse);
+                                setIsOpen(false);
+                            }
+                        }}
+                        className={selectClassName}
+                    >
+                        {verseOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
+        </div>
+    ) : null;
+
+    return (
+        <div ref={rootRef} className="relative shrink-0">
+            <button
+                ref={triggerRef}
+                type="button"
+                onClick={() => setIsOpen((prev) => !prev)}
+                aria-expanded={isOpen}
+                aria-haspopup="dialog"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gold-border/14 bg-shell-main/78 px-3 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-gold-primary shadow-[0_12px_32px_-20px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/88 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:text-gold-light dark:hover:bg-white/8"
+            >
+                <span className="whitespace-nowrap">{activeChapterLabel}</span>
+                <span className="text-gold-primary/45 dark:text-gold-light/45">·</span>
+                <span className="whitespace-nowrap">{activeVerseLabel}</span>
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isOpen ? createPortal(panel, document.body) : null}
+        </div>
+    );
 };
 
 const MainLayout = () => {
@@ -72,54 +287,16 @@ const MainLayout = () => {
         });
     }, [currentChapter]);
 
-    const selectClassName =
-        'h-8 w-full min-w-0 rounded-full border border-transparent bg-transparent px-3 pr-8 text-[10px] font-medium tracking-[0.12em] text-text-primary outline-none transition-all duration-300 placeholder:text-text-secondary/60 hover:bg-white/55 focus:bg-white/75 focus:ring-1 focus:ring-gold-primary/15 dark:text-dark-text-primary dark:hover:bg-white/6 dark:focus:bg-white/8 sm:h-9 sm:px-3.5 sm:text-[11px]';
-
     const selectionControls =
         isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
-            <div className="flex w-full min-w-0 flex-col gap-1 rounded-full border border-gold-border/12 bg-white/56 p-1 backdrop-blur-sm dark:border-dark-border/60 dark:bg-[#1b1815]/78 sm:w-auto sm:flex-row sm:items-stretch">
-                <label className="sr-only" htmlFor="chapter-picker">
-                    Chapter
-                </label>
-                <select
-                    id="chapter-picker"
-                    value={chapterNum ?? ''}
-                    onChange={(event) => {
-                        const nextChapter = event.target.value;
-                        if (nextChapter) {
-                            navigate(`/chapter/${nextChapter}/verse/1`);
-                        }
-                    }}
-                    className={`${selectClassName} sm:w-40`}
-                >
-                    {chapterOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-
-                <label className="sr-only" htmlFor="verse-picker">
-                    Sutra
-                </label>
-                <select
-                    id="verse-picker"
-                    value={verseNum ?? ''}
-                    onChange={(event) => {
-                        const nextVerse = event.target.value;
-                        if (nextVerse) {
-                            navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`);
-                        }
-                    }}
-                    className={`${selectClassName} sm:w-32`}
-                >
-                    {verseOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <ContextPillPicker
+                chapterNum={chapterNum}
+                verseNum={verseNum}
+                chapterOptions={chapterOptions}
+                verseOptions={verseOptions}
+                onChangeChapter={(nextChapter) => navigate(`/chapter/${nextChapter}/verse/1`)}
+                onChangeVerse={(nextVerse) => navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`)}
+            />
         ) : undefined;
 
     return (

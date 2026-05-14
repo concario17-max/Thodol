@@ -1,29 +1,31 @@
 # State
 
 ## Current Task
-Completed: swap the chapter and sutra positions inside the left sidebar marker.
+Completed: move chapter and sutra selection into a title-adjacent context pill with an on-click picker.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
 Frozen scope:
-- Rework only the left sidebar marker area in `src/components/Sidebar.tsx`.
-- Swap the chapter and sutra positions inside the marker.
-- Preserve the rest of the sidebar layout, spacing, and reading blocks.
-- Do not add new files.
+- Rework the header title area and selection controls.
+- Show only a small context pill next to the title.
+- Open a picker only when the pill is clicked.
+- Keep the rest of the header layout and the reading flow intact.
+- Avoid adding new files unless absolutely required.
 
-Reason for Route A:
-- N/A. This is a single-file slice.
+Reason for Route B:
+- The header picker and routing state changed together, so a review pass is required.
+- The implementation touched shared app flow even though it stayed in two existing files.
 
 ## Write Sets
-- main: `src/components/Sidebar.tsx`
+- worker_header_picker: completed `src/App.tsx`, `src/components/Header.tsx`
 
 ## Reviewer
-not needed
+done
 
 ## Last Update
-2026-05-14 - Swapped the chapter and sutra positions inside the left sidebar marker and verified typecheck/build.
+2026-05-14 - Implemented the title-adjacent chapter/sutra pill picker, verified typecheck/build, and closed with a no-findings review.

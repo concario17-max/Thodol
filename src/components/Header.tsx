@@ -66,11 +66,10 @@ const Header = ({
                             {title}
                         </span>
                     </Link>
+                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                 </div>
 
                 <div className="mt-2 flex w-full flex-col gap-2 border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
-                    {selectionControls ? <div className="min-w-0">{selectionControls}</div> : null}
-
                     <div className="flex flex-wrap items-center gap-2">
                         {rightContent}
                         <div className="ml-auto flex items-center gap-2">
@@ -86,7 +85,7 @@ const Header = ({
                 }`}
                 style={desktopGridStyle}
             >
-                <div className="flex min-w-0 items-center px-5">
+                <div className="flex min-w-0 items-center gap-3 px-5">
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate text-text-primary dark:text-dark-text-primary">
                         <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
                             <BookOpenText className="h-6 w-6" />
@@ -95,11 +94,11 @@ const Header = ({
                             {title}
                         </span>
                     </Link>
+                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                 </div>
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
                     <div className="flex items-center gap-2 rounded-full border border-gold-border/10 bg-shell-main/78 p-1 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
-                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                         {rightContent}
                         {renderVerseModeToggle()}
                     </div>
