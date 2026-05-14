@@ -1,31 +1,29 @@
 # State
 
 ## Current Task
-Completed: widen the dark-mode surface contrast for the calendar-like shell so the header, left reading rail, main reading column, and commentary area remain distinct.
+Completed: make the left sidebar chapter/sutra marker use concept B with a geometric, axis-based slide animation.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
 main: closed
 
 ## Contract Freeze
 Frozen scope:
-- Adjust only the dark-mode background colors / surface tones of the reading shell panels.
-- Preserve the current layout, spacing, typography, and content structure.
-- Use subtle cream-tone differences so the panels read like distinct surfaces without turning into obvious cards.
-- Keep the shell calendar-like and avoid introducing strong new borders or decorative blocks.
-- Dark mode must keep the same structure, but with enough separation to read as distinct surfaces.
+- Rework only the left sidebar chapter/sutra marker area in `src/components/Sidebar.tsx`.
+- Use concept B: a geometric, axis-based marker with a subtle slide animation.
+- Preserve the reading blocks below the marker and keep the current shell/layout intact.
+- Do not introduce a new CSS file unless absolutely required.
 
 Reason for Route B:
-- The change crosses the shared shell tokens and the reading surfaces that consume them.
-- A reviewer pass is needed to validate the dark-mode contrast uplift.
+- N/A for this small slice; keep the change in a single file.
 
 ## Write Sets
-- worker_surfaces: completed `src/index.css`
+- main: `src/components/Sidebar.tsx`
 
 ## Reviewer
-done
+not needed
 
 ## Last Update
-2026-05-14 - Widened the dark-mode surface contrast across the shared shell, verified the build, and closed with a no-findings review.
+2026-05-14 - Finished the concept B geometric slide treatment in `src/components/Sidebar.tsx` and verified typecheck/build.
