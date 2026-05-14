@@ -145,7 +145,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
 
     return (
-        <section className="mx-auto w-full max-w-[58rem] space-y-4 px-4 sm:space-y-5 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-[58rem] space-y-4 bg-shell-commentary px-4 sm:space-y-5 sm:px-6 lg:px-8 dark:bg-shell-commentary-dark">
             <div className="border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/70 dark:text-gold-light/70">
                     Commentary

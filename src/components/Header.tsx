@@ -29,7 +29,7 @@ const Header = ({
 
     const renderVerseModeToggle = () =>
         showSidebarToggle ? (
-            <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-white/66 p-1 backdrop-blur-md dark:border-dark-border/70 dark:bg-[#1b1815]/82">
+            <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-1 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
                 {[
                     { mode: 'body' as const, label: 'Body' },
                     { mode: 'commentary' as const, label: 'Commentary' },
@@ -56,9 +56,7 @@ const Header = ({
         ) : null;
 
     return (
-        <header
-            className={`glass-panel sticky top-0 z-50 w-full border-b border-gold-border/10 bg-white/52 shadow-none transition-colors duration-500 backdrop-blur-xl dark:border-dark-border/60 dark:bg-dark-surface/80 ${className}`}
-        >
+        <header className={`sticky top-0 z-50 w-full border-b border-gold-border/10 bg-shell-header shadow-none transition-colors duration-500 backdrop-blur-0 dark:border-dark-border/60 dark:bg-shell-header-dark ${className}`}>
             <div className="container mx-auto max-w-7xl px-4 py-2 sm:px-5 lg:hidden">
                 <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate">
@@ -102,7 +100,7 @@ const Header = ({
                 </div>
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
-                    <div className="flex items-center gap-2 rounded-full border border-gold-border/10 bg-white/56 p-1 backdrop-blur-md dark:border-dark-border/60 dark:bg-[#1b1815]/80">
+                    <div className="flex items-center gap-2 rounded-full border border-gold-border/10 bg-shell-main/78 p-1 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
                         {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                         {rightContent}
                         {renderVerseModeToggle()}

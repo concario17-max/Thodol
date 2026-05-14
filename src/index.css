@@ -6,6 +6,16 @@
     --color-primary-light: #bf9430;
     --color-background-light: #faf6ef;
     --color-background-paper: #f2ebdf;
+    --color-shell-canvas: #f4eee4;
+    --color-shell-header: #f7f1e8;
+    --color-shell-rail: #f0e6d8;
+    --color-shell-main: #fbf7f0;
+    --color-shell-commentary: #f2ebdf;
+    --color-shell-canvas-dark: #0f0d0b;
+    --color-shell-header-dark: #161310;
+    --color-shell-rail-dark: #12100e;
+    --color-shell-main-dark: #181512;
+    --color-shell-commentary-dark: #151210;
     --color-text-main: #201d18;
     --color-text-primary: #201d18;
     --color-text-secondary: #665b4d;
@@ -140,8 +150,8 @@ body {
     line-height: 1.78;
     font-family: var(--font-sans);
     background:
-        radial-gradient(circle at top, rgba(255, 252, 247, 0.82), transparent 58%),
-        linear-gradient(180deg, #faf6ef 0%, #f0e8db 100%);
+        radial-gradient(circle at top, rgba(255, 252, 247, 0.78), transparent 60%),
+        linear-gradient(180deg, #f8f3ea 0%, #efe6d8 100%);
     @apply text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
 }
 

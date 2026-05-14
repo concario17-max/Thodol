@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: turn the left sidebar chapter/sutra meta into a symbolic seal-like emblem with generous whitespace.
+Completed: widen the dark-mode surface contrast for the calendar-like shell so the header, left reading rail, main reading column, and commentary area remain distinct.
 
 ## Route
 Route B
@@ -11,23 +11,21 @@ main: closed
 
 ## Contract Freeze
 Frozen scope:
-- Rework only the left sidebar chapter/sutra meta area into a seal-like emblem or symbolic mark.
-- Keep the actual Sanskrit / English / Korean reading blocks below that area intact.
-- Increase whitespace and reduce the feel of a text card around the chapter/sutra marker.
-- Preserve the current calendar-like shell, header, and reading layout.
-- Favor a compact, icon-like mark over another information box.
+- Adjust only the dark-mode background colors / surface tones of the reading shell panels.
+- Preserve the current layout, spacing, typography, and content structure.
+- Use subtle cream-tone differences so the panels read like distinct surfaces without turning into obvious cards.
+- Keep the shell calendar-like and avoid introducing strong new borders or decorative blocks.
+- Dark mode must keep the same structure, but with enough separation to read as distinct surfaces.
 
 Reason for Route B:
-- This changes a shared sidebar component and may need coordinated spacing/style adjustments.
-- The visual target is specific, so the contract is frozen before implementation starts.
+- The change crosses the shared shell tokens and the reading surfaces that consume them.
+- A reviewer pass is needed to validate the dark-mode contrast uplift.
 
 ## Write Sets
-- worker_shared: completed `src/components/ui/AppShell.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/desktopVerseLayout.ts`, `src/index.css`
-- worker_content: completed `src/App.tsx`, `src/components/Header.tsx`, `src/pages/VerseView.tsx`, `src/components/CommentarySidebar.tsx`, `src/components/verse/SutraHeader.tsx`, `src/components/verse/TranslationSection.tsx`, `src/components/verse/SutraContent.tsx`, `src/components/verse/WordMeanings.tsx`
-- worker_sidebar_seal: completed `src/components/Sidebar.tsx`
+- worker_surfaces: completed `src/index.css`
 
 ## Reviewer
 done
 
 ## Last Update
-2026-05-14 - Completed the sidebar emblem treatment in `src/components/Sidebar.tsx`, corrected the write-set overlap in `STATE.md`, and verified typecheck/build.
+2026-05-14 - Widened the dark-mode surface contrast across the shared shell, verified the build, and closed with a no-findings review.

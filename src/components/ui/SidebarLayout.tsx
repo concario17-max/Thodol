@@ -28,9 +28,10 @@ export const SidebarLayout = React.memo(
         const isLeft = position === 'left';
         const placementClass = isLeft ? 'lg:left-0' : 'lg:right-0';
         const desktopBorderClass = isLeft ? 'lg:border-r' : 'lg:border-l';
-        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden border border-gold-border/10 bg-[#fbf8f1] dark:border-white/6 dark:bg-[#13110f]` : 'hidden';
+        const surfaceClass = isLeft ? 'bg-shell-rail dark:bg-shell-rail-dark' : 'bg-shell-commentary dark:bg-shell-commentary-dark';
+        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden border border-gold-border/10 dark:border-white/6 ${surfaceClass}` : 'hidden';
         const desktopStateClass = isDesktopOpen
-            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:translate-x-0 lg:opacity-100 ${desktopBorderClass} lg:border-gold-border/10 dark:lg:border-white/6`
+            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:translate-x-0 lg:opacity-100 ${desktopBorderClass} lg:border-gold-border/10 dark:lg:border-white/6 ${surfaceClass}`
             : 'overflow-hidden p-0 px-0 lg:flex lg:w-0 lg:min-w-0 lg:translate-x-0 lg:opacity-0 lg:border-0';
 
         return (
@@ -46,7 +47,7 @@ export const SidebarLayout = React.memo(
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="absolute right-4 top-3 rounded-full p-2 text-text-secondary transition-colors hover:bg-[#efe7d9] dark:text-dark-text-secondary dark:hover:bg-white/5"
+                                className="absolute right-4 top-3 rounded-full p-2 text-text-secondary transition-colors hover:bg-shell-header/80 dark:text-dark-text-secondary dark:hover:bg-white/5"
                             >
                                 <X className="h-5 w-5" />
                             </button>
@@ -56,7 +57,7 @@ export const SidebarLayout = React.memo(
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="rounded-full p-2 text-text-secondary transition-colors hover:bg-[#efe7d9] dark:text-dark-text-secondary dark:hover:bg-white/5"
+                                className="rounded-full p-2 text-text-secondary transition-colors hover:bg-shell-header/80 dark:text-dark-text-secondary dark:hover:bg-white/5"
                             >
                                 <X className="h-5 w-5" />
                             </button>
