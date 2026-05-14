@@ -56,18 +56,47 @@ const Sidebar = () => {
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6 sm:gap-7">
                     <div className="flex justify-center px-1 py-3 sm:px-2 sm:py-4">
-                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center overflow-hidden rounded-[1.75rem] border border-gold-border/14 bg-gradient-to-br from-shell-main via-shell-commentary/65 to-shell-canvas/30 shadow-[0_18px_40px_-32px_rgba(0,0,0,0.45)] transition-colors duration-500 dark:border-dark-border/40 dark:from-shell-main-dark dark:via-shell-commentary-dark/80 dark:to-shell-canvas-dark/60">
-                            <div className="pointer-events-none absolute inset-4 rounded-[1.45rem] border border-gold-primary/12 dark:border-gold-light/12" />
-                            <div className="pointer-events-none absolute inset-8 rounded-[1.2rem] border border-gold-primary/8 dark:border-gold-light/8" />
-                            <div className="pointer-events-none absolute inset-x-9 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-gold-primary/16 to-transparent dark:via-gold-light/16" />
-                            <div className="pointer-events-none absolute inset-y-9 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gold-primary/12 to-transparent dark:via-gold-light/12" />
-                            <div className="pointer-events-none absolute left-6 top-6 h-8 w-8 border-l border-t border-gold-primary/18 dark:border-gold-light/18" />
-                            <div className="pointer-events-none absolute bottom-6 right-6 h-8 w-8 border-b border-r border-gold-primary/18 dark:border-gold-light/18" />
+                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-shell-main via-shell-commentary/55 to-shell-canvas/20 shadow-[0_16px_34px_-30px_rgba(0,0,0,0.4)] transition-colors duration-500 dark:from-shell-main-dark dark:via-shell-commentary-dark/76 dark:to-shell-canvas-dark/54">
+                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-gold-primary/14 to-transparent dark:via-gold-light/14" />
+                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gold-primary/12 to-transparent dark:via-gold-light/12" />
+                            <div className="pointer-events-none absolute left-8 top-8 h-10 w-10 border-l border-t border-gold-primary/12 dark:border-gold-light/12" />
+                            <div className="pointer-events-none absolute bottom-8 right-8 h-10 w-10 border-b border-r border-gold-primary/12 dark:border-gold-light/12" />
+
+                            <style>{`
+                                @keyframes sidebar-marker-top {
+                                    0%, 100% { transform: translateX(0); }
+                                    50% { transform: translateX(6px); }
+                                }
+                                @keyframes sidebar-marker-center {
+                                    0%, 100% { transform: translateY(0); }
+                                    50% { transform: translateY(-6px); }
+                                }
+                                @keyframes sidebar-marker-bottom {
+                                    0%, 100% { transform: translateX(0); }
+                                    50% { transform: translateX(-6px); }
+                                }
+                                .sidebar-marker-top {
+                                    animation: sidebar-marker-top 6.2s ease-in-out infinite;
+                                }
+                                .sidebar-marker-center {
+                                    animation: sidebar-marker-center 7.4s ease-in-out infinite;
+                                }
+                                .sidebar-marker-bottom {
+                                    animation: sidebar-marker-bottom 6.8s ease-in-out infinite;
+                                }
+                                @media (prefers-reduced-motion: reduce) {
+                                    .sidebar-marker-top,
+                                    .sidebar-marker-center,
+                                    .sidebar-marker-bottom {
+                                        animation: none;
+                                    }
+                                }
+                            `}</style>
 
                             <div className="relative flex h-full w-full flex-col justify-between px-7 py-7 text-center">
                                 <div
-                                    className={`flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 transition-all duration-700 ease-out dark:text-gold-light/70 ${
-                                        markerReady ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0'
+                                    className={`sidebar-marker-top flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 transition-opacity duration-700 ease-out dark:text-gold-light/70 ${
+                                        markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
                                     <span>Chapter</span>
@@ -76,8 +105,8 @@ const Sidebar = () => {
 
                                 <div className="flex flex-1 items-center justify-center">
                                     <p
-                                        className={`font-display text-[42px] font-semibold leading-none tracking-[0.12em] text-text-primary transition-all duration-700 ease-out dark:text-dark-text-primary ${
-                                            markerReady ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                                        className={`sidebar-marker-center font-display text-[54px] font-semibold leading-none tracking-[0.1em] text-text-primary transition-opacity duration-700 ease-out dark:text-dark-text-primary ${
+                                            markerReady ? 'opacity-100' : 'opacity-0'
                                         }`}
                                     >
                                         {chapterMeta}
@@ -85,21 +114,21 @@ const Sidebar = () => {
                                 </div>
 
                                 <div
-                                    className={`flex items-end justify-between transition-all duration-700 ease-out ${
-                                        markerReady ? 'translate-x-0 opacity-100' : 'translate-x-3 opacity-0'
+                                    className={`sidebar-marker-bottom flex items-end justify-between transition-opacity duration-700 ease-out ${
+                                        markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
                                     <div className="flex flex-col items-start gap-1 text-left">
                                         <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/55 dark:text-dark-text-secondary/65">
                                             Sutra
                                         </p>
-                                        <span className="h-px w-9 bg-gold-primary/20 dark:bg-gold-light/20" />
+                                        <span className="h-px w-12 bg-gradient-to-r from-gold-primary/22 to-transparent dark:from-gold-light/22" />
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[9px] font-semibold uppercase tracking-[0.32em] text-text-secondary/50 dark:text-dark-text-secondary/60">
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-gold-primary dark:text-gold-light">
                                             {verseMeta}
                                         </span>
-                                        <span className="h-2 w-2 rounded-full border border-gold-primary/30 bg-gold-primary/50 dark:border-gold-light/30 dark:bg-gold-light/50" />
+                                        <span className="h-2.5 w-2.5 rounded-full bg-gold-primary/55 shadow-[0_0_0_1px_rgba(191,148,48,0.18)] dark:bg-gold-light/55 dark:shadow-[0_0_0_1px_rgba(255,220,160,0.16)]" />
                                     </div>
                                 </div>
                             </div>

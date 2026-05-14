@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: make the left sidebar chapter/sutra marker use concept B with a geometric, axis-based slide animation.
+Completed: remove the left sidebar marker border, enlarge the chapter/sutra numbers, and keep the marker moving continuously.
 
 ## Route
 Route A
@@ -12,12 +12,14 @@ main: closed
 ## Contract Freeze
 Frozen scope:
 - Rework only the left sidebar chapter/sutra marker area in `src/components/Sidebar.tsx`.
-- Use concept B: a geometric, axis-based marker with a subtle slide animation.
+- Remove the visible border from the marker.
+- Increase the chapter and sutra numbers so they dominate the marker.
+- Keep the marker in continuous motion.
 - Preserve the reading blocks below the marker and keep the current shell/layout intact.
-- Do not introduce a new CSS file unless absolutely required.
+- Avoid adding a new CSS file if the effect can be done in the component file itself.
 
-Reason for Route B:
-- N/A for this small slice; keep the change in a single file.
+Reason for Route A:
+- N/A. This is a single-file slice.
 
 ## Write Sets
 - main: `src/components/Sidebar.tsx`
@@ -26,4 +28,4 @@ Reason for Route B:
 not needed
 
 ## Last Update
-2026-05-14 - Finished the concept B geometric slide treatment in `src/components/Sidebar.tsx` and verified typecheck/build.
+2026-05-14 - Finished the borderless continuous-motion sidebar marker treatment and verified typecheck/build.
