@@ -46,23 +46,34 @@ const Sidebar = () => {
             desktopMinWidthClass="lg:min-w-[22rem]"
         >
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
-                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-4 sm:gap-5">
-                    <div className="flex items-end justify-between gap-3 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
-                        <div>
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/75 dark:text-gold-light/75">
-                                Chapter
-                            </p>
-                            <p className="mt-1 font-display text-[28px] font-semibold leading-none tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
-                                {chapterMeta}
-                            </p>
-                        </div>
-                        <div className="text-right">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-text-secondary/60 dark:text-dark-text-secondary/65">
-                                Sutra
-                            </p>
-                            <p className="mt-1 font-display text-[20px] font-semibold leading-none tracking-[0.12em] text-gold-primary dark:text-gold-light">
-                                {verseMeta}
-                            </p>
+                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6 sm:gap-7">
+                    <div className="flex justify-center px-1 py-2 sm:px-2 sm:py-3">
+                        <div className="relative flex h-52 w-full max-w-[240px] items-center justify-center overflow-hidden rounded-[2rem] border border-gold-border/15 bg-gradient-to-b from-gold-primary/[0.08] via-background-secondary/70 to-transparent shadow-[0_18px_40px_-32px_rgba(0,0,0,0.55)] dark:border-dark-border/35 dark:from-gold-light/[0.08] dark:via-dark-surface/70 dark:to-transparent">
+                            <div className="pointer-events-none absolute inset-4 rounded-full border border-gold-primary/18 dark:border-gold-light/18" />
+                            <div className="pointer-events-none absolute inset-9 rounded-full border border-gold-primary/10 dark:border-gold-light/10" />
+                            <div className="pointer-events-none absolute inset-x-8 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-gold-primary/20 to-transparent dark:via-gold-light/20" />
+                            <div className="pointer-events-none absolute inset-y-8 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gold-primary/14 to-transparent dark:via-gold-light/14" />
+                            <div className="relative flex w-full flex-col items-center justify-center px-6 text-center">
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.5em] text-gold-primary/70 dark:text-gold-light/70">
+                                    Chapter
+                                </p>
+                                <div className="mt-4 flex items-center gap-4">
+                                    <span className="h-px w-8 bg-gold-primary/20 dark:bg-gold-light/20" />
+                                    <p className="font-display text-[42px] font-semibold leading-none tracking-[0.12em] text-text-primary dark:text-dark-text-primary">
+                                        {chapterMeta}
+                                    </p>
+                                    <span className="h-px w-8 bg-gold-primary/20 dark:bg-gold-light/20" />
+                                </div>
+                                <div className="mt-4 flex items-center gap-3">
+                                    <span className="rounded-full border border-gold-primary/18 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.36em] text-text-secondary/65 dark:border-gold-light/18 dark:text-dark-text-secondary/70">
+                                        Sutra
+                                    </span>
+                                    <span className="h-2 w-2 rounded-full bg-gold-primary/45 dark:bg-gold-light/45" />
+                                    <p className="font-display text-[22px] font-semibold leading-none tracking-[0.14em] text-gold-primary dark:text-gold-light">
+                                        {verseMeta}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
