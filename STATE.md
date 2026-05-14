@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: remove the dark mode icon from the header.
+Completed: swap the chapter and sutra positions inside the left sidebar marker.
 
 ## Route
 Route A
@@ -11,19 +11,19 @@ main: closed
 
 ## Contract Freeze
 Frozen scope:
-- Rework only the header icon row in `src/components/Header.tsx`.
-- Remove the dark mode icon from the visible controls.
-- Preserve the rest of the header layout and the other buttons.
+- Rework only the left sidebar marker area in `src/components/Sidebar.tsx`.
+- Swap the chapter and sutra positions inside the marker.
+- Preserve the rest of the sidebar layout, spacing, and reading blocks.
 - Do not add new files.
 
 Reason for Route A:
 - N/A. This is a single-file slice.
 
 ## Write Sets
-- main: `src/components/Header.tsx`
+- main: `src/components/Sidebar.tsx`
 
 ## Reviewer
 not needed
 
 ## Last Update
-2026-05-14 - Removed the dark mode icon from the header and verified typecheck/build.
+2026-05-14 - Swapped the chapter and sutra positions inside the left sidebar marker and verified typecheck/build.

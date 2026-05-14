@@ -99,7 +99,7 @@ const Sidebar = () => {
                                         markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
-                                    <span>Chapter</span>
+                                    <span>Sutra</span>
                                     <span className="text-text-secondary/55 dark:text-dark-text-secondary/65">Axis</span>
                                 </div>
 
@@ -109,7 +109,7 @@ const Sidebar = () => {
                                             markerReady ? 'opacity-100' : 'opacity-0'
                                         }`}
                                     >
-                                        {chapterMeta}
+                                        {verseMeta}
                                     </p>
                                 </div>
 
@@ -120,13 +120,13 @@ const Sidebar = () => {
                                 >
                                     <div className="flex flex-col items-start gap-1 text-left">
                                         <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/55 dark:text-dark-text-secondary/65">
-                                            Sutra
+                                            Chapter
                                         </p>
                                         <span className="h-px w-12 bg-gradient-to-r from-gold-primary/22 to-transparent dark:from-gold-light/22" />
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-gold-primary dark:text-gold-light">
-                                            {verseMeta}
+                                            {chapterMeta}
                                         </span>
                                         <span className="h-2.5 w-2.5 rounded-full bg-gold-primary/55 shadow-[0_0_0_1px_rgba(191,148,48,0.18)] dark:bg-gold-light/55 dark:shadow-[0_0_0_1px_rgba(255,220,160,0.16)]" />
                                     </div>
