@@ -144,7 +144,7 @@ const ContextPillPicker = ({
     const activeVerseLabel = verseNum ?? '절';
 
     const selectClassName =
-        'h-10 w-full rounded-full border border-gold-border/12 bg-white/72 px-3.5 pr-8 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/20 hover:bg-white focus:border-gold-primary/30 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-white/6 dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
+        'h-10 w-full appearance-none rounded-[0.95rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.64)_100%)] px-3.5 pr-8 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/20 hover:bg-white hover:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.5)] focus:border-gold-primary/30 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)] dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
 
     const panel = isOpen ? (
         <div
@@ -152,17 +152,26 @@ const ContextPillPicker = ({
             aria-label="Context picker"
             ref={panelRef}
             style={panelStyle ?? undefined}
-            className="z-[60] rounded-[1.4rem] border border-gold-border/12 bg-shell-main/98 p-3 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.55)] backdrop-blur-xl dark:border-dark-border/70 dark:bg-shell-main-dark/98"
+            className="z-[60] rounded-[1.5rem] border border-gold-border/12 bg-gradient-to-b from-shell-main/98 via-shell-main/96 to-shell-commentary/88 p-3 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.55)] backdrop-blur-xl dark:border-dark-border/70 dark:from-shell-main-dark/98 dark:via-shell-main-dark/95 dark:to-shell-commentary-dark/88"
         >
-            <div className="mb-3 flex items-center justify-between gap-2">
-                <div>
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/80 dark:text-dark-text-secondary/80">
-                        Context
-                    </p>
-                    <p className="mt-0.5 text-[11px] text-text-secondary dark:text-dark-text-secondary">
-                        Chapter and sutra
-                    </p>
+            <div className="mb-3 overflow-hidden rounded-[1.1rem] border border-gold-border/10 bg-white/62 px-3 py-2.5 dark:border-dark-border/60 dark:bg-white/5">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/72 dark:text-dark-text-secondary/75">
+                    Context
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                    <span className="rounded-full border border-gold-primary/16 bg-gold-primary/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-gold-primary dark:border-gold-light/16 dark:bg-gold-light/10 dark:text-gold-light">
+                        Chapter {chapterNum ?? '0'}
+                    </span>
+                    <span className="h-px flex-1 bg-gradient-to-r from-gold-primary/20 to-transparent dark:from-gold-light/20" />
+                    <span className="rounded-full border border-gold-primary/12 bg-shell-main/80 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/70 dark:border-gold-light/12 dark:bg-shell-main-dark/80 dark:text-dark-text-secondary/80">
+                        Sutra {verseNum ?? '0'}
+                    </span>
                 </div>
+                <p className="mt-2 text-[11px] text-text-secondary dark:text-dark-text-secondary">
+                    Pick a chapter or jump straight to a sutra.
+                </p>
+            </div>
+            <div className="mb-3 flex items-center justify-end">
                 <button
                     type="button"
                     onClick={() => setIsOpen(false)}
@@ -173,7 +182,7 @@ const ContextPillPicker = ({
             </div>
 
             <div className="space-y-3">
-                <label className="block">
+                <label className="block rounded-[1rem] border border-gold-border/10 bg-white/55 p-2.5 dark:border-dark-border/60 dark:bg-white/5">
                     <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.22em] text-text-secondary/80 dark:text-dark-text-secondary/80">
                         Chapter
                     </span>
@@ -197,8 +206,8 @@ const ContextPillPicker = ({
                     </select>
                 </label>
 
-                <label className="block">
-                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.22em] text-text-secondary/80 dark:text-dark-text-secondary/80">
+                <label className="block rounded-[1rem] border border-gold-border/10 bg-white/55 p-2.5 dark:border-dark-border/60 dark:bg-white/5">
+                    <span className="mb-1.5 block text-[9px] font-semibold tracking-[0.22em] text-text-secondary/80 uppercase dark:text-dark-text-secondary/80">
                         Sutra
                     </span>
                     <select
@@ -277,8 +286,8 @@ const MainLayout = () => {
             const nextSutra = currentChapter.sutras[index + 1];
             const label =
                 nextSutra && Number.parseInt(nextSutra.id.split('.')[1], 10) > sutraNumber + 1
-                    ? `${currentChapter.chapter}.${sutraNumber}-${Number.parseInt(nextSutra.id.split('.')[1], 10) - 1}`
-                    : `${currentChapter.chapter}.${sutraNumberText}`;
+                    ? `${sutraNumberText}-${Number.parseInt(nextSutra.id.split('.')[1], 10) - 1}`
+                    : sutraNumberText;
 
             return {
                 value: sutraNumberText,
