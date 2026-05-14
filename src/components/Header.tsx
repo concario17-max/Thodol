@@ -2,7 +2,6 @@ import { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpenText } from 'lucide-react';
 import { useUI } from '../context/UIContext';
-import ThemeToggle from './ThemeToggle';
 import { getDesktopVerseColumns } from './ui/desktopVerseLayout';
 
 interface HeaderProps {
@@ -76,7 +75,6 @@ const Header = ({
                         {rightContent}
                         <div className="ml-auto flex items-center gap-2">
                             {renderVerseModeToggle()}
-                            <ThemeToggle />
                         </div>
                     </div>
                 </div>
@@ -105,8 +103,6 @@ const Header = ({
                         {rightContent}
                         {renderVerseModeToggle()}
                     </div>
-
-                    <ThemeToggle className="ml-0" />
                 </div>
             </div>
         </header>
