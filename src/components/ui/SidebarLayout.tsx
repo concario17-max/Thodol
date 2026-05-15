@@ -27,9 +27,7 @@ export const SidebarLayout = React.memo(
         }: SidebarLayoutProps) => {
         const isLeft = position === 'left';
         const placementClass = isLeft ? 'lg:left-0' : 'lg:right-0';
-        const surfaceClass = isLeft
-            ? 'bg-shell-rail [background-image:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.015)_18%,rgba(88,84,77,0.05)_100%)] dark:bg-shell-rail-dark dark:[background-image:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)_20%,rgba(0,0,0,0.08)_100%)]'
-            : 'bg-shell-commentary dark:bg-shell-commentary-dark';
+        const surfaceClass = isLeft ? 'bg-shell-rail dark:bg-shell-rail-dark' : 'bg-shell-commentary dark:bg-shell-commentary-dark';
         const mobileBorderClass = isLeft ? 'border-zinc-300/45 dark:border-white/8' : 'border-gold-border/10 dark:border-white/6';
         const desktopBorderClass = isLeft ? 'lg:border-r lg:border-zinc-300/40 dark:lg:border-white/8' : 'lg:border-l';
         const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden border ${mobileBorderClass} ${surfaceClass}` : 'hidden';

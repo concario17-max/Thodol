@@ -54,11 +54,11 @@ const Sidebar = () => {
             desktopMinWidthClass="lg:min-w-[22rem]"
         >
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
-                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-5 rounded-[2rem] bg-[linear-gradient(180deg,rgba(229,226,219,0.94),rgba(223,219,211,0.9))] px-4 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_1px_0_rgba(255,255,255,0.18)] ring-1 ring-black/5 transition-colors duration-500 dark:bg-[linear-gradient(180deg,rgba(48,48,46,0.96),rgba(41,41,39,0.94))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_1px_0_rgba(0,0,0,0.3)] dark:ring-white/6 sm:gap-6">
-                    <div className="flex justify-center px-1 py-2 sm:px-2 sm:py-3">
-                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center bg-[linear-gradient(180deg,rgba(220,217,210,0.9),rgba(214,210,202,0.84))] ring-1 ring-black/5 transition-colors duration-500 dark:bg-[linear-gradient(180deg,rgba(60,60,57,0.92),rgba(50,50,47,0.88))] dark:ring-white/6">
-                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-black/6 to-transparent dark:via-white/6" />
-                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-black/6 to-transparent dark:via-white/6" />
+                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-5 px-2 py-2 transition-colors duration-500 sm:gap-6">
+                    <div className="flex justify-center px-1 py-2 sm:px-1.5 sm:py-2.5">
+                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center transition-colors duration-500">
+                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-black/4 to-transparent dark:via-white/4" />
+                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-black/4 to-transparent dark:via-white/4" />
 
                             <style>{`
                                 @keyframes sidebar-marker-top {
@@ -134,7 +134,7 @@ const Sidebar = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <section className="space-y-2 border-l border-black/6 pl-4 dark:border-white/8">
+                        <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/50 dark:text-dark-text-secondary/58">
                                 Sanskrit
                             </p>
@@ -143,7 +143,7 @@ const Sidebar = () => {
                             </p>
                         </section>
 
-                        <section className="space-y-2 border-l border-black/6 pl-4 dark:border-white/8">
+                        <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 English
                             </p>
@@ -152,7 +152,7 @@ const Sidebar = () => {
                             </p>
                         </section>
 
-                        <section className="space-y-2 border-l border-black/6 pl-4 dark:border-white/8">
+                        <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 Korean
                             </p>
