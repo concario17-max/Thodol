@@ -155,10 +155,7 @@ const ContextPillPicker = ({
             className="z-[60] rounded-[1.5rem] border border-gold-border/12 bg-gradient-to-b from-shell-main/98 via-shell-main/96 to-shell-commentary/88 p-3 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.55)] backdrop-blur-xl dark:border-dark-border/70 dark:from-shell-main-dark/98 dark:via-shell-main-dark/95 dark:to-shell-commentary-dark/88"
         >
             <div className="mb-3 overflow-hidden rounded-[1.1rem] border border-gold-border/10 bg-white/62 px-3 py-2.5 dark:border-dark-border/60 dark:bg-white/5">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/72 dark:text-dark-text-secondary/75">
-                    Context
-                </p>
-                <div className="mt-2 flex items-center gap-2">
+                <div className="flex items-center gap-2">
                     <span className="rounded-full border border-gold-primary/16 bg-gold-primary/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-gold-primary dark:border-gold-light/16 dark:bg-gold-light/10 dark:text-gold-light">
                         Chapter {chapterNum ?? '0'}
                     </span>
@@ -167,18 +164,6 @@ const ContextPillPicker = ({
                         Sutra {verseNum ?? '0'}
                     </span>
                 </div>
-                <p className="mt-2 text-[11px] text-text-secondary dark:text-dark-text-secondary">
-                    Pick a chapter or jump straight to a sutra.
-                </p>
-            </div>
-            <div className="mb-3 flex items-center justify-end">
-                <button
-                    type="button"
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-full border border-transparent px-2 py-1 text-[10px] font-semibold tracking-[0.14em] text-text-secondary transition-colors hover:border-gold-border/15 hover:bg-gold-surface/60 hover:text-text-primary dark:text-dark-text-secondary dark:hover:border-dark-border/70 dark:hover:bg-white/6 dark:hover:text-dark-text-primary"
-                >
-                    Close
-                </button>
             </div>
 
             <div className="space-y-3">

@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: make the header context picker feel more polished and remove chapter prefixes from sutra labels.
+Completed: simplify the header context picker by removing its helper text and close button.
 
 ## Route
 Route A
@@ -12,9 +12,8 @@ main: closed
 ## Contract Freeze
 Frozen scope:
 - Rework only `src/App.tsx`.
-- Make the existing context picker feel more polished and less bland.
+- Remove the helper text and close button from the existing context picker.
 - Keep the title-adjacent pill trigger intact.
-- Remove chapter prefixes from the sutra option labels so they show only the sutra number.
 - Keep the rest of the header layout and routing flow intact.
 
 Reason for Route A:
@@ -28,4 +27,4 @@ Reason for Route A:
 not needed
 
 ## Last Update
-2026-05-14 - Polished the header context picker and removed chapter prefixes from sutra labels, then verified typecheck/build.
+2026-05-15 - Simplified the header context picker by stripping helper text and the close button, then verified typecheck/build.
