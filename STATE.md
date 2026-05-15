@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: slightly differentiate the left and right panel background colors so the reading layout reads more clearly.
+Completed: make the left panel clearly distinct from the right panel by widening the shell surface tone contrast.
 
 ## Route
 Route A
@@ -12,13 +12,13 @@ main: closed
 ## Contract Freeze
 Frozen scope:
 - Rework only `src/index.css`.
-- Adjust the shared shell background tokens so the left and right reading surfaces are not identical.
+- Make the left rail noticeably different from the main reading surface.
 - Keep the layout, spacing, typography, and component structure unchanged.
-- Use subtle cream/paper tone differences only.
+- Preserve the calendar-like overall palette, but increase the separation between shell surfaces.
 
 Reason for Route A:
-- The requested change can be satisfied by token-level color adjustments in one file.
-- No shared layout rewrites or new files are needed.
+- The change is token-only and stays in one file.
+- No shared layout or interaction rewrites are needed.
 
 ## Write Sets
 - main: `src/index.css`
@@ -27,4 +27,4 @@ Reason for Route A:
 not needed
 
 ## Last Update
-2026-05-15 - Differentiated the left and right panel background tokens in `src/index.css` and verified typecheck/build.
+2026-05-15 - Increased the shell surface contrast so the left panel reads more distinctly from the right panel, then verified typecheck/build.
