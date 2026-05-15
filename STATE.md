@@ -1,7 +1,7 @@
-# State
+ï»¿# State
 
 ## Current Task
-Active: update the header verse mode labels in `src/components/Header.tsx` to use `½ÉÈ­` and `ÇØ¼³` in that order.
+Active: reduce the size of the header verse mode toggle in `src/components/Header.tsx` while keeping the `ì‹¬í™”` / `í•´ì„¤` labels.
 
 ## Route
 Route A
@@ -11,12 +11,12 @@ main: write-capable
 
 ## Contract Freeze
 Frozen scope:
-- Update only the verse mode toggle labels in `src/components/Header.tsx`.
-- Change the order so `½ÉÈ­` comes before `ÇØ¼³`.
+- Update only the verse mode toggle size and spacing in `src/components/Header.tsx`.
+- Keep the `ì‹¬í™”` / `í•´ì„¤` labels and their order unchanged.
 - Keep the rest of the app layout, routing, sidebar, and data flow unchanged.
 
 Reason for Route A:
-- This is a single-file label change with no shared layout or data flow impact.
+- This is a single-file visual tweak with no shared layout or data flow impact.
 - No fan-out into other files is needed.
 
 ## Write Sets
@@ -26,4 +26,4 @@ Reason for Route A:
 not needed
 
 ## Last Update
-2026-05-15 - Re-scoped the header label swap to a single-file Route A slice.
+2026-05-15 - Re-scoped the header control to a single-file Route A size tweak.
