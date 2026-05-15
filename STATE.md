@@ -1,29 +1,29 @@
 ﻿# State
 
 ## Current Task
-Completed: rollback the repository to the snapshot at commit `1621e16`.
+Completed: remove the `READING / Sutra view` header block from the verse page.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
-main: planner-only
+main: single-writer
 
 ## Contract Freeze
 Frozen scope completed:
-- Reverted all tracked changes after `1621e16`.
-- Preserved the untracked root `.odt` reference files.
-- Used a non-destructive `git revert` path instead of a hard reset.
+- Removed the visible `SutraHeader` block from `src/pages/VerseView.tsx`.
+- Kept the rest of the verse page layout unchanged.
+- Did not touch the untracked root `.odt` reference files.
 
-Reason for Route B:
-- The rollback spans many tracked files and was handled as a coordinated repository change.
+Reason for Route A:
+- This was a tiny local UI hotfix in one implementation slice.
+- The change was limited to removing a single displayed block from the verse page.
 
 ## Write Sets
-- main: `STATE.md`
-- worker_shared: reverted tracked files
+- main: `STATE.md`, `src/pages/VerseView.tsx`
 
 ## Reviewer
-No findings.
+not needed
 
 ## Last Update
-2026-05-15 - Completed the rollback to `1621e16` using `git revert`.
+2026-05-15 - Completed the header-block removal hotfix.

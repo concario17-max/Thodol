@@ -2,7 +2,6 @@ import { useRef, useEffect, type CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useYogaData } from '../hooks/useYogaData';
 import { useAudio } from '../hooks/useAudio';
-import { SutraHeader } from '../components/verse/SutraHeader';
 import { SutraContent } from '../components/verse/SutraContent';
 import { AudioPlayer } from '../components/verse/AudioPlayer';
 import { TranslationSection } from '../components/verse/TranslationSection';
@@ -266,10 +265,6 @@ const VerseView = () => {
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
                 <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
-                    <motion.div variants={itemVariants}>
-                        <SutraHeader />
-                    </motion.div>
-
                     <section className={bodyContentClassName}>
                         <motion.div variants={itemVariants}>
                             <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
