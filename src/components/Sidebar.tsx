@@ -56,11 +56,9 @@ const Sidebar = () => {
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
                 <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6 sm:gap-7">
                     <div className="flex justify-center px-1 py-3 sm:px-2 sm:py-4">
-                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-shell-main via-shell-commentary/55 to-shell-canvas/20 shadow-[0_16px_34px_-30px_rgba(0,0,0,0.4)] transition-colors duration-500 dark:from-shell-main-dark dark:via-shell-commentary-dark/76 dark:to-shell-canvas-dark/54">
-                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-gold-primary/14 to-transparent dark:via-gold-light/14" />
-                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-gold-primary/12 to-transparent dark:via-gold-light/12" />
-                            <div className="pointer-events-none absolute left-8 top-8 h-10 w-10 border-l border-t border-gold-primary/12 dark:border-gold-light/12" />
-                            <div className="pointer-events-none absolute bottom-8 right-8 h-10 w-10 border-b border-r border-gold-primary/12 dark:border-gold-light/12" />
+                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center bg-shell-rail/42 transition-colors duration-500 dark:bg-shell-rail-dark/58">
+                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-black/5 to-transparent dark:via-white/5" />
+                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-black/5 to-transparent dark:via-white/5" />
 
                             <style>{`
                                 @keyframes sidebar-marker-top {
@@ -95,12 +93,12 @@ const Sidebar = () => {
 
                             <div className="relative flex h-full w-full flex-col justify-between px-7 py-7 text-center">
                                 <div
-                                    className={`sidebar-marker-top flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-gold-primary/70 transition-opacity duration-700 ease-out dark:text-gold-light/70 ${
+                                    className={`sidebar-marker-top flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/60 transition-opacity duration-700 ease-out dark:text-dark-text-secondary/62 ${
                                         markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
                                     <span>Sutra</span>
-                                    <span className="text-text-secondary/55 dark:text-dark-text-secondary/65">Axis</span>
+                                    <span className="text-text-secondary/50 dark:text-dark-text-secondary/58">Axis</span>
                                 </div>
 
                                 <div className="flex flex-1 items-center justify-center">
@@ -119,16 +117,16 @@ const Sidebar = () => {
                                     }`}
                                 >
                                     <div className="flex flex-col items-start gap-1 text-left">
-                                        <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/55 dark:text-dark-text-secondary/65">
+                                        <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/58 dark:text-dark-text-secondary/62">
                                             Chapter
                                         </p>
-                                        <span className="h-px w-12 bg-gradient-to-r from-gold-primary/22 to-transparent dark:from-gold-light/22" />
+                                        <span className="h-px w-12 bg-gradient-to-r from-black/10 to-transparent dark:from-white/10" />
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-gold-primary dark:text-gold-light">
+                                        <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-text-primary dark:text-dark-text-primary">
                                             {chapterMeta}
                                         </span>
-                                        <span className="h-2.5 w-2.5 rounded-full bg-gold-primary/55 shadow-[0_0_0_1px_rgba(191,148,48,0.18)] dark:bg-gold-light/55 dark:shadow-[0_0_0_1px_rgba(255,220,160,0.16)]" />
+                                        <span className="h-2.5 w-2.5 rounded-full bg-black/20 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] dark:bg-white/18 dark:shadow-[0_0_0_1px_rgba(255,255,255,0.08)]" />
                                     </div>
                                 </div>
                             </div>
@@ -136,8 +134,8 @@ const Sidebar = () => {
                     </div>
 
                     <div className="space-y-4">
-                        <section className="space-y-2 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-primary/75 dark:text-gold-light/75">
+                        <section className="space-y-2 border-l border-black/8 pl-4 dark:border-white/8">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/58 dark:text-dark-text-secondary/62">
                                 Sanskrit
                             </p>
                             <p className="whitespace-pre-line break-keep font-display text-[18px] leading-[1.95] tracking-[0.02em] text-sanskrit-accent dark:text-sanskrit-accent sm:text-[19px]">
@@ -145,7 +143,7 @@ const Sidebar = () => {
                             </p>
                         </section>
 
-                        <section className="space-y-2 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+                        <section className="space-y-2 border-l border-black/8 pl-4 dark:border-white/8">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/65">
                                 English
                             </p>
@@ -154,7 +152,7 @@ const Sidebar = () => {
                             </p>
                         </section>
 
-                        <section className="space-y-2 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+                        <section className="space-y-2 border-l border-black/8 pl-4 dark:border-white/8">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/65">
                                 Korean
                             </p>

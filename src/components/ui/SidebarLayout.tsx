@@ -24,14 +24,17 @@ export const SidebarLayout = React.memo(
         widthClass = 'w-80',
         desktopWidthClass = 'lg:w-[19rem]',
         desktopMinWidthClass = 'lg:min-w-[19rem]',
-    }: SidebarLayoutProps) => {
+        }: SidebarLayoutProps) => {
         const isLeft = position === 'left';
         const placementClass = isLeft ? 'lg:left-0' : 'lg:right-0';
-        const desktopBorderClass = isLeft ? 'lg:border-r' : 'lg:border-l';
-        const surfaceClass = isLeft ? 'bg-shell-rail dark:bg-shell-rail-dark' : 'bg-shell-commentary dark:bg-shell-commentary-dark';
-        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden border border-gold-border/10 dark:border-white/6 ${surfaceClass}` : 'hidden';
+        const surfaceClass = isLeft
+            ? 'bg-shell-rail [background-image:linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0.04)_18%,rgba(0,0,0,0.015)_100%)] dark:bg-shell-rail-dark dark:[background-image:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)_20%,rgba(0,0,0,0.08)_100%)]'
+            : 'bg-shell-commentary dark:bg-shell-commentary-dark';
+        const mobileBorderClass = isLeft ? 'border-gold-border/14 dark:border-white/8' : 'border-gold-border/10 dark:border-white/6';
+        const desktopBorderClass = isLeft ? 'lg:border-r lg:border-gold-border/14 dark:lg:border-white/8' : 'lg:border-l';
+        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden border ${mobileBorderClass} ${surfaceClass}` : 'hidden';
         const desktopStateClass = isDesktopOpen
-            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:translate-x-0 lg:opacity-100 ${desktopBorderClass} lg:border-gold-border/10 dark:lg:border-white/6 ${surfaceClass}`
+            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:translate-x-0 lg:opacity-100 ${desktopBorderClass} ${surfaceClass}`
             : 'overflow-hidden p-0 px-0 lg:flex lg:w-0 lg:min-w-0 lg:translate-x-0 lg:opacity-0 lg:border-0';
 
         return (

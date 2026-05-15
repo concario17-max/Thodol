@@ -1,30 +1,32 @@
 # State
 
 ## Current Task
-Completed: change only the left sidebar background to a light premium gray.
+Active: make the entire left sidebar read as one warm gray plane by coordinating `src/components/ui/SidebarLayout.tsx` and `src/components/Sidebar.tsx`.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
-main: closed
+main: planner-only
 
 ## Contract Freeze
 Frozen scope:
-- Rework only `src/index.css`.
-- Make only the left rail background a warm light gray.
-- Keep the layout, spacing, typography, and component structure unchanged.
-- Preserve the rest of the palette and layout unchanged.
+- Rework the left sidebar container and its inner marker/text blocks so the whole column reads as one warm gray plane instead of layered cream cards.
+- Keep the rest of the app layout, header, right/main content, routing, and data flow unchanged.
+- Preserve the existing hierarchy and animation/layout in the sidebar.
+- Do not change unrelated palette tokens or the right/main surfaces.
 
-Reason for Route A:
-- The change is token-only and stays in one file.
-- No shared layout or interaction rewrites are needed.
+Reason for Route B:
+- The current implementation touches both a shared layout wrapper and a feature component.
+- The visual fix crosses the container/content boundary, so the files must be coordinated together.
 
 ## Write Sets
-- main: `src/index.css`
+- main: `STATE.md`
+- worker_shared: `src/components/ui/SidebarLayout.tsx`
+- worker_feature: `src/components/Sidebar.tsx`
 
 ## Reviewer
-not needed
+pending
 
 ## Last Update
-2026-05-15 - Changed the left rail background token to a warm light gray in `src/index.css` and verified typecheck/build.
+2026-05-15 - Reclassified the sidebar gray task to Route B because the shared layout and sidebar surface both changed.
