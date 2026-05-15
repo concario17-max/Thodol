@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: match the shell surface colors to the reference screenshot with clearer panel separation.
+Completed: change only the left sidebar background to a light premium gray.
 
 ## Route
 Route A
@@ -12,9 +12,9 @@ main: closed
 ## Contract Freeze
 Frozen scope:
 - Rework only `src/index.css`.
-- Make the left rail, main reading surface, and commentary surface match the reference screenshot more closely.
+- Make only the left rail background a warm light gray.
 - Keep the layout, spacing, typography, and component structure unchanged.
-- Preserve the calendar-like overall palette while making the panel tones more visibly distinct.
+- Preserve the rest of the palette and layout unchanged.
 
 Reason for Route A:
 - The change is token-only and stays in one file.
@@ -27,4 +27,4 @@ Reason for Route A:
 not needed
 
 ## Last Update
-2026-05-15 - Adjusted the shell palette tokens in `src/index.css` to better match the reference screenshot and verified typecheck/build.
+2026-05-15 - Changed the left rail background token to a warm light gray in `src/index.css` and verified typecheck/build.
