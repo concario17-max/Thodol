@@ -54,11 +54,11 @@ const Sidebar = () => {
             desktopMinWidthClass="lg:min-w-[22rem]"
         >
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
-                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-6 sm:gap-7">
-                    <div className="flex justify-center px-1 py-3 sm:px-2 sm:py-4">
-                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center bg-shell-rail/42 transition-colors duration-500 dark:bg-shell-rail-dark/58">
-                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-black/5 to-transparent dark:via-white/5" />
-                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-black/5 to-transparent dark:via-white/5" />
+                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-5 rounded-[2rem] bg-[linear-gradient(180deg,rgba(229,226,219,0.94),rgba(223,219,211,0.9))] px-4 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_1px_0_rgba(255,255,255,0.18)] ring-1 ring-black/5 transition-colors duration-500 dark:bg-[linear-gradient(180deg,rgba(48,48,46,0.96),rgba(41,41,39,0.94))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_1px_0_rgba(0,0,0,0.3)] dark:ring-white/6 sm:gap-6">
+                    <div className="flex justify-center px-1 py-2 sm:px-2 sm:py-3">
+                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center bg-[linear-gradient(180deg,rgba(220,217,210,0.9),rgba(214,210,202,0.84))] ring-1 ring-black/5 transition-colors duration-500 dark:bg-[linear-gradient(180deg,rgba(60,60,57,0.92),rgba(50,50,47,0.88))] dark:ring-white/6">
+                            <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-black/6 to-transparent dark:via-white/6" />
+                            <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-black/6 to-transparent dark:via-white/6" />
 
                             <style>{`
                                 @keyframes sidebar-marker-top {
@@ -93,17 +93,17 @@ const Sidebar = () => {
 
                             <div className="relative flex h-full w-full flex-col justify-between px-7 py-7 text-center">
                                 <div
-                                    className={`sidebar-marker-top flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/60 transition-opacity duration-700 ease-out dark:text-dark-text-secondary/62 ${
+                                    className={`sidebar-marker-top flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/52 transition-opacity duration-700 ease-out dark:text-dark-text-secondary/58 ${
                                         markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
                                     <span>Sutra</span>
-                                    <span className="text-text-secondary/50 dark:text-dark-text-secondary/58">Axis</span>
+                                    <span className="text-text-secondary/46 dark:text-dark-text-secondary/54">Axis</span>
                                 </div>
 
                                 <div className="flex flex-1 items-center justify-center">
                                     <p
-                                        className={`sidebar-marker-center font-display text-[54px] font-semibold leading-none tracking-[0.1em] text-text-primary transition-opacity duration-700 ease-out dark:text-dark-text-primary ${
+                                        className={`sidebar-marker-center font-display text-[54px] font-semibold leading-none tracking-[0.1em] text-text-primary/96 transition-opacity duration-700 ease-out dark:text-dark-text-primary/96 ${
                                             markerReady ? 'opacity-100' : 'opacity-0'
                                         }`}
                                     >
@@ -117,46 +117,46 @@ const Sidebar = () => {
                                     }`}
                                 >
                                     <div className="flex flex-col items-start gap-1 text-left">
-                                        <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/58 dark:text-dark-text-secondary/62">
+                                        <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/52 dark:text-dark-text-secondary/58">
                                             Chapter
                                         </p>
-                                        <span className="h-px w-12 bg-gradient-to-r from-black/10 to-transparent dark:from-white/10" />
+                                        <span className="h-px w-12 bg-gradient-to-r from-black/8 to-transparent dark:from-white/10" />
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-text-primary dark:text-dark-text-primary">
+                                        <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-text-primary/96 dark:text-dark-text-primary/96">
                                             {chapterMeta}
                                         </span>
-                                        <span className="h-2.5 w-2.5 rounded-full bg-black/20 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] dark:bg-white/18 dark:shadow-[0_0_0_1px_rgba(255,255,255,0.08)]" />
+                                        <span className="h-2.5 w-2.5 rounded-full bg-black/16 shadow-[0_0_0_1px_rgba(0,0,0,0.05)] dark:bg-white/14 dark:shadow-[0_0_0_1px_rgba(255,255,255,0.06)]" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <section className="space-y-2 border-l border-black/8 pl-4 dark:border-white/8">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/58 dark:text-dark-text-secondary/62">
+                    <div className="space-y-3">
+                        <section className="space-y-2 border-l border-black/6 pl-4 dark:border-white/8">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/50 dark:text-dark-text-secondary/58">
                                 Sanskrit
                             </p>
-                            <p className="whitespace-pre-line break-keep font-display text-[18px] leading-[1.95] tracking-[0.02em] text-sanskrit-accent dark:text-sanskrit-accent sm:text-[19px]">
+                            <p className="whitespace-pre-line break-keep font-display text-[18px] leading-[1.95] tracking-[0.02em] text-sanskrit-accent/96 dark:text-sanskrit-accent/96 sm:text-[19px]">
                                 {verseData.sanskrit}
                             </p>
                         </section>
 
-                        <section className="space-y-2 border-l border-black/8 pl-4 dark:border-white/8">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/65">
+                        <section className="space-y-2 border-l border-black/6 pl-4 dark:border-white/8">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 English
                             </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[1.9] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[1.9] text-text-primary/94 dark:text-dark-text-primary/94 sm:text-[16px]">
                                 {verseData['2.english'] ?? ''}
                             </p>
                         </section>
 
-                        <section className="space-y-2 border-l border-black/8 pl-4 dark:border-white/8">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/60 dark:text-dark-text-secondary/65">
+                        <section className="space-y-2 border-l border-black/6 pl-4 dark:border-white/8">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 Korean
                             </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[14px] leading-[1.95] text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
+                            <p className="whitespace-pre-line break-keep font-sans text-[14px] leading-[1.95] text-text-secondary/92 dark:text-dark-text-secondary/92 sm:text-[15px]">
                                 {verseData['3.korean-1'] ?? ''}
                             </p>
                         </section>
