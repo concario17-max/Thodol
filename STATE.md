@@ -1,7 +1,7 @@
 ﻿# State
 
 ## Current Task
-Active: reduce the size of the header verse mode toggle in `src/components/Header.tsx` while keeping the `심화` / `해설` labels.
+Active: update the header verse mode toggle in `src/components/Header.tsx` to use compact icon+label pill buttons for `심화` and `해설`.
 
 ## Route
 Route A
@@ -11,8 +11,8 @@ main: write-capable
 
 ## Contract Freeze
 Frozen scope:
-- Update only the verse mode toggle size and spacing in `src/components/Header.tsx`.
-- Keep the `심화` / `해설` labels and their order unchanged.
+- Update only the verse mode toggle styling in `src/components/Header.tsx`.
+- Use compact icon+label pill buttons for `심화` and `해설` in that order.
 - Keep the rest of the app layout, routing, sidebar, and data flow unchanged.
 
 Reason for Route A:
@@ -26,4 +26,4 @@ Reason for Route A:
 not needed
 
 ## Last Update
-2026-05-15 - Re-scoped the header control to a single-file Route A size tweak.
+2026-05-15 - Re-scoped the header control to a single-file Route A icon-pill style tweak.
