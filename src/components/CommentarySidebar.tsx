@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import { useParams } from 'react-router-dom';
-import { MessageSquare } from 'lucide-react';
+import { BookOpenText } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { SidebarLayout } from './ui/SidebarLayout';
 import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
@@ -134,21 +134,23 @@ const CommentarySidebar = () => {
             isOpen={isOpen}
             isDesktopOpen={isDesktopOpen}
             onClose={() => setActiveRightPanel(null)}
-            title="Commentary"
+            title="학습만화"
             position="right"
             widthClass="w-[90vw] max-w-[400px]"
             desktopWidthClass="lg:w-full"
         >
             <div className="relative flex h-full min-h-0 flex-col p-4">
-                <div className="mb-4 flex shrink-0 items-center gap-2 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
-                    <MessageSquare className="h-5 w-5 text-gold-primary dark:text-gold-light" />
-                    <div className="min-w-0">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
-                            Commentary
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-text-primary dark:text-dark-text-primary">
-                            Verse notes and references
-                        </p>
+                <div className="mb-4 shrink-0 rounded-2xl border border-gold-border/10 bg-shell-commentary/60 px-3 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)] dark:border-dark-border/45 dark:bg-shell-commentary-dark/70">
+                    <div className="flex items-center gap-2">
+                        <BookOpenText className="h-5 w-5 text-gold-primary dark:text-gold-light" />
+                        <div className="min-w-0">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
+                                학습만화
+                            </p>
+                            <p className="mt-1 text-sm font-medium text-text-primary dark:text-dark-text-primary">
+                                만화처럼 읽는 핵심 해설과 흐름
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -166,9 +168,9 @@ const CommentarySidebar = () => {
                         <div className="flex h-full items-center justify-center text-center text-sm text-text-secondary dark:text-dark-text-secondary">
                             <div className="space-y-2">
                                 <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/65 dark:text-gold-light/65">
-                                    No commentary
+                                    학습만화 없음
                                 </p>
-                                <p>Commentary is not available for this sutra.</p>
+                                <p>이 수트라에는 아직 학습만화가 준비되지 않았어.</p>
                             </div>
                         </div>
                     )}

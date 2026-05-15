@@ -83,6 +83,21 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     }, [activeVerseContentMode]);
 
     useEffect(() => {
+        if (activeVerseContentMode === 'commentary') {
+            return;
+        }
+
+        setActiveRightPanel(null);
+        setActiveDesktopRightPanel(null);
+
+        try {
+            localStorage.setItem('yoga-desktop-right-panel', JSON.stringify(null));
+        } catch (error) {
+            console.warn('Unable to access localStorage:', error);
+        }
+    }, [activeVerseContentMode]);
+
+    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setIsDesktopSidebarOpen(true);
