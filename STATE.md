@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: make the left panel clearly distinct from the right panel by widening the shell surface tone contrast.
+Completed: match the shell surface colors to the reference screenshot with clearer panel separation.
 
 ## Route
 Route A
@@ -12,9 +12,9 @@ main: closed
 ## Contract Freeze
 Frozen scope:
 - Rework only `src/index.css`.
-- Make the left rail noticeably different from the main reading surface.
+- Make the left rail, main reading surface, and commentary surface match the reference screenshot more closely.
 - Keep the layout, spacing, typography, and component structure unchanged.
-- Preserve the calendar-like overall palette, but increase the separation between shell surfaces.
+- Preserve the calendar-like overall palette while making the panel tones more visibly distinct.
 
 Reason for Route A:
 - The change is token-only and stays in one file.
@@ -27,4 +27,4 @@ Reason for Route A:
 not needed
 
 ## Last Update
-2026-05-15 - Increased the shell surface contrast so the left panel reads more distinctly from the right panel, then verified typecheck/build.
+2026-05-15 - Adjusted the shell palette tokens in `src/index.css` to better match the reference screenshot and verified typecheck/build.

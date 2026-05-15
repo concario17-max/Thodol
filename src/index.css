@@ -6,11 +6,11 @@
     --color-primary-light: #bf9430;
     --color-background-light: #faf6ef;
     --color-background-paper: #f2ebdf;
-    --color-shell-canvas: #f6efe4;
-    --color-shell-header: #f8f2ea;
-    --color-shell-rail: #e5d0b9;
+    --color-shell-canvas: #f5efe4;
+    --color-shell-header: #f7f2e9;
+    --color-shell-rail: #eee2d3;
     --color-shell-main: #fffdf9;
-    --color-shell-commentary: #f2e6d4;
+    --color-shell-commentary: #f5ecdf;
     --color-shell-canvas-dark: #0e0c0a;
     --color-shell-header-dark: #15120f;
     --color-shell-rail-dark: #181410;
@@ -150,8 +150,8 @@ body {
     line-height: 1.78;
     font-family: var(--font-sans);
     background:
-        radial-gradient(circle at top, rgba(255, 252, 247, 0.82), transparent 58%),
-        linear-gradient(180deg, #fbf7f0 0%, #efe2cf 100%);
+        radial-gradient(circle at top, rgba(255, 252, 247, 0.8), transparent 56%),
+        linear-gradient(180deg, #fbf7f1 0%, #efe4d2 100%);
     @apply text-text-primary dark:bg-dark-bg dark:text-dark-text-primary;
 }
 
