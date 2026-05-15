@@ -21,9 +21,9 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { activeDesktopRightPanel, activeVerseContentMode, isDesktopSidebarOpen, setActiveVerseContentMode } = useUI();
+    const { activeVerseContentMode, isDesktopSidebarOpen, setActiveVerseContentMode } = useUI();
     const desktopGridStyle = showSidebarToggle
-        ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen, activeDesktopRightPanel === 'commentary') } as CSSProperties)
+        ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen, false) } as CSSProperties)
         : undefined;
 
     const renderVerseModeToggle = () =>

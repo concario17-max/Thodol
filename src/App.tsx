@@ -2,10 +2,9 @@ import { CSSProperties, Suspense, lazy, useEffect, useLayoutEffect, useMemo, use
 import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { ChevronDown, MessageSquare } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import CommentarySidebar from './components/CommentarySidebar';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
@@ -246,21 +245,9 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters, allChapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, isDesktopSidebarOpen, activeDesktopRightPanel, activeVerseContentMode, toggleRightPanel } = useUI();
-    const isCommentaryMode = activeVerseContentMode === 'commentary';
-    const commentaryRightContent = isCommentaryMode ? (
-        <button
-            type="button"
-            onClick={() => toggleRightPanel('commentary')}
-            aria-label="학습만화 열기"
-            title="학습만화 열기"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-gold-border/14 bg-shell-main/80 text-gold-primary shadow-[0_8px_22px_-16px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:text-gold-light dark:hover:bg-white/8"
-        >
-            <MessageSquare className="h-3.5 w-3.5" />
-        </button>
-    ) : undefined;
+    const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
-    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, activeDesktopRightPanel === 'commentary') : undefined;
+    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
     const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
@@ -308,18 +295,8 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={
-                isVerseView ? (
-                    <Header
-                        title="Yoga Sutras"
-                        showSidebarToggle
-                        selectionControls={selectionControls}
-                        rightContent={commentaryRightContent}
-                    />
-                ) : undefined
-            }
+            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
-            rightPanel={isVerseView ? <CommentarySidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
             floatingAction={

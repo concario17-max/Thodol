@@ -1,7 +1,7 @@
 ﻿# State
 
 ## Current Task
-Completed: expose a commentary-only header icon that opens the `학습만화` right panel, keep the verse mode toggle ordered as `해설 / 심화`, and make the desktop right panel occupy a real grid column.
+Completed: rollback the repository to the snapshot at commit `1621e16`.
 
 ## Route
 Route B
@@ -11,24 +11,19 @@ main: planner-only
 
 ## Contract Freeze
 Frozen scope completed:
-- Keep the verse mode toggle in `src/components/Header.tsx` as `해설 / 심화`.
-- Add a commentary-only header icon in `src/App.tsx` that opens the right-side `학습만화` panel.
-- Update `src/context/UIContext.tsx` so the right panel closes when verse mode leaves `commentary`.
-- Update `src/components/CommentarySidebar.tsx` to present as `학습만화`.
-- Update `src/components/ui/AppShell.tsx` and `src/components/ui/desktopVerseLayout.ts` so the desktop right panel gets a dedicated rail/column instead of wrapping under the main content.
-- Keep the rest of the app layout, routing, sidebar, and data flow unchanged.
+- Reverted all tracked changes after `1621e16`.
+- Preserved the untracked root `.odt` reference files.
+- Used a non-destructive `git revert` path instead of a hard reset.
 
 Reason for Route B:
-- The request crosses shared UI state, the app shell, the desktop grid, and the right-side panel content.
-- The icon visibility and panel close behavior depend on shared state, and the desktop right rail needed grid-level changes.
+- The rollback spans many tracked files and was handled as a coordinated repository change.
 
 ## Write Sets
 - main: `STATE.md`
-- worker_shared: `src/context/UIContext.tsx`, `src/App.tsx`, `src/components/ui/AppShell.tsx`, `src/components/ui/desktopVerseLayout.ts`
-- worker_feature: `src/components/CommentarySidebar.tsx`
+- worker_shared: reverted tracked files
 
 ## Reviewer
 No findings.
 
 ## Last Update
-2026-05-15 - Completed the commentary icon / learning-comic panel task, including the desktop right rail fix, after reviewer pass with no findings.
+2026-05-15 - Completed the rollback to `1621e16` using `git revert`.
