@@ -1,32 +1,29 @@
 # State
 
 ## Current Task
-Active: make the entire left sidebar read as a clearly gray plane by coordinating `src/index.css`, `src/components/ui/SidebarLayout.tsx`, and `src/components/Sidebar.tsx`.
+Active: update the header verse mode labels in `src/components/Header.tsx` to use `심화` and `해설` in that order.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
-main: planner-only
+main: write-capable
 
 ## Contract Freeze
 Frozen scope:
-- Rework the left sidebar container, shared palette tokens, and inner marker/text blocks so the whole column reads as one clearly gray plane instead of layered cream cards.
-- Keep the rest of the app layout, header, right/main content, routing, and data flow unchanged.
-- Preserve the existing hierarchy and animation/layout in the sidebar.
-- Do not change unrelated right/main surfaces or the broader app behavior.
+- Update only the verse mode toggle labels in `src/components/Header.tsx`.
+- Change the order so `심화` comes before `해설`.
+- Keep the rest of the app layout, routing, sidebar, and data flow unchanged.
 
-Reason for Route B:
-- The current implementation touches a shared palette file, a shared layout wrapper, and a feature component.
-- The visual fix crosses the container/content boundary, so the files must be coordinated together.
+Reason for Route A:
+- This is a single-file label change with no shared layout or data flow impact.
+- No fan-out into other files is needed.
 
 ## Write Sets
-- main: `STATE.md`
-- worker_shared: `src/index.css`, `src/components/ui/SidebarLayout.tsx`
-- worker_feature: `src/components/Sidebar.tsx`
+- main: `src/components/Header.tsx`
 
 ## Reviewer
-pending
+not needed
 
 ## Last Update
-2026-05-15 - Reclassified the sidebar gray task to Route B because the shared palette, shared layout, and sidebar surface all need coordinated changes.
+2026-05-15 - Re-scoped the header label swap to a single-file Route A slice.

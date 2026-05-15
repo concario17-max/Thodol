@@ -30,8 +30,8 @@ const Header = ({
         showSidebarToggle ? (
             <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-1 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
                 {[
-                    { mode: 'body' as const, label: 'Body' },
-                    { mode: 'commentary' as const, label: 'Commentary' },
+                    { mode: 'body' as const, label: '심화' },
+                    { mode: 'commentary' as const, label: '해설' },
                 ].map((option) => {
                     const isActive = activeVerseContentMode === option.mode;
 
