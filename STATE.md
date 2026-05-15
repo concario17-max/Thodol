@@ -1,29 +1,31 @@
 ﻿# State
 
 ## Current Task
-Active: update the header verse mode toggle in `src/components/Header.tsx` to use compact icon+label pill buttons for `심화` and `해설`.
+Active: reorder the verse mode toggle to `해설 / 심화` and make the verse page open in `해설` mode by default.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
-main: write-capable
+main: planner-only
 
 ## Contract Freeze
 Frozen scope:
-- Update only the verse mode toggle styling in `src/components/Header.tsx`.
-- Use compact icon+label pill buttons for `심화` and `해설` in that order.
+- Update the verse mode toggle labels/order in `src/components/Header.tsx` to `해설` first and `심화` second.
+- Update the default verse content mode in `src/context/UIContext.tsx` so the verse page opens in `해설` mode.
 - Keep the rest of the app layout, routing, sidebar, and data flow unchanged.
 
-Reason for Route A:
-- This is a single-file visual tweak with no shared layout or data flow impact.
-- No fan-out into other files is needed.
+Reason for Route B:
+- The request crosses the header and shared UI state, so it needs coordinated changes in more than one file.
+- The default first-screen mode is controlled outside the header.
 
 ## Write Sets
-- main: `src/components/Header.tsx`
+- main: `STATE.md`
+- worker_shared: `src/context/UIContext.tsx`
+- worker_feature: `src/components/Header.tsx`
 
 ## Reviewer
-not needed
+pending
 
 ## Last Update
-2026-05-15 - Re-scoped the header control to a single-file Route A icon-pill style tweak.
+2026-05-15 - Reclassified the header mode-order/default-mode task to Route B because it touches shared UI state and the header together.

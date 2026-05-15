@@ -19,7 +19,7 @@ const readSavedVerseContentMode = (): VerseContentMode => {
         console.warn('Unable to access localStorage:', error);
     }
 
-    return 'body';
+    return 'commentary';
 };
 
 interface UIContextType {
