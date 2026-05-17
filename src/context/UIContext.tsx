@@ -4,6 +4,7 @@ export type RightPanelType = 'commentary' | null;
 export type VerseContentMode = 'body' | 'commentary';
 
 const VERSE_CONTENT_MODE_STORAGE_KEY = 'yoga-verse-content-mode';
+const RIGHT_PANEL_STORAGE_KEY = 'yoga-desktop-right-panel';
 
 const isVerseContentMode = (value: string | null): value is VerseContentMode => value === 'body' || value === 'commentary';
 
@@ -13,6 +14,30 @@ const readSavedVerseContentMode = (): VerseContentMode => {
             const saved = localStorage.getItem(VERSE_CONTENT_MODE_STORAGE_KEY);
             if (isVerseContentMode(saved)) {
                 return saved;
+            }
+        }
+    } catch (error) {
+        console.warn('Unable to access localStorage:', error);
+    }
+
+    return 'commentary';
+};
+
+const readSavedDesktopRightPanel = (): RightPanelType => {
+    try {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem(RIGHT_PANEL_STORAGE_KEY);
+
+            if (saved === null) {
+                return 'commentary';
+            }
+
+            if (saved === 'commentary') {
+                return 'commentary';
+            }
+
+            if (saved === 'null') {
+                return null;
             }
         }
     } catch (error) {
@@ -64,15 +89,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         return true;
     });
 
-    const [activeDesktopRightPanel, setActiveDesktopRightPanel] = useState<RightPanelType>(() => {
-        if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('yoga-desktop-right-panel');
-            if (saved === 'true') return 'commentary';
-            if (saved === 'false') return null;
-            return saved !== null ? (JSON.parse(saved) as RightPanelType) : null;
-        }
-        return null;
-    });
+    const [activeDesktopRightPanel, setActiveDesktopRightPanel] = useState<RightPanelType>(readSavedDesktopRightPanel);
 
     useEffect(() => {
         try {
@@ -83,11 +100,18 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     }, [activeVerseContentMode]);
 
     useEffect(() => {
+        try {
+            localStorage.setItem(RIGHT_PANEL_STORAGE_KEY, activeDesktopRightPanel ?? 'null');
+        } catch (error) {
+            console.warn('Unable to access localStorage:', error);
+        }
+    }, [activeDesktopRightPanel]);
+
+    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setIsDesktopSidebarOpen(true);
                 setIsSidebarOpen(false);
-                setActiveRightPanel(null);
                 localStorage.setItem('yoga-desktop-sidebar', 'true');
                 return;
             }
@@ -117,14 +141,13 @@ export const UIProvider = ({ children }: UIProviderProps) => {
             return;
         }
 
-        const newState = activeDesktopRightPanel === panel ? null : panel;
-        setActiveDesktopRightPanel(newState);
-        localStorage.setItem('yoga-desktop-right-panel', JSON.stringify(newState));
-    }, [activeDesktopRightPanel]);
+        setActiveDesktopRightPanel((prev) => (prev === panel ? null : panel));
+    }, []);
 
     const closeAllDrawers = useCallback(() => {
         setIsSidebarOpen(false);
         setActiveRightPanel(null);
+        setActiveDesktopRightPanel(null);
     }, []);
 
     return (

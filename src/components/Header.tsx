@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpenText, ScrollText } from 'lucide-react';
 import { useUI } from '../context/UIContext';
-import { getDesktopVerseColumns } from './ui/desktopVerseLayout';
+import { getDesktopVerseShellColumns } from './ui/desktopVerseLayout';
 
 interface HeaderProps {
     title?: ReactNode;
@@ -21,9 +21,10 @@ const Header = ({
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { activeVerseContentMode, isDesktopSidebarOpen, setActiveVerseContentMode } = useUI();
+    const { activeVerseContentMode, activeDesktopRightPanel, isDesktopSidebarOpen, setActiveVerseContentMode } = useUI();
+    const isDesktopCommentaryOpen = activeDesktopRightPanel === 'commentary';
     const desktopGridStyle = showSidebarToggle
-        ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen, false) } as CSSProperties)
+        ? ({ '--desktop-verse-shell-columns': getDesktopVerseShellColumns(isDesktopSidebarOpen, isDesktopCommentaryOpen) } as CSSProperties)
         : undefined;
 
     const renderVerseModeToggle = () =>
@@ -83,7 +84,7 @@ const Header = ({
 
             <div
                 className={`hidden h-12 w-full items-center lg:grid ${
-                    showSidebarToggle ? 'lg:[grid-template-columns:var(--desktop-verse-columns)]' : 'lg:grid-cols-1'
+                    showSidebarToggle ? 'lg:[grid-template-columns:var(--desktop-verse-shell-columns)]' : 'lg:grid-cols-1'
                 }`}
                 style={desktopGridStyle}
             >
@@ -98,6 +99,8 @@ const Header = ({
                     </Link>
                     {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                 </div>
+
+                <div aria-hidden="true" />
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
                     <div className="flex items-center gap-1 rounded-full border border-gold-border/10 bg-shell-main/78 p-0.5 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">

@@ -30,7 +30,7 @@ export const AppShell = React.memo(
                             } ${desktopGridColumns ? 'lg:gap-0' : ''}`}
                             style={desktopGridStyle}
                         >
-                            {sidebar}
+                            {sidebar ? <div className="min-w-0 lg:col-start-1">{sidebar}</div> : null}
                             <main
                                 id="main-scroll-container"
                                 className={`custom-scrollbar min-h-0 min-w-0 flex-1 overflow-y-auto bg-shell-main backdrop-blur-0 dark:bg-shell-main-dark ${
@@ -39,7 +39,7 @@ export const AppShell = React.memo(
                             >
                                 {children}
                             </main>
-                            {rightPanel}
+                            {rightPanel ? <div className="min-w-0 lg:col-start-3">{rightPanel}</div> : null}
                         </div>
                     </div>
 
