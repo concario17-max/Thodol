@@ -135,15 +135,6 @@ const Sidebar = () => {
 
                     <div className="space-y-3">
                         <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/50 dark:text-dark-text-secondary/58">
-                                Sanskrit
-                            </p>
-                            <p className="whitespace-pre-line break-keep font-display text-[18px] leading-[1.95] tracking-[0.02em] text-sanskrit-accent/96 dark:text-sanskrit-accent/96 sm:text-[19px]">
-                                {verseData.sanskrit}
-                            </p>
-                        </section>
-
-                        <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 English
                             </p>
