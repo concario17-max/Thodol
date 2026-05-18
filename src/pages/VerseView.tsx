@@ -1,4 +1,4 @@
-import { useRef, useEffect, type CSSProperties } from 'react';
+import { useRef, useEffect, useState, type CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { SquareArrowOutUpRight } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
@@ -15,6 +15,19 @@ import { chapter2Commentary } from '../data/chapter2Commentary';
 import { chapter3Commentary } from '../data/chapter3Commentary';
 import { chapter4Commentary } from '../data/chapter4Commentary';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+
+const learningComicImages = import.meta.glob('../../학습만화/1/*.png', {
+    eager: true,
+    import: 'default',
+}) as Record<string, string>;
+
+const getLearningComicImageUrl = (chapterNum: string, verseNum: string) => {
+    if (chapterNum !== '1') {
+        return null;
+    }
+
+    return learningComicImages[`../../학습만화/1/${verseNum}.png`] ?? null;
+};
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -128,7 +141,15 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
     </section>
 );
 
+type CommentaryViewMode = 'commentary' | 'comic';
+
 const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verseNum: string }) => {
+    const [viewMode, setViewMode] = useState<CommentaryViewMode>('commentary');
+
+    useEffect(() => {
+        setViewMode('commentary');
+    }, [chapterNum, verseNum]);
+
     const commentarySource: Record<string, CommentaryBlock[]> | null =
         chapterNum === '1'
             ? chapter1Commentary
@@ -143,6 +164,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
     const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
+    const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
 
     return (
         <section className="mx-auto w-full max-w-[58rem] space-y-3 px-4 sm:space-y-4 sm:px-6 lg:px-8">
@@ -151,24 +173,49 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                     Commentary
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/30 bg-shell-main/90 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/55 dark:bg-shell-main-dark/90 dark:text-gold-light">
+                <button
+                    type="button"
+                    onClick={() => setViewMode((current) => (current === 'commentary' ? 'comic' : 'commentary'))}
+                    aria-label={viewMode === 'commentary' ? '학습만화 보기' : '텍스트 해설 보기'}
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/30 bg-shell-main/90 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-transform duration-200 hover:-translate-y-0.5 dark:border-dark-border/55 dark:bg-shell-main-dark/90 dark:text-gold-light"
+                >
                     <SquareArrowOutUpRight className="h-4 w-4" aria-hidden="true" />
-                </span>
+                </button>
             </div>
 
             <div className="space-y-4 bg-shell-commentary px-4 py-4 sm:space-y-5 sm:px-6 sm:py-5 lg:px-8 lg:py-6 dark:bg-shell-commentary-dark">
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
-                        {chapterNum}.{verseNum}
-                    </span>
-                    {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
-                </div>
+                {viewMode === 'commentary' ? (
+                    <>
+                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                            <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
+                                {chapterNum}.{verseNum}
+                            </span>
+                            {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
+                        </div>
 
-                {bodyBlocks && bodyBlocks.length > 0 ? (
-                    <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
+                        {bodyBlocks && bodyBlocks.length > 0 ? (
+                            <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
+                        ) : (
+                            <div className="border-l border-gold-border/12 pl-4 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[15px]">
+                                No commentary is available for this sutra.
+                            </div>
+                        )}
+                    </>
+                ) : learningComicImageUrl ? (
+                    <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-3 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
+                        <img
+                            src={learningComicImageUrl}
+                            alt={`학습만화 ${chapterNum}.${verseNum}`}
+                            className="block h-auto w-full rounded-[1.15rem] object-contain"
+                            loading="lazy"
+                        />
+                    </div>
                 ) : (
-                    <div className="border-l border-gold-border/12 pl-4 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[15px]">
-                        No commentary is available for this sutra.
+                    <div className="space-y-3 rounded-[1.5rem] border border-gold-border/12 bg-shell-main/85 p-5 text-sm leading-7 text-text-secondary dark:border-dark-border/45 dark:bg-shell-main-dark/85 dark:text-dark-text-secondary sm:p-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
+                            Learning comic
+                        </p>
+                        <p>학습만화는 chapter 1에만 현재 이미지가 준비되어 있다.</p>
                     </div>
                 )}
             </div>

@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: split the commentary header in `VerseView.tsx` so the outer white space and inner beige sheet read together more naturally.
+Completed: make the commentary header icon in `VerseView.tsx` toggle between the text commentary and chapter 1 learning-comic images.
 
 ## Route
 Route A
@@ -11,9 +11,10 @@ main: single-slice UI tweak
 
 ## Contract Freeze
 Frozen scope:
-- Update only the commentary header inside `src/pages/VerseView.tsx`.
-- Make the header read as a background-blended meta strip rather than a prominent card.
-- Keep the rest of the commentary content flow unchanged.
+- Update only `src/pages/VerseView.tsx`.
+- Make the commentary header icon toggle between text commentary and learning-comic imagery.
+- Use the uploaded chapter 1 learning-comic images from the `학습만화` folder.
+- Keep the rest of the verse layout unchanged.
 - Do not touch the untracked root `.odt` reference files.
 
 Reason for Route A:
@@ -27,7 +28,7 @@ Reason for Route A:
 not required for Route A
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Split the commentary header and content sheet in `VerseView.tsx` so the outer white space reads with the header while the beige sheet holds the body, then matched the right icon chip to the reference.
+2026-05-18 15:47:38 +09:00 - Added a commentary icon toggle in `VerseView.tsx` that switches between text commentary and the chapter 1 learning-comic images.
 
 ## Open Review Item
-- Resolved: the commentary header now reads like a thin bridge between the outer white background and the beige content sheet, and the icon chip matches the reference.
+- Resolved: the commentary header icon now toggles between text commentary and the chapter 1 learning-comic images.
