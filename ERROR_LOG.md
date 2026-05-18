@@ -145,33 +145,3 @@ status: resolved
   summary: duplicate `desktopBorderClass` declaration resolved
   details: Removed the extra `desktopBorderClass` declaration and kept the left-sidebar border behavior aligned with the warm-gray surface treatment. `typecheck` and `build` are green again.
   status: resolved
-- time: 2026-05-18 12:37:49 +09:00
-  location: `npm.cmd run typecheck`
-  summary: PowerShell execution policy blocked `npm.ps1` during verification
-  details: The first typecheck attempt failed because PowerShell refused to load `C:\Program Files\nodejs\npm.ps1`. Re-ran verification through `npm.cmd` and hit a TypeScript nullability error in `src/components/CommentarySidebar.tsx`, which was then fixed.
-  status: resolved
-- time: 2026-05-18 12:41:29 +09:00
-  location: `npm run typecheck`
-  summary: PowerShell execution policy blocked `npm.ps1` during verification
-  details: The first verification pass failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-ran the same check with `npm.cmd`, which completed successfully.
-  status: resolved
-- time: 2026-05-18 12:42:23 +09:00
-  location: `npm.cmd run typecheck`
-  summary: TypeScript typecheck failed on an unrelated unused import
-  details: Verification now reaches the project checks, but `src/components/CommentarySidebar.tsx` still has an unused `MessageSquare` import. This is outside the requested file set, so the failure remains open for a separate fix.
-  status: open
-- time: 2026-05-18 12:46:30 +09:00
-  location: `npm.cmd run typecheck`
-  summary: Verification passed after the shared-file rework
-  details: The previous typecheck failure is no longer present. The current shared-file changes compile cleanly with `tsc --noEmit`.
-  status: resolved
-- time: 2026-05-18 12:50:00 +09:00
-  location: `npm run typecheck`
-  summary: PowerShell execution policy blocked `npm.ps1` during verification
-  details: The first verification attempt in this turn failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Retrying with `npm.cmd`.
-  status: open
-- time: 2026-05-18 12:50:00 +09:00
-  location: `npm.cmd run typecheck`
-  summary: Verification succeeded after retrying around the PowerShell policy block
-  details: Retried the same check with `npm.cmd`, and `tsc --noEmit` completed successfully.
-  status: resolved

@@ -39,7 +39,7 @@ export const AppShell = React.memo(
                             >
                                 {children}
                             </main>
-                            {rightPanel ? <div className="hidden min-h-0 lg:block">{rightPanel}</div> : null}
+                            {rightPanel}
                         </div>
                     </div>
 
