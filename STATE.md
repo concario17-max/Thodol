@@ -27,7 +27,7 @@ Reason for Route A:
 not required for Route A
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Split the commentary header and content sheet in `VerseView.tsx` so the outer white space reads with the header while the beige sheet holds the body.
+2026-05-18 15:47:38 +09:00 - Split the commentary header and content sheet in `VerseView.tsx` so the outer white space reads with the header while the beige sheet holds the body, then matched the right icon chip to the reference.
 
 ## Open Review Item
-- Resolved: the commentary header now reads like a thin bridge between the outer white background and the beige content sheet.
+- Resolved: the commentary header now reads like a thin bridge between the outer white background and the beige content sheet, and the icon chip matches the reference.
