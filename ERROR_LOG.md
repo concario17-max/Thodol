@@ -105,6 +105,11 @@ status: resolved
   summary: PowerShell execution policy blocked `npm.ps1` during verification.
   details: The first typecheck attempt failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-ran the same check with `npm.cmd run typecheck`, which passed.
   status: resolved
+- time: 2026-05-18 15:16:31 +09:00
+  location: `npm run typecheck` / `npm run build`
+  summary: PowerShell execution policy blocked `npm.ps1` during verification.
+  details: The first verification attempt failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-running through `npm.cmd` bypassed the policy block and both commands passed.
+  status: resolved
 - time: 2026-05-14 00:00:00 +09:00
   location: `npm run typecheck`
   summary: PowerShell execution policy blocked `npm.ps1` during verification.
@@ -144,4 +149,14 @@ status: resolved
   location: `src/components/ui/SidebarLayout.tsx`
   summary: duplicate `desktopBorderClass` declaration resolved
   details: Removed the extra `desktopBorderClass` declaration and kept the left-sidebar border behavior aligned with the warm-gray surface treatment. `typecheck` and `build` are green again.
+  status: resolved
+- time: 2026-05-18 00:00:00 +09:00
+  location: `npm run typecheck`
+  summary: PowerShell execution policy blocked `npm.ps1` during verification.
+  details: The first typecheck attempt failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-ran with `npm.cmd run typecheck`, which passed.
+  status: resolved
+- time: 2026-05-18 00:00:00 +09:00
+  location: `scripts/browser_smoke.mjs`
+  summary: Browser smoke initially targeted the wrong preview server.
+  details: The first smoke run against the default `BASE_URL` hit an unrelated app already listening on port 4174, so the right-panel assertions failed. Re-ran the smoke against a local preview on port 4175, which passed.
   status: resolved
