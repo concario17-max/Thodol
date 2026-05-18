@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: soften the commentary header in `VerseView.tsx` so it blends with the panel background while the body stays distinct.
+Completed: split the commentary header in `VerseView.tsx` so the outer white space and inner beige sheet read together more naturally.
 
 ## Route
 Route A
@@ -27,7 +27,7 @@ Reason for Route A:
 not required for Route A
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Softened the commentary header treatment in `VerseView.tsx` and re-verified typecheck/build.
+2026-05-18 15:47:38 +09:00 - Split the commentary header and content sheet in `VerseView.tsx` so the outer white space reads with the header while the beige sheet holds the body.
 
 ## Open Review Item
-- Resolved: the commentary header now visually blends into the panel background without competing with the body.
+- Resolved: the commentary header now reads like a thin bridge between the outer white background and the beige content sheet.
