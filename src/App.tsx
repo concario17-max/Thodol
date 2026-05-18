@@ -4,12 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
 import Sidebar from './components/Sidebar';
-import CommentarySidebar from './components/CommentarySidebar';
 import Header from './components/Header';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
-import { getDesktopVerseShellColumns } from './components/ui/desktopVerseLayout';
+import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 
 const VerseView = lazy(() => import('./pages/VerseView'));
@@ -246,10 +245,9 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters, allChapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, isDesktopSidebarOpen, activeDesktopRightPanel } = useUI();
+    const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
-    const isDesktopCommentaryOpen = activeDesktopRightPanel === 'commentary';
-    const desktopGridColumns = isVerseView ? getDesktopVerseShellColumns(isDesktopSidebarOpen, isDesktopCommentaryOpen) : undefined;
+    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
     const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
@@ -300,7 +298,6 @@ const MainLayout = () => {
             header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
-            rightPanel={isVerseView ? <CommentarySidebar /> : undefined}
             desktopGridColumns={desktopGridColumns}
             floatingAction={
                 !isVerseView ? (

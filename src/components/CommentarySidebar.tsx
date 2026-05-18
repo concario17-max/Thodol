@@ -1,6 +1,6 @@
-import { CSSProperties, useState } from 'react';
+import { CSSProperties } from 'react';
 import { useParams } from 'react-router-dom';
-import { BookOpenText } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { SidebarLayout } from './ui/SidebarLayout';
 import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
@@ -106,8 +106,7 @@ const renderBlock = (block: CommentaryBlock) => (
 
 const CommentarySidebar = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
-    const { activeRightPanel, setActiveRightPanel, activeDesktopRightPanel, setActiveDesktopRightPanel } = useUI();
-    const [isLearningComicView, setIsLearningComicView] = useState(false);
+    const { activeRightPanel, setActiveRightPanel, activeDesktopRightPanel } = useUI();
 
     if (!chapterNum || !verseNum) {
         return null;
@@ -129,88 +128,50 @@ const CommentarySidebar = () => {
     const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
     const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
-    const closeCommentaryPanel = () => {
-        setActiveRightPanel(null);
-        setActiveDesktopRightPanel(null);
-    };
 
     return (
         <SidebarLayout
             isOpen={isOpen}
             isDesktopOpen={isDesktopOpen}
-            onClose={closeCommentaryPanel}
+            onClose={() => setActiveRightPanel(null)}
             title="Commentary"
             position="right"
             widthClass="w-[90vw] max-w-[400px]"
             desktopWidthClass="lg:w-full"
         >
-            <div className="relative flex h-full min-h-0 flex-col p-3 sm:p-4">
-                <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[28px] border border-gold-border/10 bg-shell-main/78 shadow-[0_22px_52px_-38px_rgba(120,93,42,0.6)] backdrop-blur-sm dark:border-dark-border/38 dark:bg-shell-main-dark/78">
-                    <div className="grid shrink-0 grid-cols-[1fr_auto_1fr] items-center border-b border-gold-border/10 px-4 py-3 dark:border-dark-border/45">
-                        <div aria-hidden="true" />
-
-                        <div className="min-w-0 justify-self-center text-center">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/75 dark:text-gold-light/75">
-                                Commentary
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            aria-label={'\ud559\uc2b5\ub9cc\ud654'}
-                            aria-pressed={isLearningComicView}
-                            onClick={() => setIsLearningComicView((prev) => !prev)}
-                            className={`inline-flex justify-self-end shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-semibold tracking-[0.18em] shadow-[0_8px_20px_-14px_rgba(166,139,92,0.85)] transition-colors ${
-                                isLearningComicView
-                                    ? 'border-gold-primary/40 bg-gold-primary text-white dark:border-gold-light/40 dark:bg-gold-light dark:text-[#2a2116]'
-                                    : 'border-gold-border/14 bg-gold-surface/80 text-gold-primary hover:bg-gold-surface/95 dark:border-dark-border/50 dark:bg-white/5 dark:text-gold-light dark:hover:bg-white/8'
-                            }`}
-                        >
-                            <BookOpenText className="h-3.5 w-3.5 shrink-0" />
-                            <span>{'\ud559\uc2b5\ub9cc\ud654'}</span>
-                        </button>
+            <div className="relative flex h-full min-h-0 flex-col p-4">
+                <div className="mb-4 flex shrink-0 items-center gap-2 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                    <MessageSquare className="h-5 w-5 text-gold-primary dark:text-gold-light" />
+                    <div className="min-w-0">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
+                            Commentary
+                        </p>
+                        <p className="mt-1 text-sm font-medium text-text-primary dark:text-dark-text-primary">
+                            Verse notes and references
+                        </p>
                     </div>
+                </div>
 
-                    <div className="border-b border-gold-border/8 px-4 py-3 dark:border-dark-border/35">
-                        <div className="mx-auto flex w-full max-w-[34rem] flex-wrap items-baseline gap-x-2 gap-y-1">
-                            <span className="font-display text-[18px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
-                                {chapterNum}.{verseNum}
-                            </span>
-                            {inlineHeading ? (
-                                <span className="font-sans text-[13px] font-medium text-text-secondary dark:text-dark-text-secondary">
-                                    {inlineHeading}
-                                </span>
-                            ) : null}
+                <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.18em] text-text-secondary/65 dark:text-dark-text-secondary/65">
+                    <span>
+                        {chapterNum}.{verseNum}
+                    </span>
+                    {inlineHeading ? <span className="text-sm font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">{inlineHeading}</span> : null}
+                </div>
+
+                <div className="custom-scrollbar flex-1 overflow-y-auto">
+                    {bodyBlocks && bodyBlocks.length > 0 ? (
+                        <div className="space-y-4">{bodyBlocks.map(renderBlock)}</div>
+                    ) : (
+                        <div className="flex h-full items-center justify-center text-center text-sm text-text-secondary dark:text-dark-text-secondary">
+                            <div className="space-y-2">
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/65 dark:text-gold-light/65">
+                                    No commentary
+                                </p>
+                                <p>Commentary is not available for this sutra.</p>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="custom-scrollbar flex-1 overflow-y-auto px-4 py-4 sm:px-6">
-                        <div className="mx-auto w-full max-w-[34rem] space-y-4">
-                            {isLearningComicView ? (
-                                <div className="rounded-[18px] border border-gold-border/12 bg-gold-surface/45 px-4 py-4 text-sm leading-7 text-text-secondary shadow-[0_10px_30px_-24px_rgba(120,93,42,0.45)] dark:border-dark-border/35 dark:bg-white/5 dark:text-dark-text-secondary">
-                                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
-                                        \ud559\uc2b5\ub9cc\ud654
-                                    </p>
-                                    <p className="mt-2">
-                                        ???? ?? ???. ??? ??? ????, ???? ????? ?? ?? ??? ???.
-                                    </p>
-                                </div>
-                            ) : null}
-
-                            {bodyBlocks && bodyBlocks.length > 0 ? (
-                                <div className="space-y-4">{bodyBlocks.map(renderBlock)}</div>
-                            ) : (
-                                <div className="flex h-full items-center justify-center rounded-[18px] border border-dashed border-gold-border/12 text-center text-sm text-text-secondary dark:border-dark-border/35 dark:text-dark-text-secondary">
-                                    <div className="space-y-2 px-6 py-10">
-                                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/65 dark:text-gold-light/65">
-                                            No commentary
-                                        </p>
-                                        <p>Commentary is not available for this sutra.</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </SidebarLayout>
