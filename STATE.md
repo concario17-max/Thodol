@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: restyle the commentary block in `VerseView.tsx` so it matches the compact badge-plus-line-plus-icon reference.
+Completed: soften the commentary header in `VerseView.tsx` so it blends with the panel background while the body stays distinct.
 
 ## Route
 Route A
@@ -12,7 +12,7 @@ main: single-slice UI tweak
 ## Contract Freeze
 Frozen scope:
 - Update only the commentary header inside `src/pages/VerseView.tsx`.
-- Make the header read as a compact badge with a thin separator line and a right-edge icon.
+- Make the header read as a background-blended meta strip rather than a prominent card.
 - Keep the rest of the commentary content flow unchanged.
 - Do not touch the untracked root `.odt` reference files.
 
@@ -27,7 +27,7 @@ Reason for Route A:
 not required for Route A
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Restyled the real commentary renderer in `VerseView.tsx` and re-verified typecheck/build.
+2026-05-18 15:47:38 +09:00 - Softened the commentary header treatment in `VerseView.tsx` and re-verified typecheck/build.
 
 ## Open Review Item
-- Resolved: the commentary header in `VerseView.tsx` now uses the compact badge-plus-line-plus-icon reference style.
+- Resolved: the commentary header now visually blends into the panel background without competing with the body.
