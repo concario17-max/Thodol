@@ -2,34 +2,16 @@ import { createContext, useContext, useEffect, useState, useCallback, ReactNode,
 
 export type RightPanelType = 'commentary' | null;
 export type VerseContentMode = 'body' | 'commentary';
-export type RightPanelContentMode = 'commentary' | 'comic';
 
 const VERSE_CONTENT_MODE_STORAGE_KEY = 'yoga-verse-content-mode';
-const RIGHT_PANEL_CONTENT_MODE_STORAGE_KEY = 'yoga-right-panel-content-mode';
 
 const isVerseContentMode = (value: string | null): value is VerseContentMode => value === 'body' || value === 'commentary';
-const isRightPanelContentMode = (value: string | null): value is RightPanelContentMode => value === 'commentary' || value === 'comic';
 
 const readSavedVerseContentMode = (): VerseContentMode => {
     try {
         if (typeof window !== 'undefined') {
             const saved = localStorage.getItem(VERSE_CONTENT_MODE_STORAGE_KEY);
             if (isVerseContentMode(saved)) {
-                return saved;
-            }
-        }
-    } catch (error) {
-        console.warn('Unable to access localStorage:', error);
-    }
-
-    return 'commentary';
-};
-
-const readSavedRightPanelContentMode = (): RightPanelContentMode => {
-    try {
-        if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem(RIGHT_PANEL_CONTENT_MODE_STORAGE_KEY);
-            if (isRightPanelContentMode(saved)) {
                 return saved;
             }
         }
@@ -47,14 +29,11 @@ interface UIContextType {
     toggleSidebar: () => void;
     activeVerseContentMode: VerseContentMode;
     setActiveVerseContentMode: Dispatch<SetStateAction<VerseContentMode>>;
-    rightPanelContentMode: RightPanelContentMode;
-    setRightPanelContentMode: Dispatch<SetStateAction<RightPanelContentMode>>;
     activeRightPanel: RightPanelType;
     setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     activeDesktopRightPanel: RightPanelType;
     setActiveDesktopRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     toggleRightPanel: (panel: 'commentary') => void;
-    toggleRightPanelContentMode: () => void;
     closeAllDrawers: () => void;
 }
 
@@ -72,7 +51,6 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         return false;
     });
     const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(readSavedVerseContentMode);
-    const [rightPanelContentMode, setRightPanelContentMode] = useState<RightPanelContentMode>(readSavedRightPanelContentMode);
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
@@ -103,14 +81,6 @@ export const UIProvider = ({ children }: UIProviderProps) => {
             console.warn('Unable to access localStorage:', error);
         }
     }, [activeVerseContentMode]);
-
-    useEffect(() => {
-        try {
-            localStorage.setItem(RIGHT_PANEL_CONTENT_MODE_STORAGE_KEY, rightPanelContentMode);
-        } catch (error) {
-            console.warn('Unable to access localStorage:', error);
-        }
-    }, [rightPanelContentMode]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -152,10 +122,6 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         localStorage.setItem('yoga-desktop-right-panel', JSON.stringify(newState));
     }, [activeDesktopRightPanel]);
 
-    const toggleRightPanelContentMode = useCallback(() => {
-        setRightPanelContentMode((prev) => (prev === 'commentary' ? 'comic' : 'commentary'));
-    }, []);
-
     const closeAllDrawers = useCallback(() => {
         setIsSidebarOpen(false);
         setActiveRightPanel(null);
@@ -170,14 +136,11 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 toggleSidebar,
                 activeVerseContentMode,
                 setActiveVerseContentMode,
-                rightPanelContentMode,
-                setRightPanelContentMode,
                 activeRightPanel,
                 setActiveRightPanel,
                 activeDesktopRightPanel,
                 setActiveDesktopRightPanel,
                 toggleRightPanel,
-                toggleRightPanelContentMode,
                 closeAllDrawers,
             }}
         >

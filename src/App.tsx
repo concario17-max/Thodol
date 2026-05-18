@@ -2,10 +2,9 @@ import { CSSProperties, Suspense, lazy, useEffect, useLayoutEffect, useMemo, use
 import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { ChevronDown, MessageSquare } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import CommentarySidebar from './components/CommentarySidebar';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
@@ -246,10 +245,9 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters, allChapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isSidebarOpen, isDesktopSidebarOpen, activeDesktopRightPanel, activeRightPanel, toggleRightPanel } = useUI();
+    const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
-    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen) : undefined;
-    const isCommentaryPanelOpen = isVerseView && (activeDesktopRightPanel === 'commentary' || activeRightPanel === 'commentary');
+    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
     const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
@@ -295,30 +293,10 @@ const MainLayout = () => {
             />
         ) : undefined;
 
-    const rightContent = isVerseView ? (
-        <button
-            type="button"
-            onClick={() => toggleRightPanel('commentary')}
-            aria-pressed={isCommentaryPanelOpen}
-            aria-label={isCommentaryPanelOpen ? 'Close commentary panel' : 'Open commentary panel'}
-            title={isCommentaryPanelOpen ? 'Close commentary panel' : 'Open commentary panel'}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-semibold tracking-[0.18em] transition-all duration-300 ${
-                isCommentaryPanelOpen
-                    ? 'border-gold-primary/30 bg-gold-primary text-white shadow-[0_6px_16px_-8px_rgba(166,139,92,0.95)] dark:border-gold-light/30 dark:bg-gold-light dark:text-[#2a2116]'
-                    : 'border-gold-border/14 bg-shell-main/78 text-gold-primary backdrop-blur-sm hover:border-gold-primary/30 hover:bg-white/88 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:text-gold-light dark:hover:bg-white/8'
-            }`}
-        >
-            <MessageSquare className="h-3.5 w-3.5 shrink-0" />
-            <span className="whitespace-nowrap">Commentary</span>
-        </button>
-    ) : undefined;
-
     return (
         <AppShell
-            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} rightContent={rightContent} /> : undefined}
+            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
-            rightPanel={isVerseView ? <CommentarySidebar /> : undefined}
-            desktopRightPanelOpen={isCommentaryPanelOpen}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
             floatingAction={
