@@ -1,34 +1,35 @@
-# State
+﻿# State
 
 ## Current Task
-Completed: make the commentary header icon in `VerseView.tsx` toggle between the text commentary and chapter 1 learning-comic images.
+Completed: make chapter 1 learning-comic images reliably available for chapter 1 commentary toggling by tracking them under `src/assets/learning-comic/chapter-1` and wiring `VerseView.tsx` to that tracked asset path.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
-main: single-slice UI tweak
+main: planner-only, asset-linked UI task
 
 ## Contract Freeze
 Frozen scope:
-- Update only `src/pages/VerseView.tsx`.
-- Make the commentary header icon toggle between text commentary and learning-comic imagery.
-- Use the uploaded chapter 1 learning-comic images from the `학습만화` folder.
+- Confirm why the chapter 1 learning-comic linkage is not reliable in the deployed tree.
+- Make the chapter 1 learning-comic images available to the app in a way that survives clone/build/deploy.
 - Keep the rest of the verse layout unchanged.
 - Do not touch the untracked root `.odt` reference files.
+- Preserve the commentary icon toggle behavior for chapter 1.
 
-Reason for Route A:
-- This is a tight single-file UI polish with no shared-shell fan-out.
-- The visible renderer lives in `VerseView.tsx`, so one write lane is sufficient.
+Reason for Route B:
+- This task now touches app code plus a learning-comic asset folder, so the scope is no longer a single safe slice.
+- The deployed tree needs a durable asset path, not just a local workspace reference.
 
 ## Write Sets
-- main: `STATE.md`, `src/pages/VerseView.tsx`
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- worker_asset: `src/pages/VerseView.tsx`, `src/assets/learning-comic/chapter-1/**`
 
 ## Reviewer
-not required for Route A
+not used: local verification only
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Added a commentary icon toggle in `VerseView.tsx` that switches between text commentary and the chapter 1 learning-comic images.
+2026-05-18 17:33:42 +09:00 - Moved the chapter 1 learning-comic images into tracked source assets and rewired `VerseView.tsx` to load them from `src/assets/learning-comic/chapter-1`.
 
 ## Open Review Item
-- Resolved: the commentary header icon now toggles between text commentary and the chapter 1 learning-comic images.
+- Resolved: the commentary header icon now toggles between text commentary and the chapter 1 learning-comic images, and the comic assets now come from tracked source files.

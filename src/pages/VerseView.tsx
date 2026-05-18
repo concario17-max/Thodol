@@ -16,17 +16,12 @@ import { chapter3Commentary } from '../data/chapter3Commentary';
 import { chapter4Commentary } from '../data/chapter4Commentary';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 
-const learningComicImages = import.meta.glob('../../학습만화/1/*.png', {
-    eager: true,
-    import: 'default',
-}) as Record<string, string>;
-
 const getLearningComicImageUrl = (chapterNum: string, verseNum: string) => {
     if (chapterNum !== '1') {
         return null;
     }
 
-    return learningComicImages[`../../학습만화/1/${verseNum}.png`] ?? null;
+    return `/learning-comic/chapter-1/${verseNum}.png`;
 };
 
 const containerVariants: Variants = {
