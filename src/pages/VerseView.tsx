@@ -16,17 +16,35 @@ import { chapter3Commentary } from '../data/chapter3Commentary';
 import { chapter4Commentary } from '../data/chapter4Commentary';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 
-const learningComicImages = import.meta.glob('../assets/learning-comic/chapter-1/*.png', {
-    eager: true,
-    import: 'default',
-}) as Record<string, string>;
+const learningComicImages = {
+    ...import.meta.glob('../assets/learning-comic/chapter-1/*.png', {
+        eager: true,
+        import: 'default',
+    }),
+    ...import.meta.glob('../assets/learning-comic/chapter-2/*.png', {
+        eager: true,
+        import: 'default',
+    }),
+    ...import.meta.glob('../assets/learning-comic/chapter-3/*.png', {
+        eager: true,
+        import: 'default',
+    }),
+} as Record<string, string>;
+
+const learningComicChapterPaths: Record<'1' | '2' | '3', string> = {
+    1: '../assets/learning-comic/chapter-1',
+    2: '../assets/learning-comic/chapter-2',
+    3: '../assets/learning-comic/chapter-3',
+};
 
 const getLearningComicImageUrl = (chapterNum: string, verseNum: string) => {
-    if (chapterNum !== '1') {
+    if (chapterNum !== '1' && chapterNum !== '2' && chapterNum !== '3') {
         return null;
     }
 
-    return learningComicImages[`../assets/learning-comic/chapter-1/${verseNum}.png`] ?? null;
+    const chapterPath = learningComicChapterPaths[chapterNum as '1' | '2' | '3'];
+
+    return learningComicImages[`${chapterPath}/${verseNum}.png`] ?? null;
 };
 
 const containerVariants: Variants = {
@@ -215,7 +233,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                         <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
                             Learning comic
                         </p>
-                        <p>학습만화는 chapter 1에만 현재 이미지가 준비되어 있다.</p>
+                        <p>학습만화는 현재 chapter 1, 2, 3에만 이미지가 준비되어 있다.</p>
                     </div>
                 )}
             </div>
