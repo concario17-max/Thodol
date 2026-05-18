@@ -8,7 +8,6 @@ import Header from './components/Header';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
-import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 
 const VerseView = lazy(() => import('./pages/VerseView'));
@@ -247,7 +246,9 @@ const MainLayout = () => {
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
     const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
-    const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
+    const desktopGridColumns = isVerseView
+        ? `${isDesktopSidebarOpen ? 'minmax(21rem, 27.5rem)' : '0px'} minmax(0, 1fr)`
+        : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
     const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
@@ -295,7 +296,7 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
+            header={isVerseView ? <Header title="Yoga Sutras" selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
