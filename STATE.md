@@ -1,32 +1,33 @@
 # State
 
 ## Current Task
-Completed: rollback the repository back to the `7d6836e` tree.
+Completed: restyle the right commentary panel header into a small badge with a separator line and a right-edge icon.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: single-slice rollback
+main: single-slice UI tweak
 
 ## Contract Freeze
 Frozen scope:
-- Revert only the tracked changes introduced after `7d6836e` by backing out `dad7450`.
-- Keep the repository behavior aligned with the `7d6836e` state.
+- Update only the right commentary panel header styling.
+- Make the header read as a compact badge with a thin separator line and a right-edge icon.
+- Keep the rest of the commentary content flow unchanged.
 - Do not touch the untracked root `.odt` reference files.
 
 Reason for Route A:
-- This is a single-commit rollback with no new feature work, shared asset edits, or parallel slices.
-- The scope stays within one direct lane.
+- This is a small visual change isolated to one implementation slice.
+- No shared layout extraction or cross-page fan-out is required.
 
 ## Write Sets
-- main: `STATE.md`, tracked rollback commit only
+- main: `STATE.md`, `src/components/CommentarySidebar.tsx`
 
 ## Reviewer
 not needed
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Completed the rollback to the `7d6836e` tree by backing out `dad7450`.
+2026-05-18 15:47:38 +09:00 - Completed the small UI tweak that restyled the right commentary panel header.
 
 ## Open Review Item
-- Resolved: the tracked repository state matches the `7d6836e` tree again.
+- Resolved: the commentary header matches the compact badge-plus-icon reference.

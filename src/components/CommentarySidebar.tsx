@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import { useParams } from 'react-router-dom';
-import { MessageSquare } from 'lucide-react';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { SidebarLayout } from './ui/SidebarLayout';
 import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
@@ -140,16 +140,14 @@ const CommentarySidebar = () => {
             desktopWidthClass="lg:w-full"
         >
             <div className="relative flex h-full min-h-0 flex-col p-4">
-                <div className="mb-4 flex shrink-0 items-center gap-2 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
-                    <MessageSquare className="h-5 w-5 text-gold-primary dark:text-gold-light" />
-                    <div className="min-w-0">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
-                            Commentary
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-text-primary dark:text-dark-text-primary">
-                            Verse notes and references
-                        </p>
-                    </div>
+                <div className="mb-4 flex shrink-0 items-center gap-3 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                    <span className="inline-flex items-center rounded-full bg-gold-soft/90 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:bg-gold-soft/20 dark:text-gold-light">
+                        Commentary
+                    </span>
+                    <span className="h-px flex-1 bg-gradient-to-r from-gold-border/55 via-gold-border/18 to-transparent dark:from-dark-border/60 dark:via-dark-border/20" />
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold-border/50 bg-shell-main/80 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/60 dark:bg-dark-surface/80 dark:text-gold-light">
+                        <SquareArrowOutUpRight className="h-4 w-4" aria-hidden="true" />
+                    </span>
                 </div>
 
                 <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.18em] text-text-secondary/65 dark:text-dark-text-secondary/65">
