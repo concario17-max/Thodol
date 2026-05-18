@@ -1,5 +1,6 @@
 import { useRef, useEffect, type CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
 import { useAudio } from '../hooks/useAudio';
 import { SutraContent } from '../components/verse/SutraContent';
@@ -145,16 +146,21 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
 
     return (
         <section className="mx-auto w-full max-w-[58rem] space-y-4 bg-shell-commentary px-4 sm:space-y-5 sm:px-6 lg:px-8 dark:bg-shell-commentary-dark">
-            <div className="border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/70 dark:text-gold-light/70">
+            <div className="flex items-center gap-2.5 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                <span className="inline-flex items-center rounded-full bg-gold-soft/90 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:bg-gold-soft/20 dark:text-gold-light">
                     Commentary
-                </p>
-                <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
-                        {chapterNum}.{verseNum}
-                    </span>
-                    {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
-                </div>
+                </span>
+                <span className="h-px flex-1 bg-gradient-to-r from-gold-border/50 via-gold-border/20 to-transparent dark:from-dark-border/60 dark:via-dark-border/25" />
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/45 bg-shell-main/92 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/60 dark:bg-dark-surface/92 dark:text-gold-light">
+                    <SquareArrowOutUpRight className="h-4 w-4" aria-hidden="true" />
+                </span>
+            </div>
+
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
+                    {chapterNum}.{verseNum}
+                </span>
+                {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
             </div>
 
             {bodyBlocks && bodyBlocks.length > 0 ? (
