@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, type CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useYogaData } from '../hooks/useYogaData';
 import { useAudio } from '../hooks/useAudio';
@@ -8,6 +8,11 @@ import { TranslationSection } from '../components/verse/TranslationSection';
 import { SutraNavigation } from '../components/verse/SutraNavigation';
 import { WordMeanings } from '../components/verse/WordMeanings';
 import { useSutraNavigation } from '../hooks/useSutraNavigation';
+import { useUI } from '../context/UIContext';
+import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
+import { chapter2Commentary } from '../data/chapter2Commentary';
+import { chapter3Commentary } from '../data/chapter3Commentary';
+import { chapter4Commentary } from '../data/chapter4Commentary';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 const containerVariants: Variants = {
@@ -38,10 +43,137 @@ const itemVariants: Variants = {
     },
 };
 
+type CommentaryRow = readonly string[] | { label: string; value: string };
+
+type RenderableTable = {
+    headers: readonly string[];
+    rows: ReadonlyArray<CommentaryRow>;
+};
+
+const isTableRowObject = (row: CommentaryRow): row is { label: string; value: string } => !Array.isArray(row);
+
+const toCells = (row: CommentaryRow) => (isTableRowObject(row) ? [row.label, row.value] : [...row]);
+
+const renderTable = (table: RenderableTable) => {
+    const rowCellCount = table.rows.reduce((max, row) => Math.max(max, toCells(row).length), 0);
+    const columnCount = Math.max(table.headers.length, rowCellCount, 1);
+    const gridStyle: CSSProperties = {
+        gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+    };
+
+    return (
+        <div className="overflow-hidden border-y border-gold-border/12 dark:border-dark-border/45">
+            <div className="grid border-b border-gold-border/12 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
+                {Array.from({ length: columnCount }).map((_, index) => (
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
+                        {table.headers[index] ?? ''}
+                    </div>
+                ))}
+            </div>
+
+            {table.rows.map((row, rowIndex) => {
+                const cells = toCells(row);
+                const paddedCells = Array.from({ length: columnCount }, (_, index) => cells[index] ?? '');
+
+                return (
+                    <div key={`row-${rowIndex}`} className="grid border-b border-gold-border/10 last:border-b-0" style={gridStyle}>
+                        {paddedCells.map((cell, cellIndex) => (
+                            <div
+                                key={`cell-${rowIndex}-${cellIndex}`}
+                                className={`px-3 py-3 text-sm leading-relaxed ${
+                                    cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''
+                                } ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
+                            >
+                                {cell}
+                            </div>
+                        ))}
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
+
+const renderCommentaryBlock = (block: CommentaryBlock) => (
+    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+        <h3 className="font-sans text-[13px] font-semibold leading-snug tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[14px]">
+            {block.title}
+        </h3>
+
+        {block.paragraphs?.map((paragraph, index) => (
+            <p key={`${block.title}-p-${index}`} className="font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
+                {paragraph}
+            </p>
+        ))}
+
+        {block.table ? renderTable(block.table) : null}
+
+        {block.bullets ? (
+            <ul className="space-y-2 font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
+                {block.bullets.map((item, index) => {
+                    const match = item.match(/^(\d+)\.\s+(.*)$/);
+                    const marker = match ? `${match[1]}.` : '-';
+                    const text = match ? match[2] : item;
+
+                    return (
+                        <li key={`${block.title}-b-${index}`} className="flex gap-3">
+                            <span className="shrink-0 font-semibold text-text-primary dark:text-dark-text-primary">{marker}</span>
+                            <span className="min-w-0 flex-1 break-words">{text}</span>
+                        </li>
+                    );
+                })}
+            </ul>
+        ) : null}
+    </section>
+);
+
+const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verseNum: string }) => {
+    const commentarySource: Record<string, CommentaryBlock[]> | null =
+        chapterNum === '1'
+            ? chapter1Commentary
+            : chapterNum === '2'
+                ? chapter2Commentary
+                : chapterNum === '3'
+                    ? chapter3Commentary
+                    : chapterNum === '4'
+                        ? chapter4Commentary
+                        : null;
+    const commentaryKey = chapterNum === '1' || chapterNum === '4' ? `${chapterNum}.${verseNum}` : verseNum;
+    const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
+    const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
+    const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
+
+    return (
+        <section className="mx-auto w-full max-w-[58rem] space-y-4 bg-shell-commentary px-4 sm:space-y-5 sm:px-6 lg:px-8 dark:bg-shell-commentary-dark">
+            <div className="border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-gold-primary/70 dark:text-gold-light/70">
+                    Commentary
+                </p>
+                <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
+                        {chapterNum}.{verseNum}
+                    </span>
+                    {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
+                </div>
+            </div>
+
+            {bodyBlocks && bodyBlocks.length > 0 ? (
+                <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
+            ) : (
+                <div className="border-l border-gold-border/12 pl-4 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[15px]">
+                    No commentary is available for this sutra.
+                </div>
+            )}
+        </section>
+    );
+};
+
 const VerseView = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
     const navigate = useNavigate();
     const audioRef = useRef<HTMLAudioElement>(null);
+    const { activeVerseContentMode } = useUI();
+    const isCommentaryMode = activeVerseContentMode === 'commentary';
 
     const { allChapters, loading, error, getVerseInRange, getVerseRangeLabel } = useYogaData();
 
@@ -67,8 +199,8 @@ const VerseView = () => {
 
         const verseData = getVerseInRange(chapterNum, verseNum);
         if (verseData) {
-            const actualNum = Number.parseInt(verseData.id.split('.')[1], 10);
-            if (actualNum !== Number.parseInt(verseNum, 10)) {
+            const actualNum = parseInt(verseData.id.split('.')[1], 10);
+            if (actualNum !== parseInt(verseNum, 10)) {
                 navigate(`/chapter/${chapterNum}/verse/${actualNum}`, { replace: true });
             }
         }
@@ -82,8 +214,15 @@ const VerseView = () => {
         reset();
     }, [chapterNum, verseNum, reset]);
 
+    useEffect(() => {
+        const scrollContainer = document.getElementById('main-scroll-container');
+        if (scrollContainer) {
+            scrollContainer.scrollTo(0, 0);
+        }
+    }, [isCommentaryMode]);
+
     const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
-    const currentChapter = allChapters && chapterNum ? allChapters[Number.parseInt(chapterNum, 10)] : null;
+    const currentChapter = allChapters && chapterNum ? allChapters[parseInt(chapterNum, 10)] : null;
     const currentIndex = currentChapter && verseData ? currentChapter.sutras.findIndex((sutra) => sutra.id === verseData.id) : -1;
 
     const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
@@ -113,6 +252,7 @@ const VerseView = () => {
 
     const verseRange = getVerseRangeLabel(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
+    const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
 
     return (
         <AnimatePresence mode="wait">
@@ -125,7 +265,7 @@ const VerseView = () => {
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
                 <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
-                    <section className="space-y-5 sm:space-y-6">
+                    <section className={bodyContentClassName}>
                         <motion.div variants={itemVariants}>
                             <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
                         </motion.div>
@@ -166,14 +306,20 @@ const VerseView = () => {
                         </motion.div>
                     </section>
 
+                    {isCommentaryMode ? (
+                        <motion.div variants={itemVariants}>
+                            <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
+                        </motion.div>
+                    ) : null}
+
                     <motion.div variants={itemVariants}>
                         <SutraNavigation
                             chapterNum={chapterNum}
                             verseRange={verseRange}
                             onPrev={handlePrev}
                             onNext={handleNext}
-                            isPrevDisabled={Number.parseInt(chapterNum, 10) === 1 && currentIndex === 0}
-                            isNextDisabled={Number.parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                            isPrevDisabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
+                            isNextDisabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
                         />
                     </motion.div>
                 </div>

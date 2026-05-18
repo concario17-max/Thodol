@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
 import Sidebar from './components/Sidebar';
-import CommentarySidebar from './components/CommentarySidebar';
 import Header from './components/Header';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
@@ -246,7 +245,7 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters, allChapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
-    const { isDesktopSidebarOpen } = useUI();
+    const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
@@ -298,7 +297,7 @@ const MainLayout = () => {
         <AppShell
             header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
-            rightPanel={isVerseView ? <CommentarySidebar /> : undefined}
+            isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
             floatingAction={
                 !isVerseView ? (

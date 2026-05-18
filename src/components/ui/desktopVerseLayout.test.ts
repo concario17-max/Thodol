@@ -8,19 +8,19 @@ import {
 } from './desktopVerseLayout';
 
 describe('getDesktopVerseColumns', () => {
-    it('returns 20/60/20 when the left panel is open', () => {
+    it('returns 20/60/20 when both panels are open', () => {
         expect(getDesktopVerseColumns(true, true)).toBe(DESKTOP_VERSE_COLUMNS_DEFAULT);
     });
 
-    it('returns 0/60/20 when the left panel is closed', () => {
+    it('returns 0/60/40 when the left panel is closed and commentary is open', () => {
         expect(getDesktopVerseColumns(false, true)).toBe(DESKTOP_VERSE_COLUMNS_LEFT_CLOSED);
     });
 
-    it('keeps the fixed right reading column in the layout string', () => {
+    it('returns 20/80/0 when commentary is closed and the left panel remains open', () => {
         expect(getDesktopVerseColumns(true, false)).toBe(DESKTOP_VERSE_COLUMNS_NO_RIGHT);
     });
 
-    it('returns the same fixed right reading column when the left panel is closed', () => {
+    it('returns 0/100/0 when both side panels are closed', () => {
         expect(getDesktopVerseColumns(false, false)).toBe(DESKTOP_VERSE_COLUMNS_FULL_WIDTH);
     });
 });
