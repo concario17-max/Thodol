@@ -145,3 +145,8 @@ status: resolved
   summary: duplicate `desktopBorderClass` declaration resolved
   details: Removed the extra `desktopBorderClass` declaration and kept the left-sidebar border behavior aligned with the warm-gray surface treatment. `typecheck` and `build` are green again.
   status: resolved
+- time: 2026-05-18 15:47:38 +09:00
+  location: `npm run typecheck` / `npm run build`
+  summary: PowerShell execution policy blocked `npm.ps1` during verification.
+  details: The first verification attempts failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-ran both checks with `npm.cmd`, which passed.
+  status: resolved

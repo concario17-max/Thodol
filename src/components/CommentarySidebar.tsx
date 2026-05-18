@@ -140,12 +140,12 @@ const CommentarySidebar = () => {
             desktopWidthClass="lg:w-full"
         >
             <div className="relative flex h-full min-h-0 flex-col p-4">
-                <div className="mb-4 flex shrink-0 items-center gap-3 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
-                    <span className="inline-flex items-center rounded-full bg-gold-soft/90 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:bg-gold-soft/20 dark:text-gold-light">
+                <div className="mb-4 flex shrink-0 items-center gap-2.5 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
+                    <span className="inline-flex items-center rounded-full bg-gold-soft/90 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:bg-gold-soft/20 dark:text-gold-light">
                         Commentary
                     </span>
-                    <span className="h-px flex-1 bg-gradient-to-r from-gold-border/55 via-gold-border/18 to-transparent dark:from-dark-border/60 dark:via-dark-border/20" />
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-gold-border/50 bg-shell-main/80 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/60 dark:bg-dark-surface/80 dark:text-gold-light">
+                    <span className="h-px flex-1 bg-gradient-to-r from-gold-border/50 via-gold-border/20 to-transparent dark:from-dark-border/60 dark:via-dark-border/25" />
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/45 bg-shell-main/92 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/60 dark:bg-dark-surface/92 dark:text-gold-light">
                         <SquareArrowOutUpRight className="h-4 w-4" aria-hidden="true" />
                     </span>
                 </div>

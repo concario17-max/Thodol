@@ -1,33 +1,34 @@
 # State
 
 ## Current Task
-Completed: restyle the right commentary panel header into a small badge with a separator line and a right-edge icon.
+Completed: make the desktop right-panel border color explicit so the shared shell matches the compact reference more closely.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: single-slice UI tweak
+main: write-capable
 
 ## Contract Freeze
 Frozen scope:
-- Update only the right commentary panel header styling.
-- Make the header read as a compact badge with a thin separator line and a right-edge icon.
+- Update the commentary panel header inside `CommentarySidebar.tsx`.
+- Adjust the shared shell in `SidebarLayout.tsx` only as needed to make the compact badge, separator line, and right-edge icon read correctly.
 - Keep the rest of the commentary content flow unchanged.
 - Do not touch the untracked root `.odt` reference files.
 
 Reason for Route A:
-- This is a small visual change isolated to one implementation slice.
-- No shared layout extraction or cross-page fan-out is required.
+- The task is a tight two-file UI polish with no broader feature work or shared asset fan-out.
+- The change is confined to the commentary sidebar header and its shell, so a single write lane is sufficient.
 
 ## Write Sets
-- main: `STATE.md`, `src/components/CommentarySidebar.tsx`
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- main: `src/components/CommentarySidebar.tsx`, `src/components/ui/SidebarLayout.tsx`
 
 ## Reviewer
-not needed
+not required for Route A
 
 ## Last Update
-2026-05-18 15:47:38 +09:00 - Completed the small UI tweak that restyled the right commentary panel header.
+2026-05-18 15:47:38 +09:00 - Pinned the desktop right-panel border color and re-verified typecheck/build.
 
 ## Open Review Item
-- Resolved: the commentary header matches the compact badge-plus-icon reference.
+- Resolved: the desktop right-panel border color now matches the compact reference more closely.
