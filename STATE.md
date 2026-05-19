@@ -1,18 +1,18 @@
 # State
 
 ## Current Task
-Active: deterministically regenerate `src/data/chapter3Commentary.ts` from the changed chapter 3 ODT source and normalize the remaining corrupted chapter titles.
+Completed: defaulted the commentary view in `src/pages/VerseView.tsx` to learning comic first, while preserving the existing toggle behavior and tracked assets.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: single-file regeneration
+main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Regenerate the tracked chapter 3 commentary data from the changed ODT source in a single coherent rewrite.
-- Preserve the existing `CommentaryBlock` / `CommentaryTable` shape and the 55 verse keys.
+- Change the commentary view default so the learning comic appears first when entering commentary mode.
+- Preserve the existing toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
 Reason for Route A:
@@ -25,7 +25,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-19 12:45:00 +09:00 - Rechecked the changed chapter 3 ODT against `src/data/chapter3Commentary.ts` and reran verification.
+2026-05-19 12:58:00 +09:00 - Set the commentary view to open on learning comic first and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
-- Pending: finish the chapter 3 ODT-to-data alignment audit, then confirm the final `Plaintext` placement and chapter titles against the source before closing the task.
+- Resolved: commentary now opens on learning comic first and still toggles back to text commentary cleanly.

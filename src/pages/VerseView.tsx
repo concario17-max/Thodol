@@ -167,10 +167,10 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
 type CommentaryViewMode = 'commentary' | 'comic';
 
 const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verseNum: string }) => {
-    const [viewMode, setViewMode] = useState<CommentaryViewMode>('commentary');
+    const [viewMode, setViewMode] = useState<CommentaryViewMode>('comic');
 
     useEffect(() => {
-        setViewMode('commentary');
+        setViewMode('comic');
     }, [chapterNum, verseNum]);
 
     const commentarySource: Record<string, CommentaryBlock[]> | null =
