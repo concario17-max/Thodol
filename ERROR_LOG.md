@@ -159,3 +159,7 @@ status: open
 summary: Build verification completed via npm.cmd
 details: The same build finished successfully when invoked as `cmd /c npm.cmd run build`.
 status: resolved
+[2026-05-19 12:45 +09:00] location: npm.cmd run typecheck && npm.cmd run build
+summary: PowerShell rejected `&&` in verification command
+details: The combined verification command failed before execution because PowerShell treated `&&` as invalid syntax. Re-ran the checks as separate PowerShell statements with `npm.cmd`, and both passed.
+status: resolved

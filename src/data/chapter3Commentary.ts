@@ -64,7 +64,10 @@ export const chapter3Commentary = (
       }
     },
     {
-      "title": "🌌 우주와 핸드폰",
+      "title": "🌌 우주와 핸드폰"
+    },
+    {
+      "title": "Plaintext",
       "paragraphs": [
         "마음이라는 넓은 우주 한구석에 핸드폰 이미지를 작게 띄우는 건 진짜 집중이 아니야.",
         "마음 전체가 온전히 핸드폰의 형상 그 자체가 되어야 해.",
@@ -150,6 +153,9 @@ export const chapter3Commentary = (
         "치타를 골고루 퍼뜨리고 싶은데 한곳에만 소금처럼 뭉치는 현상도 백일하에 드러나지.",
         "이런 통제 불능의 한계를 마주하는 게 수행의 진짜 시작이야."
       ]
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "⚖️ 균등한 배열 훈련",
@@ -280,6 +286,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "🎯 의도적 몰입의 조건",
       "paragraphs": [
         "사마디는 저절로 주어지는 것이 아니다.",
@@ -322,6 +331,9 @@ export const chapter3Commentary = (
       "paragraphs": [
         "금계, 권계, 아사나와 같은 훈련 과정의 진짜 목적은 밖으로 새어 나간 생명 에너지를 되찾는 데 있어. 내 의지대로 감각 기관의 스위치를 켜고 끌 수 있는 상태에 도달해야만 마음 안에 형상화한 것이 진짜 실재라는 인식에 닿을 수 있지."
       ]
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "🧩 조각난 마음의 한계",
@@ -368,6 +380,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "👗 겉옷과 속옷의 비유",
       "paragraphs": [
         "남자가 여자 옷을 입는다고 여자가 되지 않듯, 겉으로 드러나는 활동은 중요하지 않다.",
@@ -410,6 +425,9 @@ export const chapter3Commentary = (
       "paragraphs": [
         "개인적 존재감을 아예 형성하지 말라는 게 아니야. 옳고 그름이나 타인의 시선에 얽매여 그 존재감을 억지로 고집하지 말라는 뜻이지. 마치 레고 블록처럼 원할 때 언제든 '나'라는 형상을 부수고 유연하게 다시 빚어낼 수 있는 가변성이 중요해."
       ]
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "🌟 회수된 치타의 기적 창조",
@@ -507,6 +525,9 @@ export const chapter3Commentary = (
       }
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "🔗 흐름의 끊김 없음",
       "paragraphs": [
         "집중 -> 참선 -> 깊은 참선",
@@ -514,10 +535,16 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "🧩 순차적 결합",
       "paragraphs": [
         "각각의 상태가 낱개로 파편화되지 않고, 하나의 매끄러운 덩어리로 완벽하게 이어져야 해."
       ]
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "🚀 단일 행동화",
@@ -1418,6 +1445,9 @@ export const chapter3Commentary = (
       }
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "💡 꿰뚫어 보는 자의 시선",
       "paragraphs": [
         "부처님과 같이 영적인 통찰을 지닌 존재는 길가의 모래 한 줌을 보면서도,",
@@ -1503,6 +1533,9 @@ export const chapter3Commentary = (
           ]
         ]
       }
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "🔨 파괴의 이면",
@@ -2265,15 +2298,23 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "📝 핵심 요약",
       "bullets": [
-        "서양의 해석은 육체가 투명해진다는 것을 믿지 못해, 의식이 육체에서 빠져나와 혼계나 영계로 후퇴하여 겉으로 드러나지 않는 현상으로 풀이했어.",
         "하지만 파탄잘리는 영이 육체를 완벽히 지배하면 실제로 물리적 육체 자체를 눈에 보이지 않게 만들 수 있다는 진실을 본인의 경험을 바탕으로 이야기한 거야.",
         "헤르메스학에 따르면 육체에 엄청난 양의 빛 에너지를 축적하면 투명한 유리병처럼 육체가 눈에 보이지 않게 돼.",
         "더 나아가 얼음이 수증기가 되듯 육체 자체를 공기처럼 기화시켜 만져지지도 않게 만들고 다시 고체화시키는 것도 가능해.",
         "그러나 지금 당장 우리가 해야 할 유일한 실습은 투명화가 아니라, 영을 육체에서 온전히 철수시키고 분리하는 기초 지배력을 훈련하는 것뿐이야."
       ]
-    }
+    },
+    {
+      "title": "Plaintext"
+    },
+    {
+      "title": "Plaintext"
+    },
   ],
   "22": [
     {
@@ -2538,6 +2579,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "🤝 연민: 주파수를 맞추는 대등한 연결",
       "paragraphs": [
         "연민은 단순히 머리로 상대를 이해하는 얕은 감정 노동이 아니야.",
@@ -2604,6 +2648,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "👻 아스트랄체의 진실",
       "paragraphs": [
         "절대 주의사항:",
@@ -2651,6 +2698,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "⛓️ 주도권 상실의 치명적 대가",
       "paragraphs": [
         "초연함을 잃고 그 강렬한 감각과 느낌에 푹 빠져버리는 순간,",
@@ -2695,6 +2745,9 @@ export const chapter3Commentary = (
           ]
         ]
       }
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "⬆️ 빛의 끌어올림과 활용",
@@ -3427,6 +3480,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "📡 완성된 존재와의 연결망",
       "paragraphs": [
         "접촉의 주 목적은 단순한 소통이 아니다.",
@@ -3499,6 +3555,9 @@ export const chapter3Commentary = (
       }
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "🌫️ 안개 걷힌 고속도로",
       "paragraphs": [
         "직관이 희미할 때는 짙은 안개가 낀 고속도로를 달리는 기분일 거야. 앞이 제대로 보이지 않아 불안하고 헷갈리지.",
@@ -3526,6 +3585,9 @@ export const chapter3Commentary = (
         "하지만 직관이라는 거대한 서치라이트를 천장에 매달아 켜는 순간을 상상해 봐.",
         "숨어 있던 먼지 한 톨까지 한 번에 다 보이듯, 알 수 없는 것들이 단숨에 사라지는 이치지."
       ]
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "🚪 미지의 소멸 단계",
@@ -4398,6 +4460,9 @@ export const chapter3Commentary = (
       ]
     },
     {
+      "title": "Plaintext"
+    },
+    {
       "title": "☀️ 빛과 어둠의 창조 도구",
       "paragraphs": [
         "영은 내면에 존재하는 빛과 어둠을 교차로 사용하며 사고를 형상화한다.",
@@ -4458,6 +4523,9 @@ export const chapter3Commentary = (
           ]
         ]
       }
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "🌌 설명할 수 없는 신성함의 체험",
@@ -5364,6 +5432,12 @@ export const chapter3Commentary = (
       }
     },
     {
+      "title": "Plaintext"
+    },
+    {
+      "title": "Plaintext"
+    },
+    {
       "title": "☕ 커피 한 잔의 인지 추적 훈련",
       "paragraphs": [
         "직관적 지식을 사용하는 훈련은 단순히 미각을 느끼는 것을 넘어, 인지 과정이라는 공장의 생산 라인을 깊게 파고드는 것과 같아."
@@ -5461,6 +5535,9 @@ export const chapter3Commentary = (
           ]
         ]
       }
+    },
+    {
+      "title": "Plaintext"
     },
     {
       "title": "☕ 커피 한 잔의 인지 추적 훈련",

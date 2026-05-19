@@ -1,23 +1,22 @@
 # State
 
 ## Current Task
-Active: fix VerseView so the commentary comic toggle loads chapter 1, chapter 2, chapter 3, and chapter 4 images from tracked repo assets under `src/assets/learning-comic`.
+Active: deterministically regenerate `src/data/chapter3Commentary.ts` from the changed chapter 3 ODT source and normalize the remaining corrupted chapter titles.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: single-slice feature fix
+main: single-file regeneration
 
 ## Contract Freeze
 Frozen scope:
-- Update VerseView to resolve chapter 1 through chapter 4 comic images from tracked repo asset paths only.
-- Keep the rest of the verse layout unchanged.
-- Do not touch the untracked root `.odt` reference files.
-- Preserve the existing toggle behavior.
+- Regenerate the tracked chapter 3 commentary data from the changed ODT source in a single coherent rewrite.
+- Preserve the existing `CommentaryBlock` / `CommentaryTable` shape and the 55 verse keys.
+- Keep the root `.odt` files untouched.
 
 Reason for Route A:
-- This is now a single-file feature fix with one tight implementation slice and no asset writes.
+- This remains a single-file change with no fanout, shared assets, or multi-file coordination required.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
@@ -26,7 +25,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-19 11:37:50 +09:00 - Reclassified the task as a Route A feature fix to correct VerseView asset paths.
+2026-05-19 12:45:00 +09:00 - Rechecked the changed chapter 3 ODT against `src/data/chapter3Commentary.ts` and reran verification.
 
 ## Open Review Item
-- Pending: chapter 3 and chapter 4 learning-comic images must be tracked and resolved from durable repo paths.
+- Pending: finish the chapter 3 ODT-to-data alignment audit, then confirm the final `Plaintext` placement and chapter titles against the source before closing the task.
