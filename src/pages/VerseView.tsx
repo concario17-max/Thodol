@@ -80,6 +80,11 @@ const itemVariants: Variants = {
     },
 };
 
+const sharedContentShellClassName =
+    'overflow-hidden rounded-[2rem] border border-gold-border/18 bg-shell-commentary shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_40px_-34px_rgba(0,0,0,0.34)] dark:border-dark-border/50 dark:bg-shell-commentary-dark dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_40px_-34px_rgba(0,0,0,0.48)]';
+
+const sharedContentPaddingClassName = 'px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6';
+
 type CommentaryRow = readonly string[] | { label: string; value: string };
 
 type RenderableTable = {
@@ -206,7 +211,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                 </button>
             </div>
 
-            <div className="overflow-hidden rounded-[2rem] border border-gold-border/18 bg-shell-commentary px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_40px_-34px_rgba(0,0,0,0.34)] sm:space-y-5 sm:px-6 sm:py-5 lg:px-8 lg:py-6 dark:border-dark-border/50 dark:bg-shell-commentary-dark dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_40px_-34px_rgba(0,0,0,0.48)]">
+            <div className={`${sharedContentShellClassName} ${sharedContentPaddingClassName} sm:space-y-5`}>
                 {viewMode === 'commentary' ? (
                     <>
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -343,45 +348,47 @@ const VerseView = () => {
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
                 <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
-                    <section className={bodyContentClassName}>
-                        <motion.div variants={itemVariants}>
-                            <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
-                        </motion.div>
+                    <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
+                        <div className={bodyContentClassName}>
+                            <motion.div variants={itemVariants}>
+                                <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
+                            </motion.div>
 
-                        <motion.div variants={itemVariants}>
-                            <WordMeanings meanings={verseData.word_meanings} />
-                        </motion.div>
+                            <motion.div variants={itemVariants}>
+                                <WordMeanings meanings={verseData.word_meanings} />
+                            </motion.div>
 
-                        <audio
-                            ref={audioRef}
-                            src={audioSrc}
-                            onTimeUpdate={handleTimeUpdate}
-                            onLoadedMetadata={handleLoadedMetadata}
-                            onEnded={handleAudioEnded}
-                            className="hidden"
-                        />
-
-                        <motion.div variants={itemVariants}>
-                            <AudioPlayer
-                                isPlaying={isPlaying}
-                                togglePlay={togglePlay}
-                                currentTime={currentTime}
-                                duration={duration}
-                                progressPercent={progressPercent}
-                                formatTime={formatTime}
-                                onSeek={seek}
-                                playbackError={playbackError}
+                            <audio
+                                ref={audioRef}
+                                src={audioSrc}
+                                onTimeUpdate={handleTimeUpdate}
+                                onLoadedMetadata={handleLoadedMetadata}
+                                onEnded={handleAudioEnded}
+                                className="hidden"
                             />
-                        </motion.div>
 
-                        <motion.div variants={itemVariants}>
-                            <TranslationSection
-                                baeJik={verseData['5.bae_jik']}
-                                baeUu={verseData['6.bae_uu']}
-                                oxfordKr={verseData['8. ox']}
-                                oxfordEn={verseData['9. ox-en']}
-                            />
-                        </motion.div>
+                            <motion.div variants={itemVariants}>
+                                <AudioPlayer
+                                    isPlaying={isPlaying}
+                                    togglePlay={togglePlay}
+                                    currentTime={currentTime}
+                                    duration={duration}
+                                    progressPercent={progressPercent}
+                                    formatTime={formatTime}
+                                    onSeek={seek}
+                                    playbackError={playbackError}
+                                />
+                            </motion.div>
+
+                            <motion.div variants={itemVariants}>
+                                <TranslationSection
+                                    baeJik={verseData['5.bae_jik']}
+                                    baeUu={verseData['6.bae_uu']}
+                                    oxfordKr={verseData['8. ox']}
+                                    oxfordEn={verseData['9. ox-en']}
+                                />
+                            </motion.div>
+                        </div>
                     </section>
 
                     {isCommentaryMode ? (

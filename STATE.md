@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: add a visible border frame around the commentary content area in `src/pages/VerseView.tsx` so both the learning comic and text commentary sit inside a boxed panel.
+Completed: unify the commentary and deep-dive layouts in `src/pages/VerseView.tsx` so they share the same frame, spacing, border, and typography while keeping the learning-comic toggle only in commentary mode.
 
 ## Route
 Route A
@@ -11,8 +11,9 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Add a visible border frame around the commentary content area.
-- Preserve the existing toggle behavior and tracked learning-comic assets.
+- Unify the commentary and deep-dive layout shell in `src/pages/VerseView.tsx`.
+- Keep the learning-comic toggle only in commentary mode.
+- Preserve the existing tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
 Reason for Route A:
@@ -25,7 +26,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-19 13:14:00 +09:00 - Added a visible border frame around the commentary content area and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-19 13:24:00 +09:00 - Unified the commentary and deep-dive layout shell and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.
