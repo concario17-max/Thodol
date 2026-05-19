@@ -206,7 +206,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                 </button>
             </div>
 
-            <div className="space-y-4 bg-shell-commentary px-4 py-4 sm:space-y-5 sm:px-6 sm:py-5 lg:px-8 lg:py-6 dark:bg-shell-commentary-dark">
+            <div className="overflow-hidden rounded-[2rem] border border-gold-border/18 bg-shell-commentary px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_40px_-34px_rgba(0,0,0,0.34)] sm:space-y-5 sm:px-6 sm:py-5 lg:px-8 lg:py-6 dark:border-dark-border/50 dark:bg-shell-commentary-dark dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_40px_-34px_rgba(0,0,0,0.48)]">
                 {viewMode === 'commentary' ? (
                     <>
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
