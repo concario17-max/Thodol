@@ -29,20 +29,25 @@ const learningComicImages = {
         eager: true,
         import: 'default',
     }),
+    ...import.meta.glob('../assets/learning-comic/chapter-4/*.png', {
+        eager: true,
+        import: 'default',
+    }),
 } as Record<string, string>;
 
-const learningComicChapterPaths: Record<'1' | '2' | '3', string> = {
+const learningComicChapterPaths: Record<'1' | '2' | '3' | '4', string> = {
     1: '../assets/learning-comic/chapter-1',
     2: '../assets/learning-comic/chapter-2',
     3: '../assets/learning-comic/chapter-3',
+    4: '../assets/learning-comic/chapter-4',
 };
 
 const getLearningComicImageUrl = (chapterNum: string, verseNum: string) => {
-    if (chapterNum !== '1' && chapterNum !== '2' && chapterNum !== '3') {
+    if (chapterNum !== '1' && chapterNum !== '2' && chapterNum !== '3' && chapterNum !== '4') {
         return null;
     }
 
-    const chapterPath = learningComicChapterPaths[chapterNum as '1' | '2' | '3'];
+    const chapterPath = learningComicChapterPaths[chapterNum as '1' | '2' | '3' | '4'];
 
     return learningComicImages[`${chapterPath}/${verseNum}.png`] ?? null;
 };

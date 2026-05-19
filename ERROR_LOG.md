@@ -150,3 +150,12 @@ status: resolved
   summary: PowerShell execution policy blocked `npm.ps1` during verification.
   details: The first verification attempts failed before project checks because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-ran both checks with `npm.cmd`, which passed.
   status: resolved
+[2026-05-19 00:00 +09:00] location: npm run build
+summary: PowerShell execution policy blocked npm.ps1
+details: Build verification could not start because PowerShell refused to load C:\Program Files\nodejs\npm.ps1. Retrying with npm.cmd is required.
+status: open
+
+[2026-05-19 00:00 +09:00] location: npm run build
+summary: Build verification completed via npm.cmd
+details: The same build finished successfully when invoked as `cmd /c npm.cmd run build`.
+status: resolved

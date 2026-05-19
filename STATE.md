@@ -1,36 +1,32 @@
 # State
 
 ## Current Task
-Active: make chapter 2 and chapter 3 learning-comic images reliably available for commentary toggling and wire VerseView to the tracked asset paths.
+Active: fix VerseView so the commentary comic toggle loads chapter 1, chapter 2, chapter 3, and chapter 4 images from tracked repo assets under `src/assets/learning-comic`.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
-main: planner-only, asset-linked UI task
+main: single-slice feature fix
 
 ## Contract Freeze
 Frozen scope:
-- Confirm why the chapter 2 and chapter 3 learning-comic linkage is not reliable in the deployed tree.
-- Make the chapter 2 and chapter 3 learning-comic images available to the app in a way that survives clone/build/deploy.
+- Update VerseView to resolve chapter 1 through chapter 4 comic images from tracked repo asset paths only.
 - Keep the rest of the verse layout unchanged.
 - Do not touch the untracked root `.odt` reference files.
-- Preserve the commentary icon toggle behavior for all covered chapters.
+- Preserve the existing toggle behavior.
 
-Reason for Route B:
-- This task touches tracked app code plus multiple learning-comic asset folders.
-- The deployed tree needs durable asset paths for multiple chapters, not a workspace-only reference.
+Reason for Route A:
+- This is now a single-file feature fix with one tight implementation slice and no asset writes.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_asset: `src/pages/VerseView.tsx`, `src/assets/learning-comic/chapter-2/**`, `src/assets/learning-comic/chapter-3/**`
-- worker_feature: `src/pages/VerseView.tsx`
 
 ## Reviewer
 pending assignment
 
 ## Last Update
-2026-05-18 17:47:00 +09:00 - Populated tracked chapter 2 and chapter 3 learning-comic PNG assets; feature-side VerseView wiring still unchanged.
+2026-05-19 11:37:50 +09:00 - Reclassified the task as a Route A feature fix to correct VerseView asset paths.
 
 ## Open Review Item
-- Pending: VerseView still references chapter-1 only; chapter 2 and chapter 3 asset paths are now tracked and available for the next wiring pass.
+- Pending: chapter 3 and chapter 4 learning-comic images must be tracked and resolved from durable repo paths.

@@ -5,5 +5,13 @@
 - Main owns planning/logging only.
 - Chapter 2 and chapter 3 linkage reclassified to Route B.
 - Asset and feature workers pending assignment.
+
+## 2026-05-19
+- Chapter 3 and chapter 4 learning-comic linkage activated.
+- Main owns planning/logging only.
+- Asset and feature workers pending assignment.
 - Chapter 2 and chapter 3 PNG assets copied into tracked `src/assets/learning-comic/chapter-2` and `chapter-3`.
 - VerseView feature wiring remains untouched; asset paths are now present in the repo.
+- VerseView feature-side linkage now resolves chapter 1 through chapter 4 comic images from tracked repo asset paths.
+- 11:37:50 +09:00 - Chapter 3 PNGs copied into tracked `src/assets/learning-comic/chapter-3` and chapter 4 PNGs copied into tracked `src/assets/learning-comic/chapter-4`.
+- 11:37:50 +09:00 - Chapter 3 asset path is ready for VerseView; chapter 4 assets are present but VerseView does not yet reference chapter 4.
