@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: remove the empty deep-dive shell from `src/pages/VerseView.tsx` when commentary mode is active so only the commentary frame remains visible.
+Completed: move the chapter/sutra context pill to the left of the commentary/deep-dive toggle in `src/components/Header.tsx`.
 
 ## Route
 Route A
@@ -11,9 +11,8 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Remove the empty deep-dive shell from `src/pages/VerseView.tsx` in commentary mode.
-- Keep the learning-comic toggle only in commentary mode.
-- Preserve the existing tracked learning-comic assets.
+- Move the chapter/sutra context pill to the left of the verse mode toggle in `src/components/Header.tsx`.
+- Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
 Reason for Route A:
@@ -26,7 +25,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - Removed the hidden deep-dive shell from commentary mode and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - Moved the chapter/sutra context pill to the left of the verse mode toggle and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.
