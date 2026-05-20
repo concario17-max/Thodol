@@ -394,8 +394,16 @@ const VerseView = () => {
 
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full max-w-[58rem] px-4 sm:px-6 lg:px-8">
-                                <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-14 items-center justify-start lg:flex">
+                            <div className="relative mx-auto w-full max-w-[58rem] overflow-visible px-4 sm:px-6 lg:px-8">
+                                <div className="mx-auto flex w-full max-w-[46rem] flex-col items-center gap-4">
+                                    <span className="rounded-full border border-gold-primary/14 bg-white/70 px-4 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-text-secondary shadow-[0_10px_24px_-20px_rgba(0,0,0,0.35)] backdrop-blur-md dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary">
+                                        {chapterNum}.{verseData.id.split('.')[1]}
+                                    </span>
+
+                                    <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
+                                </div>
+
+                                <div className="pointer-events-none absolute inset-y-0 left-0 hidden -translate-x-[calc(100%+1rem)] items-center lg:flex">
                                     <button
                                         type="button"
                                         onClick={handlePrev}
@@ -409,7 +417,7 @@ const VerseView = () => {
                                     </button>
                                 </div>
 
-                                <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-14 items-center justify-end lg:flex">
+                                <div className="pointer-events-none absolute inset-y-0 right-0 hidden translate-x-[calc(100%+1rem)] items-center lg:flex">
                                     <button
                                         type="button"
                                         onClick={handleNext}
@@ -422,8 +430,6 @@ const VerseView = () => {
                                         <ChevronRight className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
                                     </button>
                                 </div>
-
-                                <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
                             </div>
                         </motion.div>
                     ) : null}

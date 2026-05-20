@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: move the sutra navigation arrows into the verse body’s left/right whitespace, above the current sutra number.
+Completed: move the sutra navigation arrows fully outside the verse body, floating at the left and right edges.
 
 ## Route
 Route A
@@ -11,7 +11,7 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Move the sutra navigation arrows into the verse body’s left/right whitespace, above the current sutra number.
+- Move the sutra navigation arrows fully outside the verse body, floating at the left and right edges.
 - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
@@ -25,7 +25,7 @@ Reason for Route A:
 not requested
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - Moved the sutra navigation arrows into the verse body’s left/right whitespace with the sutra number above them, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - Moved the sutra navigation arrows fully outside the verse body so they float at the left and right edges, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.
