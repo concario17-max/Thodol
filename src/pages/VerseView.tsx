@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, type CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { SquareArrowOutUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, SquareArrowOutUpRight } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
 import { useAudio } from '../hooks/useAudio';
 import { SutraContent } from '../components/verse/SutraContent';
@@ -83,58 +83,6 @@ const sharedContentShellClassName =
     'overflow-hidden rounded-[2rem] border border-gold-border/18 bg-shell-commentary shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_40px_-34px_rgba(0,0,0,0.34)] dark:border-dark-border/50 dark:bg-shell-commentary-dark dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_40px_-34px_rgba(0,0,0,0.48)]';
 
 const sharedContentPaddingClassName = 'px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6';
-
-const ComicTurnStrip = ({
-    chapterNum,
-    verseRange,
-    onPrev,
-    onNext,
-    isPrevDisabled,
-    isNextDisabled,
-}: {
-    chapterNum: string;
-    verseRange: string;
-    onPrev: () => void;
-    onNext: () => void;
-    isPrevDisabled: boolean;
-    isNextDisabled: boolean;
-}) => (
-    <div className="mx-auto w-full max-w-[62rem] px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-[24rem] flex-col items-center gap-2.5 sm:max-w-[28rem]">
-            <span className="rounded-full border border-gold-primary/14 bg-white/70 px-4 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-text-secondary shadow-[0_10px_24px_-20px_rgba(0,0,0,0.35)] backdrop-blur-md dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary">
-                {chapterNum}.{verseRange}
-            </span>
-
-            <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-3">
-                <div className="flex justify-start">
-                    <button
-                        type="button"
-                        onClick={onPrev}
-                        disabled={isPrevDisabled}
-                        className="grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary"
-                        aria-label="이전 구절"
-                    >
-                        <span className="text-xl leading-none">‹</span>
-                    </button>
-                </div>
-
-                <div className="h-px w-full bg-gradient-to-r from-transparent via-gold-border/30 to-transparent dark:via-dark-border/35" />
-
-                <div className="flex justify-end">
-                    <button
-                        type="button"
-                        onClick={onNext}
-                        disabled={isNextDisabled}
-                        className="grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary"
-                        aria-label="다음 구절"
-                    >
-                        <span className="text-xl leading-none">›</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-);
 
 type CommentaryRow = readonly string[] | { label: string; value: string };
 
@@ -309,7 +257,7 @@ const VerseView = () => {
     const { activeVerseContentMode } = useUI();
     const isCommentaryMode = activeVerseContentMode === 'commentary';
 
-    const { allChapters, loading, error, getVerseInRange, getVerseRangeLabel } = useYogaData();
+    const { allChapters, loading, error, getVerseInRange } = useYogaData();
 
     const {
         isPlaying,
@@ -384,9 +332,9 @@ const VerseView = () => {
         return null;
     }
 
-    const verseRange = getVerseRangeLabel(currentChapter, verseData);
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
+    const navigationDisabledClassName = 'pointer-events-none opacity-25';
 
     return (
         <AnimatePresence mode="wait">
@@ -446,15 +394,35 @@ const VerseView = () => {
 
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="space-y-4">
-                                <ComicTurnStrip
-                                    chapterNum={chapterNum}
-                                    verseRange={verseRange}
-                                    onPrev={handlePrev}
-                                    onNext={handleNext}
-                                    isPrevDisabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
-                                    isNextDisabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
-                                />
+                            <div className="relative mx-auto w-full max-w-[58rem] px-4 sm:px-6 lg:px-8">
+                                <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-14 items-center justify-start lg:flex">
+                                    <button
+                                        type="button"
+                                        onClick={handlePrev}
+                                        disabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
+                                        aria-label="이전 구절"
+                                        className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
+                                            parseInt(chapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
+                                        }`}
+                                    >
+                                        <ChevronLeft className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
+                                    </button>
+                                </div>
+
+                                <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-14 items-center justify-end lg:flex">
+                                    <button
+                                        type="button"
+                                        onClick={handleNext}
+                                        disabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                                        aria-label="다음 구절"
+                                        className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
+                                            parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1 ? navigationDisabledClassName : ''
+                                        }`}
+                                    >
+                                        <ChevronRight className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
+                                    </button>
+                                </div>
+
                                 <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
                             </div>
                         </motion.div>

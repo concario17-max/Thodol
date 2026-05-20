@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: move the sutra navigation into a comic-book style strip between the verse body and the commentary/comic block.
+Completed: move the sutra navigation arrows into the verse body’s left/right whitespace, above the current sutra number.
 
 ## Route
 Route A
@@ -11,7 +11,7 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Move the sutra navigation into a comic-book style strip between the verse body and the commentary/comic block.
+- Move the sutra navigation arrows into the verse body’s left/right whitespace, above the current sutra number.
 - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
@@ -25,7 +25,7 @@ Reason for Route A:
 not requested
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - Moved the sutra navigation into a comic-book style strip between the verse body and the commentary/comic block, with the verse number above the arrows, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - Moved the sutra navigation arrows into the verse body’s left/right whitespace with the sutra number above them, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.
