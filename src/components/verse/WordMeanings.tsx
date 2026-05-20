@@ -55,17 +55,17 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
     if (!meanings || meanings.length === 0) return null;
 
     return (
-        <section className="mx-auto w-full max-w-[58rem]">
+        <section className="mx-auto w-full max-w-[58rem] px-4 sm:px-6 lg:px-8">
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex w-full items-center justify-between gap-2.5 border-t border-gold-border/10 pt-3.5 text-left dark:border-dark-border/45"
+                className="flex w-full items-center justify-between gap-3 border-t border-gold-border/10 pt-4 text-left dark:border-dark-border/45"
             >
                 <div className="min-w-0">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-primary/70 dark:text-gold-light/70">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                         Word meanings
                     </p>
-                    <p className="mt-0.5 text-[13px] font-medium text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
+                    <p className="mt-1 text-[13px] font-medium text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
                         Tap to expand the lexical breakdown
                     </p>
                 </div>
@@ -82,14 +82,14 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
             <AnimatePresence>
                 {isOpen ? (
                     <motion.div initial="hidden" animate="visible" exit="exit" variants={containerVariants} className="overflow-hidden">
-                        <div className="mt-3.5 grid w-full grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="mt-4 grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {meanings.map(({ word, meaning }, index: number) => (
-                                <motion.div key={`${word}-${index}`} variants={itemVariants} className="border-l border-gold-border/10 pl-3.5 dark:border-dark-border/45">
+                                <motion.div key={`${word}-${index}`} variants={itemVariants} className="border-l border-gold-border/10 pl-4 dark:border-dark-border/45">
                                     <div className="flex flex-col gap-1">
                                         <span className="font-display text-[16px] italic text-gold-primary dark:text-gold-light">
                                             {word}
                                         </span>
-                                        <span className="break-keep font-sans text-[13px] leading-[1.65] text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
+                                        <span className="break-keep font-sans text-[13px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
                                             {formatMeaning(meaning)}
                                         </span>
                                     </div>

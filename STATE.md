@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: top-align the commentary and deep-dive content on smaller screens by tightening the VerseView top padding.
+Completed: add the same floating sutra navigation arrows to the deep-dive body view.
 
 ## Route
 Route A
@@ -11,33 +11,22 @@ main: tight UI implementation
 
 ## Contract Freeze
 Frozen scope:
-- Move the commentary and deep-dive content upward on smaller screens by tightening the VerseView top padding.
-- Keep the shared commentary/deep-dive outer shell behavior stable.
-- Preserve the existing floating sutra navigation arrows behavior.
+- Add the same left/right floating sutra navigation arrows to the deep-dive body view.
+- Keep the commentary mode arrows unchanged.
 - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
-Reason for Route B:
 Reason for Route A:
-- This can be addressed as a tight single-file spacing tweak in `VerseView.tsx` without changing shared assets or data.
+- This is still a tightly coupled UI tweak in one render file with no shared asset fanout, no data migration, and no new files.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- main: `src/pages/VerseView.tsx`
 
 ## Reviewer
 not requested
 
 ## Last Update
-2026-05-20 15:35:00 +09:00 - Tightened the VerseView top padding and verified with `npm.cmd run typecheck` and `npm.cmd run build`.
-
-## Implementation Plan
-- Reduce the top padding and shell spacing in `VerseView`.
-- Keep arrow navigation, verse toggle behavior, and learning-comic asset selection untouched.
-
-## Main Risks
-- Over-tightening the top padding could make the content feel crowded, so changes should stay limited to the outer VerseView spacing tokens.
-- Shared shell behavior must remain stable so commentary and deep-dive still share the same outer container behavior.
+2026-05-20 00:00:00 +09:00 - Added the same floating sutra navigation arrows to the deep-dive body view, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
-None.
+- None.
