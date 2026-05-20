@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: unify the commentary and deep-dive layouts in `src/pages/VerseView.tsx` so they share the same frame, spacing, border, and typography while keeping the learning-comic toggle only in commentary mode.
+Completed: remove the empty deep-dive shell from `src/pages/VerseView.tsx` when commentary mode is active so only the commentary frame remains visible.
 
 ## Route
 Route A
@@ -11,7 +11,7 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Unify the commentary and deep-dive layout shell in `src/pages/VerseView.tsx`.
+- Remove the empty deep-dive shell from `src/pages/VerseView.tsx` in commentary mode.
 - Keep the learning-comic toggle only in commentary mode.
 - Preserve the existing tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
@@ -26,7 +26,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-19 13:24:00 +09:00 - Unified the commentary and deep-dive layout shell and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - Removed the hidden deep-dive shell from commentary mode and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.

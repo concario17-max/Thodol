@@ -348,48 +348,50 @@ const VerseView = () => {
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
                 <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
-                    <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
-                        <div className={bodyContentClassName}>
-                            <motion.div variants={itemVariants}>
-                                <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
-                            </motion.div>
+                    {!isCommentaryMode ? (
+                        <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
+                            <div className={bodyContentClassName}>
+                                <motion.div variants={itemVariants}>
+                                    <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
+                                </motion.div>
 
-                            <motion.div variants={itemVariants}>
-                                <WordMeanings meanings={verseData.word_meanings} />
-                            </motion.div>
+                                <motion.div variants={itemVariants}>
+                                    <WordMeanings meanings={verseData.word_meanings} />
+                                </motion.div>
 
-                            <audio
-                                ref={audioRef}
-                                src={audioSrc}
-                                onTimeUpdate={handleTimeUpdate}
-                                onLoadedMetadata={handleLoadedMetadata}
-                                onEnded={handleAudioEnded}
-                                className="hidden"
-                            />
-
-                            <motion.div variants={itemVariants}>
-                                <AudioPlayer
-                                    isPlaying={isPlaying}
-                                    togglePlay={togglePlay}
-                                    currentTime={currentTime}
-                                    duration={duration}
-                                    progressPercent={progressPercent}
-                                    formatTime={formatTime}
-                                    onSeek={seek}
-                                    playbackError={playbackError}
+                                <audio
+                                    ref={audioRef}
+                                    src={audioSrc}
+                                    onTimeUpdate={handleTimeUpdate}
+                                    onLoadedMetadata={handleLoadedMetadata}
+                                    onEnded={handleAudioEnded}
+                                    className="hidden"
                                 />
-                            </motion.div>
 
-                            <motion.div variants={itemVariants}>
-                                <TranslationSection
-                                    baeJik={verseData['5.bae_jik']}
-                                    baeUu={verseData['6.bae_uu']}
-                                    oxfordKr={verseData['8. ox']}
-                                    oxfordEn={verseData['9. ox-en']}
-                                />
-                            </motion.div>
-                        </div>
-                    </section>
+                                <motion.div variants={itemVariants}>
+                                    <AudioPlayer
+                                        isPlaying={isPlaying}
+                                        togglePlay={togglePlay}
+                                        currentTime={currentTime}
+                                        duration={duration}
+                                        progressPercent={progressPercent}
+                                        formatTime={formatTime}
+                                        onSeek={seek}
+                                        playbackError={playbackError}
+                                    />
+                                </motion.div>
+
+                                <motion.div variants={itemVariants}>
+                                    <TranslationSection
+                                        baeJik={verseData['5.bae_jik']}
+                                        baeUu={verseData['6.bae_uu']}
+                                        oxfordKr={verseData['8. ox']}
+                                        oxfordEn={verseData['9. ox-en']}
+                                    />
+                                </motion.div>
+                            </div>
+                        </section>
+                    ) : null}
 
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
