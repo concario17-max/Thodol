@@ -147,8 +147,8 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `${chapterNum}` : '??';
-    const activeVerseLabel = verseNum ?? '??';
+    const activeChapterLabel = chapterNum ? `${chapterNum}?` : '??';
+    const activeVerseLabel = verseNum ? `${verseNum}?` : '??';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
