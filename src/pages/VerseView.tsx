@@ -332,7 +332,7 @@ const VerseView = () => {
     }
 
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
-    const bodyContentClassName = 'space-y-5 sm:space-y-6';
+    const bodyContentClassName = 'space-y-4 sm:space-y-5';
     const navigationDisabledClassName = 'pointer-events-none opacity-25';
     const sutraNum = verseData.id.split('.')[1];
 
@@ -346,7 +346,7 @@ const VerseView = () => {
                 variants={containerVariants}
                 className="min-h-full flex flex-col justify-start pt-2 pb-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:pt-3 sm:pb-6 lg:justify-center"
             >
-                <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
+                <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-4 px-4 sm:gap-6 sm:px-6 lg:max-w-[62rem] lg:px-8">
                     <motion.div variants={itemVariants}>
                         <div className="relative mx-auto w-full max-w-[58rem] overflow-visible px-4 sm:px-6 lg:px-8">
                             <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
