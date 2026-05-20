@@ -1,22 +1,23 @@
 # State
 
 ## Current Task
-Completed: move the sutra navigation arrows fully outside the verse body, floating at the left and right edges.
+Completed: remove the stray header pill above commentary and restore the commentary body size.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: single-file implementation
+main: tight UI implementation
 
 ## Contract Freeze
 Frozen scope:
-- Move the sutra navigation arrows fully outside the verse body, floating at the left and right edges.
+- Remove the stray header pill above commentary.
+- Restore the commentary body size to the original scale.
 - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
 Reason for Route A:
-- This remains a single-file change with no fanout, shared assets, or multi-file coordination required.
+- This is a tightly coupled UI tweak with no shared asset fanout, no data migration, and no new files.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
@@ -25,7 +26,7 @@ Reason for Route A:
 not requested
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - Moved the sutra navigation arrows fully outside the verse body so they float at the left and right edges, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - Removed the stray commentary header pill and restored the commentary body size, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.
