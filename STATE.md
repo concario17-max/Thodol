@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: require both chapter and sutra selection before navigating in `src/App.tsx`.
+Fix the context pill labels in `src/App.tsx` so they show `1장 1절` instead of question marks.
 
 ## Route
 Route A
@@ -11,7 +11,7 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Require both chapter and sutra selection before navigating in `src/App.tsx`.
+- Fix the context pill labels in `src/App.tsx` so they show `1장 1절` instead of question marks.
 - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
@@ -25,7 +25,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - Updated the context picker so chapter selection alone no longer navigates, and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - The context pill still rendered question-mark placeholders after the last label change, so I am fixing the label formatting in `src/App.tsx` and re-verifying it.
 
 ## Open Review Item
 - None.

@@ -147,8 +147,8 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `${chapterNum}?` : '??';
-    const activeVerseLabel = verseNum ? `${verseNum}?` : '??';
+    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '??';
+    const activeVerseLabel = verseNum ? `${verseNum}절` : '??';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
@@ -245,7 +245,7 @@ const ContextPillPicker = ({
                 className="inline-flex items-center gap-1.5 rounded-full border border-gold-border/14 bg-shell-main/78 px-3 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-gold-primary shadow-[0_12px_32px_-20px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/88 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:text-gold-light dark:hover:bg-white/8"
             >
                 <span className="whitespace-nowrap">{activeChapterLabel}</span>
-                <span className="text-gold-primary/45 dark:text-gold-light/45">?</span>
+                <span className="text-gold-primary/45 dark:text-gold-light/45">·</span>
                 <span className="whitespace-nowrap">{activeVerseLabel}</span>
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
