@@ -41,20 +41,20 @@ interface ContextPillPickerProps {
     chapterNum?: string;
     verseNum?: string;
     chapterOptions: ContextOption[];
-    verseOptions: ContextOption[];
-    onChangeChapter: (chapter: string) => void;
-    onChangeVerse: (verse: string) => void;
+    verseOptionsByChapter: Record<string, ContextOption[]>;
+    onCommitSelection: (chapter: string, verse: string) => void;
 }
 
 const ContextPillPicker = ({
     chapterNum,
     verseNum,
     chapterOptions,
-    verseOptions,
-    onChangeChapter,
-    onChangeVerse,
+    verseOptionsByChapter,
+    onCommitSelection,
 }: ContextPillPickerProps) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [draftChapterNum, setDraftChapterNum] = useState(chapterNum ?? '');
+    const [draftVerseNum, setDraftVerseNum] = useState(verseNum ?? '');
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
@@ -65,6 +65,13 @@ const ContextPillPicker = ({
     useEffect(() => {
         setIsOpen(false);
     }, [chapterNum, verseNum]);
+
+    useEffect(() => {
+        if (!isOpen) {
+            setDraftChapterNum(chapterNum ?? '');
+            setDraftVerseNum(verseNum ?? '');
+        }
+    }, [chapterNum, isOpen, verseNum]);
 
     useLayoutEffect(() => {
         if (!isOpen || !triggerRef.current) {
@@ -140,8 +147,9 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '장';
-    const activeVerseLabel = verseNum ?? '절';
+    const activeChapterLabel = chapterNum ? `${chapterNum}` : '??';
+    const activeVerseLabel = verseNum ?? '??';
+    const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
         'h-10 w-full appearance-none rounded-[0.95rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.64)_100%)] px-3.5 pr-8 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/20 hover:bg-white hover:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.5)] focus:border-gold-primary/30 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)] dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
@@ -173,16 +181,20 @@ const ContextPillPicker = ({
                     </span>
                     <select
                         ref={chapterSelectRef}
-                        value={chapterNum ?? ''}
+                        value={draftChapterNum}
                         onChange={(event) => {
                             const nextChapter = event.target.value;
                             if (nextChapter) {
-                                onChangeChapter(nextChapter);
-                                setIsOpen(false);
+                                setDraftChapterNum(nextChapter);
+                                setDraftVerseNum('');
+                                window.requestAnimationFrame(() => verseSelectRef.current?.focus());
                             }
                         }}
                         className={selectClassName}
                     >
+                        <option value="" disabled>
+                            Select chapter
+                        </option>
                         {chapterOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
@@ -197,17 +209,21 @@ const ContextPillPicker = ({
                     </span>
                     <select
                         ref={verseSelectRef}
-                        value={verseNum ?? ''}
+                        value={draftVerseNum}
                         onChange={(event) => {
                             const nextVerse = event.target.value;
-                            if (nextVerse) {
-                                onChangeVerse(nextVerse);
+                            if (nextVerse && draftChapterNum) {
+                                onCommitSelection(draftChapterNum, nextVerse);
                                 setIsOpen(false);
                             }
                         }}
                         className={selectClassName}
+                        disabled={!draftChapterNum}
                     >
-                        {verseOptions.map((option) => (
+                        <option value="" disabled>
+                            Select sutra
+                        </option>
+                        {draftVerseOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>
@@ -229,7 +245,7 @@ const ContextPillPicker = ({
                 className="inline-flex items-center gap-1.5 rounded-full border border-gold-border/14 bg-shell-main/78 px-3 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-gold-primary shadow-[0_12px_32px_-20px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/88 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:text-gold-light dark:hover:bg-white/8"
             >
                 <span className="whitespace-nowrap">{activeChapterLabel}</span>
-                <span className="text-gold-primary/45 dark:text-gold-light/45">·</span>
+                <span className="text-gold-primary/45 dark:text-gold-light/45">?</span>
                 <span className="whitespace-nowrap">{activeVerseLabel}</span>
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -243,13 +259,12 @@ const MainLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
-    const { chapters, allChapters } = useYogaData();
+    const { chapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
     const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
-    const currentChapter = currentChapterNumber !== null && allChapters ? allChapters[currentChapterNumber] : null;
 
     const chapterOptions = useMemo(
         () =>
@@ -260,36 +275,37 @@ const MainLayout = () => {
         [chapters],
     );
 
-    const verseOptions = useMemo(() => {
-        if (!currentChapter) {
-            return [];
-        }
+    const verseOptionsByChapter = useMemo(
+        () =>
+            chapters.reduce<Record<string, ContextOption[]>>((acc, chapter) => {
+                acc[String(chapter.chapter)] = chapter.sutras.map((sutra, index) => {
+                    const sutraNumberText = sutra.id.split('.')[1];
+                    const sutraNumber = Number.parseInt(sutraNumberText, 10);
+                    const nextSutra = chapter.sutras[index + 1];
+                    const label =
+                        nextSutra && Number.parseInt(nextSutra.id.split('.')[1], 10) > sutraNumber + 1
+                            ? `${sutraNumberText}-${Number.parseInt(nextSutra.id.split('.')[1], 10) - 1}`
+                            : sutraNumberText;
 
-        return currentChapter.sutras.map((sutra, index) => {
-            const sutraNumberText = sutra.id.split('.')[1];
-            const sutraNumber = Number.parseInt(sutraNumberText, 10);
-            const nextSutra = currentChapter.sutras[index + 1];
-            const label =
-                nextSutra && Number.parseInt(nextSutra.id.split('.')[1], 10) > sutraNumber + 1
-                    ? `${sutraNumberText}-${Number.parseInt(nextSutra.id.split('.')[1], 10) - 1}`
-                    : sutraNumberText;
+                    return {
+                        value: sutraNumberText,
+                        label,
+                    };
+                });
 
-            return {
-                value: sutraNumberText,
-                label,
-            };
-        });
-    }, [currentChapter]);
+                return acc;
+            }, {}),
+        [chapters],
+    );
 
     const selectionControls =
-        isVerseView && chapterOptions.length > 0 && verseOptions.length > 0 && currentChapterNumber !== null ? (
+        isVerseView && chapterOptions.length > 0 && currentChapterNumber !== null ? (
             <ContextPillPicker
                 chapterNum={chapterNum}
                 verseNum={verseNum}
                 chapterOptions={chapterOptions}
-                verseOptions={verseOptions}
-                onChangeChapter={(nextChapter) => navigate(`/chapter/${nextChapter}/verse/1`)}
-                onChangeVerse={(nextVerse) => navigate(`/chapter/${currentChapterNumber}/verse/${nextVerse}`)}
+                verseOptionsByChapter={verseOptionsByChapter}
+                onCommitSelection={(nextChapter, nextVerse) => navigate(`/chapter/${nextChapter}/verse/${nextVerse}`)}
             />
         ) : undefined;
 

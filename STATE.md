@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: move the chapter/sutra context pill to the left of the commentary/deep-dive toggle in `src/components/Header.tsx`.
+Completed: require both chapter and sutra selection before navigating in `src/App.tsx`.
 
 ## Route
 Route A
@@ -11,7 +11,7 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Move the chapter/sutra context pill to the left of the verse mode toggle in `src/components/Header.tsx`.
+- Require both chapter and sutra selection before navigating in `src/App.tsx`.
 - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
 - Keep the root `.odt` files untouched.
 
@@ -25,7 +25,7 @@ Reason for Route A:
 pending assignment
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - Moved the chapter/sutra context pill to the left of the verse mode toggle and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-20 00:00:00 +09:00 - Updated the context picker so chapter selection alone no longer navigates, and verified the change with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.

@@ -163,3 +163,27 @@ status: resolved
 summary: PowerShell rejected `&&` in verification command
 details: The combined verification command failed before execution because PowerShell treated `&&` as invalid syntax. Re-ran the checks as separate PowerShell statements with `npm.cmd`, and both passed.
 status: resolved
+
+- time: 2026-05-20 00:00:00 +09:00
+  location: `npm.cmd run typecheck` / `npm.cmd run build`
+  summary: Typecheck and build failed due to an unused `currentChapter` binding after refactoring the context picker
+  details: The new draft-selection flow in `src/App.tsx` left `currentChapter` unused in `MainLayout`, which caused TS6133 and blocked both verification commands. Removing the unused binding should restore green checks.
+  status: open
+
+- time: 2026-05-20 00:00:00 +09:00
+  location: `npm.cmd run typecheck` / `npm.cmd run build`
+  summary: Verification failed again because `allChapters` became unused after simplifying the context picker flow
+  details: After removing `currentChapter`, `MainLayout` still destructured `allChapters` from `useYogaData()` even though the new picker flow only needs `chapters` and `loading`. Removing the unused binding should unblock the build.
+  status: open
+
+- time: 2026-05-20 00:00:00 +09:00
+  location: `npm.cmd run typecheck` / `npm.cmd run build`
+  summary: `currentChapter` unused binding resolved
+  details: Removed the unused `currentChapter` binding from `MainLayout` after switching the context picker to draft chapter selection. Typecheck and build passed again.
+  status: resolved
+
+- time: 2026-05-20 00:00:00 +09:00
+  location: `npm.cmd run typecheck` / `npm.cmd run build`
+  summary: `allChapters` unused binding resolved
+  details: Removed the unused `allChapters` binding from `MainLayout` after the picker flow no longer needed it. Typecheck and build passed again.
+  status: resolved
