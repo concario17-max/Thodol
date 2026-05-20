@@ -82,7 +82,7 @@ const itemVariants: Variants = {
 const sharedContentShellClassName =
     'overflow-hidden rounded-[2rem] border border-gold-border/18 bg-shell-commentary shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_40px_-34px_rgba(0,0,0,0.34)] dark:border-dark-border/50 dark:bg-shell-commentary-dark dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_40px_-34px_rgba(0,0,0,0.48)]';
 
-const sharedContentPaddingClassName = 'px-4 pt-2 pb-4 sm:px-6 sm:pt-3 sm:pb-5 lg:px-8 lg:pt-4 lg:pb-6';
+const sharedContentPaddingClassName = 'px-4 pt-1 pb-4 sm:px-6 sm:pt-2 sm:pb-5 lg:px-8 lg:pt-3 lg:pb-6';
 
 type CommentaryRow = readonly string[] | { label: string; value: string };
 
@@ -344,7 +344,7 @@ const VerseView = () => {
                 animate="visible"
                 exit="exit"
                 variants={containerVariants}
-                className="min-h-full flex flex-col justify-start pt-2 pb-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:pt-3 sm:pb-6 lg:justify-center"
+                className="min-h-full flex flex-col justify-start pt-0 pb-3 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:pt-1 sm:pb-4 lg:justify-center"
             >
                 <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-4 px-4 sm:gap-6 sm:px-6 lg:max-w-[62rem] lg:px-8">
                     <motion.div variants={itemVariants}>
