@@ -348,48 +348,80 @@ const VerseView = () => {
             >
                 <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
                     {!isCommentaryMode ? (
-                        <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
-                            <div className={bodyContentClassName}>
-                                <motion.div variants={itemVariants}>
-                                    <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
-                                </motion.div>
+                        <motion.div variants={itemVariants}>
+                            <div className="relative mx-auto w-full max-w-[58rem] overflow-visible px-4 sm:px-6 lg:px-8">
+                                <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
+                                    <div className={bodyContentClassName}>
+                                        <motion.div variants={itemVariants}>
+                                            <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
+                                        </motion.div>
 
-                                <motion.div variants={itemVariants}>
-                                    <WordMeanings meanings={verseData.word_meanings} />
-                                </motion.div>
+                                        <motion.div variants={itemVariants}>
+                                            <WordMeanings meanings={verseData.word_meanings} />
+                                        </motion.div>
 
-                                <audio
-                                    ref={audioRef}
-                                    src={audioSrc}
-                                    onTimeUpdate={handleTimeUpdate}
-                                    onLoadedMetadata={handleLoadedMetadata}
-                                    onEnded={handleAudioEnded}
-                                    className="hidden"
-                                />
+                                        <audio
+                                            ref={audioRef}
+                                            src={audioSrc}
+                                            onTimeUpdate={handleTimeUpdate}
+                                            onLoadedMetadata={handleLoadedMetadata}
+                                            onEnded={handleAudioEnded}
+                                            className="hidden"
+                                        />
 
-                                <motion.div variants={itemVariants}>
-                                    <AudioPlayer
-                                        isPlaying={isPlaying}
-                                        togglePlay={togglePlay}
-                                        currentTime={currentTime}
-                                        duration={duration}
-                                        progressPercent={progressPercent}
-                                        formatTime={formatTime}
-                                        onSeek={seek}
-                                        playbackError={playbackError}
-                                    />
-                                </motion.div>
+                                        <motion.div variants={itemVariants}>
+                                            <AudioPlayer
+                                                isPlaying={isPlaying}
+                                                togglePlay={togglePlay}
+                                                currentTime={currentTime}
+                                                duration={duration}
+                                                progressPercent={progressPercent}
+                                                formatTime={formatTime}
+                                                onSeek={seek}
+                                                playbackError={playbackError}
+                                            />
+                                        </motion.div>
 
-                                <motion.div variants={itemVariants}>
-                                    <TranslationSection
-                                        baeJik={verseData['5.bae_jik']}
-                                        baeUu={verseData['6.bae_uu']}
-                                        oxfordKr={verseData['8. ox']}
-                                        oxfordEn={verseData['9. ox-en']}
-                                    />
-                                </motion.div>
+                                        <motion.div variants={itemVariants}>
+                                            <TranslationSection
+                                                baeJik={verseData['5.bae_jik']}
+                                                baeUu={verseData['6.bae_uu']}
+                                                oxfordKr={verseData['8. ox']}
+                                                oxfordEn={verseData['9. ox-en']}
+                                            />
+                                        </motion.div>
+                                    </div>
+                                </section>
+
+                                <div className="pointer-events-none absolute inset-y-0 left-0 hidden -translate-x-[calc(100%+1rem)] items-center lg:flex">
+                                    <button
+                                        type="button"
+                                        onClick={handlePrev}
+                                        disabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
+                                        aria-label="?댁쟾 援ъ젅"
+                                        className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
+                                            parseInt(chapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
+                                        }`}
+                                    >
+                                        <ChevronLeft className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
+                                    </button>
+                                </div>
+
+                                <div className="pointer-events-none absolute inset-y-0 right-0 hidden translate-x-[calc(100%+1rem)] items-center lg:flex">
+                                    <button
+                                        type="button"
+                                        onClick={handleNext}
+                                        disabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
+                                        aria-label="?ㅼ쓬 援ъ젅"
+                                        className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
+                                            parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1 ? navigationDisabledClassName : ''
+                                        }`}
+                                    >
+                                        <ChevronRight className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
+                                    </button>
+                                </div>
                             </div>
-                        </section>
+                        </motion.div>
                     ) : null}
 
                     {isCommentaryMode ? (
