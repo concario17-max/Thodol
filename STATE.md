@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Fix the context pill labels in `src/App.tsx` so they show `1장 1절` instead of question marks.
+Completed: restyle the chapter/sutra selection popup in `src/App.tsx` to feel more premium and site-consistent.
 
 ## Route
 Route A
@@ -11,9 +11,9 @@ main: single-file implementation
 
 ## Contract Freeze
 Frozen scope:
-- Fix the context pill labels in `src/App.tsx` so they show `1장 1절` instead of question marks.
-- Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
-- Keep the root `.odt` files untouched.
+- Restyle the chapter/sutra selection popup in `src/App.tsx` to feel more premium and site-consistent.
+ - Preserve the existing verse mode toggle behavior and tracked learning-comic assets.
+ - Keep the root `.odt` files untouched.
 
 Reason for Route A:
 - This remains a single-file change with no fanout, shared assets, or multi-file coordination required.
@@ -22,10 +22,10 @@ Reason for Route A:
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
 
 ## Reviewer
-pending assignment
+not requested
 
 ## Last Update
-2026-05-20 00:00:00 +09:00 - The context pill still rendered question-mark placeholders after the last label change, so I am fixing the label formatting in `src/App.tsx` and re-verifying it.
+2026-05-20 00:00:00 +09:00 - Restyled the chapter/sutra popup with a richer surface, softer field containers, and a cleaner summary strip, then verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.

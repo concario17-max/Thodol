@@ -152,7 +152,7 @@ const ContextPillPicker = ({
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
-        'h-10 w-full appearance-none rounded-[0.95rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.64)_100%)] px-3.5 pr-8 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/20 hover:bg-white hover:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.5)] focus:border-gold-primary/30 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)] dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
+        'h-11 w-full appearance-none rounded-[1rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.72)_100%)] px-3.5 pr-9 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/25 hover:bg-white hover:shadow-[0_10px_28px_-22px_rgba(0,0,0,0.55)] focus:border-gold-primary/35 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)] dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
 
     const panel = isOpen ? (
         <div
@@ -160,23 +160,19 @@ const ContextPillPicker = ({
             aria-label="Context picker"
             ref={panelRef}
             style={panelStyle ?? undefined}
-            className="z-[60] rounded-[1.5rem] border border-gold-border/12 bg-gradient-to-b from-shell-main/98 via-shell-main/96 to-shell-commentary/88 p-3 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.55)] backdrop-blur-xl dark:border-dark-border/70 dark:from-shell-main-dark/98 dark:via-shell-main-dark/95 dark:to-shell-commentary-dark/88"
+            className="z-[60] rounded-[1.75rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,251,241,0.98)_0%,rgba(252,247,237,0.96)_48%,rgba(245,238,228,0.92)_100%)] p-3.5 shadow-[0_26px_72px_-34px_rgba(0,0,0,0.58)] backdrop-blur-2xl dark:border-dark-border/70 dark:bg-[linear-gradient(180deg,rgba(24,20,15,0.98)_0%,rgba(20,17,13,0.96)_48%,rgba(15,13,10,0.92)_100%)]"
         >
-            <div className="mb-3 overflow-hidden rounded-[1.1rem] border border-gold-border/10 bg-white/62 px-3 py-2.5 dark:border-dark-border/60 dark:bg-white/5">
-                <div className="flex items-center gap-2">
-                    <span className="rounded-full border border-gold-primary/16 bg-gold-primary/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-gold-primary dark:border-gold-light/16 dark:bg-gold-light/10 dark:text-gold-light">
-                        Chapter {chapterNum ?? '0'}
-                    </span>
-                    <span className="h-px flex-1 bg-gradient-to-r from-gold-primary/20 to-transparent dark:from-gold-light/20" />
-                    <span className="rounded-full border border-gold-primary/12 bg-shell-main/80 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/70 dark:border-gold-light/12 dark:bg-shell-main-dark/80 dark:text-dark-text-secondary/80">
-                        Sutra {verseNum ?? '0'}
-                    </span>
-                </div>
+            <div className="mb-3 flex items-center gap-2.5 border-b border-gold-border/12 pb-2.5 dark:border-dark-border/55">
+                <span className="rounded-full border border-gold-primary/18 bg-gold-primary/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary dark:border-gold-light/18 dark:bg-gold-light/10 dark:text-gold-light">
+                    Context
+                </span>
+                <span className="flex-1 text-[10px] font-medium tracking-[0.14em] text-text-secondary/75 dark:text-dark-text-secondary/70">
+                    {chapterNum ? `Chapter ${chapterNum}` : 'Chapter --'} / {verseNum ? `Sutra ${verseNum}` : 'Sutra --'}
+                </span>
             </div>
-
-            <div className="space-y-3">
-                <label className="block rounded-[1rem] border border-gold-border/10 bg-white/55 p-2.5 dark:border-dark-border/60 dark:bg-white/5">
-                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.22em] text-text-secondary/80 dark:text-dark-text-secondary/80">
+            <div className="space-y-2.5">
+                <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
+                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
                         Chapter
                     </span>
                     <select
@@ -203,8 +199,8 @@ const ContextPillPicker = ({
                     </select>
                 </label>
 
-                <label className="block rounded-[1rem] border border-gold-border/10 bg-white/55 p-2.5 dark:border-dark-border/60 dark:bg-white/5">
-                    <span className="mb-1.5 block text-[9px] font-semibold tracking-[0.22em] text-text-secondary/80 uppercase dark:text-dark-text-secondary/80">
+                <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
+                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
                         Sutra
                     </span>
                     <select
@@ -242,10 +238,10 @@ const ContextPillPicker = ({
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-expanded={isOpen}
                 aria-haspopup="dialog"
-                className="inline-flex items-center gap-1.5 rounded-full border border-gold-border/14 bg-shell-main/78 px-3 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-gold-primary shadow-[0_12px_32px_-20px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/88 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:text-gold-light dark:hover:bg-white/8"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gold-border/14 bg-[linear-gradient(180deg,rgba(255,251,241,0.92)_0%,rgba(248,241,228,0.82)_100%)] px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-gold-primary shadow-[0_12px_32px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-[linear-gradient(180deg,rgba(28,23,18,0.92)_0%,rgba(20,17,13,0.82)_100%)] dark:text-gold-light dark:hover:bg-white/8"
             >
                 <span className="whitespace-nowrap">{activeChapterLabel}</span>
-                <span className="text-gold-primary/45 dark:text-gold-light/45">·</span>
+                <span className="text-gold-primary/45 dark:text-gold-light/45">/</span>
                 <span className="whitespace-nowrap">{activeVerseLabel}</span>
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
