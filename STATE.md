@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Design-system consolidation completed.
+Completed: P1 UX refinement for context picker clarity and reading-flow copy polish.
 
 ## Route
 Route B
@@ -11,25 +11,24 @@ main: planner-only
 
 ## Contract Freeze
 Frozen scope:
-- Normalize shared color, typography, spacing, radius, shadow, and border tokens.
-- Unify button, card, modal, navigation, and input variants without changing behavior.
-- Keep the existing warm visual character while preserving dark mode support.
-- Preserve keyboard accessibility, focus handling, and mobile-first layout behavior.
-- Keep the change set reviewable and dependency-free.
+- Make the chapter/verse picker easier to understand at a glance.
+- Fix any visibly broken or awkward copy in the reading flow.
+- Keep the landing/onboarding and invalid-route states intact from P0.
+- Avoid layout changes unless they directly improve clarity.
+- Keep the change set small and reviewable.
 
 Reason for Route B:
-- This is a multi-file shared design-system pass that touches several shared UI and page components, so it needs Route B.
+- This is a multi-file UX pass that touches shared routing and reading-flow copy surfaces, so it needs Route B.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_shared: `src/index.css`, `src/components/ui/AppShell.tsx`, `src/components/ui/GlassCard.tsx`
-- worker_feature: `src/components/Header.tsx`, `src/components/ThemeToggle.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/components/CompendiumModal.tsx`, `src/components/LexiconModal.tsx`, `src/components/verse/AudioPlayer.tsx`, `src/components/verse/WordMeanings.tsx`, `src/components/verse/SutraNavigation.tsx`, `src/pages/ChapterList.tsx`
+- worker_feature: `src/App.tsx`, `src/pages/VerseView.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-21 14:00:00 +09:00 - Completed the design-system consolidation pass across shared tokens, shared primitives, component variants, and accessibility affordances; verified with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-21 14:12:00 +09:00 - P1 UX refinement completed; context picker copy and reading-flow route handling were verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.
