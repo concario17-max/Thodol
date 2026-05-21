@@ -65,9 +65,6 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                     <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                         Word meanings
                     </p>
-                    <p className="mt-1 text-[13px] font-medium text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
-                        Tap to expand the lexical breakdown
-                    </p>
                 </div>
 
                 <motion.span
