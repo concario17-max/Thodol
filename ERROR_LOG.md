@@ -187,3 +187,8 @@ status: resolved
   summary: `allChapters` unused binding resolved
   details: Removed the unused `allChapters` binding from `MainLayout` after the picker flow no longer needed it. Typecheck and build passed again.
   status: resolved
+## 2026-05-21 13:04:22 +09:00
+- location: verification / PowerShell
+- summary: `npm run typecheck` was blocked by PowerShell execution policy on `npm.ps1`
+- details: Re-ran the same check through `cmd /c npm run typecheck` and it passed.
+- status: resolved

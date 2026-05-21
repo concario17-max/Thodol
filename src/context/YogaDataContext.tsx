@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { YogaChapter, YogaSutra } from '../types';
-import { fetchYogaData } from '../utils/dataFetcher';
+import { fetchYogaData, getCachedYogaData } from '../utils/dataFetcher';
 import { getChapterArray, getVerseInRangeFromChapters, getVerseRangeText } from '../utils/yogaData';
 
 interface YogaDataContextValue {
@@ -19,12 +19,19 @@ interface YogaDataProviderProps {
 }
 
 export const YogaDataProvider = ({ children }: YogaDataProviderProps) => {
-    const [allChapters, setAllChapters] = useState<Record<number, YogaChapter> | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [allChapters, setAllChapters] = useState<Record<number, YogaChapter> | null>(() => getCachedYogaData());
+    const [loading, setLoading] = useState<boolean>(() => getCachedYogaData() === null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         let cancelled = false;
+
+        if (getCachedYogaData()) {
+            setLoading(false);
+            return () => {
+                cancelled = true;
+            };
+        }
 
         fetchYogaData()
             .then((data) => {

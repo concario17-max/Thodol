@@ -13,6 +13,12 @@ interface HeaderProps {
     className?: string;
 }
 
+const railPillClass =
+    'inline-flex items-center rounded-full border border-gold-border/12 bg-shell-main/82 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82';
+
+const modeButtonBaseClass =
+    'inline-flex min-w-[3.5rem] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-shell-main-dark sm:min-w-[3.75rem] sm:text-[10.5px]';
+
 const Header = ({
     title = 'Yoga Sutras',
     targetUrl = '/',
@@ -28,10 +34,10 @@ const Header = ({
 
     const renderVerseModeToggle = () =>
         showSidebarToggle ? (
-            <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-0.5 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
+            <div className={railPillClass}>
                 {[
-                    { mode: 'commentary' as const, label: '해설', icon: ScrollText },
-                    { mode: 'body' as const, label: '심화', icon: BookOpenText },
+                    { mode: 'commentary' as const, label: 'Commentary', icon: ScrollText, ariaLabel: 'Switch to commentary view' },
+                    { mode: 'body' as const, label: 'Text', icon: BookOpenText, ariaLabel: 'Switch to text view' },
                 ].map((option) => {
                     const isActive = activeVerseContentMode === option.mode;
                     const Icon = option.icon;
@@ -42,9 +48,10 @@ const Header = ({
                             type="button"
                             onClick={() => setActiveVerseContentMode(option.mode)}
                             aria-pressed={isActive}
-                            className={`inline-flex min-w-[3.25rem] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-[0.14em] transition-all duration-300 sm:min-w-[3.45rem] sm:text-[10px] ${
+                            aria-label={option.ariaLabel}
+                            className={`${modeButtonBaseClass} ${
                                 isActive
-                                    ? 'bg-gold-primary text-white shadow-[0_6px_16px_-8px_rgba(166,139,92,0.95)] dark:bg-gold-light dark:text-[#2a2116]'
+                                    ? 'bg-gold-primary text-white shadow-[0_10px_24px_-12px_rgba(143,100,19,0.6)] dark:bg-gold-light dark:text-[#2a2116]'
                                     : 'text-gold-primary hover:bg-gold-surface/70 dark:text-gold-light dark:hover:bg-white/6'
                             }`}
                         >
@@ -57,11 +64,14 @@ const Header = ({
         ) : null;
 
     return (
-        <header className={`sticky top-0 z-50 w-full border-b border-gold-border/10 bg-shell-header shadow-none transition-colors duration-500 backdrop-blur-0 dark:border-dark-border/60 dark:bg-shell-header-dark ${className}`}>
+        <header className={`sticky top-0 z-50 w-full border-b border-gold-border/12 bg-shell-header shadow-none transition-colors duration-500 backdrop-blur-0 dark:border-dark-border/60 dark:bg-shell-header-dark ${className}`}>
             <div className="container mx-auto max-w-7xl px-4 py-2 sm:px-5 lg:hidden">
                 <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
-                    <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate">
-                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
+                    <Link
+                        to={targetUrl}
+                        className="group flex min-w-0 items-center gap-2 truncate focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-header dark:focus-visible:ring-offset-shell-header-dark"
+                    >
+                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6" aria-hidden="true">
                             <BookOpenText className="h-5 w-5" />
                         </span>
                         <span className="min-w-0 truncate font-display text-[16px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
@@ -74,9 +84,7 @@ const Header = ({
                     <div className="flex flex-wrap items-center gap-2">
                         {rightContent}
                         {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
-                        <div className="ml-auto flex items-center gap-2">
-                            {renderVerseModeToggle()}
-                        </div>
+                        <div className="ml-auto flex items-center gap-2">{renderVerseModeToggle()}</div>
                     </div>
                 </div>
             </div>
@@ -88,8 +96,11 @@ const Header = ({
                 style={desktopGridStyle}
             >
                 <div className="flex min-w-0 items-center gap-3 px-5">
-                    <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate text-text-primary dark:text-dark-text-primary">
-                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
+                    <Link
+                        to={targetUrl}
+                        className="group flex min-w-0 items-center gap-2 truncate text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-header dark:focus-visible:ring-offset-shell-header-dark dark:text-dark-text-primary"
+                    >
+                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6" aria-hidden="true">
                             <BookOpenText className="h-6 w-6" />
                         </span>
                         <span className="truncate font-display text-[20px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
@@ -99,7 +110,7 @@ const Header = ({
                 </div>
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
-                    <div className="flex items-center gap-1 rounded-full border border-gold-border/10 bg-shell-main/78 p-0.5 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
+                    <div className={railPillClass}>
                         {rightContent}
                         {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                         {renderVerseModeToggle()}
