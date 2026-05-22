@@ -44,10 +44,10 @@ interface SidebarMenuProps {
 }
 
 const groupButtonBaseClass =
-    'app-interactive flex w-full items-start justify-between gap-2 rounded-2xl border px-3 py-2.5 text-left active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:focus-visible:ring-offset-shell-rail-dark sm:gap-1.5 sm:rounded-xl sm:px-2 sm:py-1.5';
+    'flex w-full items-start justify-between gap-2 rounded-2xl border px-3 py-2.5 text-left transition-all duration-300 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:focus-visible:ring-offset-shell-rail-dark sm:gap-1.5 sm:rounded-xl sm:px-2 sm:py-1.5';
 
 const itemLinkBaseClass =
-    'app-interactive flex items-start gap-2 rounded-2xl border px-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:focus-visible:ring-offset-shell-rail-dark sm:rounded-xl sm:px-2 sm:py-1.5';
+    'flex items-start gap-2 rounded-2xl border px-3 py-2.5 text-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:focus-visible:ring-offset-shell-rail-dark sm:rounded-xl sm:px-2 sm:py-1.5';
 
 export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: SidebarMenuProps) => {
     const expandedGroup = groups.find((group) => group.isExpanded);

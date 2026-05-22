@@ -134,7 +134,7 @@ const LexiconModal = ({ isOpen, onClose }: LexiconModalProps) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-md transition-all duration-500 animate-in fade-in" role="dialog" aria-modal="true" aria-labelledby="lexicon-title">
             <div
                 ref={modalRef}
-                className="app-panel-card relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem]"
+                className="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-gold-border/12 bg-shell-main/96 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.45)] dark:border-dark-border/70 dark:bg-shell-main-dark/96 dark:shadow-[0_36px_96px_-36px_rgba(0,0,0,0.72)]"
             >
                 <div className="flex items-center justify-between border-b border-gold-border/10 bg-gold-surface/35 p-6 dark:border-dark-border/70 dark:bg-dark-bg/30 sm:p-8">
                     <div>
@@ -147,7 +147,7 @@ const LexiconModal = ({ isOpen, onClose }: LexiconModalProps) => {
                         ref={closeButtonRef}
                         type="button"
                         onClick={onClose}
-                        className="-mr-2 app-icon-button text-gold-primary hover:rotate-90 hover:shadow-[0_14px_28px_-20px_rgba(0,0,0,0.42)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-shell-main-dark"
+                        className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold-border/12 bg-shell-main/85 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-surface/70 hover:rotate-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-white/6 dark:focus-visible:ring-offset-shell-main-dark"
                         aria-label="Close lexicon"
                     >
                         <X className="h-6 w-6" />

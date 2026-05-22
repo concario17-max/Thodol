@@ -1,34 +1,34 @@
 # State
 
 ## Current Task
-Completed: Premium SaaS/brand website refactor foundation: tokens, shared UI, SEO, media, and security headers.
+Completed: P1 UX refinement for context picker clarity and reading-flow copy polish.
 
 ## Route
 Route B
 
 ## Writer Slot
-main: direct implementation
+main: planner-only
 
 ## Contract Freeze
 Frozen scope:
-- Tokenize the core visual language for color, type, spacing, radius, shadow, and motion.
-- Normalize premium button, card, input, modal, and navigation variants on the active surfaces.
-- Improve SEO metadata, canonical handling, sitemap, robots, and OG defaults.
-- Add deployable security headers for the static build output.
-- Preserve existing functionality and keep reduced-motion behavior intact.
+- Make the chapter/verse picker easier to understand at a glance.
+- Fix any visibly broken or awkward copy in the reading flow.
+- Keep the landing/onboarding and invalid-route states intact from P0.
+- Avoid layout changes unless they directly improve clarity.
+- Keep the change set small and reviewable.
 
 Reason for Route B:
-- This is a multi-file refactor that touches shared styling, metadata, media, and static output assets, so it needs Route B.
+- This is a multi-file UX pass that touches shared routing and reading-flow copy surfaces, so it needs Route B.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/index.css`, `src/lib/site.ts`, `src/lib/media.ts`, `src/components/Seo.tsx`, `src/components/ui/AppShell.tsx`, `src/components/ui/GlassCard.tsx`, `src/components/ThemeToggle.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `index.html`, `package.json`, `scripts/generate-seo-assets.mjs`, `public/_headers`, `public/robots.txt`, `public/sitemap.xml`
+- worker_feature: `src/App.tsx`, `src/pages/VerseView.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-22 00:00:00 +09:00 - Completed the P2 motion and micro-interaction polish pass; typecheck and build both passed after the UI refinements.
+2026-05-21 14:12:00 +09:00 - P1 UX refinement completed; context picker copy and reading-flow route handling were verified with `npm.cmd run typecheck` and `npm.cmd run build`.
 
 ## Open Review Item
 - None.

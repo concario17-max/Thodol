@@ -14,10 +14,10 @@ interface HeaderProps {
 }
 
 const railPillClass =
-    'app-surface-panel inline-flex items-center rounded-full p-0.5';
+    'inline-flex items-center rounded-full border border-gold-border/12 bg-shell-main/82 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82';
 
 const modeButtonBaseClass =
-    'app-interactive inline-flex min-w-[3.5rem] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-shell-main-dark sm:min-w-[3.75rem] sm:text-[10.5px]';
+    'inline-flex min-w-[3.5rem] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-shell-main-dark sm:min-w-[3.75rem] sm:text-[10.5px]';
 
 const Header = ({
     title = 'Yoga Sutras',
@@ -71,7 +71,7 @@ const Header = ({
                         to={targetUrl}
                         className="group flex min-w-0 items-center gap-2 truncate focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-header dark:focus-visible:ring-offset-shell-header-dark"
                     >
-                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-500 group-hover:rotate-3" aria-hidden="true">
+                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6" aria-hidden="true">
                             <BookOpenText className="h-5 w-5" />
                         </span>
                         <span className="min-w-0 truncate font-display text-[16px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">
@@ -100,7 +100,7 @@ const Header = ({
                         to={targetUrl}
                         className="group flex min-w-0 items-center gap-2 truncate text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-header dark:focus-visible:ring-offset-shell-header-dark dark:text-dark-text-primary"
                     >
-                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-500 group-hover:rotate-3" aria-hidden="true">
+                        <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6" aria-hidden="true">
                             <BookOpenText className="h-6 w-6" />
                         </span>
                         <span className="truncate font-display text-[20px] font-medium tracking-[0.04em] text-text-primary transition-colors group-hover:text-gold-primary dark:text-dark-text-primary">

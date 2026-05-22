@@ -56,13 +56,13 @@ export const AudioPlayer = ({
 
     return (
         <div className="mb-10 flex flex-col items-center gap-3">
-            <div className="app-panel-card flex w-full max-w-[400px] items-center justify-between rounded-full px-5 py-2.5 lg:max-w-[720px]">
+            <div className="flex w-full max-w-[400px] items-center justify-between rounded-full border border-gold-border/12 bg-shell-main/72 px-5 py-2.5 shadow-[0_14px_30px_-26px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-gold-primary/25 hover:shadow-[0_18px_34px_-26px_rgba(0,0,0,0.4)] dark:border-dark-border/70 dark:bg-shell-main-dark/70 dark:hover:border-gold-primary/25 lg:max-w-[720px]">
                 <button
                     type="button"
                     onClick={() => {
                         void togglePlay();
                     }}
-                    className="app-icon-button text-gold-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-shell-main-dark"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold-border/12 bg-shell-main/80 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-surface/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:border-dark-border/70 dark:bg-shell-main-dark/80 dark:text-gold-light dark:hover:bg-white/6 dark:focus-visible:ring-offset-shell-main-dark"
                     aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
                     aria-pressed={isPlaying}
                 >

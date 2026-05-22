@@ -99,7 +99,7 @@ const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
         >
             <div
                 ref={modalRef}
-                className="app-panel-card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[2rem]"
+                className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-gold-border/12 bg-shell-main/96 shadow-[0_28px_90px_-36px_rgba(0,0,0,0.45)] dark:border-dark-border/70 dark:bg-shell-main-dark/96 dark:shadow-[0_32px_100px_-44px_rgba(0,0,0,0.7)]"
             >
                 <div className="flex items-center justify-between border-b border-gold-border/10 bg-gold-surface/35 p-4 sm:p-6 dark:border-dark-border/70 dark:bg-dark-bg/30">
                     <h2 id="compendium-title" className="font-display text-xl tracking-[0.04em] text-gold-primary sm:text-2xl">
@@ -110,7 +110,7 @@ const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
                         type="button"
                         onClick={onClose}
                         aria-label="Close compendium"
-                        className="-mr-2 app-icon-button text-gold-primary hover:shadow-[0_14px_28px_-20px_rgba(0,0,0,0.42)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-shell-main-dark"
+                        className="-mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-border/12 bg-shell-main/85 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-surface/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-white/6 dark:focus-visible:ring-offset-shell-main-dark"
                     >
                         <X className="h-5 w-5" />
                     </button>

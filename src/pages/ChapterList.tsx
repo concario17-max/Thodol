@@ -5,8 +5,6 @@ import { BookOpenText, ChevronRight, Cloud, Sparkles, Target, Zap } from 'lucide
 import { YOGA_CHAPTERS_META } from '../constants';
 import { useYogaData } from '../hooks/useYogaData';
 import { GlassCard } from '../components/ui/GlassCard';
-import { Seo } from '../components/Seo';
-import { SITE_DESCRIPTION, SITE_NAME } from '../lib/site';
 
 const CompendiumModal = lazy(() => import('../components/CompendiumModal'));
 const LexiconModal = lazy(() => import('../components/LexiconModal'));
@@ -31,20 +29,20 @@ const containerVariants: Variants = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.045,
-            delayChildren: 0.05,
+            staggerChildren: 0.1,
+            delayChildren: 0.2,
         },
     },
 };
 
 const itemVariants: Variants = {
-    hidden: { y: 12, opacity: 0 },
+    hidden: { y: 20, opacity: 0 },
     visible: {
         y: 0,
         opacity: 1,
         transition: {
-            duration: 0.28,
-            ease: [0.16, 1, 0.3, 1],
+            duration: 0.8,
+            ease: 'easeOut',
         },
     },
 };
@@ -70,7 +68,7 @@ const ChapterList = () => {
     const startReadingHref = '/chapter/1/verse/1';
 
     const statusCardClassName =
-        'app-panel-card w-full max-w-xl px-6 py-7 text-center';
+        'w-full max-w-xl rounded-[2rem] border border-gold-border/30 bg-white/82 px-6 py-7 text-center shadow-[0_28px_80px_-44px_rgba(0,0,0,0.45)] backdrop-blur-md dark:bg-dark-surface/82';
 
     if (loading && !hasChapters) {
         return (
@@ -97,7 +95,7 @@ const ChapterList = () => {
                     <button
                         type="button"
                         onClick={() => window.location.reload()}
-                        className="app-button-primary mt-5 px-5 py-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                        className="mt-5 inline-flex items-center justify-center rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                     >
                         Retry loading
                     </button>
@@ -117,7 +115,7 @@ const ChapterList = () => {
                     <button
                         type="button"
                         onClick={() => window.location.reload()}
-                        className="app-button-secondary mt-5 px-5 py-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                        className="mt-5 inline-flex items-center justify-center rounded-full border border-gold-border/20 bg-transparent px-5 py-3 text-sm font-semibold text-gold-primary transition-colors hover:bg-gold-surface/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                     >
                         Reload
                     </button>
@@ -128,7 +126,6 @@ const ChapterList = () => {
 
     return (
         <div className="container mx-auto max-w-6xl px-4 py-6 transition-colors duration-500 md:py-8 lg:flex lg:h-full lg:max-w-7xl lg:flex-col lg:overflow-hidden lg:py-4">
-            <Seo title={SITE_NAME} description={SITE_DESCRIPTION} canonicalPath="/" />
             <motion.div initial="hidden" animate="visible" variants={containerVariants} className="mb-8 flex flex-col items-center text-center md:mb-10 lg:mb-4 lg:flex-none">
                 <motion.div variants={itemVariants} className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-gold-border bg-gold-surface/50 dark:border-dark-border dark:bg-dark-surface lg:mb-3">
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
@@ -137,14 +134,14 @@ const ChapterList = () => {
                     YOGA SUTRAS
                 </motion.h1>
                 <motion.p variants={itemVariants} className="mb-6 max-w-2xl font-display text-[15px] italic tracking-[0.14em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-4">
-                    A calm editorial reading space for Sanskrit, pronunciation, translation, audio, and commentary.
+                    Browse the chapters, then open a sutra for Sanskrit, pronunciation, translation, audio, and commentary.
                 </motion.p>
 
                 <motion.div variants={itemVariants} className="mb-6 flex flex-col items-center justify-center gap-3 text-[11px] font-medium uppercase tracking-[0.24em] text-text-secondary sm:flex-row sm:gap-4 lg:mb-5">
                     <button
                         type="button"
                         onClick={() => setIsCompendiumOpen(true)}
-                        className="app-button-ghost px-3 py-2 hover:text-gold-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                        className="rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                     >
                         Compendium
                     </button>
@@ -152,23 +149,23 @@ const ChapterList = () => {
                     <button
                         type="button"
                         onClick={() => setIsLexiconOpen(true)}
-                        className="app-button-ghost px-3 py-2 hover:text-gold-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                        className="rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                     >
                         Lexicon
                     </button>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="mx-auto mb-8 flex w-full max-w-2xl flex-col items-center gap-3 rounded-[2rem] px-4 py-4 app-panel-card lg:mb-5">
+                <motion.div variants={itemVariants} className="mx-auto mb-8 flex w-full max-w-2xl flex-col items-center gap-3 rounded-3xl border border-gold-border/40 bg-white/84 px-4 py-4 shadow-[0_18px_48px_-30px_rgba(0,0,0,0.34)] backdrop-blur-md dark:bg-dark-surface/84 lg:mb-5">
                     <button
                         type="button"
                         onClick={() => navigate(startReadingHref)}
-                        className="app-button-primary w-full gap-2 px-5 py-3 text-sm font-semibold sm:w-auto"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-20px_rgba(0,0,0,0.55)] transition-transform duration-200 hover:-translate-y-0.5 hover:bg-gold-primary/90 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg sm:w-auto"
                     >
                         Start reading
                         <ChevronRight className="h-4 w-4" aria-hidden="true" />
                     </button>
                     <p className="text-center text-xs leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                        Jump straight to Chapter 1, Sutra 1. The chapter cards below keep browsing fast and focused.
+                        Jump straight to Chapter 1, Sutra 1. Use the list below to browse any chapter.
                     </p>
                 </motion.div>
 
@@ -180,11 +177,11 @@ const ChapterList = () => {
                     <div className="h-px flex-1 bg-gold-border" />
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-[1.5rem] p-2.5 app-panel-card sm:flex-row sm:gap-0 sm:p-3 lg:mb-0">
+                <motion.div variants={itemVariants} className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3 lg:mb-0">
                     <div className="flex w-full flex-1 flex-col items-start border-b border-gold-border/30 px-2 pb-2 sm:border-b-0 sm:border-r sm:px-4 sm:pb-0">
                         <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Chapter</span>
                         <select
-                            className="app-select-shell w-full text-sm font-medium outline-none focus:text-gold-primary dark:focus:text-gold-light"
+                            className="w-full appearance-none bg-transparent text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary dark:text-dark-text-primary"
                             value={selectedChapter}
                             onChange={(event) => {
                                 setSelectedChapter(event.target.value);
@@ -203,7 +200,7 @@ const ChapterList = () => {
                     <div className="flex w-full flex-1 flex-col items-start px-2 pt-0.5 sm:px-6 sm:pt-0">
                         <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Verse</span>
                         <select
-                            className="app-select-shell w-full text-sm font-medium outline-none focus:text-gold-primary disabled:opacity-50 dark:focus:text-gold-light"
+                            className="w-full appearance-none bg-transparent text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary disabled:opacity-50 dark:text-dark-text-primary"
                             value={selectedVerse}
                             disabled={!selectedChapter}
                             onChange={(event) => {
