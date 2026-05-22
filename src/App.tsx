@@ -1,5 +1,5 @@
 import { CSSProperties, Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Outlet, useNavigate, useParams, useMatch } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
@@ -12,8 +12,26 @@ import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 
 const VerseView = lazy(() => import('./pages/VerseView'));
-const ChapterList = lazy(() => import('./pages/ChapterList'));
- 
+
+const DefaultVerseRedirect = () => {
+    const { chapters, loading } = useYogaData();
+
+    if (loading) {
+        return (
+            <div className="flex h-full items-center justify-center bg-transparent">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
+            </div>
+        );
+    }
+
+    const firstChapter = chapters[0];
+    const firstSutra = firstChapter?.sutras[0];
+    const chapterNum = firstChapter?.chapter ?? 1;
+    const verseNum = firstSutra?.id.split('.')[1] ?? '1';
+
+    return <Navigate to={`/chapter/${chapterNum}/verse/${verseNum}`} replace />;
+};
+
 interface ContextOption {
     value: string;
     label: string;
@@ -129,8 +147,8 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `Chapter ${chapterNum}` : 'Chapter --';
-    const activeVerseLabel = verseNum ? `Sutra ${verseNum}` : 'Sutra --';
+    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '??';
+    const activeVerseLabel = verseNum ? `${verseNum}절` : '??';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
@@ -139,17 +157,17 @@ const ContextPillPicker = ({
     const panel = isOpen ? (
         <div
             role="dialog"
-                aria-label={`Current selection: ${activeChapterLabel} / ${activeVerseLabel}`}
+            aria-label="Context picker"
             ref={panelRef}
             style={panelStyle ?? undefined}
             className="z-[60] rounded-[1.75rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,251,241,0.98)_0%,rgba(252,247,237,0.96)_48%,rgba(245,238,228,0.92)_100%)] p-3.5 shadow-[0_26px_72px_-34px_rgba(0,0,0,0.58)] backdrop-blur-2xl dark:border-dark-border/70 dark:bg-[linear-gradient(180deg,rgba(24,20,15,0.98)_0%,rgba(20,17,13,0.96)_48%,rgba(15,13,10,0.92)_100%)]"
         >
             <div className="mb-3 flex items-center gap-2.5 border-b border-gold-border/12 pb-2.5 dark:border-dark-border/55">
                 <span className="rounded-full border border-gold-primary/18 bg-gold-primary/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary dark:border-gold-light/18 dark:bg-gold-light/10 dark:text-gold-light">
-                    Current selection
+                    Context
                 </span>
                 <span className="flex-1 text-[10px] font-medium tracking-[0.14em] text-text-secondary/75 dark:text-dark-text-secondary/70">
-                    {activeChapterLabel} / {activeVerseLabel}
+                    {chapterNum ? `Chapter ${chapterNum}` : 'Chapter --'} / {verseNum ? `Sutra ${verseNum}` : 'Sutra --'}
                 </span>
             </div>
             <div className="space-y-2.5">
@@ -237,8 +255,8 @@ const MainLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
-    const isVerseView = Boolean(useMatch('/chapter/:chapterNum/verse/:verseNum/*'));
     const { chapters } = useYogaData();
+    const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
     const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
@@ -328,9 +346,8 @@ function App() {
         <Router>
             <Routes>
                 <Route element={<MainLayout />}>
-                    <Route path="/" element={<ChapterList />} />
-                    <Route path="/chapter/:chapterNum/verse/:verseNum/*" element={<VerseView />} />
-                    <Route path="*" element={<ChapterList />} />
+                    <Route path="/" element={<DefaultVerseRedirect />} />
+                    <Route path="/chapter/:chapterNum/verse/:verseNum" element={<VerseView />} />
                 </Route>
             </Routes>
         </Router>

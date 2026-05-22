@@ -87,9 +87,6 @@ const sharedContentShellClassName =
 
 const sharedContentPaddingClassName = 'px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6';
 
-const routeStateCardClassName =
-    'w-full max-w-xl rounded-[2rem] border border-gold-border/18 bg-shell-commentary px-6 py-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_18px_48px_-34px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-shell-commentary-dark';
-
 type CommentaryRow = readonly string[] | { label: string; value: string };
 
 type RenderableTable = {
@@ -270,13 +267,13 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
         <section className="mx-auto w-full max-w-[58rem] space-y-3 px-4 sm:space-y-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2.5 border-b border-gold-border/8 pb-3 dark:border-dark-border/35">
                 <span className="inline-flex items-center rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
-                    해설
+                    Commentary
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
                 <button
                     type="button"
                     onClick={() => setViewMode((current) => (current === 'commentary' ? 'comic' : 'commentary'))}
-                    aria-label={viewMode === 'commentary' ? '\uD559\uC2B5\uB9CC\uD654 \uBCF4\uAE30' : '\uD574\uC124 \uBCF4\uAE30'}
+                    aria-label={viewMode === 'commentary' ? '\uD559\uC2B5\uB9CC\uD654 \uBCF4\uAE30' : '\uD14D\uC2A4\uD2B8 \uD574\uC124 \uBCF4\uAE30'}
                     className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/30 bg-shell-main/90 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-transform duration-200 hover:-translate-y-0.5 dark:border-dark-border/55 dark:bg-shell-main-dark/90 dark:text-gold-light"
                 >
                     <SquareArrowOutUpRight className="h-4 w-4" aria-hidden="true" />
@@ -288,7 +285,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                     shouldShowCommentaryLoading ? (
                         <div className="space-y-3 rounded-[1.5rem] border border-gold-border/12 bg-shell-main/85 p-5 text-sm leading-7 text-text-secondary shadow-[0_18px_48px_-34px_rgba(0,0,0,0.18)] dark:border-dark-border/45 dark:bg-shell-main-dark/85 dark:text-dark-text-secondary sm:p-6">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
-                                해설
+                                Commentary
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-gold-primary border-t-transparent" />
@@ -308,7 +305,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                                 <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
                             ) : (
                                 <div className="border-l border-gold-border/12 pl-4 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[15px]">
-                                    이 수트라에는 아직 해설이 없어.
+                                    No commentary is available for this sutra.
                                 </div>
                             )}
                         </>
@@ -325,7 +322,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                 ) : (
                     <div className="space-y-3 rounded-[1.5rem] border border-gold-border/12 bg-shell-main/85 p-5 text-sm leading-7 text-text-secondary dark:border-dark-border/45 dark:bg-shell-main-dark/85 dark:text-dark-text-secondary sm:p-6">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
-                            학습만화
+                            Learning comic
                         </p>
                         <p>\uD559\uC2B5\uB9CC\uD654\uB294 \uD604\uC7AC 1, 2, 3\uC7A5\uC5D0\uB9CC \uC774\uBBF8\uC9C0\uAC00 \uC900\uBE44\uB418\uC5B4 \uC788\uC5B4.</p>
                     </div>
@@ -336,7 +333,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
 };
 
 const VerseView = () => {
-    const { chapterNum, verseNum, '*': extraPath } = useParams<{ chapterNum?: string; verseNum?: string; '*': string | undefined }>();
+    const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
     const navigate = useNavigate();
     const audioRef = useRef<HTMLAudioElement>(null);
     const { activeVerseContentMode } = useUI();
@@ -388,84 +385,27 @@ const VerseView = () => {
         }
     }, [isCommentaryMode]);
 
-    const chapterNumber = chapterNum ? Number.parseInt(chapterNum, 10) : Number.NaN;
-    const verseNumber = verseNum ? Number.parseInt(verseNum, 10) : Number.NaN;
-    const hasExtraSegment = Boolean(extraPath?.trim());
-    const verseData = chapterNum && verseNum && !hasExtraSegment ? getVerseInRange(chapterNum, verseNum) : null;
-    const currentChapter = allChapters && Number.isFinite(chapterNumber) ? allChapters[chapterNumber] : null;
+    const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
+    const currentChapter = allChapters && chapterNum ? allChapters[parseInt(chapterNum, 10)] : null;
     const currentIndex = currentChapter && verseData ? currentChapter.sutras.findIndex((sutra) => sutra.id === verseData.id) : -1;
-    const invalidRouteReason = !chapterNum || !verseNum
-        ? 'Missing chapter or verse.'
-        : hasExtraSegment
-          ? 'This route has extra path segments.'
-          : !Number.isFinite(chapterNumber) || !Number.isFinite(verseNumber)
-            ? 'Chapter and verse numbers are invalid.'
-            : !currentChapter
-              ? `Chapter ${chapterNum} is not available.`
-              : !verseData
-                ? `Sutra ${verseNum} is not available in Chapter ${chapterNum}.`
-                : null;
 
     const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
 
     if (error && allChapters === null) {
         return (
-            <div className="flex min-h-full items-center justify-center px-4">
-                <div className={routeStateCardClassName} role="alert">
-                    <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this sutra</h1>
+            <div className="flex min-h-full items-center justify-center px-6">
+                <div className="max-w-lg text-center">
+                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this sutra</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
-                    <button
-                        type="button"
-                        onClick={() => window.location.reload()}
-                        className="mt-5 inline-flex items-center justify-center rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                    >
-                        Retry loading
-                    </button>
                 </div>
             </div>
         );
     }
 
-    if (loading && allChapters === null) {
+    if ((loading && allChapters === null) || !chapterNum || !verseNum) {
         return (
-            <div className="flex min-h-full items-center justify-center px-4">
-                <div className={routeStateCardClassName} role="status" aria-live="polite">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-gold-primary/15 bg-gold-surface/70 dark:border-dark-border/60 dark:bg-dark-surface">
-                        <div className="h-6 w-6 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
-                    </div>
-                    <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Loading sutra</h1>
-                    <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                        Preparing the reading surface and commentary.
-                    </p>
-                </div>
-            </div>
-        );
-    }
-
-    if (invalidRouteReason) {
-        return (
-            <div className="flex min-h-full items-center justify-center px-4">
-                <div className={routeStateCardClassName} role="alert">
-                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">Invalid route</p>
-                    <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Sutra not found</h1>
-                    <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{invalidRouteReason}</p>
-                    <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                        <button
-                            type="button"
-                            onClick={() => navigate('/')}
-                            className="inline-flex items-center justify-center rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                        >
-                            Browse chapters
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => navigate('/chapter/1/verse/1')}
-                            className="inline-flex items-center justify-center rounded-full border border-gold-border/20 bg-transparent px-5 py-3 text-sm font-semibold text-gold-primary transition-colors hover:bg-gold-surface/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                        >
-                            Open Chapter 1
-                        </button>
-                    </div>
-                </div>
+            <div className="flex min-h-full items-center justify-center bg-gold-bg dark:bg-dark-bg">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
             </div>
         );
     }
@@ -474,12 +414,7 @@ const VerseView = () => {
         return null;
     }
 
-    const safeChapterNum = chapterNum as string;
-    const safeVerseNum = verseNum as string;
-    const safeVerseData = verseData;
-    const safeCurrentChapter = currentChapter;
-
-    const audioSrc = `/mp3/${safeChapterNum}-${safeVerseData.id.split('.')[1]}.mp3`;
+    const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
     const navigationDisabledClassName = 'pointer-events-none opacity-25';
     const bodyNavigationRailClassName =
@@ -488,7 +423,7 @@ const VerseView = () => {
     return (
         <AnimatePresence mode="wait">
             <motion.div
-                key={`${safeChapterNum}-${safeVerseNum}`}
+                key={`${chapterNum}-${verseNum}`}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
@@ -502,11 +437,11 @@ const VerseView = () => {
                                 <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
                                     <div className={bodyContentClassName}>
                                         <motion.div variants={itemVariants}>
-                                            <SutraContent sanskrit={safeVerseData.sanskrit} pronunciation={safeVerseData.pronunciation} pronunciationKr={safeVerseData.pronunciation_kr} />
+                                            <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
                                         </motion.div>
 
                                         <motion.div variants={itemVariants}>
-                                            <WordMeanings meanings={safeVerseData.word_meanings} />
+                                            <WordMeanings meanings={verseData.word_meanings} />
                                         </motion.div>
 
                                         <audio
@@ -533,10 +468,10 @@ const VerseView = () => {
 
                                         <motion.div variants={itemVariants}>
                                             <TranslationSection
-                                                baeJik={safeVerseData['5.bae_jik']}
-                                                baeUu={safeVerseData['6.bae_uu']}
-                                                oxfordKr={safeVerseData['8. ox']}
-                                                oxfordEn={safeVerseData['9. ox-en']}
+                                                baeJik={verseData['5.bae_jik']}
+                                                baeUu={verseData['6.bae_uu']}
+                                                oxfordKr={verseData['8. ox']}
+                                                oxfordEn={verseData['9. ox-en']}
                                             />
                                         </motion.div>
                                     </div>
@@ -545,10 +480,10 @@ const VerseView = () => {
                                     <button
                                         type="button"
                                         onClick={handlePrev}
-                                        disabled={parseInt(safeChapterNum, 10) === 1 && currentIndex === 0}
+                                        disabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
                                         aria-label="\uC774\uC804 \uAD6C\uC808"
                                         className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
-                                            parseInt(safeChapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
+                                            parseInt(chapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
                                         } -translate-x-[calc(100%+1rem)]`}
                                     >
                                         <ChevronLeft className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
@@ -556,10 +491,10 @@ const VerseView = () => {
                                     <button
                                         type="button"
                                         onClick={handleNext}
-                                        disabled={parseInt(safeChapterNum, 10) === 4 && currentIndex === safeCurrentChapter.sutras.length - 1}
+                                        disabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
                                         aria-label="\uB2E4\uC74C \uAD6C\uC808"
                                         className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
-                                            parseInt(safeChapterNum, 10) === 4 && currentIndex === safeCurrentChapter.sutras.length - 1 ? navigationDisabledClassName : ''
+                                            parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1 ? navigationDisabledClassName : ''
                                         } translate-x-[calc(100%+1rem)]`}
                                     >
                                         <ChevronRight className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
@@ -573,16 +508,16 @@ const VerseView = () => {
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
                             <div className="relative mx-auto w-full max-w-[58rem] overflow-visible px-4 sm:px-6 lg:px-8">
-                                <CommentaryContent chapterNum={String(safeCurrentChapter.chapter)} verseNum={safeVerseData.id.split('.')[1]} />
+                                <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
 
                                 <div className="pointer-events-none absolute inset-y-0 left-0 hidden -translate-x-[calc(100%+1rem)] items-center lg:flex">
                                     <button
                                         type="button"
                                         onClick={handlePrev}
-                                        disabled={parseInt(safeChapterNum, 10) === 1 && currentIndex === 0}
+                                        disabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
                                         aria-label="\uC774\uC804 \uAD6C\uC808"
                                         className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
-                                            parseInt(safeChapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
+                                            parseInt(chapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
                                         }`}
                                     >
                                         <ChevronLeft className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />
@@ -593,10 +528,10 @@ const VerseView = () => {
                                     <button
                                         type="button"
                                         onClick={handleNext}
-                                        disabled={parseInt(safeChapterNum, 10) === 4 && currentIndex === safeCurrentChapter.sutras.length - 1}
+                                        disabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1}
                                         aria-label="\uB2E4\uC74C \uAD6C\uC808"
                                         className={`pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/60 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.42)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/85 hover:text-[#31404b] active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
-                                            parseInt(safeChapterNum, 10) === 4 && currentIndex === safeCurrentChapter.sutras.length - 1 ? navigationDisabledClassName : ''
+                                            parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter.sutras.length - 1 ? navigationDisabledClassName : ''
                                         }`}
                                     >
                                         <ChevronRight className="h-5 w-5 stroke-[1.5]" aria-hidden="true" />

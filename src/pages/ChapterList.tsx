@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
-import { BookOpenText, ChevronRight, Cloud, Sparkles, Target, Zap } from 'lucide-react';
+import { BookOpenText, Cloud, Sparkles, Target, Zap } from 'lucide-react';
 import { YOGA_CHAPTERS_META } from '../constants';
 import { useYogaData } from '../hooks/useYogaData';
 import { GlassCard } from '../components/ui/GlassCard';
@@ -65,60 +65,21 @@ const ChapterList = () => {
     const [selectedChapter, setSelectedChapter] = useState<string>('');
     const [selectedVerse, setSelectedVerse] = useState<string>('');
     const hasChapters = chapters.length > 0;
-    const startReadingHref = '/chapter/1/verse/1';
-
-    const statusCardClassName =
-        'w-full max-w-xl rounded-[2rem] border border-gold-border/30 bg-white/82 px-6 py-7 text-center shadow-[0_28px_80px_-44px_rgba(0,0,0,0.45)] backdrop-blur-md dark:bg-dark-surface/82';
 
     if (loading && !hasChapters) {
         return (
-            <div className="flex h-full items-center justify-center px-4">
-                <div className={statusCardClassName} role="status" aria-live="polite">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-gold-primary/15 bg-gold-surface/70 dark:border-dark-border/60 dark:bg-dark-surface">
-                        <div className="h-6 w-6 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
-                    </div>
-                    <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Loading chapters</h1>
-                    <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                        Preparing the chapter list and reading tools.
-                    </p>
-                </div>
+            <div className="flex h-full items-center justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
             </div>
         );
     }
 
     if (error && !hasChapters) {
         return (
-            <div className="flex h-full items-center justify-center px-4">
-                <div className={statusCardClassName} role="alert">
-                    <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load the Yoga Sutras</h1>
+            <div className="flex h-full items-center justify-center px-6">
+                <div className="max-w-lg rounded-2xl border border-gold-border/30 bg-white/75 p-6 text-center shadow-lg backdrop-blur-sm dark:bg-dark-surface/75">
+                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load the Yoga Sutras</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
-                    <button
-                        type="button"
-                        onClick={() => window.location.reload()}
-                        className="mt-5 inline-flex items-center justify-center rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                    >
-                        Retry loading
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
-    if (!loading && !error && !hasChapters) {
-        return (
-            <div className="flex h-full items-center justify-center px-4">
-                <div className={statusCardClassName} role="status">
-                    <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">No chapters available</h1>
-                    <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                        The reading surface is empty right now.
-                    </p>
-                    <button
-                        type="button"
-                        onClick={() => window.location.reload()}
-                        className="mt-5 inline-flex items-center justify-center rounded-full border border-gold-border/20 bg-transparent px-5 py-3 text-sm font-semibold text-gold-primary transition-colors hover:bg-gold-surface/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                    >
-                        Reload
-                    </button>
                 </div>
             </div>
         );
@@ -133,11 +94,11 @@ const ChapterList = () => {
                 <motion.h1 variants={itemVariants} className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px] lg:mb-3 lg:text-[54px]">
                     YOGA SUTRAS
                 </motion.h1>
-                <motion.p variants={itemVariants} className="mb-6 max-w-2xl font-display text-[15px] italic tracking-[0.14em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-4">
-                    Browse the chapters, then open a sutra for Sanskrit, pronunciation, translation, audio, and commentary.
+                <motion.p variants={itemVariants} className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-6">
+                    A reading space for sutra, sound, translation, and reflection
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="mb-6 flex flex-col items-center justify-center gap-3 text-[11px] font-medium uppercase tracking-[0.24em] text-text-secondary sm:flex-row sm:gap-4 lg:mb-5">
+                <motion.div variants={itemVariants} className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6 lg:mb-5">
                     <button
                         type="button"
                         onClick={() => setIsCompendiumOpen(true)}
@@ -153,20 +114,6 @@ const ChapterList = () => {
                     >
                         Lexicon
                     </button>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className="mx-auto mb-8 flex w-full max-w-2xl flex-col items-center gap-3 rounded-3xl border border-gold-border/40 bg-white/84 px-4 py-4 shadow-[0_18px_48px_-30px_rgba(0,0,0,0.34)] backdrop-blur-md dark:bg-dark-surface/84 lg:mb-5">
-                    <button
-                        type="button"
-                        onClick={() => navigate(startReadingHref)}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-20px_rgba(0,0,0,0.55)] transition-transform duration-200 hover:-translate-y-0.5 hover:bg-gold-primary/90 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg sm:w-auto"
-                    >
-                        Start reading
-                        <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                    </button>
-                    <p className="text-center text-xs leading-relaxed text-text-secondary dark:text-dark-text-secondary">
-                        Jump straight to Chapter 1, Sutra 1. Use the list below to browse any chapter.
-                    </p>
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-md items-center justify-center opacity-40 lg:mb-5">
@@ -228,7 +175,7 @@ const ChapterList = () => {
                 </motion.div>
             </motion.div>
 
-            <motion.div id="chapter-grid" initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-4 lg:items-stretch lg:gap-4 lg:px-0 lg:pb-4">
+            <motion.div initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-4 lg:items-stretch lg:gap-4 lg:px-0 lg:pb-4">
                 {chapters.map((chapter) => {
                     const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
 
