@@ -1,7 +1,7 @@
 import { BookOpenText } from 'lucide-react';
 
 export const SutraHeader = () => (
-    <header className="mx-auto w-full max-w-[52rem] px-4 sm:px-6 lg:px-8">
+    <header className="mx-auto w-full max-w-[58rem] px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center text-gold-primary dark:text-gold-light">
                 <BookOpenText className="h-4 w-4" />

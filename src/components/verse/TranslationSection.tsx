@@ -23,7 +23,7 @@ export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: Transl
     }
 
     return (
-        <section className="mx-auto w-full max-w-[52rem] space-y-4 px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-[58rem] space-y-4 px-4 sm:px-6 lg:px-8">
             {hasOxford ? (
                 <Block label="Oxford translation">
                     {oxfordEn ? <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{oxfordEn}</p> : null}

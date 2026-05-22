@@ -17,8 +17,8 @@ export const SutraNavigation = ({
     isPrevDisabled,
     isNextDisabled
 }: SutraNavigationProps) => (
-    <div className="mt-10 pb-[calc(1.5rem+env(safe-area-inset-bottom))] px-4 font-inter sm:pb-8 sm:px-0">
-        <div className="mx-auto w-full max-w-[52rem] px-0 sm:px-6 lg:px-8">
+    <div className="mt-10 pb-[calc(1.5rem+env(safe-area-inset-bottom))] font-inter px-4 sm:pb-8 sm:px-0">
+        <div className="mx-auto w-full max-w-[62rem]">
             <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
                 <div className="flex justify-start">
                     <button
