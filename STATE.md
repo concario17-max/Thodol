@@ -1,33 +1,31 @@
 # State
 
 ## Current Task
-Completed: extend the centered editorial canvas layout to the remaining folder/pages while preserving existing data flow and interactions.
+Rollback to `5121d24` and preserve the tracked codebase state from that commit.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
 main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Apply the centered canvas pattern to remaining pages and shared surfaces that still feel wide or off-center.
-- Keep the sticky header, existing data flow, toggles, and date navigation unchanged.
-- Standardize the core content width around `max-w-[52rem]` where the page uses a primary reading surface.
-- Preserve mobile stacking and all current interactions.
+- Revert the tracked commits after `5121d24` so the repository matches that commit state again.
+- Leave unrelated untracked files and folders untouched.
+- Keep the rollback limited to tracked repository content.
 
-Reason for Route B:
-- This is a multi-file layout refactor across shared layout and page surfaces, so it needs Route B.
+Reason for Route A:
+- This is a bounded rollback to a specific commit with a clear target state.
 
 ## Write Sets
-- main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/index.css`, `src/components/ui/AppShell.tsx`, `src/components/Header.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `src/pages/*.tsx`, `src/App.tsx`
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`, tracked rollback only
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-22 16:21:37 +09:00 - Extended the 52rem centered canvas rhythm to the remaining reading surfaces, modals, and chapter list; verified with typecheck, build, and screenshot review.
+2026-05-22 16:21:37 +09:00 - Reopened as a rollback to `5121d24` and prepared to revert the two later layout commits.
 
 ## Open Review Item
 - None.
