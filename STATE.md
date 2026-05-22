@@ -1,35 +1,32 @@
 # State
 
 ## Current Task
-Design-system consolidation completed.
+Completed: remove the "Tap to expand the lexical breakdown" line from the deep-body verse content.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
-main: planner-only
+main: tight UI implementation
 
 ## Contract Freeze
 Frozen scope:
-- Normalize shared color, typography, spacing, radius, shadow, and border tokens.
-- Unify button, card, modal, navigation, and input variants without changing behavior.
-- Keep the existing warm visual character while preserving dark mode support.
-- Preserve keyboard accessibility, focus handling, and mobile-first layout behavior.
-- Keep the change set reviewable and dependency-free.
+- Remove the "Tap to expand the lexical breakdown" line from the deep-body verse content.
+- Keep the rest of the lexical breakdown UI unchanged.
+- Do not alter the commentary mode text or the verse-mode toggle behavior.
+- Keep the root `.odt` files untouched.
 
-Reason for Route B:
-- This is a multi-file shared design-system pass that touches several shared UI and page components, so it needs Route B.
+Reason for Route A:
+- This is a single-line UI text removal in one render file with no shared asset fanout, no data migration, and no new files.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_shared: `src/index.css`, `src/components/ui/AppShell.tsx`, `src/components/ui/GlassCard.tsx`
-- worker_feature: `src/components/Header.tsx`, `src/components/ThemeToggle.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/components/CompendiumModal.tsx`, `src/components/LexiconModal.tsx`, `src/components/verse/AudioPlayer.tsx`, `src/components/verse/WordMeanings.tsx`, `src/components/verse/SutraNavigation.tsx`, `src/pages/ChapterList.tsx`
 
 ## Reviewer
-Wegener
+not requested
 
 ## Last Update
-2026-05-21 14:00:00 +09:00 - Completed the design-system consolidation pass across shared tokens, shared primitives, component variants, and accessibility affordances; verified with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-21 00:00:00 +09:00 - Removed the lexical breakdown helper line from the deep-body verse content and verified with `npm.cmd run typecheck`.
 
 ## Open Review Item
 - None.

@@ -43,12 +43,6 @@ interface SidebarMenuProps {
     groupTitle?: string;
 }
 
-const groupButtonBaseClass =
-    'flex w-full items-start justify-between gap-2 rounded-2xl border px-3 py-2.5 text-left transition-all duration-300 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:focus-visible:ring-offset-shell-rail-dark sm:gap-1.5 sm:rounded-xl sm:px-2 sm:py-1.5';
-
-const itemLinkBaseClass =
-    'flex items-start gap-2 rounded-2xl border px-3 py-2.5 text-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:focus-visible:ring-offset-shell-rail-dark sm:rounded-xl sm:px-2 sm:py-1.5';
-
 export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: SidebarMenuProps) => {
     const expandedGroup = groups.find((group) => group.isExpanded);
 
@@ -58,11 +52,11 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="custom-scrollbar h-[30%] shrink-0 overflow-y-auto border-b border-gold-border/20 overscroll-contain dark:border-dark-border/70"
+                className="custom-scrollbar h-[30%] shrink-0 overflow-y-auto border-b border-gold-border/20 overscroll-contain dark:border-[#222]"
             >
                 {groupTitle && (
-                    <div className="sticky top-0 z-10 hidden bg-shell-rail/85 p-4 backdrop-blur-sm dark:bg-shell-rail-dark/85 lg:block">
-                        <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-text-primary/65 dark:text-dark-text-primary/65">{groupTitle}</h2>
+                    <div className="sticky top-0 z-10 hidden bg-transparent p-4 backdrop-blur-sm lg:block">
+                        <h2 className="text-xs font-bold text-text-primary/70 dark:text-dark-text-primary/70">{groupTitle}</h2>
                     </div>
                 )}
 
@@ -73,21 +67,20 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                             variants={itemVariants}
                             key={group.id}
                             onClick={group.onToggle}
-                            aria-expanded={group.isExpanded}
-                            className={`${groupButtonBaseClass} ${
+                            className={`flex w-full items-start justify-between gap-2 rounded-xl border px-3 py-2.5 text-left transition-colors active:scale-[0.98] sm:gap-1.5 sm:rounded-lg sm:px-2 sm:py-1.5 ${
                                 group.isExpanded
-                                    ? 'border-gold-primary/18 bg-shell-main/72 text-text-primary shadow-[0_12px_28px_-22px_rgba(0,0,0,0.35)] dark:bg-shell-main-dark/72 dark:text-gold-light'
-                                    : 'border-transparent text-text-secondary hover:border-gold-border/12 hover:bg-gold-surface/40 dark:text-dark-text-secondary dark:hover:border-dark-border/60 dark:hover:bg-white/5'
+                                    ? 'border-gold-primary/20 bg-white/60 text-[#1C2B36] shadow-sm dark:bg-dark-bg/60 dark:text-gold-light'
+                                    : 'border-transparent text-[#5B7282] hover:bg-gold-surface/40 dark:text-dark-text-secondary dark:hover:bg-dark-bg/40'
                             }`}
                         >
                             <div className="flex flex-1 flex-col pr-1">
-                                <span className={`break-keep text-[15px] leading-snug sm:text-[13px] ${group.isExpanded ? 'font-semibold text-text-primary dark:text-gold-light' : 'font-semibold'}`}>
+                                <span className={`break-keep text-[15px] leading-snug sm:text-[13px] ${group.isExpanded ? 'font-semibold text-[#1C2B36]' : 'font-semibold'}`}>
                                     {group.title}
                                 </span>
                                 {group.subtitle && (
                                     <span
                                         className={`mt-0.5 break-keep text-[12px] sm:mt-0 sm:text-[11.5px] ${
-                                            group.isExpanded ? 'font-medium text-text-secondary opacity-70 dark:text-dark-text-secondary' : 'font-medium opacity-60'
+                                            group.isExpanded ? 'font-medium text-[#1C2B36] opacity-50' : 'font-medium opacity-60'
                                         }`}
                                     >
                                         {group.subtitle}
@@ -95,7 +88,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                 )}
                             </div>
                             {group.badge && (
-                                <span className={`mt-0.5 shrink-0 rounded-full border border-gold-border/12 px-2 py-0.5 text-[11px] font-semibold text-gold-primary dark:border-dark-border/60 dark:text-gold-light ${group.isExpanded ? 'opacity-100' : 'opacity-70'}`}>
+                                <span className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[11px] font-bold text-[#A68B5C] ${group.isExpanded ? 'opacity-100' : 'opacity-70'}`}>
                                     {group.badge}
                                 </span>
                             )}
@@ -113,16 +106,16 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                                 to={item.href}
                                 onClick={onItemClick}
                                 className={({ isActive }) =>
-                                    `${itemLinkBaseClass} ${
+                                    `flex items-start gap-2 rounded-xl border px-3 py-2.5 text-sm transition-all sm:rounded-lg sm:px-2 sm:py-1.5 ${
                                         isActive || item.isActive
-                                            ? 'border-gold-primary/18 bg-shell-main/72 font-medium text-text-primary shadow-[0_12px_28px_-22px_rgba(0,0,0,0.3)] dark:border-gold-primary/20 dark:bg-shell-main-dark/70 dark:text-gold-light'
-                                            : 'border-transparent text-text-secondary hover:border-gold-border/12 hover:bg-gold-surface/30 hover:text-text-primary dark:text-dark-text-secondary dark:hover:border-dark-border/60 dark:hover:bg-white/5'
+                                            ? 'border-gold-primary/30 bg-white/60 font-medium text-text-primary shadow-sm dark:border-gold-primary/20 dark:bg-dark-bg/60 dark:text-gold-light'
+                                            : 'border-transparent text-text-secondary hover:bg-gold-surface/30 hover:text-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-bg/40'
                                     }`
                                 }
                             >
                                 <span
-                                    className={`mt-[2px] min-w-[46px] whitespace-nowrap text-[13px] font-semibold sm:min-w-[45px] sm:text-[13px] ${
-                                        item.isActive ? 'text-gold-primary dark:text-gold-light' : 'text-text-secondary/65 dark:text-dark-text-secondary/65'
+                                    className={`mt-[2px] min-w-[46px] whitespace-nowrap text-[13px] font-bold sm:min-w-[45px] sm:text-[13px] ${
+                                        item.isActive ? 'text-gold-primary' : 'text-text-secondary/60 dark:text-dark-text-secondary/60'
                                     }`}
                                 >
                                     {item.label}
@@ -131,7 +124,7 @@ export const SidebarMenu = React.memo(({ groups, onItemClick, groupTitle }: Side
                             </NavLink>
                         ))
                     ) : (
-                        <div className="p-8 text-center text-sm text-text-secondary dark:text-dark-text-secondary">카테고리를 먼저 선택해 주세요.</div>
+                        <div className="p-8 text-center text-sm text-text-secondary dark:text-dark-text-secondary">챕터를 선택해 주세요.</div>
                     )}
                 </div>
             </div>

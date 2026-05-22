@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 
 interface CompendiumModalProps {
@@ -7,162 +6,74 @@ interface CompendiumModalProps {
 }
 
 const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
-    const closeButtonRef = useRef<HTMLButtonElement>(null);
-    const modalRef = useRef<HTMLDivElement>(null);
-    const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
-
-    useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
-
-        previouslyFocusedElementRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-
-        const originalOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
-
-        queueMicrotask(() => {
-            closeButtonRef.current?.focus({ preventScroll: true });
-        });
-
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                onClose();
-                return;
-            }
-
-            if (event.key !== 'Tab') {
-                return;
-            }
-
-            const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
-                'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-            );
-
-            if (!focusableElements || focusableElements.length === 0) {
-                event.preventDefault();
-                closeButtonRef.current?.focus({ preventScroll: true });
-                return;
-            }
-
-            const focusable = Array.from(focusableElements).filter((element) => element.offsetParent !== null);
-            if (focusable.length === 0) {
-                event.preventDefault();
-                closeButtonRef.current?.focus({ preventScroll: true });
-                return;
-            }
-
-            const firstFocusable = focusable[0];
-            const lastFocusable = focusable[focusable.length - 1];
-            const activeElement = document.activeElement as HTMLElement | null;
-
-            if (event.shiftKey) {
-                if (!activeElement || activeElement === firstFocusable || !modalRef.current?.contains(activeElement)) {
-                    event.preventDefault();
-                    lastFocusable.focus({ preventScroll: true });
-                }
-                return;
-            }
-
-            if (activeElement === lastFocusable) {
-                event.preventDefault();
-                firstFocusable.focus({ preventScroll: true });
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            document.body.style.overflow = originalOverflow;
-            window.removeEventListener('keydown', handleKeyDown);
-
-            const previous = previouslyFocusedElementRef.current;
-            if (previous && previous.isConnected) {
-                previous.focus({ preventScroll: true });
-            }
-
-            previouslyFocusedElementRef.current = null;
-        };
-    }, [isOpen, onClose]);
-
     if (!isOpen) {
         return null;
     }
 
     return (
-        <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/42 p-4 backdrop-blur-sm transition-opacity duration-300"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="compendium-title"
-        >
-            <div
-                ref={modalRef}
-                className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-gold-border/12 bg-shell-main/96 shadow-[0_28px_90px_-36px_rgba(0,0,0,0.45)] dark:border-dark-border/70 dark:bg-shell-main-dark/96 dark:shadow-[0_32px_100px_-44px_rgba(0,0,0,0.7)]"
-            >
-                <div className="flex items-center justify-between border-b border-gold-border/10 bg-gold-surface/35 p-4 sm:p-6 dark:border-dark-border/70 dark:bg-dark-bg/30">
-                    <h2 id="compendium-title" className="font-display text-xl tracking-[0.04em] text-gold-primary sm:text-2xl">
-                        Compendium
-                    </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm transition-opacity duration-300">
+            <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg border border-gold-border bg-[#FDFBF7] shadow-2xl dark:bg-dark-surface">
+                <div className="flex items-center justify-between border-b border-gold-border/30 p-4 sm:p-6">
+                    <h2 className="font-serif text-xl tracking-wide text-gold-primary sm:text-2xl">Compendium</h2>
                     <button
-                        ref={closeButtonRef}
                         type="button"
                         onClick={onClose}
-                        aria-label="Close compendium"
-                        className="-mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-border/12 bg-shell-main/85 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-surface/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-white/6 dark:focus-visible:ring-offset-shell-main-dark"
+                        className="-mr-2 rounded-full p-2 text-gold-primary transition-colors hover:bg-gold-surface dark:hover:bg-dark-bg"
+                        aria-label="Close"
                     >
                         <X className="h-5 w-5" />
                     </button>
                 </div>
 
                 <div className="custom-scrollbar flex-1 overflow-y-auto p-4 sm:p-8">
-                    <div className="prose max-w-none break-keep font-sans text-[15px] leading-relaxed text-text-secondary dark:prose-invert dark:text-dark-text-secondary sm:text-base">
+                    <div className="prose max-w-none break-keep font-noto-kr text-[15px] leading-relaxed text-[#5B7282] dark:prose-invert sm:text-base">
                         <p>
-                            This compendium brings together the core reading modes in one place so you can move between the sutra text, commentary, and reference material without losing your place.
+                            <strong className="text-[#1C2B36]">Yoga Sutras</strong>는 마음의 작용을 관찰하고 집중과 자유로 향하는 길을
+                            짧은 문장으로 기록한 고전 텍스트입니다.
                         </p>
 
                         <p>
-                            The layout is tuned for slow reading: clear hierarchy, calm spacing, and surfaces that stay legible in both light and dark mode. Use it as a guide when you want the shape of the passage before diving into details.
+                            이 공간은 산스크리트 원문, 발음, 번역, 어휘, 오디오, 그리고 commentary를 함께 보며 한 구절을 여러 층위에서
+                            천천히 읽기 위한 읽기 환경입니다.
                         </p>
 
-                        <div className="rounded-r-md border-l-4 border-gold-primary bg-gold-surface/60 p-5 dark:bg-dark-bg/55">
-                            <h3 className="mb-2 font-semibold text-text-primary dark:text-gold-light">How to read it</h3>
+                        <div className="rounded-r-md border-l-4 border-gold-primary bg-[#F5EFE6] p-5 dark:bg-[#222]">
+                            <h3 className="mb-2 font-bold text-[#1C2B36] dark:text-gold-light">읽는 방법</h3>
                             <p className="m-0">
-                                Start with the sutra line, compare the commentary beside it, and then pull in the supporting notes only where you need more context.
+                                먼저 원문과 발음을 소리로 따라가고, 여러 번역을 비교한 뒤 commentary에서 맥락과 질문을 확인해 보세요.
                             </p>
                         </div>
 
-                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-semibold text-gold-primary">Reading flow</h3>
+                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">네 개의 장</h3>
                         <ul className="list-disc space-y-3 pl-5 marker:text-gold-primary">
                             <li>
-                                <strong className="text-text-primary dark:text-dark-text-primary">1. Read the line first</strong>
+                                <strong className="text-[#1C2B36]">1장. 합일의 문제</strong>
                                 <br />
-                                Let the sutra settle on its own before comparing interpretations.
+                                요가가 무엇이고 마음을 어떻게 고요하게 하는지, 수행의 전체 방향을 제시합니다.
                             </li>
                             <li>
-                                <strong className="text-text-primary dark:text-dark-text-primary">2. Check the commentary</strong>
+                                <strong className="text-[#1C2B36]">2장. 합일의 단계</strong>
                                 <br />
-                                Use the explanatory text to see how the passage is framed in context.
+                                수행자의 태도, 훈련, 실천 구조를 구체적으로 설명합니다.
                             </li>
                             <li>
-                                <strong className="text-text-primary dark:text-dark-text-primary">3. Cross-reference carefully</strong>
+                                <strong className="text-[#1C2B36]">3장. 합일의 성취와 그 결과</strong>
                                 <br />
-                                When a phrase feels dense, compare related notes instead of forcing a single reading.
+                                깊은 집중이 가져오는 변화와 그 과정에서 필요한 분별을 다룹니다.
                             </li>
                             <li>
-                                <strong className="text-text-primary dark:text-dark-text-primary">4. Return to the text</strong>
+                                <strong className="text-[#1C2B36]">4장. 깨달음</strong>
                                 <br />
-                                Revisit the sutra after the reference pass so the full structure lands cleanly.
+                                궁극적인 자유와 분리, 존재의 본성을 철학적으로 탐구합니다.
                             </li>
                         </ul>
 
-                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-semibold text-gold-primary">Practical tips</h3>
+                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">권장 사용 흐름</h3>
                         <ul className="list-disc space-y-2 pl-5 marker:text-gold-primary">
-                            <li>Keep the current chapter open while you compare passages.</li>
-                            <li>Use the audio and navigation controls to stay anchored in the sequence.</li>
-                            <li>Watch the commentary and verse views side by side when the wording shifts.</li>
-                            <li>The modal is built to stay readable without overpowering the reading surface.</li>
+                            <li>챕터와 구절을 선택해 읽기를 시작합니다.</li>
+                            <li>발음과 오디오를 따라가며 리듬과 호흡을 먼저 익힙니다.</li>
+                            <li>여러 번역을 비교하며 핵심 어휘의 차이를 확인합니다.</li>
+                            <li>Commentary 패널에서 핵심 요약과 사유 질문을 함께 읽습니다.</li>
                         </ul>
                     </div>
                 </div>

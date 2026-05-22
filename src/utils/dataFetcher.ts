@@ -49,8 +49,6 @@ export const resetCache = () => {
     pendingRequest = null;
 };
 
-export const getCachedYogaData = () => cachedData;
-
 export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
     if (cachedData) {
         return cachedData;

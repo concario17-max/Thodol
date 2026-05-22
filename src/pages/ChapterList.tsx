@@ -64,9 +64,8 @@ const ChapterList = () => {
     const [isLexiconOpen, setIsLexiconOpen] = useState<boolean>(false);
     const [selectedChapter, setSelectedChapter] = useState<string>('');
     const [selectedVerse, setSelectedVerse] = useState<string>('');
-    const hasChapters = chapters.length > 0;
 
-    if (loading && !hasChapters) {
+    if (loading) {
         return (
             <div className="flex h-full items-center justify-center">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
@@ -74,7 +73,7 @@ const ChapterList = () => {
         );
     }
 
-    if (error && !hasChapters) {
+    if (error) {
         return (
             <div className="flex h-full items-center justify-center px-6">
                 <div className="max-w-lg rounded-2xl border border-gold-border/30 bg-white/75 p-6 text-center shadow-lg backdrop-blur-sm dark:bg-dark-surface/75">
@@ -99,21 +98,13 @@ const ChapterList = () => {
                 </motion.p>
 
                 <motion.div variants={itemVariants} className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6 lg:mb-5">
-                    <button
-                        type="button"
-                        onClick={() => setIsCompendiumOpen(true)}
-                        className="rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                    >
+                    <span onClick={() => setIsCompendiumOpen(true)} className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95">
                         Compendium
-                    </button>
+                    </span>
                     <div className="h-1 w-1 rotate-45 bg-gold-border/50" />
-                    <button
-                        type="button"
-                        onClick={() => setIsLexiconOpen(true)}
-                        className="rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
-                    >
+                    <span onClick={() => setIsLexiconOpen(true)} className="cursor-pointer rounded-full bg-transparent px-3 py-2 transition-colors hover:bg-gold-surface/30 hover:text-gold-primary active:scale-95">
                         Lexicon
-                    </button>
+                    </span>
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-md items-center justify-center opacity-40 lg:mb-5">
