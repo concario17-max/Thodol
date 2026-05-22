@@ -4,6 +4,7 @@
   "description": "Yoga Sutras reading and reflection app built with React and Vite.",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/generate-seo-assets.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",

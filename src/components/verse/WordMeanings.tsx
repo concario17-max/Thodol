@@ -87,7 +87,7 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                 <motion.span
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: reduceMotion ? 0 : 0.35, ease: [0.2, 0, 0, 1] }}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold-border/12 bg-shell-main/75 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:border-dark-border/70 dark:bg-shell-main-dark/75 dark:text-gold-light"
+                    className="app-icon-button flex h-8 w-8 shrink-0 text-gold-primary dark:text-gold-light"
                 >
                     <ChevronDown className="h-4 w-4" />
                 </motion.span>
@@ -101,7 +101,7 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
                                 <motion.div
                                     key={`${word}-${index}`}
                                     variants={itemVariants}
-                                    className="rounded-2xl border border-gold-border/10 bg-shell-main/68 px-4 py-4 shadow-[0_12px_24px_-24px_rgba(0,0,0,0.4)] dark:border-dark-border/55 dark:bg-shell-main-dark/68"
+                                    className="app-panel-card rounded-2xl px-4 py-4"
                                 >
                                     <div className="flex flex-col gap-1">
                                         <span className="font-display text-[16px] italic text-gold-primary dark:text-gold-light">{word}</span>

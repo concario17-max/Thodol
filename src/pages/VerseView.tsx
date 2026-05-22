@@ -11,6 +11,9 @@ import { useSutraNavigation } from '../hooks/useSutraNavigation';
 import { useUI } from '../context/UIContext';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import type { CommentaryBlock } from '../data/chapter1Commentary';
+import { Seo } from '../components/Seo';
+import { SITE_DESCRIPTION } from '../lib/site';
+import { getLearningComicDimensions } from '../lib/media';
 
 const learningComicImageLoaders = {
     ...import.meta.glob('../assets/learning-comic/chapter-1/*.png', {
@@ -59,25 +62,25 @@ const containerVariants: Variants = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.08,
+            staggerChildren: 0.04,
+            delayChildren: 0.04,
         },
     },
     exit: {
         opacity: 0,
-        y: -10,
-        transition: { duration: 0.3 },
+        y: -6,
+        transition: { duration: 0.22 },
     },
 };
 
 const itemVariants: Variants = {
-    hidden: { y: 14, opacity: 0 },
+    hidden: { y: 10, opacity: 0 },
     visible: {
         y: 0,
         opacity: 1,
         transition: {
-            duration: 0.55,
-            ease: 'easeOut',
+            duration: 0.26,
+            ease: [0.16, 1, 0.3, 1],
         },
     },
 };
@@ -88,7 +91,7 @@ const sharedContentShellClassName =
 const sharedContentPaddingClassName = 'px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6';
 
 const routeStateCardClassName =
-    'w-full max-w-xl rounded-[2rem] border border-gold-border/18 bg-shell-commentary px-6 py-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_18px_48px_-34px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-shell-commentary-dark';
+    'app-panel-card w-full max-w-xl px-6 py-7 text-center';
 
 type CommentaryRow = readonly string[] | { label: string; value: string };
 
@@ -265,6 +268,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
     const shouldShowComicFallback = isLoadingComicImage || !learningComicImageUrl;
     const shouldShowCommentaryLoading = isCommentaryLoading;
+    const comicDimensions = getLearningComicDimensions(chapterNum);
 
     return (
         <section className="mx-auto w-full max-w-[58rem] space-y-3 px-4 sm:space-y-4 sm:px-6 lg:px-8">
@@ -317,9 +321,12 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                     <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-3 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
                         <img
                             src={learningComicImageUrl}
+                            width={comicDimensions.width}
+                            height={comicDimensions.height}
                             alt={`\uD559\uC2B5\uB9CC\uD654 ${chapterNum}.${verseNum}`}
                             className="block h-auto w-full rounded-[1.15rem] object-contain"
                             loading="lazy"
+                            decoding="async"
                         />
                     </div>
                 ) : (
@@ -411,13 +418,14 @@ const VerseView = () => {
     if (error && allChapters === null) {
         return (
             <div className="flex min-h-full items-center justify-center px-4">
+                <Seo title="Unable to load sutra" description={SITE_DESCRIPTION} canonicalPath="/" noIndex />
                 <div className={routeStateCardClassName} role="alert">
                     <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this sutra</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
                     <button
                         type="button"
                         onClick={() => window.location.reload()}
-                        className="mt-5 inline-flex items-center justify-center rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                        className="app-button-primary mt-5 px-5 py-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                     >
                         Retry loading
                     </button>
@@ -429,6 +437,7 @@ const VerseView = () => {
     if (loading && allChapters === null) {
         return (
             <div className="flex min-h-full items-center justify-center px-4">
+                <Seo title="Loading sutra" description={SITE_DESCRIPTION} canonicalPath="/" noIndex />
                 <div className={routeStateCardClassName} role="status" aria-live="polite">
                     <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-gold-primary/15 bg-gold-surface/70 dark:border-dark-border/60 dark:bg-dark-surface">
                         <div className="h-6 w-6 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
@@ -445,6 +454,7 @@ const VerseView = () => {
     if (invalidRouteReason) {
         return (
             <div className="flex min-h-full items-center justify-center px-4">
+                <Seo title="Sutra not found" description={SITE_DESCRIPTION} canonicalPath="/" noIndex />
                 <div className={routeStateCardClassName} role="alert">
                     <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">Invalid route</p>
                     <h1 className="mb-2 font-display text-2xl text-text-primary dark:text-dark-text-primary">Sutra not found</h1>
@@ -453,14 +463,14 @@ const VerseView = () => {
                         <button
                             type="button"
                             onClick={() => navigate('/')}
-                            className="inline-flex items-center justify-center rounded-full bg-gold-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                            className="app-button-primary px-5 py-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                         >
                             Browse chapters
                         </button>
                         <button
                             type="button"
                             onClick={() => navigate('/chapter/1/verse/1')}
-                            className="inline-flex items-center justify-center rounded-full border border-gold-border/20 bg-transparent px-5 py-3 text-sm font-semibold text-gold-primary transition-colors hover:bg-gold-surface/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
+                            className="app-button-secondary px-5 py-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-main dark:focus-visible:ring-offset-dark-bg"
                         >
                             Open Chapter 1
                         </button>
@@ -478,6 +488,7 @@ const VerseView = () => {
     const safeVerseNum = verseNum as string;
     const safeVerseData = verseData;
     const safeCurrentChapter = currentChapter;
+    const pageTitle = `Chapter ${safeChapterNum}, Sutra ${safeVerseNum}`;
 
     const audioSrc = `/mp3/${safeChapterNum}-${safeVerseData.id.split('.')[1]}.mp3`;
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
@@ -487,6 +498,11 @@ const VerseView = () => {
 
     return (
         <AnimatePresence mode="wait">
+            <Seo
+                title={pageTitle}
+                description={`${SITE_DESCRIPTION} Read Chapter ${safeChapterNum}, Sutra ${safeVerseNum} with audio, translations, and commentary.`}
+                canonicalPath={`/chapter/${safeChapterNum}/verse/${safeVerseNum}`}
+            />
             <motion.div
                 key={`${safeChapterNum}-${safeVerseNum}`}
                 initial="hidden"

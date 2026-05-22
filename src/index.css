@@ -61,6 +61,11 @@
         --app-shadow-inset-soft: inset 0 1px 0 rgba(255, 255, 255, 0.45);
         --app-shadow-inset-dark: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         --app-border-hairline: 1px;
+        --app-duration-fast: 160ms;
+        --app-duration-base: 220ms;
+        --app-duration-slow: 420ms;
+        --app-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+        --app-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .dark {
@@ -257,6 +262,205 @@
 
     .reveal-item {
         animation: reveal 0.8s var(--transition-lazy) forwards;
+    }
+
+    .app-surface-panel {
+        border: 1px solid color-mix(in srgb, var(--app-color-border-soft) 82%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 90%, transparent);
+        box-shadow: var(--shadow-card);
+        backdrop-filter: blur(18px) saturate(112%);
+    }
+
+    .dark .app-surface-panel {
+        border-color: color-mix(in srgb, var(--app-color-border-soft) 76%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 88%, transparent);
+        box-shadow: var(--shadow-card-dark);
+    }
+
+    .app-interactive {
+        transition-property: transform, border-color, background-color, color, box-shadow, opacity, filter;
+        transition-duration: var(--app-duration-fast);
+        transition-timing-function: var(--app-ease-standard);
+        will-change: transform, box-shadow;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .app-interactive:hover {
+            transform: translateY(-1px);
+            filter: saturate(1.02);
+        }
+
+        .app-interactive:active {
+            transform: translateY(0) scale(0.997);
+        }
+    }
+
+    .app-panel-card {
+        border-radius: var(--radius-card);
+        border: 1px solid color-mix(in srgb, var(--app-color-border-soft) 72%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 88%, transparent);
+        box-shadow: var(--shadow-card);
+        backdrop-filter: blur(18px) saturate(110%);
+    }
+
+    .dark .app-panel-card {
+        border-color: color-mix(in srgb, var(--app-color-border-soft) 72%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 86%, transparent);
+        box-shadow: var(--shadow-card-dark);
+    }
+
+    .app-button-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-pill);
+        border: 1px solid color-mix(in srgb, var(--app-color-brand) 40%, transparent);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--app-color-brand) 92%, white) 0%, var(--app-color-brand-strong) 100%);
+        color: var(--app-color-text-inverse);
+        box-shadow: 0 14px 30px -20px rgba(0, 0, 0, 0.55);
+    }
+
+    .app-button-primary:hover {
+        border-color: color-mix(in srgb, var(--app-color-brand) 50%, transparent);
+        box-shadow: 0 18px 38px -24px rgba(0, 0, 0, 0.6);
+    }
+
+    .app-button-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-pill);
+        border: 1px solid color-mix(in srgb, var(--app-color-border) 40%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 86%, transparent);
+        color: var(--app-color-brand);
+        box-shadow: var(--app-shadow-inset-soft);
+    }
+
+    .dark .app-button-secondary {
+        background: color-mix(in srgb, var(--app-color-surface) 80%, transparent);
+        color: var(--app-color-brand-soft);
+        box-shadow: var(--app-shadow-inset-dark);
+    }
+
+    .app-button-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-pill);
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--app-color-text-secondary);
+    }
+
+    .app-icon-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 9999px;
+        border: 1px solid color-mix(in srgb, var(--app-color-border-soft) 70%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 84%, transparent);
+        color: var(--app-color-brand);
+        box-shadow: var(--app-shadow-inset-soft);
+    }
+
+    .app-button-primary,
+    .app-button-secondary,
+    .app-button-ghost,
+    .app-icon-button {
+        transition-property: transform, border-color, background-color, color, box-shadow, opacity;
+        transition-duration: var(--app-duration-fast);
+        transition-timing-function: var(--app-ease-standard);
+        will-change: transform;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .app-button-primary:hover,
+        .app-button-secondary:hover,
+        .app-button-ghost:hover,
+        .app-icon-button:hover {
+            box-shadow: 0 18px 34px -26px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .dark .app-icon-button {
+        border-color: color-mix(in srgb, var(--app-color-border-soft) 72%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 78%, transparent);
+        box-shadow: var(--app-shadow-inset-dark);
+    }
+
+    .app-select-shell {
+        appearance: none;
+        border-radius: 1rem;
+        border: 1px solid color-mix(in srgb, var(--app-color-border-soft) 76%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 92%, transparent);
+        padding: 0.85rem 1rem;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        color: var(--app-color-text-primary);
+        box-shadow: var(--app-shadow-inset-soft);
+        transition-property: border-color, background-color, color, box-shadow, transform, opacity;
+        transition-duration: var(--app-duration-base);
+        transition-timing-function: var(--app-ease-standard);
+    }
+
+    .dark .app-select-shell {
+        border-color: color-mix(in srgb, var(--app-color-border-soft) 72%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 78%, transparent);
+        color: var(--app-color-text-inverse);
+        box-shadow: var(--app-shadow-inset-dark);
+    }
+
+    .app-section-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        border: 1px solid color-mix(in srgb, var(--app-color-border-soft) 80%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 86%, transparent);
+        padding: 0.45rem 0.9rem;
+        font-size: 0.675rem;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--app-color-brand);
+        box-shadow: var(--app-shadow-inset-soft);
+    }
+
+    .dark .app-section-kicker {
+        border-color: color-mix(in srgb, var(--app-color-border-soft) 72%, transparent);
+        background: color-mix(in srgb, var(--app-color-surface) 78%, transparent);
+        color: var(--app-color-brand-soft);
+        box-shadow: var(--app-shadow-inset-dark);
+    }
+
+    .app-section-kicker,
+    .app-section-title,
+    .app-section-copy {
+        transition-property: color, border-color, background-color, opacity, transform;
+        transition-duration: var(--app-duration-base);
+        transition-timing-function: var(--app-ease-standard);
+    }
+
+    .app-section-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--app-color-text-primary);
+    }
+
+    .dark .app-section-title {
+        color: var(--app-color-text-inverse);
+    }
+
+    .app-section-copy {
+        color: var(--app-color-text-secondary);
+        line-height: 1.75;
+    }
+
+    .dark .app-section-copy {
+        color: var(--app-color-text-inverse-secondary);
     }
 
     @keyframes reveal {

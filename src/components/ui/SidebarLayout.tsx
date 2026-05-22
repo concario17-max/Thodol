@@ -14,7 +14,7 @@ export interface SidebarLayoutProps {
 }
 
 const closeButtonClass =
-    'grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/12 bg-shell-main/88 text-text-secondary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-shell-header/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-shell-rail dark:border-dark-border/70 dark:bg-shell-main-dark/86 dark:text-dark-text-secondary dark:hover:bg-white/6 dark:focus-visible:ring-offset-shell-rail-dark';
+    'app-icon-button grid text-text-secondary dark:text-dark-text-secondary';
 
 export const SidebarLayout = React.memo(
     ({
@@ -49,7 +49,7 @@ export const SidebarLayout = React.memo(
                 >
                     {title ? (
                         <div className="flex shrink-0 items-center gap-3 border-b border-gold-border/10 px-3 py-3 dark:border-dark-border/70 lg:hidden">
-                            <span className="inline-flex items-center rounded-full border border-gold-border/12 bg-shell-main/80 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:border-dark-border/70 dark:bg-shell-main-dark/80 dark:text-gold-light">
+                            <span className="app-section-kicker">
                                 {title}
                             </span>
                             <span className="h-px flex-1 bg-gold-border/30 dark:bg-dark-border/45" />

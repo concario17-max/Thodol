@@ -15,17 +15,17 @@ export const GlassCard = React.memo(
     ({ href, onClick, icon, subtitle, title, description, className = '' }: GlassCardProps) => {
         const content = (
             <>
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/60 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 dark:from-white/[0.03] dark:to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.5)_0%,_transparent_56%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 dark:bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.05)_0%,_transparent_56%)]" />
 
                 {icon && (
-                    <div className="relative z-10 mb-4 flex h-6 w-6 items-center justify-center text-brand/60 transition-transform group-hover:scale-110">
+                    <div className="relative z-10 mb-4 flex h-6 w-6 items-center justify-center text-brand/70 transition-transform duration-300 group-hover:scale-105">
                         {icon}
                     </div>
                 )}
 
                 <div className="relative z-10 mb-auto flex w-full flex-col items-center">
                     {subtitle && (
-                        <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.3em] text-brand/90 drop-shadow-sm dark:text-brand-soft/90">
+                        <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.34em] text-brand/90 drop-shadow-sm dark:text-brand-soft/90">
                             {subtitle}
                         </span>
                     )}
@@ -34,7 +34,7 @@ export const GlassCard = React.memo(
                         {title}
                     </h2>
 
-                    <div className="mx-auto my-4 h-px w-12 bg-border/80 transition-all duration-500 group-hover:w-20" />
+                    <div className="mx-auto my-4 h-px w-12 bg-border/80 transition-all duration-500 group-hover:w-16" />
 
                     {description && (
                         <p className="mx-auto max-w-[260px] px-1 text-[13px] font-medium leading-[1.7] text-text-secondary opacity-80 dark:text-dark-text-secondary">
@@ -45,7 +45,7 @@ export const GlassCard = React.memo(
             </>
         );
 
-        const baseStyle = `group relative flex min-h-[380px] flex-col items-center justify-start overflow-hidden rounded-[var(--app-radius-card)] border border-[color:var(--card-border)] bg-[var(--card-bg)] p-5 pt-10 text-center shadow-[var(--card-shadow)] backdrop-blur-xl transition-all duration-700 ease-[0.2,0,0,1] hover:border-[color:var(--app-color-brand-soft)] hover:shadow-[var(--card-shadow-hover)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-surface sm:min-h-[440px] sm:p-6 sm:pt-14 lg:min-h-[300px] lg:p-4 lg:pt-7 [--card-bg:var(--app-color-surface-glass)] [--card-border:var(--app-color-surface-glass-border)] [--card-shadow:var(--app-shadow-card)] [--card-shadow-hover:var(--app-shadow-card-hover)] dark:[--card-bg:var(--app-color-surface-glass)] dark:[--card-border:var(--app-color-surface-glass-border)] dark:[--card-shadow:var(--app-shadow-card-dark)] dark:[--card-shadow-hover:var(--app-shadow-card-hover-dark)] ${className}`;
+        const baseStyle = `group app-panel-card app-interactive relative flex min-h-[380px] flex-col items-center justify-start overflow-hidden rounded-[var(--app-radius-card)] p-5 pt-10 text-center active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-surface sm:min-h-[440px] sm:p-6 sm:pt-14 lg:min-h-[300px] lg:p-4 lg:pt-7 ${className}`;
 
         if (href) {
             return (

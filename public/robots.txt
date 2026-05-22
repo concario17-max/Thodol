@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://yoga-sutras.example.com/sitemap.xml
