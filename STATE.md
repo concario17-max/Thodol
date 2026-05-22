@@ -1,31 +1,32 @@
 # State
 
 ## Current Task
-Rollback to `a9a50cc` and preserve the tracked codebase state from that commit.
+Completed: refactor the site into a centered editorial canvas layout inspired by the reference screenshot.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Revert the tracked commits after `a9a50cc` so the repository matches that commit state again.
-- Leave unrelated untracked files and folders untouched.
-- Keep the rollback limited to tracked repository content.
+- Center the app content inside a premium canvas with larger outer margins and a calm editorial feel.
+- Rebalance the shell, header, sidebar, and content panes so desktop views converge toward the middle of the screen.
+- Preserve existing functionality, routing, and mobile behavior while only changing layout, spacing, and visual framing.
 
 Reason for Route A:
-- This is a bounded rollback to a specific commit with a single clear target state.
+- This is a multi-file layout refactor that touches the shared shell and multiple pages, so it needs Route B.
 
 ## Write Sets
-- main: `STATE.md`, `MULTI_AGENT_LOG.md`, tracked rollback only
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- worker_feature: `src/index.css`, `src/components/ui/AppShell.tsx`, `src/components/Header.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `src/App.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-22 15:38:48 +09:00 - Rolled back the three commits after `a9a50cc`; untracked files were left untouched.
+2026-05-22 16:21:37 +09:00 - Applied the centered editorial canvas layout to the shell and verse/chapter surfaces; typecheck and build passed.
 
 ## Open Review Item
 - None.

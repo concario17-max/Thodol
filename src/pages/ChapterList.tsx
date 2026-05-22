@@ -85,7 +85,7 @@ const ChapterList = () => {
     }
 
     return (
-        <div className="container mx-auto max-w-6xl px-4 py-6 transition-colors duration-500 md:py-8 lg:flex lg:h-full lg:max-w-7xl lg:flex-col lg:overflow-hidden lg:py-4">
+        <div className="mx-auto flex h-full w-full max-w-[84rem] flex-col px-4 py-6 transition-colors duration-500 md:px-6 md:py-8 lg:overflow-hidden lg:py-5">
             <motion.div initial="hidden" animate="visible" variants={containerVariants} className="mb-8 flex flex-col items-center text-center md:mb-10 lg:mb-4 lg:flex-none">
                 <motion.div variants={itemVariants} className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-gold-border bg-gold-surface/50 dark:border-dark-border dark:bg-dark-surface lg:mb-3">
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
@@ -166,7 +166,7 @@ const ChapterList = () => {
                 </motion.div>
             </motion.div>
 
-            <motion.div initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-4 lg:items-stretch lg:gap-4 lg:px-0 lg:pb-4">
+            <motion.div initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid w-full max-w-[84rem] grid-cols-1 gap-4 px-0 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-4 lg:items-stretch lg:gap-4 lg:pb-4">
                 {chapters.map((chapter) => {
                     const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
 
