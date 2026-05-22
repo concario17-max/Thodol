@@ -1,32 +1,31 @@
 # State
 
 ## Current Task
-Completed: remove the "Tap to expand the lexical breakdown" line from the deep-body verse content.
+Rollback to `a9a50cc` and preserve the tracked codebase state from that commit.
 
 ## Route
 Route A
 
 ## Writer Slot
-main: tight UI implementation
+main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Remove the "Tap to expand the lexical breakdown" line from the deep-body verse content.
-- Keep the rest of the lexical breakdown UI unchanged.
-- Do not alter the commentary mode text or the verse-mode toggle behavior.
-- Keep the root `.odt` files untouched.
+- Revert the tracked commits after `a9a50cc` so the repository matches that commit state again.
+- Leave unrelated untracked files and folders untouched.
+- Keep the rollback limited to tracked repository content.
 
 Reason for Route A:
-- This is a single-line UI text removal in one render file with no shared asset fanout, no data migration, and no new files.
+- This is a bounded rollback to a specific commit with a single clear target state.
 
 ## Write Sets
-- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`, tracked rollback only
 
 ## Reviewer
-not requested
+Wegener
 
 ## Last Update
-2026-05-21 00:00:00 +09:00 - Removed the lexical breakdown helper line from the deep-body verse content and verified with `npm.cmd run typecheck`.
+2026-05-22 15:38:48 +09:00 - Rolled back the three commits after `a9a50cc`; untracked files were left untouched.
 
 ## Open Review Item
 - None.
