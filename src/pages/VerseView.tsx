@@ -194,7 +194,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
 
     return (
-        <section className="mx-auto w-full max-w-[58rem] space-y-3 px-4 sm:space-y-4 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-[52rem] space-y-3 px-4 sm:space-y-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2.5 border-b border-gold-border/8 pb-3 dark:border-dark-border/35">
                 <span className="inline-flex items-center rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                     Commentary
@@ -346,10 +346,10 @@ const VerseView = () => {
                 variants={containerVariants}
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
-                <div className="mx-auto flex w-full max-w-[72rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[78rem] lg:px-8">
+                <div className="mx-auto flex w-full max-w-[52rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:px-8">
                     {!isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full max-w-[66rem] overflow-visible px-4 sm:px-6 lg:px-8">
+                            <div className="relative mx-auto w-full max-w-[52rem] overflow-visible px-4 sm:px-6 lg:px-8">
                                 <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
                                     <div className={bodyContentClassName}>
                                         <motion.div variants={itemVariants}>
@@ -426,7 +426,7 @@ const VerseView = () => {
 
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full max-w-[66rem] overflow-visible px-4 sm:px-6 lg:px-8">
+                            <div className="relative mx-auto w-full max-w-[52rem] overflow-visible px-4 sm:px-6 lg:px-8">
                                 <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
 
                                 <div className="pointer-events-none absolute inset-y-0 left-0 hidden -translate-x-[calc(100%+1rem)] items-center lg:flex">

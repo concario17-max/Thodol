@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: refactor the site into a centered editorial canvas layout inspired by the reference screenshot.
+Completed: extend the centered editorial canvas layout to the remaining folder/pages while preserving existing data flow and interactions.
 
 ## Route
 Route B
@@ -11,22 +11,23 @@ main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Center the app content inside a premium canvas with larger outer margins and a calm editorial feel.
-- Rebalance the shell, header, sidebar, and content panes so desktop views converge toward the middle of the screen.
-- Preserve existing functionality, routing, and mobile behavior while only changing layout, spacing, and visual framing.
+- Apply the centered canvas pattern to remaining pages and shared surfaces that still feel wide or off-center.
+- Keep the sticky header, existing data flow, toggles, and date navigation unchanged.
+- Standardize the core content width around `max-w-[52rem]` where the page uses a primary reading surface.
+- Preserve mobile stacking and all current interactions.
 
-Reason for Route A:
-- This is a multi-file layout refactor that touches the shared shell and multiple pages, so it needs Route B.
+Reason for Route B:
+- This is a multi-file layout refactor across shared layout and page surfaces, so it needs Route B.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/index.css`, `src/components/ui/AppShell.tsx`, `src/components/Header.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `src/App.tsx`
+- worker_feature: `src/index.css`, `src/components/ui/AppShell.tsx`, `src/components/Header.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `src/pages/*.tsx`, `src/App.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-22 16:21:37 +09:00 - Applied the centered editorial canvas layout to the shell and verse/chapter surfaces; typecheck and build passed.
+2026-05-22 16:21:37 +09:00 - Extended the 52rem centered canvas rhythm to the remaining reading surfaces, modals, and chapter list; verified with typecheck, build, and screenshot review.
 
 ## Open Review Item
 - None.

@@ -85,7 +85,7 @@ const ChapterList = () => {
     }
 
     return (
-        <div className="mx-auto flex h-full w-full max-w-[84rem] flex-col px-4 py-6 transition-colors duration-500 md:px-6 md:py-8 lg:overflow-hidden lg:py-5">
+        <div className="mx-auto flex h-full w-full max-w-[52rem] flex-col px-4 py-6 transition-colors duration-500 md:px-6 md:py-8 lg:overflow-hidden lg:py-5">
             <motion.div initial="hidden" animate="visible" variants={containerVariants} className="mb-8 flex flex-col items-center text-center md:mb-10 lg:mb-4 lg:flex-none">
                 <motion.div variants={itemVariants} className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-gold-border bg-gold-surface/50 dark:border-dark-border dark:bg-dark-surface lg:mb-3">
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
@@ -107,7 +107,7 @@ const ChapterList = () => {
                     </span>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-md items-center justify-center opacity-40 lg:mb-5">
+                <motion.div variants={itemVariants} className="mx-auto mb-10 flex w-full max-w-[52rem] items-center justify-center opacity-40 lg:mb-5">
                     <div className="h-px flex-1 bg-gold-border" />
                     <div className="mx-4 text-lg leading-none text-gold-primary">
                         <BookOpenText className="h-4 w-4" />
@@ -115,7 +115,7 @@ const ChapterList = () => {
                     <div className="h-px flex-1 bg-gold-border" />
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="relative z-10 mx-auto mb-5 flex w-full max-w-2xl flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3 lg:mb-0">
+                <motion.div variants={itemVariants} className="relative z-10 mx-auto mb-5 flex w-full max-w-[52rem] flex-col items-center justify-between gap-3 rounded-[1.75rem] border border-gold-border/30 bg-white/80 p-2.5 shadow-[0_24px_60px_-36px_rgba(0,0,0,0.38)] backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_24px_60px_-36px_rgba(0,0,0,0.6)] sm:flex-row sm:gap-0 sm:p-3 lg:mb-0">
                     <div className="flex w-full flex-1 flex-col items-start border-b border-gold-border/30 px-2 pb-2 sm:border-b-0 sm:border-r sm:px-4 sm:pb-0">
                         <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Chapter</span>
                         <select
@@ -166,7 +166,7 @@ const ChapterList = () => {
                 </motion.div>
             </motion.div>
 
-            <motion.div initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid w-full max-w-[84rem] grid-cols-1 gap-4 px-0 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-4 lg:items-stretch lg:gap-4 lg:pb-4">
+            <motion.div initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid w-full max-w-[52rem] grid-cols-1 gap-4 px-0 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:grid-cols-2 lg:items-stretch lg:gap-4 lg:pb-4">
                 {chapters.map((chapter) => {
                     const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
 

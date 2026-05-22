@@ -54,7 +54,7 @@ const LexiconModal = ({ isOpen, onClose }: LexiconModalProps) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md transition-all duration-500 animate-in fade-in">
-            <div className="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-gold-border/50 bg-gold-bg shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] dark:bg-dark-surface">
+            <div className="relative flex max-h-[90vh] w-full max-w-[52rem] flex-col overflow-hidden rounded-[1.75rem] border border-gold-border/30 bg-gold-bg shadow-[0_30px_80px_-30px_rgba(0,0,0,0.42)] dark:bg-dark-surface dark:shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
                 <div className="flex items-center justify-between border-b border-gold-border/10 bg-gold-surface/30 p-6 dark:bg-dark-bg/30 sm:p-8">
                     <div>
                         <h2 className="font-crimson text-3xl tracking-tighter text-gold-primary sm:text-4xl">Lexicon</h2>

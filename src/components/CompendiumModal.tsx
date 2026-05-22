@@ -12,7 +12,7 @@ const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm transition-opacity duration-300">
-            <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg border border-gold-border bg-[#FDFBF7] shadow-2xl dark:bg-dark-surface">
+            <div className="relative flex max-h-[90vh] w-full max-w-[52rem] flex-col rounded-[1.75rem] border border-gold-border/30 bg-[#FDFBF7] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.42)] dark:bg-dark-surface dark:shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
                 <div className="flex items-center justify-between border-b border-gold-border/30 p-4 sm:p-6">
                     <h2 className="font-serif text-xl tracking-wide text-gold-primary sm:text-2xl">Compendium</h2>
                     <button
