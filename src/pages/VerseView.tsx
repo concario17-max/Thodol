@@ -346,10 +346,10 @@ const VerseView = () => {
                 variants={containerVariants}
                 className="min-h-full flex flex-col justify-start py-4 text-text-primary transition-colors duration-500 dark:text-dark-text-primary sm:py-6 lg:justify-center"
             >
-                <div className="mx-auto flex w-full max-w-[72rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[78rem] lg:px-8">
+                <div className="mx-auto flex w-full max-w-[60rem] flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:max-w-[62rem] lg:px-8">
                     {!isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full max-w-[66rem] overflow-visible px-4 sm:px-6 lg:px-8">
+                            <div className="relative mx-auto w-full max-w-[58rem] overflow-visible px-4 sm:px-6 lg:px-8">
                                 <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
                                     <div className={bodyContentClassName}>
                                         <motion.div variants={itemVariants}>
@@ -426,7 +426,7 @@ const VerseView = () => {
 
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full max-w-[66rem] overflow-visible px-4 sm:px-6 lg:px-8">
+                            <div className="relative mx-auto w-full max-w-[58rem] overflow-visible px-4 sm:px-6 lg:px-8">
                                 <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
 
                                 <div className="pointer-events-none absolute inset-y-0 left-0 hidden -translate-x-[calc(100%+1rem)] items-center lg:flex">
