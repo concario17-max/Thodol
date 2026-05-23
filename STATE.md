@@ -28,7 +28,7 @@ Reason for Route A:
 Wegener
 
 ## Last Update
-2026-05-22 16:33:00 +09:00 - Implemented the centered 52rem canvas layout across shell, home, verse, modal, and header surfaces; typecheck and build passed.
+2026-05-23 09:42:00 +09:00 - Aligned the verse layout to the 1440x900 reference: 1406px shell width with 440px left rail and 966px content lane, while preserving the existing reading flow.
 
 ## Open Review Item
 - None.

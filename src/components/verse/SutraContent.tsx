@@ -9,7 +9,7 @@ export const SutraContent = ({ sanskrit, pronunciation, pronunciationKr }: Sutra
     const cleanPronunciationKr = pronunciationKr?.replace(/[｜|]/g, ' ').replace(/-/g, '').replace(/\s+/g, ' ').trim();
 
     return (
-        <section className="mx-auto w-full max-w-[52rem] px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full px-4 sm:px-6 lg:px-8">
             <div className="border-b border-gold-border/10 pb-5 text-center dark:border-dark-border/45">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                     Sanskrit text

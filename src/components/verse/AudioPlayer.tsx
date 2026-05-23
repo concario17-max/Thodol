@@ -21,7 +21,7 @@ export const AudioPlayer = ({
     onSeek,
     playbackError,
 }: AudioPlayerProps) => (
-    <div className="mx-auto mb-10 flex w-full max-w-[52rem] flex-col items-center gap-3 px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto mb-10 flex w-full flex-col items-center gap-3 px-4 sm:px-6 lg:px-8">
         <div className="flex w-full items-center justify-between gap-4 rounded-2xl border border-gold-primary/20 bg-white/55 px-4 py-3 shadow-sm transition-all hover:border-gold-primary/30 hover:shadow-md dark:border-dark-border/50 dark:bg-[#111]/45 dark:hover:border-gold-primary/25 sm:px-5">
             <button
                 type="button"
