@@ -1,31 +1,34 @@
 # State
 
 ## Current Task
-Rollback to `a9a50cc` and preserve the tracked codebase state from that commit.
+Refactor the site into a centered editorial canvas layout with `max-w-[52rem]` content rhythm across reading surfaces.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Revert the tracked commits after `a9a50cc` so the repository matches that commit state again.
-- Leave unrelated untracked files and folders untouched.
-- Keep the rollback limited to tracked repository content.
+- Keep the sticky header.
+- Center the main content in a single canvas structure.
+- Standardize primary reading surfaces around `max-w-[52rem]`.
+- Preserve existing data flow, toggles, and date navigation.
+- Keep mobile stacking natural and uncluttered.
 
 Reason for Route A:
-- This is a bounded rollback to a specific commit with a single clear target state.
+- This is a multi-file layout refactor across shared shell and page surfaces, so it needs Route B.
 
 ## Write Sets
-- main: `STATE.md`, `MULTI_AGENT_LOG.md`, tracked rollback only
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- worker_feature: `src/components/ui/AppShell.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `src/components/verse/SutraContent.tsx`, `src/components/verse/SutraHeader.tsx`, `src/components/verse/TranslationSection.tsx`, `src/components/verse/WordMeanings.tsx`, `src/components/verse/AudioPlayer.tsx`, `src/components/verse/SutraNavigation.tsx`, `src/components/CompendiumModal.tsx`, `src/components/LexiconModal.tsx`, `src/components/CommentarySidebar.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/components/Header.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-22 15:38:48 +09:00 - Rolled back the three commits after `a9a50cc`; untracked files were left untouched.
+2026-05-22 16:33:00 +09:00 - Implemented the centered 52rem canvas layout across shell, home, verse, modal, and header surfaces; typecheck and build passed.
 
 ## Open Review Item
 - None.

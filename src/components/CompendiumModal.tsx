@@ -12,20 +12,20 @@ const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm transition-opacity duration-300">
-            <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg border border-gold-border bg-[#FDFBF7] shadow-2xl dark:bg-dark-surface">
-                <div className="flex items-center justify-between border-b border-gold-border/30 p-4 sm:p-6">
-                    <h2 className="font-serif text-xl tracking-wide text-gold-primary sm:text-2xl">Compendium</h2>
+            <div className="relative flex max-h-[90vh] w-full max-w-[52rem] flex-col overflow-hidden rounded-[1.75rem] border border-gold-border/45 bg-[#FDFBF7] shadow-[0_32px_80px_-28px_rgba(0,0,0,0.5)] dark:bg-dark-surface">
+                <div className="flex items-center justify-between border-b border-gold-border/20 px-5 py-4 sm:px-6 sm:py-5">
+                    <h2 className="font-display text-[1.25rem] tracking-[0.08em] text-gold-primary sm:text-[1.5rem]">Compendium</h2>
                     <button
                         type="button"
                         onClick={onClose}
-                        className="-mr-2 rounded-full p-2 text-gold-primary transition-colors hover:bg-gold-surface dark:hover:bg-dark-bg"
+                        className="-mr-1 rounded-full p-2 text-gold-primary transition-colors hover:bg-gold-surface dark:hover:bg-dark-bg"
                         aria-label="Close"
                     >
                         <X className="h-5 w-5" />
                     </button>
                 </div>
 
-                <div className="custom-scrollbar flex-1 overflow-y-auto p-4 sm:p-8">
+                <div className="custom-scrollbar flex-1 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6">
                     <div className="prose max-w-none break-keep font-noto-kr text-[15px] leading-relaxed text-[#5B7282] dark:prose-invert sm:text-base">
                         <p>
                             <strong className="text-[#1C2B36]">Yoga Sutras</strong>는 마음의 작용을 관찰하고 집중과 자유로 향하는 길을

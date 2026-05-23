@@ -136,7 +136,7 @@ const CommentarySidebar = () => {
             onClose={() => setActiveRightPanel(null)}
             title="Commentary"
             position="right"
-            widthClass="w-[90vw] max-w-[400px]"
+            widthClass="w-[min(90vw,52rem)]"
             desktopWidthClass="lg:w-full"
         >
             <div className="relative flex h-full min-h-0 flex-col p-4">

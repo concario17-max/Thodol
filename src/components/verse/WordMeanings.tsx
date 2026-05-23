@@ -55,7 +55,7 @@ export const WordMeanings = ({ meanings }: WordMeaningsProps) => {
     if (!meanings || meanings.length === 0) return null;
 
     return (
-        <section className="mx-auto w-full max-w-[58rem] px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-[52rem] px-4 sm:px-6 lg:px-8">
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
