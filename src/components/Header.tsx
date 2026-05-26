@@ -57,7 +57,7 @@ const Header = ({
         ) : null;
 
     return (
-        <header className={`sticky top-0 z-50 w-full border-b border-gold-border/10 bg-shell-header shadow-none transition-colors duration-500 backdrop-blur-0 dark:border-dark-border/60 dark:bg-shell-header-dark ${className}`}>
+        <header className={`sticky top-0 z-50 w-full bg-transparent shadow-none transition-colors duration-500 backdrop-blur-0 ${className}`}>
             <div className="mx-auto w-full max-w-[1406px] px-4 py-2 sm:px-5 lg:hidden">
                 <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate">
@@ -70,7 +70,7 @@ const Header = ({
                     </Link>
                 </div>
 
-                <div className="mt-2 flex w-full flex-col gap-2 border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
+                <div className="mt-2 flex w-full flex-col gap-2 pt-2">
                     <div className="flex flex-wrap items-center gap-2">
                         {rightContent}
                         {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
