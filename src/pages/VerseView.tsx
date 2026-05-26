@@ -211,7 +211,7 @@ const CommentaryContent = ({ chapterNum, verseNum, navigationControls }: Comment
                     <button
                         type="button"
                         onClick={() => setViewMode((current) => (current === 'commentary' ? 'comic' : 'commentary'))}
-                        aria-label={viewMode === 'commentary' ? '?????? ???' : '???????? ???'}
+                        aria-label={viewMode === 'commentary' ? '만화 보기' : '텍스트 해설 보기'}
                         className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/30 bg-shell-main/90 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-transform duration-200 hover:-translate-y-0.5 dark:border-dark-border/55 dark:bg-shell-main-dark/90 dark:text-gold-light"
                     >
                         <SquareArrowOutUpRight className="h-4 w-4" aria-hidden="true" />
