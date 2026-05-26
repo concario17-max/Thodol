@@ -1,34 +1,32 @@
 # State
 
 ## Current Task
-Refactor the site into a centered editorial canvas layout with `max-w-[52rem]` content rhythm across reading surfaces.
+Fix the right panel scroll container so the bottom content is not clipped at the end of the page.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
 main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Keep the sticky header.
-- Center the main content in a single canvas structure.
-- Standardize primary reading surfaces around `max-w-[52rem]`.
-- Preserve existing data flow, toggles, and date navigation.
-- Keep mobile stacking natural and uncluttered.
+- Preserve the existing right panel content flow and toggles.
+- Fix the scroll/height chain so the last content in the right panel remains visible at scroll end.
+- Keep the change limited to the panel layout container unless a smaller fix is impossible.
 
 Reason for Route A:
-- This is a multi-file layout refactor across shared shell and page surfaces, so it needs Route B.
+- This is a tight single-slice layout bug fix centered on the shared sidebar container.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/components/ui/AppShell.tsx`, `src/pages/ChapterList.tsx`, `src/pages/VerseView.tsx`, `src/components/verse/SutraContent.tsx`, `src/components/verse/SutraHeader.tsx`, `src/components/verse/TranslationSection.tsx`, `src/components/verse/WordMeanings.tsx`, `src/components/verse/AudioPlayer.tsx`, `src/components/verse/SutraNavigation.tsx`, `src/components/CompendiumModal.tsx`, `src/components/LexiconModal.tsx`, `src/components/CommentarySidebar.tsx`, `src/components/ui/SidebarLayout.tsx`, `src/components/ui/SidebarMenu.tsx`, `src/components/Header.tsx`
+- worker_feature: `src/components/ui/SidebarLayout.tsx`, `src/components/CommentarySidebar.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-23 09:42:00 +09:00 - Increased left-panel typography density and reduced right-panel padding so the 440px rail and 966px content lane read fuller without changing the underlying layout flow.
+2026-05-26 00:00:00 +09:00 - Fine-tuning the right panel bottom padding after tightening the sidebar height chain, aiming to keep the last block visible without extra empty space.
 
 ## Open Review Item
 - None.

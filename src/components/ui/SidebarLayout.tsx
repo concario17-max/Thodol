@@ -30,15 +30,15 @@ export const SidebarLayout = React.memo(
         const surfaceClass = isLeft ? 'bg-shell-rail dark:bg-shell-rail-dark' : 'bg-shell-commentary dark:bg-shell-commentary-dark';
         const mobileBorderClass = isLeft ? 'border-zinc-300/45 dark:border-white/8' : 'border-gold-border/10 dark:border-white/6';
         const desktopBorderClass = isLeft ? 'lg:border-r lg:border-zinc-300/40 dark:lg:border-white/8' : 'lg:border-l lg:border-gold-border/10 dark:lg:border-dark-border/45';
-        const mobileStateClass = isOpen ? `flex ${widthClass} overflow-hidden border ${mobileBorderClass} ${surfaceClass}` : 'hidden';
+        const mobileStateClass = isOpen ? `flex min-h-0 ${widthClass} overflow-hidden border ${mobileBorderClass} ${surfaceClass}` : 'hidden';
         const desktopStateClass = isDesktopOpen
-            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:translate-x-0 lg:opacity-100 ${desktopBorderClass} ${surfaceClass}`
+            ? `${desktopWidthClass} ${desktopMinWidthClass} lg:flex lg:min-h-0 lg:translate-x-0 lg:opacity-100 ${desktopBorderClass} ${surfaceClass}`
             : 'overflow-hidden p-0 px-0 lg:flex lg:w-0 lg:min-w-0 lg:translate-x-0 lg:opacity-0 lg:border-0';
 
         return (
             <>
                 <aside
-                    className={`relative z-50 h-auto flex-col overscroll-contain bg-transparent font-pretendard transition-all duration-300 lg:sticky lg:top-0 lg:h-[100dvh] ${placementClass}
+                    className={`relative z-50 h-auto min-h-0 flex-col overscroll-contain bg-transparent font-pretendard transition-all duration-300 lg:sticky lg:top-0 lg:h-[100dvh] lg:min-h-0 ${placementClass}
                     ${mobileStateClass}
                     ${desktopStateClass}`}
                 >
@@ -68,7 +68,7 @@ export const SidebarLayout = React.memo(
                         </div>
                     )}
 
-                    <div className="flex flex-1 flex-col overflow-hidden pb-safe-offset-4">{children}</div>
+                    <div className="flex min-h-0 flex-1 basis-0 flex-col overflow-hidden pb-safe-offset-4">{children}</div>
                 </aside>
             </>
         );
