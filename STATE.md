@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Fix the right panel scroll container so the bottom content is not clipped at the end of the page.
+Move the right-panel previous/next navigation up into the top header line so it no longer floats in the middle of the content area.
 
 ## Route
 Route A
@@ -12,21 +12,22 @@ main: direct implementation
 ## Contract Freeze
 Frozen scope:
 - Preserve the existing right panel content flow and toggles.
-- Fix the scroll/height chain so the last content in the right panel remains visible at scroll end.
-- Keep the change limited to the panel layout container unless a smaller fix is impossible.
+- Move the previous/next buttons into the header/tab line area.
+- Remove the floating mid-content arrow placement.
+- Keep the content order and navigation behavior unchanged.
 
 Reason for Route A:
 - This is a tight single-slice layout bug fix centered on the shared sidebar container.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/components/ui/SidebarLayout.tsx`, `src/components/CommentarySidebar.tsx`
+- worker_feature: `src/components/Header.tsx`, `src/pages/VerseView.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Browser check showed the right panel was still taller than the viewport because the shared sidebar used 100dvh below a header; switched the sidebar to fill the available parent height instead of the full viewport height.
+2026-05-26 00:00:00 +09:00 - Re-scoped the fix from right-panel height to header-level navigation placement after verifying the arrows should live beside the top title/tab strip instead of floating over the body.
 
 ## Open Review Item
 - None.
