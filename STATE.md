@@ -27,7 +27,7 @@ Reason for Route A:
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Reclassified to rollback commit `b9bef3d` and preserve later header/canvas adjustments.
+2026-05-26 00:00:00 +09:00 - Reverting `b9bef3d` to remove the side-panel density pass while keeping later header and canvas changes intact.
 
 ## Open Review Item
 - None.

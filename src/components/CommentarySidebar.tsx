@@ -42,9 +42,9 @@ const renderTable = (table: RenderableTable) => {
 
     return (
         <div className="overflow-hidden border-y border-gold-border/12 dark:border-dark-border/45">
-            <div className="grid border-b border-gold-border/12 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
+            <div className="grid border-b border-gold-border/12 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
                 {Array.from({ length: columnCount }).map((_, index) => (
-                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-4 py-2.5 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
                         {table.headers[index] ?? ''}
                     </div>
                 ))}
@@ -59,7 +59,7 @@ const renderTable = (table: RenderableTable) => {
                         {paddedCells.map((cell, cellIndex) => (
                             <div
                                 key={`cell-${rowIndex}-${cellIndex}`}
-                                className={`px-4 py-3.5 text-[15px] leading-relaxed ${
+                                className={`px-3 py-3 text-sm leading-relaxed ${
                                     cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''
                                 } ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
                             >
@@ -74,13 +74,13 @@ const renderTable = (table: RenderableTable) => {
 };
 
 const renderBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-5 dark:border-dark-border/45">
-        <h3 className="font-sans text-[15px] font-semibold leading-snug tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+        <h3 className="font-sans text-[13px] font-semibold leading-snug tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[14px]">
             {block.title}
         </h3>
 
         {block.paragraphs?.map((paragraph, index) => (
-            <p key={`${block.title}-p-${index}`} className="font-sans text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
+            <p key={`${block.title}-p-${index}`} className="font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {paragraph}
             </p>
         ))}
@@ -88,7 +88,7 @@ const renderBlock = (block: CommentaryBlock) => (
         {block.table ? renderTable(block.table) : null}
 
         {block.bullets ? (
-            <ul className="space-y-2 font-sans text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
+            <ul className="space-y-2 font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {block.bullets.map((item, index) => {
                     const bullet = renderBulletItem(item);
 
@@ -139,9 +139,9 @@ const CommentarySidebar = () => {
             widthClass="w-[min(90vw,52rem)]"
             desktopWidthClass="lg:w-full"
         >
-            <div className="relative flex h-full min-h-0 flex-col p-3">
+            <div className="relative flex h-full min-h-0 flex-col p-4">
                 <div className="mb-4 flex shrink-0 items-center gap-2.5 border-b border-gold-border/10 pb-3 dark:border-dark-border/45">
-                    <span className="inline-flex items-center rounded-full bg-gold-soft/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:bg-gold-soft/20 dark:text-gold-light">
+                    <span className="inline-flex items-center rounded-full bg-gold-soft/90 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:bg-gold-soft/20 dark:text-gold-light">
                         Commentary
                     </span>
                     <span className="h-px flex-1 bg-gradient-to-r from-gold-border/50 via-gold-border/20 to-transparent dark:from-dark-border/60 dark:via-dark-border/25" />
@@ -150,11 +150,11 @@ const CommentarySidebar = () => {
                     </span>
                 </div>
 
-                <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.16em] text-text-secondary/65 dark:text-dark-text-secondary/65">
+                <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.18em] text-text-secondary/65 dark:text-dark-text-secondary/65">
                     <span>
                         {chapterNum}.{verseNum}
                     </span>
-                    {inlineHeading ? <span className="text-base font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">{inlineHeading}</span> : null}
+                    {inlineHeading ? <span className="text-sm font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">{inlineHeading}</span> : null}
                 </div>
 
                 <div className="custom-scrollbar flex-1 overflow-y-auto">

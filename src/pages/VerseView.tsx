@@ -82,7 +82,7 @@ const itemVariants: Variants = {
 const sharedContentShellClassName =
     'overflow-hidden rounded-[2rem] border border-gold-border/18 bg-shell-commentary shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_40px_-34px_rgba(0,0,0,0.34)] dark:border-dark-border/50 dark:bg-shell-commentary-dark dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_40px_-34px_rgba(0,0,0,0.48)]';
 
-const sharedContentPaddingClassName = 'px-3 py-4 sm:px-4 sm:py-5 lg:px-6 lg:py-6';
+const sharedContentPaddingClassName = 'px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6';
 
 type CommentaryRow = readonly string[] | { label: string; value: string };
 
@@ -104,9 +104,9 @@ const renderTable = (table: RenderableTable) => {
 
     return (
         <div className="overflow-hidden border-y border-gold-border/12 dark:border-dark-border/45">
-            <div className="grid border-b border-gold-border/12 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
+            <div className="grid border-b border-gold-border/12 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
                 {Array.from({ length: columnCount }).map((_, index) => (
-                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-4 py-2.5 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
+                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-3 py-2 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
                         {table.headers[index] ?? ''}
                     </div>
                 ))}
@@ -121,7 +121,7 @@ const renderTable = (table: RenderableTable) => {
                         {paddedCells.map((cell, cellIndex) => (
                             <div
                                 key={`cell-${rowIndex}-${cellIndex}`}
-                                className={`px-4 py-3.5 text-[15px] leading-relaxed ${
+                                className={`px-3 py-3 text-sm leading-relaxed ${
                                     cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''
                                 } ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
                             >
@@ -136,13 +136,13 @@ const renderTable = (table: RenderableTable) => {
 };
 
 const renderCommentaryBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-5 dark:border-dark-border/45">
-        <h3 className="font-sans text-[15px] font-semibold leading-snug tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-4 dark:border-dark-border/45">
+        <h3 className="font-sans text-[13px] font-semibold leading-snug tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[14px]">
             {block.title}
         </h3>
 
         {block.paragraphs?.map((paragraph, index) => (
-            <p key={`${block.title}-p-${index}`} className="font-sans text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
+            <p key={`${block.title}-p-${index}`} className="font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {paragraph}
             </p>
         ))}
@@ -150,7 +150,7 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
         {block.table ? renderTable(block.table) : null}
 
         {block.bullets ? (
-            <ul className="space-y-2 font-sans text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
+            <ul className="space-y-2 font-sans text-[14px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[15px]">
                 {block.bullets.map((item, index) => {
                     const match = item.match(/^(\d+)\.\s+(.*)$/);
                     const marker = match ? `${match[1]}.` : '-';
@@ -194,9 +194,9 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
     const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
 
     return (
-        <section className="mx-auto w-full space-y-3 px-0 sm:space-y-4">
+        <section className="mx-auto w-full space-y-3 px-4 sm:space-y-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2.5 border-b border-gold-border/8 pb-3 dark:border-dark-border/35">
-                <span className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/70 dark:text-gold-light/70">
+                <span className="inline-flex items-center rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                     Commentary
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
@@ -214,22 +214,22 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                 {viewMode === 'commentary' ? (
                     <>
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                            <span className="font-display text-[22px] font-semibold tracking-[0.06em] text-text-primary dark:text-dark-text-primary">
+                            <span className="font-display text-[20px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary">
                                 {chapterNum}.{verseNum}
                             </span>
-                            {inlineHeading ? <span className="font-sans text-[16px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
+                            {inlineHeading ? <span className="font-sans text-[14px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
                         </div>
 
                         {bodyBlocks && bodyBlocks.length > 0 ? (
                             <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
                         ) : (
-                            <div className="border-l border-gold-border/12 pl-5 font-sans text-[15px] leading-8 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[16px]">
+                            <div className="border-l border-gold-border/12 pl-4 font-sans text-[14px] leading-7 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[15px]">
                                 No commentary is available for this sutra.
                             </div>
                         )}
                     </>
                 ) : learningComicImageUrl ? (
-                    <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-2 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
+                    <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-3 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
                         <img
                             src={learningComicImageUrl}
                             alt={`학습만화 ${chapterNum}.${verseNum}`}
@@ -349,7 +349,7 @@ const VerseView = () => {
                 <div className="mx-auto flex w-full flex-col gap-5 px-4 sm:gap-7 sm:px-6 lg:px-8">
                     {!isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full overflow-visible px-0">
+                            <div className="relative mx-auto w-full overflow-visible px-4 sm:px-6 lg:px-8">
                                 <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
                                     <div className={bodyContentClassName}>
                                         <motion.div variants={itemVariants}>
@@ -426,7 +426,7 @@ const VerseView = () => {
 
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
-                            <div className="relative mx-auto w-full overflow-visible px-0">
+                            <div className="relative mx-auto w-full overflow-visible px-4 sm:px-6 lg:px-8">
                                 <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
 
                                 <div className="pointer-events-none absolute inset-y-0 left-0 hidden -translate-x-[calc(100%+1rem)] items-center lg:flex">

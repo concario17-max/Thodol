@@ -43,20 +43,20 @@ const Sidebar = () => {
     }
 
     return (
-            <SidebarLayout
-                isOpen={isSidebarOpen}
-                isDesktopOpen={isDesktopSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-                title="Reading Guide"
-                position="left"
-                widthClass="w-[90vw] max-w-[380px]"
-                desktopWidthClass="lg:w-full"
-                desktopMinWidthClass="lg:min-w-[22rem]"
-            >
-            <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-4 py-5 pb-7">
-                <div className="mx-auto flex w-full max-w-[348px] flex-1 flex-col gap-6 px-2 py-2 transition-colors duration-500 sm:gap-7">
-                    <div className="flex justify-center px-1 py-2 sm:px-2 sm:py-3">
-                        <div className="relative flex aspect-square w-full max-w-[276px] items-center justify-center transition-colors duration-500">
+        <SidebarLayout
+            isOpen={isSidebarOpen}
+            isDesktopOpen={isDesktopSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            title="Reading Guide"
+            position="left"
+            widthClass="w-[88vw] max-w-[360px]"
+            desktopWidthClass="lg:w-full"
+            desktopMinWidthClass="lg:min-w-[22rem]"
+        >
+            <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-3 py-4 pb-6">
+                <div className="mx-auto flex w-full max-w-[320px] flex-1 flex-col gap-5 px-2 py-2 transition-colors duration-500 sm:gap-6">
+                    <div className="flex justify-center px-1 py-2 sm:px-1.5 sm:py-2.5">
+                        <div className="relative flex aspect-square w-full max-w-[240px] items-center justify-center transition-colors duration-500">
                             <div className="pointer-events-none absolute inset-x-10 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-black/4 to-transparent dark:via-white/4" />
                             <div className="pointer-events-none absolute inset-y-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-black/4 to-transparent dark:via-white/4" />
 
@@ -93,7 +93,7 @@ const Sidebar = () => {
 
                             <div className="relative flex h-full w-full flex-col justify-between px-7 py-7 text-center">
                                 <div
-                                    className={`sidebar-marker-top flex items-start justify-between text-[10px] font-semibold uppercase tracking-[0.38em] text-text-secondary/52 transition-opacity duration-700 ease-out dark:text-dark-text-secondary/58 ${
+                                    className={`sidebar-marker-top flex items-start justify-between text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/52 transition-opacity duration-700 ease-out dark:text-dark-text-secondary/58 ${
                                         markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
@@ -103,7 +103,7 @@ const Sidebar = () => {
 
                                 <div className="flex flex-1 items-center justify-center">
                                     <p
-                                        className={`sidebar-marker-center font-display text-[68px] font-semibold leading-none tracking-[0.08em] text-text-primary/96 transition-opacity duration-700 ease-out dark:text-dark-text-primary/96 ${
+                                        className={`sidebar-marker-center font-display text-[54px] font-semibold leading-none tracking-[0.1em] text-text-primary/96 transition-opacity duration-700 ease-out dark:text-dark-text-primary/96 ${
                                             markerReady ? 'opacity-100' : 'opacity-0'
                                         }`}
                                     >
@@ -117,13 +117,13 @@ const Sidebar = () => {
                                     }`}
                                 >
                                     <div className="flex flex-col items-start gap-1 text-left">
-                                        <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-text-secondary/52 dark:text-dark-text-secondary/58">
+                                        <p className="text-[9px] font-semibold uppercase tracking-[0.42em] text-text-secondary/52 dark:text-dark-text-secondary/58">
                                             Chapter
                                         </p>
                                         <span className="h-px w-12 bg-gradient-to-r from-black/8 to-transparent dark:from-white/10" />
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="font-display text-[36px] font-semibold leading-none tracking-[0.1em] text-text-primary/96 dark:text-dark-text-primary/96">
+                                        <span className="font-display text-[28px] font-semibold leading-none tracking-[0.14em] text-text-primary/96 dark:text-dark-text-primary/96">
                                             {chapterMeta}
                                         </span>
                                         <span className="h-2.5 w-2.5 rounded-full bg-black/16 shadow-[0_0_0_1px_rgba(0,0,0,0.05)] dark:bg-white/14 dark:shadow-[0_0_0_1px_rgba(255,255,255,0.06)]" />
@@ -138,7 +138,7 @@ const Sidebar = () => {
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 English
                             </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[16px] leading-[1.95] text-text-primary/94 dark:text-dark-text-primary/94 sm:text-[17px]">
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[1.9] text-text-primary/94 dark:text-dark-text-primary/94 sm:text-[16px]">
                                 {verseData['2.english'] ?? ''}
                             </p>
                         </section>
@@ -147,7 +147,7 @@ const Sidebar = () => {
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 Korean
                             </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[2] text-text-secondary/92 dark:text-dark-text-secondary/92 sm:text-[16px]">
+                            <p className="whitespace-pre-line break-keep font-sans text-[14px] leading-[1.95] text-text-secondary/92 dark:text-dark-text-secondary/92 sm:text-[15px]">
                                 {verseData['3.korean-1'] ?? ''}
                             </p>
                         </section>
