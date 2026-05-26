@@ -38,7 +38,7 @@ export const SidebarLayout = React.memo(
         return (
             <>
                 <aside
-                    className={`relative z-50 h-auto min-h-0 flex-col overscroll-contain bg-transparent font-pretendard transition-all duration-300 lg:sticky lg:top-0 lg:h-[100dvh] lg:min-h-0 ${placementClass}
+                    className={`relative z-50 h-auto min-h-0 flex-col overscroll-contain bg-transparent font-pretendard transition-all duration-300 lg:sticky lg:top-0 lg:h-full lg:min-h-0 ${placementClass}
                     ${mobileStateClass}
                     ${desktopStateClass}`}
                 >

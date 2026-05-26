@@ -26,7 +26,7 @@ Reason for Route A:
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Fine-tuning the right panel bottom padding after tightening the sidebar height chain, aiming to keep the last block visible without extra empty space.
+2026-05-26 00:00:00 +09:00 - Browser check showed the right panel was still taller than the viewport because the shared sidebar used 100dvh below a header; switched the sidebar to fill the available parent height instead of the full viewport height.
 
 ## Open Review Item
 - None.

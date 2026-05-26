@@ -157,7 +157,7 @@ const CommentarySidebar = () => {
                     {inlineHeading ? <span className="text-base font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">{inlineHeading}</span> : null}
                 </div>
 
-                <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pb-4 pr-1">
+                <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pb-10 pr-2">
                     {bodyBlocks && bodyBlocks.length > 0 ? (
                         <div className="space-y-4">{bodyBlocks.map(renderBlock)}</div>
                     ) : (
