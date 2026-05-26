@@ -1,10 +1,8 @@
 import { CSSProperties, ReactNode } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { BookOpenText, ChevronLeft, ChevronRight, ScrollText } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpenText, ScrollText } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { getDesktopVerseColumns } from './ui/desktopVerseLayout';
-import { useYogaData } from '../hooks/useYogaData';
-import { useSutraNavigation } from '../hooks/useSutraNavigation';
 
 interface HeaderProps {
     title?: ReactNode;
@@ -24,48 +22,16 @@ const Header = ({
     className = '',
 }: HeaderProps) => {
     const { activeVerseContentMode, isDesktopSidebarOpen, setActiveVerseContentMode } = useUI();
-    const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
-    const { allChapters, getVerseInRange } = useYogaData();
     const desktopGridStyle = showSidebarToggle
         ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen, false) } as CSSProperties)
         : undefined;
-
-    const chapterNumber = chapterNum ? Number.parseInt(chapterNum, 10) : null;
-    const currentChapter = chapterNumber ? allChapters?.[chapterNumber] ?? null : null;
-    const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
-    const currentIndex = currentChapter && verseData ? currentChapter.sutras.findIndex((sutra) => sutra.id === verseData.id) : -1;
-    const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
-
-    const verseNavigationControls =
-        showSidebarToggle && currentChapter && verseData && currentIndex >= 0 ? (
-            <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-0.5 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.35)] backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
-                <button
-                    type="button"
-                    onClick={handlePrev}
-                    disabled={currentIndex <= 0}
-                    aria-label="이전 구절"
-                    className="grid h-8 w-8 place-items-center rounded-full text-[#5B7282] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/70 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary"
-                >
-                    <ChevronLeft className="h-4 w-4 stroke-[1.5]" aria-hidden="true" />
-                </button>
-                <button
-                    type="button"
-                    onClick={handleNext}
-                    disabled={currentIndex === currentChapter.sutras.length - 1}
-                    aria-label="다음 구절"
-                    className="grid h-8 w-8 place-items-center rounded-full text-[#5B7282] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/70 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary"
-                >
-                    <ChevronRight className="h-4 w-4 stroke-[1.5]" aria-hidden="true" />
-                </button>
-            </div>
-        ) : null;
 
     const renderVerseModeToggle = () =>
         showSidebarToggle ? (
             <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-0.5 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
                 {[
-                    { mode: 'commentary' as const, label: '해설', icon: ScrollText },
-                    { mode: 'body' as const, label: '심화', icon: BookOpenText },
+                    { mode: 'commentary' as const, label: '?댁꽕', icon: ScrollText },
+                    { mode: 'body' as const, label: '?ы솕', icon: BookOpenText },
                 ].map((option) => {
                     const isActive = activeVerseContentMode === option.mode;
                     const Icon = option.icon;
@@ -105,13 +71,10 @@ const Header = ({
                 </div>
 
                 <div className="mt-2 flex w-full flex-col gap-2 border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
-                <div className="flex flex-wrap items-center gap-2">
-                    {rightContent}
-                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
-                    {verseNavigationControls ? <div className="min-w-0 shrink-0">{verseNavigationControls}</div> : null}
-                    <div className="ml-auto flex items-center gap-2">
-                        {renderVerseModeToggle()}
-                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                        {rightContent}
+                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
+                        <div className="ml-auto flex items-center gap-2">{renderVerseModeToggle()}</div>
                     </div>
                 </div>
             </div>
@@ -137,7 +100,6 @@ const Header = ({
                     <div className="flex items-center gap-1 rounded-full border border-gold-border/10 bg-shell-main/78 p-0.5 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
                         {rightContent}
                         {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
-                        {verseNavigationControls ? <div className="min-w-0 shrink-0">{verseNavigationControls}</div> : null}
                         {renderVerseModeToggle()}
                     </div>
                 </div>

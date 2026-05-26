@@ -1,12 +1,13 @@
 import { useRef, useEffect, useState, type CSSProperties } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { SquareArrowOutUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, SquareArrowOutUpRight } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
 import { useAudio } from '../hooks/useAudio';
 import { SutraContent } from '../components/verse/SutraContent';
 import { AudioPlayer } from '../components/verse/AudioPlayer';
 import { TranslationSection } from '../components/verse/TranslationSection';
 import { WordMeanings } from '../components/verse/WordMeanings';
+import { useSutraNavigation } from '../hooks/useSutraNavigation';
 import { useUI } from '../context/UIContext';
 import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
 import { chapter2Commentary } from '../data/chapter2Commentary';
@@ -169,7 +170,13 @@ const renderCommentaryBlock = (block: CommentaryBlock) => (
 
 type CommentaryViewMode = 'commentary' | 'comic';
 
-const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verseNum: string }) => {
+interface CommentaryContentProps {
+    chapterNum: string;
+    verseNum: string;
+    navigationControls?: React.ReactNode;
+}
+
+const CommentaryContent = ({ chapterNum, verseNum, navigationControls }: CommentaryContentProps) => {
     const [viewMode, setViewMode] = useState<CommentaryViewMode>('comic');
 
     useEffect(() => {
@@ -199,6 +206,7 @@ const CommentaryContent = ({ chapterNum, verseNum }: { chapterNum: string; verse
                     Commentary
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
+                {navigationControls ? <div className="min-w-0 shrink-0">{navigationControls}</div> : null}
                 <button
                     type="button"
                     onClick={() => setViewMode((current) => (current === 'commentary' ? 'comic' : 'commentary'))}
@@ -304,6 +312,8 @@ const VerseView = () => {
 
     const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
     const currentChapter = allChapters && chapterNum ? allChapters[parseInt(chapterNum, 10)] : null;
+    const currentIndex = currentChapter && verseData ? currentChapter.sutras.findIndex((sutra) => sutra.id === verseData.id) : -1;
+    const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
     if (error) {
         return (
             <div className="flex min-h-full items-center justify-center px-6">
@@ -329,6 +339,34 @@ const VerseView = () => {
 
     const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
+    const navigationDisabledClassName = 'pointer-events-none opacity-25';
+    const rightPanelNavigationControls =
+        currentIndex >= 0 ? (
+            <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-0.5 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.35)] backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
+                <button
+                    type="button"
+                    onClick={handlePrev}
+                    disabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
+                    aria-label="이전 구절"
+                    className={`grid h-8 w-8 place-items-center rounded-full text-[#5B7282] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/70 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
+                        parseInt(chapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
+                    }`}
+                >
+                    <ChevronLeft className="h-4 w-4 stroke-[1.5]" aria-hidden="true" />
+                </button>
+                <button
+                    type="button"
+                    onClick={handleNext}
+                    disabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter!.sutras.length - 1}
+                    aria-label="다음 구절"
+                    className={`grid h-8 w-8 place-items-center rounded-full text-[#5B7282] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/70 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
+                        parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter!.sutras.length - 1 ? navigationDisabledClassName : ''
+                    }`}
+                >
+                    <ChevronRight className="h-4 w-4 stroke-[1.5]" aria-hidden="true" />
+                </button>
+            </div>
+        ) : null;
 
     return (
         <AnimatePresence mode="wait">
@@ -387,9 +425,6 @@ const VerseView = () => {
                                     </div>
                                 </section>
 
-                                <div className="hidden" />
-
-                                <div className="hidden" />
                             </div>
                         </motion.div>
                     ) : null}
@@ -397,11 +432,11 @@ const VerseView = () => {
                     {isCommentaryMode ? (
                         <motion.div variants={itemVariants}>
                             <div className="relative mx-auto w-full overflow-visible px-0">
-                                <CommentaryContent chapterNum={String(currentChapter.chapter)} verseNum={verseData.id.split('.')[1]} />
-
-                                <div className="hidden" />
-
-                                <div className="hidden" />
+                                <CommentaryContent
+                                    chapterNum={String(currentChapter.chapter)}
+                                    verseNum={verseData.id.split('.')[1]}
+                                    navigationControls={rightPanelNavigationControls}
+                                />
                             </div>
                         </motion.div>
                     ) : null}

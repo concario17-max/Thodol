@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Move the right-panel previous/next navigation up into the top header line so it no longer floats in the middle of the content area.
+Move the right-panel previous/next navigation next to the commentary/comic toggle inside the right panel header line.
 
 ## Route
 Route A
@@ -12,7 +12,7 @@ main: direct implementation
 ## Contract Freeze
 Frozen scope:
 - Preserve the existing right panel content flow and toggles.
-- Move the previous/next buttons into the header/tab line area.
+- Place the previous/next buttons immediately to the left of the commentary/comic toggle.
 - Remove the floating mid-content arrow placement.
 - Keep the content order and navigation behavior unchanged.
 
@@ -21,13 +21,13 @@ Reason for Route A:
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/components/Header.tsx`, `src/pages/VerseView.tsx`
+- worker_feature: `src/pages/VerseView.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Re-scoped the fix from right-panel height to header-level navigation placement after verifying the arrows should live beside the top title/tab strip instead of floating over the body.
+2026-05-26 00:00:00 +09:00 - Re-scoped the fix from the top header strip to the right-panel commentary/comic toggle line after confirming the arrows should sit immediately to its left.
 
 ## Open Review Item
 - None.
