@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Rollback commit `b9bef3d` to remove the side-panel density pass while preserving later changes.
+Refactor the site into a centered editorial canvas layout with `max-w-[52rem]` content rhythm across reading surfaces.
 
 ## Route
 Route B
@@ -11,13 +11,14 @@ main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Revert the side-panel typography and padding changes introduced in `b9bef3d`.
-- Preserve all later commits and unrelated layout adjustments.
-- Keep the sticky header and current canvas shell intact unless the reverted commit touched them directly.
-- Leave untracked user files untouched.
+- Keep the sticky header.
+- Center the main content in a single canvas structure.
+- Standardize primary reading surfaces around `max-w-[52rem]`.
+- Preserve existing data flow, toggles, and date navigation.
+- Keep mobile stacking natural and uncluttered.
 
 Reason for Route A:
-- This rollback touches multiple tracked files through a commit revert, so it stays on Route B.
+- This is a multi-file layout refactor across shared shell and page surfaces, so it needs Route B.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
@@ -27,7 +28,7 @@ Reason for Route A:
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Reverting `b9bef3d` to remove the side-panel density pass while keeping later header and canvas changes intact.
+2026-05-23 09:42:00 +09:00 - Increased left-panel typography density and reduced right-panel padding so the 440px rail and 966px content lane read fuller without changing the underlying layout flow.
 
 ## Open Review Item
 - None.
