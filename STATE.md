@@ -27,7 +27,7 @@ Reason for Route A:
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Re-scoped the fix from the top header strip to the right-panel commentary/comic toggle line after confirming the arrows should sit immediately to its left.
+2026-05-26 00:00:00 +09:00 - Tightened the right-panel navigation group so the prev/next buttons sit closer to the commentary/comic toggle as a single compact control cluster.
 
 ## Open Review Item
 - None.
