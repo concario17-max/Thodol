@@ -28,7 +28,7 @@ Reason for Route A:
 Wegener
 
 ## Last Update
-2026-05-23 09:42:00 +09:00 - Increased left-panel typography density and reduced right-panel padding so the 440px rail and 966px content lane read fuller without changing the underlying layout flow.
+2026-05-26 00:00:00 +09:00 - Softened the sticky header into the shell background by reducing padding, lowering contrast, and keeping the same navigation behavior.
 
 ## Open Review Item
 - None.
