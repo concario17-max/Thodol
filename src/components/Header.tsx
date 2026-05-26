@@ -28,7 +28,7 @@ const Header = ({
 
     const renderVerseModeToggle = () =>
         showSidebarToggle ? (
-            <div className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/80 p-0.5 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
+            <div className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
                 {[
                     { mode: 'commentary' as const, label: '해설', icon: ScrollText },
                     { mode: 'body' as const, label: '심화', icon: BookOpenText },
@@ -42,7 +42,7 @@ const Header = ({
                             type="button"
                             onClick={() => setActiveVerseContentMode(option.mode)}
                             aria-pressed={isActive}
-                            className={`inline-flex min-w-[3.25rem] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-[0.14em] transition-all duration-300 sm:min-w-[3.45rem] sm:text-[10px] ${
+                            className={`inline-flex min-w-[3.25rem] items-center justify-center gap-1.5 rounded-[0.85rem] px-2.5 py-1 text-[9px] font-semibold tracking-[0.14em] transition-all duration-300 sm:min-w-[3.45rem] sm:text-[10px] ${
                                 isActive
                                     ? 'bg-gold-primary text-white shadow-[0_6px_16px_-8px_rgba(166,139,92,0.95)] dark:bg-gold-light dark:text-[#2a2116]'
                                     : 'text-gold-primary hover:bg-gold-surface/70 dark:text-gold-light dark:hover:bg-white/6'
@@ -97,7 +97,7 @@ const Header = ({
                 </div>
 
                 <div className="flex min-w-0 items-center justify-end gap-3 px-5">
-                    <div className="flex items-center gap-1 rounded-full border border-gold-border/10 bg-shell-main/78 p-0.5 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
+                    <div className="flex items-center gap-1 rounded-[1rem] border border-gold-border/10 bg-shell-main/78 p-0.5 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
                         {rightContent}
                         {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                         {renderVerseModeToggle()}

@@ -22,7 +22,7 @@ export const AppShell = React.memo(
                 <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_top,_rgba(255,252,247,0.68)_0%,_rgba(255,248,239,0.2)_34%,_transparent_74%),linear-gradient(180deg,rgba(255,255,255,0.12)_0%,transparent_18%)] dark:bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.04)_0%,_rgba(255,255,255,0.01)_34%,_transparent_74%),linear-gradient(180deg,rgba(255,255,255,0.02)_0%,transparent_18%)]" />
 
                 <div className="relative z-10 flex min-h-0 flex-1 justify-center sm:px-[17px] sm:py-[17px]">
-                    <div className="flex min-h-0 w-full max-w-[1406px] flex-1 flex-col overflow-hidden bg-shell-main dark:bg-shell-main-dark sm:rounded-[2rem] sm:border sm:border-gold-border/10 sm:shadow-[0_24px_70px_-48px_rgba(0,0,0,0.35)] dark:sm:border-dark-border/50">
+                    <div className="flex min-h-0 w-full max-w-[1406px] flex-1 flex-col overflow-hidden bg-shell-main dark:bg-shell-main-dark sm:rounded-[1rem] sm:border sm:border-gold-border/10 sm:shadow-[0_20px_50px_-42px_rgba(0,0,0,0.28)] dark:sm:border-dark-border/50">
                         <div className="shrink-0 bg-shell-header dark:bg-shell-header-dark">{header}</div>
                         <div
                             className={`relative flex min-h-0 flex-1 flex-col overflow-hidden bg-transparent ${

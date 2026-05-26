@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Fix the broken Korean labels in the header and right-panel controls.
+Reduce the rounded corners in the canvas shell and header for a calmer SaaS look.
 
 ## Route
 Route A
@@ -11,22 +11,22 @@ main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Restore the broken Korean strings in the header and right-panel navigation.
-- Keep the layout and control placement unchanged.
-- Do not alter the underlying navigation behavior.
+- Reduce the shell, header, and top control corner radius.
+- Keep layout, spacing, and behavior unchanged.
+- Preserve the current centered canvas composition.
 
 Reason for Route A:
-- This is a tight single-slice layout bug fix centered on the shared sidebar container.
+- This is a narrow visual polish slice limited to shared shell chrome and header treatment.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/components/Header.tsx`, `src/pages/VerseView.tsx`
+- worker_feature: `src/components/ui/AppShell.tsx`, `src/components/Header.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Restored the broken Korean labels in the header and right-panel controls and normalized the touched files to UTF-8.
+2026-05-26 00:00:00 +09:00 - Reduced the shared shell and header corner radius to make the canvas feel calmer and more SaaS-like.
 
 ## Open Review Item
 - None.
