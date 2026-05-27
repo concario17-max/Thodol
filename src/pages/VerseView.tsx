@@ -101,10 +101,10 @@ interface CommentaryContentProps {
 }
 
 const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationControls }: CommentaryContentProps) => {
-    const [viewMode, setViewMode] = useState<CommentaryViewMode>('commentary');
+    const [viewMode, setViewMode] = useState<CommentaryViewMode>('comic');
 
     useEffect(() => {
-        setViewMode('commentary');
+        setViewMode('comic');
     }, [chapterNum, verseNum]);
 
     const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
