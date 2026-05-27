@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Remove the outer canvas padding so the shell fills the viewport edge to edge.
+Change the right-panel toggle icon to a picture-related icon for the learning comic view.
 
 ## Route
 Route A
@@ -11,22 +11,22 @@ main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Remove the outer shell padding around the canvas.
-- Keep the centered inner composition and existing controls unchanged.
+- Replace the right-panel toggle icon with a picture-related icon.
+- Keep the toggle placement, behavior, and labels unchanged.
 - Do not alter content flow, routing, or interactions.
 
 Reason for Route A:
-- This is a narrow shell chrome slice affecting a single shared layout wrapper.
+- This is a narrow icon swap affecting a single shared control.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/components/ui/AppShell.tsx`
+- worker_feature: `src/pages/VerseView.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-27 00:00:00 +09:00 - Removed the outer canvas padding so the shell now runs edge to edge.
+2026-05-27 00:00:00 +09:00 - Swapped the right-panel toggle icon to a picture-related icon for the learning comic view.
 
 ## Open Review Item
 - None.
