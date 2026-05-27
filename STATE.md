@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Rollback the header blend changes and restore the `6db5a66` canvas state.
+Remove the outer canvas padding so the shell fills the viewport edge to edge.
 
 ## Route
 Route A
@@ -11,24 +11,22 @@ main: direct implementation
 
 ## Contract Freeze
 Frozen scope:
-- Revert the header blend changes made after `6db5a66`.
-- Restore the prior canvas/header boundary treatment.
-- Keep the rest of the layout and controls unchanged.
-- Keep layout, spacing, and behavior unchanged.
-- Preserve the current centered canvas composition.
+- Remove the outer shell padding around the canvas.
+- Keep the centered inner composition and existing controls unchanged.
+- Do not alter content flow, routing, or interactions.
 
 Reason for Route A:
-- This is a narrow rollback slice affecting only the latest header chrome change.
+- This is a narrow shell chrome slice affecting a single shared layout wrapper.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_feature: `src/components/Header.tsx`, `src/components/ui/AppShell.tsx`
+- worker_feature: `src/components/ui/AppShell.tsx`
 
 ## Reviewer
 Wegener
 
 ## Last Update
-2026-05-26 00:00:00 +09:00 - Restored the `6db5a66` canvas state by reverting the latest header blend change.
+2026-05-27 00:00:00 +09:00 - Removed the outer canvas padding so the shell now runs edge to edge.
 
 ## Open Review Item
 - None.
