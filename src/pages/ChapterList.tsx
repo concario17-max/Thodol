@@ -47,15 +47,11 @@ const itemVariants: Variants = {
     },
 };
 
-const renderChapterTitle = (title: string) => {
-    const lines = title.split(' ').filter(Boolean);
-
-    return lines.map((line, index) => (
-        <span key={`${line}-${index}`} className="block">
-            {line}
-        </span>
-    ));
-};
+const renderChapterTitle = (title: string) => title.split(' ').filter(Boolean).map((line, index) => (
+    <span key={`${line}-${index}`} className="block">
+        {line}
+    </span>
+));
 
 const ChapterList = () => {
     const navigate = useNavigate();
@@ -77,7 +73,7 @@ const ChapterList = () => {
         return (
             <div className="flex h-full items-center justify-center px-6">
                 <div className="max-w-lg rounded-2xl border border-gold-border/30 bg-white/75 p-6 text-center shadow-lg backdrop-blur-sm dark:bg-dark-surface/75">
-                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load the Yoga Sutras</h1>
+                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load Bhagavad Gita</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
                 </div>
             </div>
@@ -91,10 +87,10 @@ const ChapterList = () => {
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
                 </motion.div>
                 <motion.h1 variants={itemVariants} className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px] lg:mb-3 lg:text-[54px]">
-                    YOGA SUTRAS
+                    BHAGAVAD GITA
                 </motion.h1>
                 <motion.p variants={itemVariants} className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-6">
-                    A reading space for sutra, sound, translation, and reflection
+                    A reading space for verse, sound, translation, and reflection
                 </motion.p>
 
                 <motion.div variants={itemVariants} className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6 lg:mb-5">
@@ -149,15 +145,15 @@ const ChapterList = () => {
                                 }
                             }}
                         >
-                            <option value="">{selectedChapter ? 'Select Sutra' : 'Select Chapter First'}</option>
+                            <option value="">{selectedChapter ? 'Select Verse' : 'Select Chapter First'}</option>
                             {selectedChapter &&
                                 chapters
-                                    .find((chapter) => chapter.chapter === parseInt(selectedChapter, 10))
+                                    .find((chapter) => chapter.chapter === Number.parseInt(selectedChapter, 10))
                                     ?.sutras.map((sutra) => {
-                                        const sutraNumber = sutra.id.split('.')[1];
+                                        const verseNumber = String(sutra.verse ?? Number.parseInt(sutra.id.split('.')[1], 10));
                                         return (
-                                            <option key={sutra.id} value={sutraNumber} className="text-base">
-                                                Sutra {sutraNumber}
+                                            <option key={sutra.id} value={verseNumber} className="text-base">
+                                                Verse {verseNumber}
                                             </option>
                                         );
                                     })}
@@ -182,10 +178,12 @@ const ChapterList = () => {
                                         <span className="font-display text-[30px] font-medium tracking-[0.04em] md:text-[34px]">
                                             {renderChapterTitle(chapterInfo?.name_english || chapter.meta.name_english)}
                                         </span>
-                                        <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">{chapterInfo?.name_korean || chapter.meta.name_korean}</span>
+                                        <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">
+                                            {chapterInfo?.name_korean || chapter.meta.name_korean}
+                                        </span>
                                     </>
                                 }
-                                description={chapterInfo?.description || 'Read sutras of this part.'}
+                                description={chapterInfo?.description || 'Read verses of this chapter.'}
                             />
                         </motion.div>
                     );

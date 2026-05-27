@@ -25,9 +25,9 @@ const DefaultVerseRedirect = () => {
     }
 
     const firstChapter = chapters[0];
-    const firstSutra = firstChapter?.sutras[0];
+    const firstVerse = firstChapter?.sutras[0];
     const chapterNum = firstChapter?.chapter ?? 1;
-    const verseNum = firstSutra?.id.split('.')[1] ?? '1';
+    const verseNum = firstVerse?.verse ?? Number.parseInt(firstVerse?.id.split('.')[1] ?? '1', 10);
 
     return <Navigate to={`/chapter/${chapterNum}/verse/${verseNum}`} replace />;
 };
@@ -80,7 +80,6 @@ const ContextPillPicker = ({
 
         const updatePosition = () => {
             const rect = triggerRef.current?.getBoundingClientRect();
-
             if (!rect) {
                 return;
             }
@@ -114,7 +113,6 @@ const ContextPillPicker = ({
 
         const handlePointerDown = (event: PointerEvent) => {
             const target = event.target as Node;
-
             if (
                 rootRef.current &&
                 !rootRef.current.contains(target) &&
@@ -147,8 +145,8 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '??';
-    const activeVerseLabel = verseNum ? `${verseNum}절` : '??';
+    const activeChapterLabel = chapterNum ? `Chapter ${chapterNum}` : 'Chapter --';
+    const activeVerseLabel = verseNum ? `Verse ${verseNum}` : 'Verse --';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
@@ -167,7 +165,7 @@ const ContextPillPicker = ({
                     Context
                 </span>
                 <span className="flex-1 text-[10px] font-medium tracking-[0.14em] text-text-secondary/75 dark:text-dark-text-secondary/70">
-                    {chapterNum ? `Chapter ${chapterNum}` : 'Chapter --'} / {verseNum ? `Sutra ${verseNum}` : 'Sutra --'}
+                    {activeChapterLabel} / {activeVerseLabel}
                 </span>
             </div>
             <div className="space-y-2.5">
@@ -201,7 +199,7 @@ const ContextPillPicker = ({
 
                 <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
                     <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
-                        Sutra
+                        Verse
                     </span>
                     <select
                         ref={verseSelectRef}
@@ -217,7 +215,7 @@ const ContextPillPicker = ({
                         disabled={!draftChapterNum}
                     >
                         <option value="" disabled>
-                            Select sutra
+                            Select verse
                         </option>
                         {draftVerseOptions.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -275,16 +273,14 @@ const MainLayout = () => {
         () =>
             chapters.reduce<Record<string, ContextOption[]>>((acc, chapter) => {
                 acc[String(chapter.chapter)] = chapter.sutras.map((sutra, index) => {
-                    const sutraNumberText = sutra.id.split('.')[1];
-                    const sutraNumber = Number.parseInt(sutraNumberText, 10);
+                    const verseNumberText = String(sutra.verse ?? Number.parseInt(sutra.id.split('.')[1], 10));
+                    const verseNumber = Number.parseInt(verseNumberText, 10);
                     const nextSutra = chapter.sutras[index + 1];
-                    const label =
-                        nextSutra && Number.parseInt(nextSutra.id.split('.')[1], 10) > sutraNumber + 1
-                            ? `${sutraNumberText}-${Number.parseInt(nextSutra.id.split('.')[1], 10) - 1}`
-                            : sutraNumberText;
+                    const nextVerseNumber = nextSutra ? Number.parseInt(String(nextSutra.verse ?? Number.parseInt(nextSutra.id.split('.')[1], 10)), 10) : null;
+                    const label = nextVerseNumber && nextVerseNumber > verseNumber + 1 ? `${verseNumberText}-${nextVerseNumber - 1}` : verseNumberText;
 
                     return {
-                        value: sutraNumberText,
+                        value: verseNumberText,
                         label,
                     };
                 });
@@ -307,7 +303,7 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Yoga Sutras" showSidebarToggle selectionControls={selectionControls} /> : undefined}
+            header={isVerseView ? <Header title="Bhagavad Gita" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}

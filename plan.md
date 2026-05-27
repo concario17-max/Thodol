@@ -125,3 +125,58 @@ This file tracks the full-project remediation pass requested after the latest re
 - [ ] one verse with a table
 - [ ] one verse with numbered list items
 - [ ] one verse with a trailing reference block removed
+
+## 12. Data Synchronization Pass
+
+Goal: synchronize the live app with the newly copied data source before any implementation work starts.
+
+### 12.1 Source Audit
+
+- [ ] Identify the exact external source set that was copied into this workspace.
+- [ ] Compare the copied data against the active runtime contract used by `src/utils/dataFetcher.ts`.
+- [ ] List every file that is authoritative for the new data set.
+- [ ] Mark which files are canonical inputs, derived outputs, or legacy leftovers.
+
+### 12.2 Schema and Shape Review
+
+- [ ] Diff the new data shape against `src/types.ts`.
+- [ ] Check whether chapter, verse, translation, pronunciation, and commentary fields still line up.
+- [ ] Confirm whether `word_meanings` still normalizes cleanly into the current array shape.
+- [ ] Verify whether chapter metadata in `src/constants.ts` still matches the copied source.
+
+### 12.3 Runtime Data Flow
+
+- [ ] Decide whether `public/data.json` remains the runtime source or needs to be regenerated/replaced.
+- [ ] Check whether `dist/data.json` should be treated as a build artifact only.
+- [ ] Confirm whether the dev server, production build, and browser smoke flow all resolve the same asset path.
+- [ ] Identify any cached assumptions in `src/context/YogaDataContext.tsx` and `src/utils/dataFetcher.ts` that depend on the old data set.
+
+### 12.4 Content Alignment
+
+- [ ] Compare the copied data against the landing page chapter cards.
+- [ ] Compare the copied data against verse route canonicalization and range labels.
+- [ ] Compare the copied data against the left sidebar reading guide.
+- [ ] Compare the copied data against the commentary sidebar content map.
+- [ ] Compare the copied data against the learning comic asset mapping.
+- [ ] Compare the copied data against `public/lexicon.json` and any lexicon-related UI.
+
+### 12.5 Asset and Pipeline Check
+
+- [ ] Verify whether any MP3 paths need renaming to match the copied data.
+- [ ] Verify whether the learning comic image keys still align with chapter/verse numbering.
+- [ ] Verify whether `scripts/generate_data.ps1` can still reproduce the runtime data from source files.
+- [ ] Verify whether any auxiliary generated files such as `data.js` need regeneration or removal.
+
+### 12.6 Validation Plan
+
+- [ ] Run typecheck after the data contract is finalized.
+- [ ] Run unit tests that cover data loading, verse range resolution, navigation, and desktop layout.
+- [ ] Run a targeted smoke pass against the actual UI selectors after any data sync work.
+- [ ] Record any newly discovered mismatches in `ERROR_LOG.md` if the work is interrupted or blocked.
+
+### 12.7 Decision Gate
+
+- [ ] Freeze the new canonical data source.
+- [ ] Freeze the exact files that must be regenerated versus preserved.
+- [ ] Freeze the list of UI surfaces that will need to be updated.
+- [ ] Only then start implementation in a separate pass.

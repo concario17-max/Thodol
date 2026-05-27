@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 const Header = ({
-    title = 'Yoga Sutras',
+    title = 'Bhagavad Gita',
     targetUrl = '/',
     showSidebarToggle = false,
     selectionControls,

@@ -187,3 +187,15 @@ status: resolved
   summary: `allChapters` unused binding resolved
   details: Removed the unused `allChapters` binding from `MainLayout` after the picker flow no longer needed it. Typecheck and build passed again.
   status: resolved
+
+- time: 2026-05-27 15:43:09 +09:00
+  location: `npm run typecheck` / `npm run build`
+  summary: PowerShell blocked `npm.ps1` during verification
+  details: Initial verification failed because PowerShell could not load `C:\Program Files\nodejs\npm.ps1`. Re-ran the checks with `npm.cmd` instead.
+  status: resolved
+
+- time: 2026-05-27 15:58:10 +09:00
+  location: `src/components/commentary/CommentaryMarkdown.tsx`, `src/pages/VerseView.tsx`
+  summary: Typecheck failed on dynamic heading rendering and nullable chapter access
+  details: `CommentaryMarkdown` used a JSX namespace path TS could not resolve, and `VerseView` narrowed `currentChapter` too loosely for strict null checks. Both issues were fixed before rerunning verification.
+  status: resolved

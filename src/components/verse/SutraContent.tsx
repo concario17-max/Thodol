@@ -6,7 +6,7 @@ interface SutraContentProps {
 
 export const SutraContent = ({ sanskrit, pronunciation, pronunciationKr }: SutraContentProps) => {
     const cleanPronunciation = pronunciation?.replace(/\|+/g, '').replace(/\s+/g, ' ').trim();
-    const cleanPronunciationKr = pronunciationKr?.replace(/[｜|]/g, ' ').replace(/-/g, '').replace(/\s+/g, ' ').trim();
+    const cleanPronunciationKr = pronunciationKr?.replace(/\s+/g, ' ').trim();
 
     return (
         <section className="mx-auto w-full px-4 sm:px-6 lg:px-8">

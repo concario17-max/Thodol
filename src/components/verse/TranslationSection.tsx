@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react';
 
 interface TranslationSectionProps {
-    baeJik?: string;
-    baeUu?: string;
-    oxfordKr?: string;
-    oxfordEn?: string;
+    english?: string;
+    ham?: string;
+    gil?: string;
+    jimong?: string;
+    suk?: string;
 }
 
 const Block = ({ label, children }: { label: string; children: ReactNode }) => (
@@ -14,39 +15,63 @@ const Block = ({ label, children }: { label: string; children: ReactNode }) => (
     </section>
 );
 
-export const TranslationSection = ({ baeJik, baeUu, oxfordKr, oxfordEn }: TranslationSectionProps) => {
-    const hasOxford = Boolean(oxfordKr || oxfordEn);
-    const hasBae = Boolean(baeJik || baeUu);
+export const TranslationSection = ({ english, ham, gil, jimong, suk }: TranslationSectionProps) => {
+    const hasTranslations = Boolean(english || ham || gil || jimong || suk);
 
-    if (!hasOxford && !hasBae) {
+    if (!hasTranslations) {
         return null;
     }
 
     return (
         <section className="mx-auto w-full space-y-4 px-4 sm:px-6 lg:px-8">
-            {hasOxford ? (
-                <Block label="Oxford translation">
-                    {oxfordEn ? <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{oxfordEn}</p> : null}
-                    {oxfordKr ? <p className="whitespace-pre-line break-keep font-sans text-[15px] font-medium leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">{oxfordKr}</p> : null}
+            {english ? (
+                <Block label="English translation">
+                    <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                        {english}
+                    </p>
                 </Block>
             ) : null}
 
-            {hasBae ? (
-                <Block label="Baejik / Baeuu">
-                    {baeJik ? (
+            {ham || gil || jimong || suk ? (
+                <Block label="Korean translations">
+                    {ham ? (
                         <div className="space-y-1.5">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/65 dark:text-dark-text-secondary/65">
-                                Baejik
+                                Ham
                             </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{baeJik}</p>
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                                {ham}
+                            </p>
                         </div>
                     ) : null}
-                    {baeUu ? (
+                    {gil ? (
                         <div className="space-y-1.5">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/65 dark:text-dark-text-secondary/65">
-                                Baeuu
+                                Gil
                             </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">{baeUu}</p>
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                                {gil}
+                            </p>
+                        </div>
+                    ) : null}
+                    {jimong ? (
+                        <div className="space-y-1.5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/65 dark:text-dark-text-secondary/65">
+                                Jimong
+                            </p>
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                                {jimong}
+                            </p>
+                        </div>
+                    ) : null}
+                    {suk ? (
+                        <div className="space-y-1.5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary/65 dark:text-dark-text-secondary/65">
+                                Suk
+                            </p>
+                            <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                                {suk}
+                            </p>
                         </div>
                     ) : null}
                 </Block>

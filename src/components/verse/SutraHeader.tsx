@@ -12,7 +12,7 @@ export const SutraHeader = () => (
                     Reading
                 </p>
                 <p className="mt-1 font-display text-[15px] font-semibold tracking-[0.08em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
-                    Sutra view
+                    Verse view
                 </p>
             </div>
         </div>

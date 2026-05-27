@@ -24,10 +24,10 @@ export const getVerseInRangeFromChapters = (
 
     const targetVerseNum = parseInt(verseNum, 10);
     const verseIndex = chapter.sutras.findIndex((sutra, index, sutras) => {
-        const sutraNum = parseInt(sutra.id.split('.')[1], 10);
+        const sutraNum = sutra.verse ?? parseInt(sutra.id.split('.')[1], 10);
         const nextSutra = sutras[index + 1];
         if (nextSutra) {
-            const nextNum = parseInt(nextSutra.id.split('.')[1], 10);
+            const nextNum = nextSutra.verse ?? parseInt(nextSutra.id.split('.')[1], 10);
             return sutraNum <= targetVerseNum && targetVerseNum < nextNum;
         }
 
@@ -40,10 +40,10 @@ export const getVerseInRangeFromChapters = (
 export const getVerseRangeText = (chapter: YogaChapter, sutra: YogaSutra): string => {
     const currentIndex = chapter.sutras.findIndex((entry) => entry.id === sutra.id);
     const nextSutra = chapter.sutras[currentIndex + 1];
-    const currentNum = parseInt(sutra.id.split('.')[1], 10);
+    const currentNum = sutra.verse ?? parseInt(sutra.id.split('.')[1], 10);
 
     if (nextSutra) {
-        const nextNum = parseInt(nextSutra.id.split('.')[1], 10);
+        const nextNum = nextSutra.verse ?? parseInt(nextSutra.id.split('.')[1], 10);
         if (nextNum > currentNum + 1) {
             return `${currentNum}-${nextNum - 1}`;
         }

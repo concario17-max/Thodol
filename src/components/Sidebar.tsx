@@ -29,7 +29,7 @@ const Sidebar = () => {
                 isOpen={isSidebarOpen}
                 isDesktopOpen={isDesktopSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
-                title="Reading Guide"
+                title="Verse Guide"
                 position="left"
                 widthClass="w-[88vw] max-w-[360px]"
                 desktopWidthClass="lg:w-full"
@@ -43,16 +43,16 @@ const Sidebar = () => {
     }
 
     return (
-            <SidebarLayout
-                isOpen={isSidebarOpen}
-                isDesktopOpen={isDesktopSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-                title="Reading Guide"
-                position="left"
-                widthClass="w-[90vw] max-w-[380px]"
-                desktopWidthClass="lg:w-full"
-                desktopMinWidthClass="lg:min-w-[22rem]"
-            >
+        <SidebarLayout
+            isOpen={isSidebarOpen}
+            isDesktopOpen={isDesktopSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            title="Verse Guide"
+            position="left"
+            widthClass="w-[90vw] max-w-[380px]"
+            desktopWidthClass="lg:w-full"
+            desktopMinWidthClass="lg:min-w-[22rem]"
+        >
             <div className="custom-scrollbar flex h-full min-h-0 flex-col overflow-y-auto px-4 py-5 pb-7">
                 <div className="mx-auto flex w-full max-w-[348px] flex-1 flex-col gap-6 px-2 py-2 transition-colors duration-500 sm:gap-7">
                     <div className="flex justify-center px-1 py-2 sm:px-2 sm:py-3">
@@ -97,7 +97,7 @@ const Sidebar = () => {
                                         markerReady ? 'opacity-100' : 'opacity-0'
                                     }`}
                                 >
-                                    <span>Sutra</span>
+                                    <span>Verse</span>
                                     <span className="text-text-secondary/46 dark:text-dark-text-secondary/54">Axis</span>
                                 </div>
 
@@ -139,7 +139,7 @@ const Sidebar = () => {
                                 English
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[16px] leading-[1.95] text-text-primary/94 dark:text-dark-text-primary/94 sm:text-[17px]">
-                                {verseData['2.english'] ?? ''}
+                                {verseData.translation_en ?? verseData['2.english'] ?? ''}
                             </p>
                         </section>
 
@@ -148,7 +148,7 @@ const Sidebar = () => {
                                 Korean
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[2] text-text-secondary/92 dark:text-dark-text-secondary/92 sm:text-[16px]">
-                                {verseData['3.korean-1'] ?? ''}
+                                {verseData.translation_gil ?? verseData['3.korean-1'] ?? ''}
                             </p>
                         </section>
                     </div>

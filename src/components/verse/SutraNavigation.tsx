@@ -15,7 +15,7 @@ export const SutraNavigation = ({
     onPrev,
     onNext,
     isPrevDisabled,
-    isNextDisabled
+    isNextDisabled,
 }: SutraNavigationProps) => (
     <div className="mt-10 pb-[calc(1.5rem+env(safe-area-inset-bottom))] px-4 font-inter sm:pb-8 sm:px-0">
         <div className="mx-auto w-full">
@@ -25,7 +25,7 @@ export const SutraNavigation = ({
                         onClick={onPrev}
                         disabled={isPrevDisabled}
                         className="grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/55 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/80 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary"
-                        aria-label="이전 구절"
+                        aria-label="Previous verse"
                     >
                         <ChevronLeft className="h-5 w-5 stroke-[1.5]" />
                     </button>
@@ -40,7 +40,7 @@ export const SutraNavigation = ({
                         onClick={onNext}
                         disabled={isNextDisabled}
                         className="grid h-11 w-11 place-items-center rounded-full border border-gold-primary/18 bg-white/55 text-[#5B7282] shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)] backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/80 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:border-dark-border/55 dark:bg-dark-surface/55 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary"
-                        aria-label="다음 구절"
+                        aria-label="Next verse"
                     >
                         <ChevronRight className="h-5 w-5 stroke-[1.5]" />
                     </button>

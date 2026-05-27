@@ -28,52 +28,47 @@ const CompendiumModal = ({ isOpen, onClose }: CompendiumModalProps) => {
                 <div className="custom-scrollbar flex-1 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6">
                     <div className="prose max-w-none break-keep font-noto-kr text-[15px] leading-relaxed text-[#5B7282] dark:prose-invert sm:text-base">
                         <p>
-                            <strong className="text-[#1C2B36]">Yoga Sutras</strong>는 마음의 작용을 관찰하고 집중과 자유로 향하는 길을
-                            짧은 문장으로 기록한 고전 텍스트입니다.
+                            <strong className="text-[#1C2B36]">Bhagavad Gita</strong>는 흔들리는 전장에서 시작해, 행동과 지혜, 헌신과 해탈을 하나의 흐름으로 묶어주는 책이야.
+                            이 앱은 한 구절씩 읽고, 발음과 번역, 주석과 오디오를 같이 보는 데 초점을 맞춘다.
                         </p>
 
                         <p>
-                            이 공간은 산스크리트 원문, 발음, 번역, 어휘, 오디오, 그리고 commentary를 함께 보며 한 구절을 여러 층위에서
-                            천천히 읽기 위한 읽기 환경입니다.
+                            왼쪽 패널은 현재 구절의 핵심 번역을 빠르게 보여주고, 오른쪽 패널은 장문 commentary와 학습만화 이미지를 이어 붙여서 전체 맥락을 잡게 돕는다.
+                            각 장은 18장 전체 구조를 따라 이동하고, 오디오는 데이터에 들어 있는 원본 경로를 그대로 사용한다.
                         </p>
 
                         <div className="rounded-r-md border-l-4 border-gold-primary bg-[#F5EFE6] p-5 dark:bg-[#222]">
-                            <h3 className="mb-2 font-bold text-[#1C2B36] dark:text-gold-light">읽는 방법</h3>
+                            <h3 className="mb-2 font-bold text-[#1C2B36] dark:text-gold-light">읽는 방식</h3>
                             <p className="m-0">
-                                먼저 원문과 발음을 소리로 따라가고, 여러 번역을 비교한 뒤 commentary에서 맥락과 질문을 확인해 보세요.
+                                먼저 산스크리트와 발음을 보고, 번역을 훑은 뒤, commentary를 펼쳐서 문맥을 확인해. 필요하면 학습만화로 넘어가서 장 전체의 흐름을 다시 붙잡으면 된다.
                             </p>
                         </div>
 
-                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">네 개의 장</h3>
+                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">장 구성</h3>
                         <ul className="list-disc space-y-3 pl-5 marker:text-gold-primary">
                             <li>
-                                <strong className="text-[#1C2B36]">1장. 합일의 문제</strong>
+                                <strong className="text-[#1C2B36]">1장</strong>
                                 <br />
-                                요가가 무엇이고 마음을 어떻게 고요하게 하는지, 수행의 전체 방향을 제시합니다.
+                                전장의 혼란과 첫 질문이 시작점이다.
                             </li>
                             <li>
-                                <strong className="text-[#1C2B36]">2장. 합일의 단계</strong>
+                                <strong className="text-[#1C2B36]">2장</strong>
                                 <br />
-                                수행자의 태도, 훈련, 실천 구조를 구체적으로 설명합니다.
+                                지혜와 수행의 뼈대를 세운다.
                             </li>
                             <li>
-                                <strong className="text-[#1C2B36]">3장. 합일의 성취와 그 결과</strong>
+                                <strong className="text-[#1C2B36]">3장 이후</strong>
                                 <br />
-                                깊은 집중이 가져오는 변화와 그 과정에서 필요한 분별을 다룹니다.
-                            </li>
-                            <li>
-                                <strong className="text-[#1C2B36]">4장. 깨달음</strong>
-                                <br />
-                                궁극적인 자유와 분리, 존재의 본성을 철학적으로 탐구합니다.
+                                행동, 헌신, 비전, 해탈이 순서대로 넓어진다.
                             </li>
                         </ul>
 
-                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">권장 사용 흐름</h3>
+                        <h3 className="border-b border-gold-border/20 pb-2 text-lg font-bold text-gold-primary">사용 팁</h3>
                         <ul className="list-disc space-y-2 pl-5 marker:text-gold-primary">
-                            <li>챕터와 구절을 선택해 읽기를 시작합니다.</li>
-                            <li>발음과 오디오를 따라가며 리듬과 호흡을 먼저 익힙니다.</li>
-                            <li>여러 번역을 비교하며 핵심 어휘의 차이를 확인합니다.</li>
-                            <li>Commentary 패널에서 핵심 요약과 사유 질문을 함께 읽습니다.</li>
+                            <li>장과 절은 상단 선택기로 빠르게 이동할 수 있다.</li>
+                            <li>오디오가 있으면 원본 URL을 그대로 재생한다.</li>
+                            <li>commentary 패널은 데이터에 있는 긴 설명을 우선으로 보여준다.</li>
+                            <li>학습만화는 가능한 장에만 보이고, 없는 장은 텍스트 설명으로 대체한다.</li>
                         </ul>
                     </div>
                 </div>

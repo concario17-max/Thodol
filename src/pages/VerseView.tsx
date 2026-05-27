@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
@@ -9,46 +9,53 @@ import { TranslationSection } from '../components/verse/TranslationSection';
 import { WordMeanings } from '../components/verse/WordMeanings';
 import { useSutraNavigation } from '../hooks/useSutraNavigation';
 import { useUI } from '../context/UIContext';
-import { chapter1Commentary, type CommentaryBlock } from '../data/chapter1Commentary';
-import { chapter2Commentary } from '../data/chapter2Commentary';
-import { chapter3Commentary } from '../data/chapter3Commentary';
-import { chapter4Commentary } from '../data/chapter4Commentary';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { CommentaryMarkdown } from '../components/commentary/CommentaryMarkdown';
 
-const learningComicImages = {
-    ...import.meta.glob('../assets/learning-comic/chapter-1/*.png', {
-        eager: true,
-        import: 'default',
-    }),
-    ...import.meta.glob('../assets/learning-comic/chapter-2/*.png', {
-        eager: true,
-        import: 'default',
-    }),
-    ...import.meta.glob('../assets/learning-comic/chapter-3/*.png', {
-        eager: true,
-        import: 'default',
-    }),
-    ...import.meta.glob('../assets/learning-comic/chapter-4/*.png', {
-        eager: true,
-        import: 'default',
-    }),
-} as Record<string, string>;
+const learningComicImages = import.meta.glob('../../학습만화/*/*.png', {
+    eager: true,
+    import: 'default',
+}) as Record<string, string>;
 
-const learningComicChapterPaths: Record<'1' | '2' | '3' | '4', string> = {
-    1: '../assets/learning-comic/chapter-1',
-    2: '../assets/learning-comic/chapter-2',
-    3: '../assets/learning-comic/chapter-3',
-    4: '../assets/learning-comic/chapter-4',
+type ComicEntry = {
+    start: number;
+    end: number;
+    url: string;
 };
 
+const learningComicIndex = Object.entries(learningComicImages).reduce<Record<string, ComicEntry[]>>((acc, [path, url]) => {
+    const match = path.match(/학습만화\/(\d+)\/(.+)\.png$/);
+    if (!match) {
+        return acc;
+    }
+
+    const chapter = match[1];
+    const [startText, endText] = match[2].split('-');
+    const start = Number.parseInt(startText, 10);
+    const end = Number.parseInt(endText ?? startText, 10);
+
+    if (!acc[chapter]) {
+        acc[chapter] = [];
+    }
+
+    acc[chapter].push({ start, end, url });
+    return acc;
+}, {});
+
+Object.values(learningComicIndex).forEach((entries) => {
+    entries.sort((left, right) => left.start - right.start || left.end - right.end);
+});
+
 const getLearningComicImageUrl = (chapterNum: string, verseNum: string) => {
-    if (chapterNum !== '1' && chapterNum !== '2' && chapterNum !== '3' && chapterNum !== '4') {
+    const entries = learningComicIndex[chapterNum];
+    if (!entries) {
         return null;
     }
 
-    const chapterPath = learningComicChapterPaths[chapterNum as '1' | '2' | '3' | '4'];
+    const verse = Number.parseInt(verseNum, 10);
+    const match = entries.find((entry) => verse >= entry.start && verse <= entry.end);
 
-    return learningComicImages[`${chapterPath}/${verseNum}.png`] ?? null;
+    return match?.url ?? null;
 };
 
 const containerVariants: Variants = {
@@ -84,119 +91,22 @@ const sharedContentShellClassName =
 
 const sharedContentPaddingClassName = 'px-3 py-4 sm:px-4 sm:py-5 lg:px-6 lg:py-6';
 
-type CommentaryRow = readonly string[] | { label: string; value: string };
-
-type RenderableTable = {
-    headers: readonly string[];
-    rows: ReadonlyArray<CommentaryRow>;
-};
-
-const isTableRowObject = (row: CommentaryRow): row is { label: string; value: string } => !Array.isArray(row);
-
-const toCells = (row: CommentaryRow) => (isTableRowObject(row) ? [row.label, row.value] : [...row]);
-
-const renderTable = (table: RenderableTable) => {
-    const rowCellCount = table.rows.reduce((max, row) => Math.max(max, toCells(row).length), 0);
-    const columnCount = Math.max(table.headers.length, rowCellCount, 1);
-    const gridStyle: CSSProperties = {
-        gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
-    };
-
-    return (
-        <div className="overflow-hidden border-y border-gold-border/12 dark:border-dark-border/45">
-            <div className="grid border-b border-gold-border/12 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-primary dark:text-gold-light" style={gridStyle}>
-                {Array.from({ length: columnCount }).map((_, index) => (
-                    <div key={`${table.headers[index] ?? 'header'}-${index}`} className={`px-4 py-2.5 ${index > 0 ? 'border-l border-gold-border/12 dark:border-dark-border/45' : ''}`}>
-                        {table.headers[index] ?? ''}
-                    </div>
-                ))}
-            </div>
-
-            {table.rows.map((row, rowIndex) => {
-                const cells = toCells(row);
-                const paddedCells = Array.from({ length: columnCount }, (_, index) => cells[index] ?? '');
-
-                return (
-                    <div key={`row-${rowIndex}`} className="grid border-b border-gold-border/10 last:border-b-0" style={gridStyle}>
-                        {paddedCells.map((cell, cellIndex) => (
-                            <div
-                                key={`cell-${rowIndex}-${cellIndex}`}
-                                className={`px-4 py-3.5 text-[15px] leading-relaxed ${
-                                    cellIndex > 0 ? 'border-l border-gold-border/10 dark:border-dark-border/40' : ''
-                                } ${cellIndex === 0 ? 'font-medium text-text-primary dark:text-dark-text-primary' : 'text-text-secondary dark:text-dark-text-secondary'}`}
-                            >
-                                {cell}
-                            </div>
-                        ))}
-                    </div>
-                );
-            })}
-        </div>
-    );
-};
-
-const renderCommentaryBlock = (block: CommentaryBlock) => (
-    <section key={block.title} className="space-y-3 border-l border-gold-border/12 pl-5 dark:border-dark-border/45">
-        <h3 className="font-sans text-[15px] font-semibold leading-snug tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[16px]">
-            {block.title}
-        </h3>
-
-        {block.paragraphs?.map((paragraph, index) => (
-            <p key={`${block.title}-p-${index}`} className="font-sans text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
-                {paragraph}
-            </p>
-        ))}
-
-        {block.table ? renderTable(block.table) : null}
-
-        {block.bullets ? (
-            <ul className="space-y-2 font-sans text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
-                {block.bullets.map((item, index) => {
-                    const match = item.match(/^(\d+)\.\s+(.*)$/);
-                    const marker = match ? `${match[1]}.` : '-';
-                    const text = match ? match[2] : item;
-
-                    return (
-                        <li key={`${block.title}-b-${index}`} className="flex gap-3">
-                            <span className="shrink-0 font-semibold text-text-primary dark:text-dark-text-primary">{marker}</span>
-                            <span className="min-w-0 flex-1 break-words">{text}</span>
-                        </li>
-                    );
-                })}
-            </ul>
-        ) : null}
-    </section>
-);
-
 type CommentaryViewMode = 'commentary' | 'comic';
 
 interface CommentaryContentProps {
     chapterNum: string;
     verseNum: string;
-    navigationControls?: React.ReactNode;
+    commentaryText?: string;
+    navigationControls?: ReactNode;
 }
 
-const CommentaryContent = ({ chapterNum, verseNum, navigationControls }: CommentaryContentProps) => {
-    const [viewMode, setViewMode] = useState<CommentaryViewMode>('comic');
+const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationControls }: CommentaryContentProps) => {
+    const [viewMode, setViewMode] = useState<CommentaryViewMode>('commentary');
 
     useEffect(() => {
-        setViewMode('comic');
+        setViewMode('commentary');
     }, [chapterNum, verseNum]);
 
-    const commentarySource: Record<string, CommentaryBlock[]> | null =
-        chapterNum === '1'
-            ? chapter1Commentary
-            : chapterNum === '2'
-                ? chapter2Commentary
-                : chapterNum === '3'
-                    ? chapter3Commentary
-                    : chapterNum === '4'
-                        ? chapter4Commentary
-                        : null;
-    const commentaryKey = chapterNum === '1' || chapterNum === '4' ? `${chapterNum}.${verseNum}` : verseNum;
-    const commentaryBlocks = commentarySource?.[commentaryKey] ?? null;
-    const inlineHeading = commentaryBlocks?.[0]?.title ?? null;
-    const bodyBlocks = commentaryBlocks?.length ? commentaryBlocks.slice(1) : null;
     const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
 
     return (
@@ -206,12 +116,12 @@ const CommentaryContent = ({ chapterNum, verseNum, navigationControls }: Comment
                     Commentary
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
-                                <div className="ml-auto flex items-center gap-1">
+                <div className="ml-auto flex items-center gap-1">
                     {navigationControls ? <div className="min-w-0 shrink-0">{navigationControls}</div> : null}
                     <button
                         type="button"
                         onClick={() => setViewMode((current) => (current === 'commentary' ? 'comic' : 'commentary'))}
-                        aria-label={viewMode === 'commentary' ? '만화 보기' : '텍스트 해설 보기'}
+                        aria-label={viewMode === 'commentary' ? 'Show comic' : 'Show commentary'}
                         className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-gold-border/30 bg-shell-main/90 text-gold-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-transform duration-200 hover:-translate-y-0.5 dark:border-dark-border/55 dark:bg-shell-main-dark/90 dark:text-gold-light"
                     >
                         <ImageIcon className="h-4 w-4" aria-hidden="true" />
@@ -221,27 +131,27 @@ const CommentaryContent = ({ chapterNum, verseNum, navigationControls }: Comment
 
             <div className={`${sharedContentShellClassName} ${sharedContentPaddingClassName} sm:space-y-5`}>
                 {viewMode === 'commentary' ? (
-                    <>
+                    <div className="space-y-3 sm:space-y-4">
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                             <span className="font-display text-[22px] font-semibold tracking-[0.06em] text-text-primary dark:text-dark-text-primary">
                                 {chapterNum}.{verseNum}
                             </span>
-                            {inlineHeading ? <span className="font-sans text-[16px] font-medium text-text-secondary dark:text-dark-text-secondary">{inlineHeading}</span> : null}
                         </div>
 
-                        {bodyBlocks && bodyBlocks.length > 0 ? (
-                            <div className="space-y-3 sm:space-y-4">{bodyBlocks.map(renderCommentaryBlock)}</div>
-                        ) : (
-                            <div className="border-l border-gold-border/12 pl-5 font-sans text-[15px] leading-8 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[16px]">
-                                No commentary is available for this sutra.
-                            </div>
-                        )}
-                    </>
+                        <CommentaryMarkdown
+                            content={commentaryText}
+                            emptyMessage={
+                                <div className="border-l border-gold-border/12 pl-5 font-sans text-[15px] leading-8 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[16px]">
+                                    No commentary is available for this verse.
+                                </div>
+                            }
+                        />
+                    </div>
                 ) : learningComicImageUrl ? (
                     <div className="overflow-hidden rounded-[1.75rem] border border-gold-border/12 bg-[#fbf7ef] p-2 shadow-[0_18px_48px_-32px_rgba(0,0,0,0.28)] dark:border-dark-border/50 dark:bg-[#191714]">
                         <img
                             src={learningComicImageUrl}
-                            alt={`학습만화 ${chapterNum}.${verseNum}`}
+                            alt={`Learning comic ${chapterNum}.${verseNum}`}
                             className="block h-auto w-full rounded-[1.15rem] object-contain"
                             loading="lazy"
                         />
@@ -251,7 +161,7 @@ const CommentaryContent = ({ chapterNum, verseNum, navigationControls }: Comment
                         <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-primary/70 dark:text-gold-light/70">
                             Learning comic
                         </p>
-                        <p>학습만화는 현재 chapter 1, 2, 3에만 이미지가 준비되어 있다.</p>
+                        <p>This chapter does not have a comic panel yet.</p>
                     </div>
                 )}
             </div>
@@ -266,7 +176,7 @@ const VerseView = () => {
     const { activeVerseContentMode } = useUI();
     const isCommentaryMode = activeVerseContentMode === 'commentary';
 
-    const { allChapters, loading, error, getVerseInRange } = useYogaData();
+    const { allChapters, loading, error, getVerseInRange, chapters } = useYogaData();
 
     const {
         isPlaying,
@@ -290,8 +200,8 @@ const VerseView = () => {
 
         const verseData = getVerseInRange(chapterNum, verseNum);
         if (verseData) {
-            const actualNum = parseInt(verseData.id.split('.')[1], 10);
-            if (actualNum !== parseInt(verseNum, 10)) {
+            const actualNum = verseData.verse ?? Number.parseInt(verseData.id.split('.')[1], 10);
+            if (actualNum !== Number.parseInt(verseNum, 10)) {
                 navigate(`/chapter/${chapterNum}/verse/${actualNum}`, { replace: true });
             }
         }
@@ -313,14 +223,21 @@ const VerseView = () => {
     }, [isCommentaryMode]);
 
     const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
-    const currentChapter = allChapters && chapterNum ? allChapters[parseInt(chapterNum, 10)] : null;
+    const currentChapter = allChapters && chapterNum ? allChapters[Number.parseInt(chapterNum, 10)] : null;
     const currentIndex = currentChapter && verseData ? currentChapter.sutras.findIndex((sutra) => sutra.id === verseData.id) : -1;
     const { handlePrev, handleNext } = useSutraNavigation(allChapters, chapterNum, currentIndex);
+    const firstChapterNumber = chapters[0]?.chapter ?? 1;
+    const lastChapterNumber = chapters[chapters.length - 1]?.chapter ?? firstChapterNumber;
+    const currentChapterNumber = currentChapter?.chapter ?? null;
+    const currentChapterLength = currentChapter?.sutras.length ?? 0;
+    const isFirstVerse = currentChapterNumber !== null && currentChapterNumber === firstChapterNumber && currentIndex === 0;
+    const isLastVerse = currentChapterNumber !== null && currentChapterNumber === lastChapterNumber && currentIndex === currentChapterLength - 1;
+
     if (error) {
         return (
             <div className="flex min-h-full items-center justify-center px-6">
                 <div className="max-w-lg text-center">
-                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this sutra</h1>
+                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load this verse</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
                 </div>
             </div>
@@ -339,7 +256,8 @@ const VerseView = () => {
         return null;
     }
 
-    const audioSrc = `/mp3/${chapterNum}-${verseData.id.split('.')[1]}.mp3`;
+    const verseNumber = verseData.verse ?? Number.parseInt(verseData.id.split('.')[1], 10);
+    const audioSrc = verseData.audio ?? `/mp3/${String(currentChapter.chapter).padStart(3, '0')}_${String(verseNumber).padStart(3, '0')}.mp3`;
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
     const navigationDisabledClassName = 'pointer-events-none opacity-25';
     const rightPanelNavigationControls =
@@ -348,10 +266,10 @@ const VerseView = () => {
                 <button
                     type="button"
                     onClick={handlePrev}
-                    disabled={parseInt(chapterNum, 10) === 1 && currentIndex === 0}
-                    aria-label="이전 구절"
+                    disabled={isFirstVerse}
+                    aria-label="Previous verse"
                     className={`grid h-8 w-8 place-items-center rounded-full text-[#5B7282] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/70 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
-                        parseInt(chapterNum, 10) === 1 && currentIndex === 0 ? navigationDisabledClassName : ''
+                        isFirstVerse ? navigationDisabledClassName : ''
                     }`}
                 >
                     <ChevronLeft className="h-4 w-4 stroke-[1.5]" aria-hidden="true" />
@@ -359,10 +277,10 @@ const VerseView = () => {
                 <button
                     type="button"
                     onClick={handleNext}
-                    disabled={parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter!.sutras.length - 1}
-                    aria-label="다음 구절"
+                    disabled={isLastVerse}
+                    aria-label="Next verse"
                     className={`grid h-8 w-8 place-items-center rounded-full text-[#5B7282] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/70 hover:text-[#31404b] disabled:cursor-not-allowed disabled:opacity-30 active:scale-95 dark:text-dark-text-secondary dark:hover:bg-[#1e1b17] dark:hover:text-dark-text-primary ${
-                        parseInt(chapterNum, 10) === 4 && currentIndex === currentChapter!.sutras.length - 1 ? navigationDisabledClassName : ''
+                        isLastVerse ? navigationDisabledClassName : ''
                     }`}
                 >
                     <ChevronRight className="h-4 w-4 stroke-[1.5]" aria-hidden="true" />
@@ -387,7 +305,7 @@ const VerseView = () => {
                                 <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
                                     <div className={bodyContentClassName}>
                                         <motion.div variants={itemVariants}>
-                                            <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
+                                            <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.iast ?? verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
                                         </motion.div>
 
                                         <motion.div variants={itemVariants}>
@@ -418,15 +336,15 @@ const VerseView = () => {
 
                                         <motion.div variants={itemVariants}>
                                             <TranslationSection
-                                                baeJik={verseData['5.bae_jik']}
-                                                baeUu={verseData['6.bae_uu']}
-                                                oxfordKr={verseData['8. ox']}
-                                                oxfordEn={verseData['9. ox-en']}
+                                                english={verseData.translation_en ?? verseData['2.english']}
+                                                ham={verseData.translation_ham ?? verseData['5.bae_jik']}
+                                                gil={verseData.translation_gil ?? verseData['8. ox']}
+                                                jimong={verseData.translation_jimong}
+                                                suk={verseData.translation_suk ?? verseData['6.bae_uu'] ?? verseData['9. ox-en']}
                                             />
                                         </motion.div>
                                     </div>
                                 </section>
-
                             </div>
                         </motion.div>
                     ) : null}
@@ -436,7 +354,8 @@ const VerseView = () => {
                             <div className="relative mx-auto w-full overflow-visible px-0">
                                 <CommentaryContent
                                     chapterNum={String(currentChapter.chapter)}
-                                    verseNum={verseData.id.split('.')[1]}
+                                    verseNum={String(verseNumber)}
+                                    commentaryText={verseData.commentary_en}
                                     navigationControls={rightPanelNavigationControls}
                                 />
                             </div>
