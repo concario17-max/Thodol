@@ -145,8 +145,8 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `Chapter ${chapterNum}` : 'Chapter --';
-    const activeVerseLabel = verseNum ? `Verse ${verseNum}` : 'Verse --';
+    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '장 --';
+    const activeVerseLabel = verseNum ? `${verseNum}절` : '절 --';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
     const selectClassName =
@@ -171,7 +171,7 @@ const ContextPillPicker = ({
             <div className="space-y-2.5">
                 <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
                     <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
-                        Chapter
+                        장
                     </span>
                     <select
                         ref={chapterSelectRef}
@@ -187,7 +187,7 @@ const ContextPillPicker = ({
                         className={selectClassName}
                     >
                         <option value="" disabled>
-                            Select chapter
+                            장 선택
                         </option>
                         {chapterOptions.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -199,7 +199,7 @@ const ContextPillPicker = ({
 
                 <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
                     <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
-                        Verse
+                        절
                     </span>
                     <select
                         ref={verseSelectRef}
@@ -215,7 +215,7 @@ const ContextPillPicker = ({
                         disabled={!draftChapterNum}
                     >
                         <option value="" disabled>
-                            Select verse
+                            절 선택
                         </option>
                         {draftVerseOptions.map((option) => (
                             <option key={option.value} value={option.value}>

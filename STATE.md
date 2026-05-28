@@ -1,7 +1,7 @@
-# State
+﻿# State
 
 ## Current Task
-Change the browser tab title from the old Yoga Sutras label to the Bhagavad Gita label.
+Change the header chapter/verse selector labels to Korean text like `1장 / 1절`.
 
 ## Route
 Route A
@@ -11,21 +11,21 @@ main: implementation
 
 ## Contract Freeze
 Frozen scope:
-- Default the verse right-side panel to the learning comic view for fresh sessions and first render.
-- Preserve commentary as the alternate right-panel view and keep the toggle behavior intact.
-- Update any persisted default-state logic so new users see comic first without breaking existing saved preferences if that is already intentional in the current code.
+- Update the header selection UI so the active chapter and verse read in Korean format.
+- Keep the existing selection behavior and routing unchanged.
+- Leave the rest of the header and verse layout unchanged.
 
 Reason for Route A:
-- The change is a tight UI-state adjustment centered on the right panel default, with limited file impact.
+- The change is a small presentation tweak in one verse page component.
 
 ## Write Sets
-- main: `STATE.md`, `src/context/UIContext.tsx`, `src/pages/VerseView.tsx`, `src/components/CommentarySidebar.tsx`, `src/components/ui/desktopVerseLayout.test.ts`
+- main: `STATE.md`, `src/App.tsx`
 
 ## Reviewer
 reviewer: not required for Route A
 
 ## Last Update
-2026-05-28 00:00:00 +09:00 - Identified the stale tab title in index.html and reclassified the task as a small UI copy fix.
+2026-05-28 09:58:58 +09:00 - Localized the header selector to show chapter and verse in Korean format.
 
 ## Open Review Item
 - None.
