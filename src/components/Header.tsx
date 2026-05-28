@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 const Header = ({
-    title = '부록:기도문',
+    title = 'Bardo-Thödol',
     targetUrl = '/',
     showSidebarToggle = false,
     selectionControls,
@@ -31,7 +31,7 @@ const Header = ({
             <div className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
                 {[
                     { mode: 'commentary' as const, label: '해설', icon: ScrollText },
-                    { mode: 'body' as const, label: '본문', icon: BookOpenText },
+                    { mode: 'body' as const, label: '심화', icon: BookOpenText },
                 ].map((option) => {
                     const isActive = activeVerseContentMode === option.mode;
                     const Icon = option.icon;

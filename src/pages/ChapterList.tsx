@@ -54,6 +54,11 @@ const renderChapterTitle = (title: string) =>
             </span>
         ));
 
+const getVerseOptionLabel = (verseNumber: string, subtitle?: string) => {
+    const trimmedSubtitle = subtitle?.trim();
+    return trimmedSubtitle ? `${verseNumber}. ${trimmedSubtitle}` : verseNumber;
+};
+
 const ChapterList = () => {
     const navigate = useNavigate();
     const { chapters, loading, error } = useYogaData();
@@ -88,7 +93,7 @@ const ChapterList = () => {
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
                 </motion.div>
                 <motion.h1 variants={itemVariants} className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px] lg:mb-3 lg:text-[54px]">
-                    TIBETAN BOOK OF THE DEAD
+                    Bardo-Thödol
                 </motion.h1>
                 <motion.p variants={itemVariants} className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-6">
                     Appendix prayers come first, then the main book
@@ -152,9 +157,10 @@ const ChapterList = () => {
                                     .find((chapter) => chapter.chapter === Number.parseInt(selectedChapter, 10))
                                     ?.sutras.map((sutra) => {
                                         const verseNumber = String(sutra.verse ?? Number.parseInt(sutra.id.split('.')[1], 10));
+                                        const verseSubtitle = sutra.sourceChapterName?.trim() || sutra.displaySubtitle?.trim() || sutra.chapterTitle?.trim() || sutra.displayTitle?.trim();
                                         return (
                                             <option key={sutra.id} value={verseNumber} className="text-base">
-                                                Verse {verseNumber}
+                                                {getVerseOptionLabel(verseNumber, verseSubtitle)}
                                             </option>
                                         );
                                     })}

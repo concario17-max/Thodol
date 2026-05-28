@@ -215,3 +215,14 @@ status: resolved
   summary: Verification completed successfully after switching to the `.cmd` shim
   details: The PowerShell execution policy blocked the initial `npm`/`npx` invocations. Re-ran the typecheck, targeted vitest, and production build through `cmd /c`, and all three passed.
   status: resolved
+- time: 2026-05-28 23:17:17 +09:00
+  location: `cmd /c npx vitest run src/utils/dataFetcher.test.ts`
+  summary: Targeted vitest failed on stale fixture expectations during the Ω…»≠ data refactor
+  details: The new translation extraction code passed typecheck and build, but the test still expected the old appendix and section labels. Updated the fixture expectations to match the merged `book` + `prayers` contract and reran the test successfully.
+  status: resolved
+
+- time: 2026-05-29 00:09:44 +09:00
+  location: public/prayers.json injection script
+  summary: section-header parser misdetected verse lines and missed chapter headers
+  details: initial title-based injection attempts failed because shell-embedded Korean literals were mangled and a loose numeric header regex matched verse lines; resolved by deriving section order from the source files themselves and using header-title order to map translations.
+  status: resolved

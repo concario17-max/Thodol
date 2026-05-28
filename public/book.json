@@ -1,7 +1,7 @@
 [
   {
     "id": "group-1",
-    "chapterName": "1부. 저승 중간계에서 드리는 기도",
+    "chapterName": "저승 중간계에서 드리는 기도",
     "isGroup": true,
     "subchapters": [
       {
@@ -998,7 +998,7 @@
   },
   {
     "id": "group-2",
-    "chapterName": "2부. 자애로운 모습의 붓다와 보살들이 나타나는 저승 중간계",
+    "chapterName": "자애로운 모습의 붓다와 보살들이 나타나는 저승 중간계",
     "isGroup": true,
     "subchapters": [
       {
@@ -2870,7 +2870,7 @@
   },
   {
     "id": "group-3",
-    "chapterName": "3부. 무서운 모습의 붓다와 보살들이 나타나는 저승 중간계",
+    "chapterName": "무서운 모습의 붓다와 보살들이 나타나는 저승 중간계",
     "isGroup": true,
     "subchapters": [
       {
@@ -4287,7 +4287,7 @@
   },
   {
     "id": "group-4",
-    "chapterName": "4부. 탄생 중간계 길 안내",
+    "chapterName": "탄생 중간계 길 안내",
     "isGroup": true,
     "subchapters": [
       {
