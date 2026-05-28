@@ -1,0 +1,430 @@
+[
+    {
+        "id": "album-01",
+        "title": "Bardo Prayers - Tibetan Book of the Dead",
+        "artist": "Traditional",
+        "description": "『티베트 사자의 서』와 관련된 대표 기도문을 모은 음반입니다. 죽음과 중간계, 인도와 해탈의 주제를 기도와 독송의 흐름으로 따라가기에 좋은 입문용 컬렉션입니다.",
+        "coverImage": "/album-covers/album-01-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-01-t1",
+                "title": "Tungshag Confession Prayer",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/1. Tungshag Confession Prayer.mp3"
+            },
+            {
+                "id": "album-01-t2",
+                "title": "Wake Up Prayer Kyema Kyhud",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/2. Wake Up Prayer Kyema Kyhud.mp3"
+            },
+            {
+                "id": "album-01-t3",
+                "title": "Shitro Prayer Namdag Choying",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/3. Shitro Prayer Namdag Choying.mp3"
+            },
+            {
+                "id": "album-01-t4",
+                "title": "Bardo Trangdol",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/4. Bardo Trangdol.mp3"
+            },
+            {
+                "id": "album-01-t5",
+                "title": "Gongsol (Chogsuna Zhugpal)",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/5. Gongsol (Chogsuna Zhugpal).mp3"
+            },
+            {
+                "id": "album-01-t6",
+                "title": "Bagchag Rangdrol",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/6. Bagchag Rangdrol.mp3"
+            },
+            {
+                "id": "album-01-t7",
+                "title": "Kuntuzangpo",
+                "url": "/mp3/Bardo Prayers - Tibetan Book of the Dead/7. Kuntuzangpo.mp3"
+            }
+        ]
+    },
+    {
+        "id": "album-02",
+        "title": "Chenrezig Prayers",
+        "artist": "Traditional",
+        "description": "관세음보살(Chenrezig)과 관련된 기도와 독송을 모은 음반입니다. 자비와 보호, 발원과 관상을 주제로 한 곡들이 이어져 차분한 명상용 청취에 잘 어울립니다.",
+        "coverImage": "/album-covers/album-02-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-02-t1",
+                "title": "Buddhafield of Infinite Appearance",
+                "url": "/mp3/Chenrezig Prayers/Buddhafield of Infinite Appearance.mp3"
+            },
+            {
+                "id": "album-02-t2",
+                "title": "Dak Zhen Lu Nang",
+                "url": "/mp3/Chenrezig Prayers/Dak Zhen Lu Nang.mp3"
+            },
+            {
+                "id": "album-02-t3",
+                "title": "Maha Haruna Dharani",
+                "url": "/mp3/Chenrezig Prayers/Maha Haruna Dharani.mp3"
+            },
+            {
+                "id": "album-02-t4",
+                "title": "Om Mani Peme Hung",
+                "url": "/mp3/Chenrezig Prayers/Om Mani Peme Hung.mp3"
+            },
+            {
+                "id": "album-02-t5",
+                "title": "Prayer to Chenrezig",
+                "url": "/mp3/Chenrezig Prayers/Prayer to Chenrezig.mp3"
+            },
+            {
+                "id": "album-02-t6",
+                "title": "Praying One-Pointedly",
+                "url": "/mp3/Chenrezig Prayers/Praying One-Pointedly.mp3"
+            },
+            {
+                "id": "album-02-t7",
+                "title": "Recitation for Meditation: Great Compassionate One",
+                "url": "/mp3/Chenrezig Prayers/Recitation for Meditation： Great Compassionate One.mp3"
+            },
+            {
+                "id": "album-02-t8",
+                "title": "Refuge Prayer",
+                "url": "/mp3/Chenrezig Prayers/Refuge Prayer.mp3"
+            },
+            {
+                "id": "album-02-t9",
+                "title": "Seven Branch Prayer",
+                "url": "/mp3/Chenrezig Prayers/Seven Branch Prayer.mp3"
+            },
+            {
+                "id": "album-02-t10",
+                "title": "Verses of Eight Noble Auspicious Ones",
+                "url": "/mp3/Chenrezig Prayers/Verses of Eight Noble Auspicious Ones.mp3"
+            },
+            {
+                "id": "album-02-t11",
+                "title": "Visualization of the Deity",
+                "url": "/mp3/Chenrezig Prayers/Visualization of the Deity.mp3"
+            }
+        ]
+    },
+    {
+        "id": "album-03",
+        "title": "Rain of Blessings: Vajra Chants",
+        "artist": "Real World Gold",
+        "description": "금강승 계열의 찬트와 발원문을 현대적인 음향으로 정리한 앨범입니다. 전통 독송의 반복성과 명상적인 리듬을 비교적 부드럽게 접하고 싶을 때 잘 어울립니다.",
+        "coverImage": "/album-covers/album-03-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-03-t1",
+                "title": "Chenrezi Pure Land Prayer",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Chenrezi Pure Land Prayer.mp3"
+            },
+            {
+                "id": "album-03-t2",
+                "title": "Medicine Buddha Mantra",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Medicine Buddha Mantra.mp3"
+            },
+            {
+                "id": "album-03-t3",
+                "title": "Offering Chant (Unplugged)",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Offering Chant (Unplugged).mp3"
+            },
+            {
+                "id": "album-03-t4",
+                "title": "Offering Chant",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Offering Chant.mp3"
+            },
+            {
+                "id": "album-03-t5",
+                "title": "Prayer to Sangye Menla",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Prayer to Sangye Menla.mp3"
+            },
+            {
+                "id": "album-03-t6",
+                "title": "Rain of Blessings",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Rain of Blessings.mp3"
+            },
+            {
+                "id": "album-03-t7",
+                "title": "Refuge & Sevenfold Offering",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Refuge & Sevenfold Offering.mp3"
+            },
+            {
+                "id": "album-03-t8",
+                "title": "Sacred Words of Liberation",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Sacred Words of Liberation.mp3"
+            },
+            {
+                "id": "album-03-t9",
+                "title": "Six Syllable Mantra of the White Lotus Lord",
+                "url": "/mp3/Rain of Blessings： Vajra Chants (Real World Gold)/Six Syllable Mantra of the White Lotus Lord.mp3"
+            }
+        ]
+    },
+    {
+        "id": "album-04",
+        "title": "Tantric Nyingma Chant of Tibet",
+        "artist": "Chimed Rigdzin Rinpoche",
+        "description": "치메드 리그진 린포체의 독송을 담은 전통 찬트 음반입니다. 장중한 만트라와 깊은 공명감이 강한 몰입감을 주며, 보다 원형에 가까운 의식성 음원을 찾을 때 적합합니다.",
+        "coverImage": "/album-covers/album-04-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-04-t1",
+                "title": "Side A 1",
+                "url": "/mp3/Tantric Nyingma Chant of Tibet (Chimed Rigdzin Rinpoche)/Side_A_1.mp3"
+            },
+            {
+                "id": "album-04-t2",
+                "title": "Side A 2",
+                "url": "/mp3/Tantric Nyingma Chant of Tibet (Chimed Rigdzin Rinpoche)/Side_A_2.mp3"
+            },
+            {
+                "id": "album-04-t3",
+                "title": "Side A 3",
+                "url": "/mp3/Tantric Nyingma Chant of Tibet (Chimed Rigdzin Rinpoche)/Side_A_3.mp3"
+            },
+            {
+                "id": "album-04-t4",
+                "title": "Side B 1",
+                "url": "/mp3/Tantric Nyingma Chant of Tibet (Chimed Rigdzin Rinpoche)/Side_B_1.mp3"
+            },
+            {
+                "id": "album-04-t5",
+                "title": "Side B 2",
+                "url": "/mp3/Tantric Nyingma Chant of Tibet (Chimed Rigdzin Rinpoche)/Side_B_2.mp3"
+            },
+            {
+                "id": "album-04-t6",
+                "title": "Side B 3",
+                "url": "/mp3/Tantric Nyingma Chant of Tibet (Chimed Rigdzin Rinpoche)/Side_B_3.mp3"
+            }
+        ]
+    },
+    {
+        "id": "album-05",
+        "title": "The Lama's Chant Songs of Awakening",
+        "artist": "Lama Gyurme",
+        "description": "라마 규르메의 목소리와 현대적인 편곡이 어우러진 명상 음반입니다. 전통 독송의 분위기를 유지하면서도 비교적 친숙하게 들려 입문자에게도 접근성이 좋습니다.",
+        "coverImage": "/album-covers/album-05-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-05-t1",
+                "title": "Hope For Enlightenment",
+                "url": "/mp3/The Lama's Chant Songs of Awakening (Lama Gyurme)/1. Hope For Enlightenment.mp3"
+            },
+            {
+                "id": "album-05-t2",
+                "title": "Guru Rinpoche (The Mantra Of Padmasambhava)",
+                "url": "/mp3/The Lama's Chant Songs of Awakening (Lama Gyurme)/2. Guru Rinpoche (The Mantra Of Padmasambhava).mp3"
+            },
+            {
+                "id": "album-05-t3",
+                "title": "The Tsok Offering (Vajra Melody)",
+                "url": "/mp3/The Lama's Chant Songs of Awakening (Lama Gyurme)/3. The Tsok Offering (Vajra Melody).mp3"
+            },
+            {
+                "id": "album-05-t4",
+                "title": "Calling The Lama From Afar",
+                "url": "/mp3/The Lama's Chant Songs of Awakening (Lama Gyurme)/4. Calling The Lama From Afar.mp3"
+            },
+            {
+                "id": "album-05-t5",
+                "title": "Longevity Prayer To Kalu Rinpoche",
+                "url": "/mp3/The Lama's Chant Songs of Awakening (Lama Gyurme)/5. Longevity Prayer To Kalu Rinpoche.mp3"
+            }
+        ]
+    },
+    {
+        "id": "album-06",
+        "title": "Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1",
+        "artist": "Traditional",
+        "description": "부탄 사원의 실제 의식과 연주를 현장 녹음한 자료입니다. 길고 깊은 호른, 타악, 염송이 섞여 전통 의례 음악의 공간감과 질감을 강하게 전달합니다.",
+        "coverImage": "/album-covers/album-06-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-06-t1",
+                "title": "Genyen Gi Topa",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/01_Genyen_Gi_Topa.mp3"
+            },
+            {
+                "id": "album-06-t2",
+                "title": "Cham Gi Serkyem Gi Yang",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/02_Cham_Gi_Serkyem_Gi_Yang.mp3"
+            },
+            {
+                "id": "album-06-t3",
+                "title": "Tashi Tseringmai Dzabkul",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/03_Tashi_Tseringmai_Dzabkul.mp3"
+            },
+            {
+                "id": "album-06-t4",
+                "title": "Dung Chen Gulygen",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/04_Dung_Chen_Gulygen.mp3"
+            },
+            {
+                "id": "album-06-t5",
+                "title": "Dung Chen Nyithu Panglep",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/05_Dung_Chen_Nyithu_Panglep.mp3"
+            },
+            {
+                "id": "album-06-t6",
+                "title": "Duchog Gonpoi Chendren",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/06_Duchog_Gonpoi_Chendren.mp3"
+            },
+            {
+                "id": "album-06-t7",
+                "title": "Chakchen Sondep",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/07_Chakchen_Sondep.mp3"
+            },
+            {
+                "id": "album-06-t8",
+                "title": "Tshetro Jinbeb",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/08_Tshetro_Jinbeb.mp3"
+            },
+            {
+                "id": "album-06-t9",
+                "title": "Lama Kusum Gi Sondep",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/09_Lama_Kusum_Gi_Sondep.mp3"
+            },
+            {
+                "id": "album-06-t10",
+                "title": "Dewachen Gi Monlam",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/10_Dewachen_Gi_Monlam.mp3"
+            },
+            {
+                "id": "album-06-t11",
+                "title": "Druamar Chabdrol Sondep",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/11_Druamar_Chabdrol_Sondep.mp3"
+            },
+            {
+                "id": "album-06-t12",
+                "title": "Lamai Tenzhug Gi Yang",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/12_Lamai_Tenzhug_Gi_Yang.mp3"
+            },
+            {
+                "id": "album-06-t13",
+                "title": "Lay Monk Turns Mani Wheel",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/13_Lay_Monk_Turns_Mani_Wheel.mp3"
+            },
+            {
+                "id": "album-06-t14",
+                "title": "Nyung ne",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/14_Nyung_ne.mp3"
+            },
+            {
+                "id": "album-06-t15",
+                "title": "Nyung ne Interlude",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/15_Nyung_ne_Interlude.mp3"
+            },
+            {
+                "id": "album-06-t16",
+                "title": "Nyung ne Continued",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/16_Nyung_ne_Continued.mp3"
+            },
+            {
+                "id": "album-06-t17",
+                "title": "Bo Go Gyaling",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/17_Bo_Go_Gyaling.mp3"
+            },
+            {
+                "id": "album-06-t18",
+                "title": "Banga Trin Trin",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/18_Banga_Trin_Trin.mp3"
+            },
+            {
+                "id": "album-06-t19",
+                "title": "Dung Chen",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 1/19_Dung_Chen.mp3"
+            }
+        ]
+    },
+    {
+        "id": "album-07",
+        "title": "Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2",
+        "artist": "Traditional",
+        "description": "부탄 의식 음악 두 번째 모음집으로, 행렬과 제의, 춤 음악의 비중이 더 두드러집니다. 샴, 심벌, 피리류 악기와 독송이 섞여 보다 역동적인 현장감을 전합니다.",
+        "coverImage": "/album-covers/album-07-cover.jpg",
+        "tracks": [
+            {
+                "id": "album-07-t1",
+                "title": "Entreaty To The Three Buddha-Bodies",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/01_Entreaty_To_The_Three_Buddha-Bodies.mp3"
+            },
+            {
+                "id": "album-07-t2",
+                "title": "Invitation To Padma Sambhava",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/02_Invitation_To_Padma_Sambhava.mp3"
+            },
+            {
+                "id": "album-07-t3",
+                "title": "Rise Up Padma",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/03_Rise_Up_Padma.mp3"
+            },
+            {
+                "id": "album-07-t4",
+                "title": "Words Of Prayer",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/04_Words_Of_Prayer.mp3"
+            },
+            {
+                "id": "album-07-t5",
+                "title": "Tibetan Shawms",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/05_Tibetan_Shawms.mp3"
+            },
+            {
+                "id": "album-07-t6",
+                "title": "Myule Drelwa And Kulwa",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/06_Myule_Drelwa_And_Kulwa.mp3"
+            },
+            {
+                "id": "album-07-t7",
+                "title": "Part Of Junbeb",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/07_Part_Of_Junbeb.mp3"
+            },
+            {
+                "id": "album-07-t8",
+                "title": "Monks In Procession Thimphu",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/08_Monks_In_Procession_Thimphu.mp3"
+            },
+            {
+                "id": "album-07-t9",
+                "title": "Dramnyen Choshe Song Of Offering",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/09_Dramnyen_Choshe_Song_Of_Offering.mp3"
+            },
+            {
+                "id": "album-07-t10",
+                "title": "Monks Clown Crowds 1",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/11_Monks_Clown_Crowds_1.mp3"
+            },
+            {
+                "id": "album-07-t11",
+                "title": "End Of Festival",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/14_End_Of_Festival.mp3"
+            },
+            {
+                "id": "album-07-t12",
+                "title": "Wandering Ascetic",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/15_Wandering_Ascetic.mp3"
+            },
+            {
+                "id": "album-07-t13",
+                "title": "Cymbals Silnyen Solo",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/17_Cymbals_Silnyen_Solo.mp3"
+            },
+            {
+                "id": "album-07-t14",
+                "title": "Cross-Flute Zurlim",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/18_Cross-Flute_Zurlim.mp3"
+            },
+            {
+                "id": "album-07-t15",
+                "title": "Another Manip Milarepa",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/19_Another_Manip_Milarepa.mp3"
+            },
+            {
+                "id": "album-07-t16",
+                "title": "First Manip Storyteller",
+                "url": "/mp3/Tibetan Buddhist Rites From The Monasteries Of Bhutan Volume 2/20_First_Manip_Storyteller.mp3"
+            }
+        ]
+    }
+]

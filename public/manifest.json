@@ -1,0 +1,23 @@
+{
+    "name": "The Bardo Thodol | Sacred Texts",
+    "short_name": "Tibet",
+    "description": "Tibetan Book of the Dead - Liberation Through Hearing in the Intermediate State",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#EBE5D9",
+    "theme_color": "#EBE5D9",
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
