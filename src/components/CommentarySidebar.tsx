@@ -5,6 +5,15 @@ import { useYogaData } from '../hooks/useYogaData';
 import { SidebarLayout } from './ui/SidebarLayout';
 import { CommentaryMarkdown } from './commentary/CommentaryMarkdown';
 
+const extractCommentaryTitle = (content?: string | null) => {
+    if (!content) {
+        return null;
+    }
+
+    const headingMatch = content.match(/^#\s+(.+?)(?:\r?\n|$)/m);
+    return headingMatch?.[1]?.trim() ?? null;
+};
+
 const CommentarySidebar = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum: string; verseNum: string }>();
     const { activeRightPanel, setActiveRightPanel, activeDesktopRightPanel } = useUI();
@@ -17,6 +26,7 @@ const CommentarySidebar = () => {
     const isOpen = activeRightPanel === 'commentary';
     const isDesktopOpen = activeDesktopRightPanel === 'commentary';
     const verseData = getVerseInRange(chapterNum, verseNum);
+    const commentaryTitle = extractCommentaryTitle(verseData?.commentary_en);
 
     return (
         <SidebarLayout
@@ -39,15 +49,13 @@ const CommentarySidebar = () => {
                     </span>
                 </div>
 
-                <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs font-semibold tracking-[0.16em] text-text-secondary/65 dark:text-dark-text-secondary/65">
-                    <span>
+                <div className="mb-3 flex items-baseline gap-2 overflow-hidden text-xs font-semibold tracking-[0.16em] text-text-secondary/65 dark:text-dark-text-secondary/65">
+                    <span className="shrink-0 whitespace-nowrap">
                         {chapterNum}.{verseNum}
                     </span>
-                    {verseData?.translation_en ? (
-                        <span className="text-base font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">
-                            {verseData.translation_en.slice(0, 50)}
-                        </span>
-                    ) : null}
+                    <span className="min-w-0 truncate text-base font-semibold tracking-normal text-text-primary dark:text-dark-text-primary">
+                        {commentaryTitle ?? verseData?.displayTitle ?? verseData?.chapterTitle ?? verseData?.translation_en?.slice(0, 50) ?? ''}
+                    </span>
                 </div>
 
                 <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto pb-10 pr-2">

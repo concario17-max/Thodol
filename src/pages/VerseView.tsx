@@ -126,51 +126,8 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
     }, [chapterNum, verseNum]);
 
     useEffect(() => {
-        const fallbackTitle = extractCommentaryTitle(commentaryText);
-        if (fallbackTitle) {
-            setCommentaryTitle(fallbackTitle);
-            return;
-        }
-
-        let cancelled = false;
-
-        const loadTitle = async () => {
-            try {
-                const response = await fetch('/gita.json');
-                if (!response.ok) {
-                    return;
-                }
-
-                const rawData = (await response.json()) as Record<
-                    string,
-                    {
-                        verses?: Array<{
-                            id: string;
-                            commentary_en?: string;
-                        }>;
-                    }
-                >;
-
-                const chapter = rawData[String(Number.parseInt(chapterNum, 10))];
-                const verse = chapter?.verses?.find((entry) => entry.id === `${chapterNum}.${verseNum}`);
-                const title = extractCommentaryTitle(verse?.commentary_en);
-
-                if (!cancelled) {
-                    setCommentaryTitle(title);
-                }
-            } catch {
-                if (!cancelled) {
-                    setCommentaryTitle(null);
-                }
-            }
-        };
-
-        void loadTitle();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [chapterNum, verseNum, commentaryText]);
+        setCommentaryTitle(extractCommentaryTitle(commentaryText));
+    }, [commentaryText]);
 
     const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
     const commentaryBodyText = stripCommentaryTitleBlock(commentaryText);
@@ -326,7 +283,10 @@ const VerseView = () => {
     }
 
     const verseNumber = verseData.verse ?? Number.parseInt(verseData.id.split('.')[1], 10);
-    const audioSrc = verseData.audio ?? `/mp3/${String(currentChapter.chapter).padStart(3, '0')}_${String(verseNumber).padStart(3, '0')}.mp3`;
+    const audioSrc =
+        verseData.audioUrl ??
+        verseData.audio ??
+        `/mp3/${String(currentChapter.chapter).padStart(3, '0')}_${String(verseNumber).padStart(3, '0')}.mp3`;
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
     const navigationDisabledClassName = 'pointer-events-none opacity-25';
     const rightPanelNavigationControls =
@@ -374,7 +334,11 @@ const VerseView = () => {
                                 <section className={`${sharedContentShellClassName} ${sharedContentPaddingClassName}`}>
                                     <div className={bodyContentClassName}>
                                         <motion.div variants={itemVariants}>
-                                            <SutraContent sanskrit={verseData.sanskrit} pronunciation={verseData.iast ?? verseData.pronunciation} pronunciationKr={verseData.pronunciation_kr} />
+                                            <SutraContent
+                                                title={verseData.displayTitle ?? verseData.chapterTitle ?? verseData.sanskrit}
+                                                subtitle={verseData.displaySubtitle ?? verseData.chapterTitle ?? verseData.iast}
+                                                body={verseData.bodyText ?? verseData.translation_en ?? ''}
+                                            />
                                         </motion.div>
 
                                         <motion.div variants={itemVariants}>
@@ -405,9 +369,9 @@ const VerseView = () => {
 
                                         <motion.div variants={itemVariants}>
                                             <TranslationSection
-                                                gil={verseData.translation_gil ?? verseData['8. ox']}
-                                                jimong={verseData.translation_jimong}
-                                                suk={verseData.translation_suk ?? verseData['6.bae_uu'] ?? verseData['9. ox-en']}
+                                                body={verseData.bodyText ?? verseData.translation_en ?? ''}
+                                                note={verseData.displaySubtitle ?? verseData.chapterTitle ?? ''}
+                                                secondary={currentChapter.meta.sectionLabel === 'appendix' ? '부록:기도문' : currentChapter.meta.sectionLabel ?? ''}
                                             />
                                         </motion.div>
                                     </div>

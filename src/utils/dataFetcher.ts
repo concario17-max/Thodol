@@ -1,13 +1,18 @@
-import { YOGA_CHAPTERS_META } from '../constants';
-import { YogaChapter, YogaSutra, WordMeaning, VerseWord } from '../types';
+import { YogaChapter, YogaSutra, WordMeaning, VerseWord, type RuntimeSection } from '../types';
 
-interface RawGitaVerse {
+interface RawVerseText {
+    tibetan?: string;
+    english?: string;
+    korean?: string;
+}
+
+interface RawVerse {
     id: string;
-    chapter: number;
-    verse: number;
-    sanskrit: string;
-    iast?: string;
+    title?: string;
+    chapterTitle?: string;
+    text?: RawVerseText;
     audio?: string;
+    audioUrl?: string;
     words?: VerseWord[];
     translation_en?: string;
     commentary_en?: string;
@@ -18,10 +23,29 @@ interface RawGitaVerse {
     translation_suk?: string;
 }
 
-interface RawGitaChapter {
-    chapter: number;
-    verses: RawGitaVerse[];
+interface RawPrayerSection {
+    id: string;
+    chapterName: string;
+    verses: RawVerse[];
 }
+
+interface RawBookSubchapter {
+    id: string;
+    chapterName: string;
+    verses: RawVerse[];
+}
+
+interface RawBookSection {
+    id: string;
+    chapterName: string;
+    subchapters: RawBookSubchapter[];
+}
+
+type RawPrayerFile = RawPrayerSection[];
+type RawBookFile = RawBookSection[];
+
+const APPENDIX_CHAPTER_NAME_KOREAN = '\uBD80\uB85D:\uAE30\uB3C4\uBB38';
+const APPENDIX_CHAPTER_NAME_ENGLISH = 'Appendix: Prayers';
 
 let cachedData: Record<number, YogaChapter> | null = null;
 let pendingRequest: Promise<Record<number, YogaChapter>> | null = null;
@@ -37,31 +61,130 @@ const normalizeWordMeanings = (meanings?: VerseWord[]): WordMeaning | undefined 
     }));
 };
 
-const normalizeVerse = (item: RawGitaVerse): YogaSutra => ({
-    id: item.id,
-    chapter: item.chapter,
-    verse: item.verse,
-    sanskrit: item.sanskrit,
-    iast: item.iast,
-    pronunciation: item.iast ?? '',
-    pronunciation_kr: item.korean_pronunciation ?? '',
-    audio: item.audio,
-    translation_en: item.translation_en,
-    commentary_en: item.commentary_en,
-    korean_pronunciation: item.korean_pronunciation,
-    translation_ham: item.translation_ham,
-    translation_gil: item.translation_gil,
-    translation_jimong: item.translation_jimong,
-    translation_suk: item.translation_suk,
-    '2.english': item.translation_en,
-    '3.korean-1': item.translation_gil ?? item.translation_ham ?? item.translation_jimong ?? item.translation_suk,
-    '5.bae_jik': item.translation_ham,
-    '6.bae_uu': item.translation_suk,
-    '8. ox': item.translation_gil,
-    '9. ox-en': item.translation_en,
-    word_meanings: normalizeWordMeanings(item.words),
-    words: item.words,
-});
+const buildCommentary = (heading: string, body: string) => {
+    const trimmedHeading = heading.trim();
+    const trimmedBody = body.trim();
+
+    if (!trimmedHeading && !trimmedBody) {
+        return undefined;
+    }
+
+    if (!trimmedBody) {
+        return `# ${trimmedHeading}`;
+    }
+
+    return trimmedHeading ? `# ${trimmedHeading}\n\n${trimmedBody}` : trimmedBody;
+};
+
+const normalizeVerse = (
+    item: RawVerse,
+    chapterNumber: number,
+    verseNumber: number,
+    sourceSectionId: string,
+    sourceSectionName: string,
+    sourceKind: 'prayer' | 'book',
+): YogaSutra => {
+    const title = item.title?.trim() ?? '';
+    const chapterTitle = item.chapterTitle?.trim() ?? '';
+    const sourceText = item.text ?? {};
+    const english = item.translation_en ?? sourceText.english ?? '';
+    const korean = item.translation_ham ?? sourceText.korean ?? '';
+    const tibetan = sourceText.tibetan ?? '';
+    const pronunciation = title || chapterTitle || english || korean;
+    const commentaryBody = chapterTitle || english || korean;
+    const commentaryHeading = title || sourceSectionName || `${chapterNumber}.${verseNumber}`;
+
+    return {
+        id: `${chapterNumber}.${verseNumber}`,
+        chapter: chapterNumber,
+        verse: verseNumber,
+        sanskrit: tibetan || title || chapterTitle || english || korean,
+        iast: pronunciation,
+        pronunciation,
+        pronunciation_kr: korean,
+        displayTitle: title || chapterTitle || english || korean || tibetan,
+        displaySubtitle: chapterTitle || english || korean || title || tibetan,
+        bodyText: english || korean || tibetan || chapterTitle || title || '',
+        sectionLabel: sourceKind === 'prayer' ? APPENDIX_CHAPTER_NAME_KOREAN : '본문',
+        sourceKind,
+        audio: item.audioUrl ?? item.audio,
+        audioUrl: item.audioUrl ?? item.audio,
+        translation_en: english || undefined,
+        commentary_en: buildCommentary(commentaryHeading, commentaryBody),
+        korean_pronunciation: item.korean_pronunciation ?? (korean || undefined),
+        translation_ham: korean || undefined,
+        translation_gil: item.translation_gil ?? (english || undefined),
+        translation_jimong: item.translation_jimong ?? (chapterTitle || undefined),
+        translation_suk: item.translation_suk ?? (korean || undefined),
+        '2.english': english || undefined,
+        '3.korean-1': korean || undefined,
+        '5.bae_jik': korean || undefined,
+        '6.bae_uu': item.translation_suk ?? (korean || undefined),
+        '8. ox': item.translation_gil ?? (english || undefined),
+        '9. ox-en': english || undefined,
+        text: sourceText,
+        title,
+        chapterTitle,
+        sourceId: item.id,
+        sourceSectionId,
+        sourceChapterName: sourceSectionName,
+        word_meanings: normalizeWordMeanings(item.words),
+        words: item.words,
+    };
+};
+
+const buildChapter = (
+    chapterNumber: number,
+    nameKorean: string,
+    nameEnglish: string,
+    description: string,
+    sourceId: string,
+    sourceType: 'appendix' | 'book',
+    sectionLabel: string,
+    sections: RawBookSubchapter[] | RawPrayerSection[],
+): YogaChapter => {
+    let verseNumber = 1;
+    const runtimeSections: RuntimeSection[] = [];
+    const sutras: YogaSutra[] = [];
+
+    sections.forEach((section) => {
+        const normalizedVerses = section.verses.map((verse) => {
+            const normalized = normalizeVerse(
+                verse,
+                chapterNumber,
+                verseNumber,
+                section.id,
+                section.chapterName,
+                sourceType === 'appendix' ? 'prayer' : 'book',
+            );
+            verseNumber += 1;
+            sutras.push(normalized);
+            return normalized;
+        });
+
+        runtimeSections.push({
+            id: section.id,
+            chapterName: section.chapterName,
+            verses: normalizedVerses,
+        });
+    });
+
+    return {
+        chapter: chapterNumber,
+        meta: {
+            chapter: chapterNumber,
+            name_korean: nameKorean,
+            name_english: nameEnglish,
+            description,
+            sutraCount: sutras.length,
+            sectionLabel,
+        },
+        sutras,
+        sections: runtimeSections,
+        sourceId,
+        sourceType,
+    };
+};
 
 export const resetCache = () => {
     cachedData = null;
@@ -79,43 +202,56 @@ export const fetchYogaData = async (): Promise<Record<number, YogaChapter>> => {
 
     pendingRequest = (async () => {
         try {
-            const response = await fetch('/gita.json');
-            if (!response.ok) {
-                throw new Error(`Failed to fetch Gita data: ${response.status}`);
+            const [prayersResponse, bookResponse] = await Promise.all([
+                fetch('/prayers.json'),
+                fetch('/book.json'),
+            ]);
+
+            if (!prayersResponse.ok) {
+                throw new Error(`Failed to fetch prayers data: ${prayersResponse.status}`);
             }
 
-            const rawChapters = (await response.json()) as Record<string, RawGitaChapter>;
+            if (!bookResponse.ok) {
+                throw new Error(`Failed to fetch book data: ${bookResponse.status}`);
+            }
+
+            const prayers = (await prayersResponse.json()) as RawPrayerFile;
+            const book = (await bookResponse.json()) as RawBookFile;
+
             const structuredData: Record<number, YogaChapter> = {};
+            let chapterNumber = 1;
 
-            Object.values(rawChapters)
-                .sort((left, right) => left.chapter - right.chapter)
-                .forEach((chapterData) => {
-                    const chapterNum = chapterData.chapter;
-                    const chapterMeta = YOGA_CHAPTERS_META[chapterNum];
-                    const verses = chapterData.verses.map(normalizeVerse).sort((left, right) => {
-                        const leftNum = left.verse ?? Number.parseInt(left.id.split('.')[1], 10);
-                        const rightNum = right.verse ?? Number.parseInt(right.id.split('.')[1], 10);
-                        return leftNum - rightNum;
-                    });
+            structuredData[chapterNumber] = buildChapter(
+                chapterNumber,
+                APPENDIX_CHAPTER_NAME_KOREAN,
+                APPENDIX_CHAPTER_NAME_ENGLISH,
+                'Appendix prayers',
+                'prayers',
+                'appendix',
+                APPENDIX_CHAPTER_NAME_KOREAN,
+                prayers,
+            );
+            chapterNumber += 1;
 
-                    structuredData[chapterNum] = {
-                        chapter: chapterNum,
-                        meta: {
-                            chapter: chapterNum,
-                            name_korean: chapterMeta?.name_korean ?? `제${chapterNum}장`,
-                            name_english: chapterMeta?.name_english ?? `Chapter ${chapterNum}`,
-                            description: chapterMeta?.description ?? '',
-                            sutraCount: verses.length,
-                        },
-                        sutras: verses,
-                    };
-                });
+            book.forEach((group, index) => {
+                const currentChapter = chapterNumber + index;
+                structuredData[currentChapter] = buildChapter(
+                    currentChapter,
+                    group.chapterName,
+                    group.chapterName,
+                    group.chapterName,
+                    group.id,
+                    'book',
+                    '본문',
+                    group.subchapters,
+                );
+            });
 
             cachedData = structuredData;
             return structuredData;
         } catch (error) {
-            console.error('Error fetching Gita data:', error);
-            throw error instanceof Error ? error : new Error('Unknown Gita data fetch failure');
+            console.error('Error fetching merged book/prayers data:', error);
+            throw error instanceof Error ? error : new Error('Unknown merged data fetch failure');
         } finally {
             pendingRequest = null;
         }

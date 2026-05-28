@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUI } from '../context/UIContext';
 import { useYogaData } from '../hooks/useYogaData';
@@ -11,10 +11,16 @@ const Sidebar = () => {
     const [markerReady, setMarkerReady] = useState(false);
 
     const chapterNumber = chapterNum ? parseInt(chapterNum, 10) : null;
-    const currentChapter = chapterNumber ? allChapters?.[chapterNumber] ?? null : null;
+    const currentChapter = chapterNumber !== null ? allChapters?.[chapterNumber] ?? null : null;
     const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
-
-    const chapterMeta = currentChapter ? String(currentChapter.chapter).padStart(2, '0') : '00';
+    const isAppendixChapter = Boolean(
+        currentChapter &&
+            (currentChapter.chapter === 0 ||
+                currentChapter.meta.sectionLabel === 'appendix' ||
+                currentChapter.meta.name_korean.startsWith('부록') ||
+                currentChapter.meta.name_english.startsWith('Appendix')),
+    );
+    const chapterMeta = currentChapter ? (isAppendixChapter ? currentChapter.meta.name_korean : String(currentChapter.chapter).padStart(2, '0')) : '00';
     const verseMeta = verseNum ? String(parseInt(verseNum, 10)).padStart(2, '0') : '00';
 
     useEffect(() => {
@@ -118,7 +124,7 @@ const Sidebar = () => {
                                 >
                                     <div className="flex flex-col items-start gap-1 text-left">
                                         <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-text-secondary/52 dark:text-dark-text-secondary/58">
-                                            Chapter
+                                            {isAppendixChapter ? 'Appendix' : 'Chapter'}
                                         </p>
                                         <span className="h-px w-12 bg-gradient-to-r from-black/8 to-transparent dark:from-white/10" />
                                     </div>
@@ -139,7 +145,7 @@ const Sidebar = () => {
                                 English
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[16px] leading-[1.95] text-text-primary/94 dark:text-dark-text-primary/94 sm:text-[17px]">
-                                {verseData.translation_en ?? verseData['2.english'] ?? ''}
+                                {verseData.displayTitle ?? verseData.chapterTitle ?? verseData.translation_en ?? verseData['2.english'] ?? ''}
                             </p>
                         </section>
 
@@ -148,7 +154,7 @@ const Sidebar = () => {
                                 Korean
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[2] text-text-secondary/92 dark:text-dark-text-secondary/92 sm:text-[16px]">
-                                {verseData.translation_gil ?? verseData['3.korean-1'] ?? ''}
+                                {verseData.bodyText ?? verseData.translation_en ?? verseData.translation_ham ?? verseData['5.bae_jik'] ?? ''}
                             </p>
                         </section>
                     </div>
@@ -159,3 +165,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

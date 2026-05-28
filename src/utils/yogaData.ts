@@ -1,11 +1,23 @@
 import { YogaChapter, YogaSutra } from '../types';
 
+const isAppendixChapter = (chapter: YogaChapter) =>
+    chapter.chapter === 0 || chapter.meta.name_korean.startsWith('부록') || chapter.meta.name_english.startsWith('Appendix');
+
 export const getChapterArray = (allChapters: Record<number, YogaChapter> | null): YogaChapter[] => {
     if (!allChapters) {
         return [];
     }
 
-    return Object.values(allChapters).sort((left, right) => left.chapter - right.chapter);
+    return Object.values(allChapters).sort((left, right) => {
+        const leftIsAppendix = isAppendixChapter(left);
+        const rightIsAppendix = isAppendixChapter(right);
+
+        if (leftIsAppendix !== rightIsAppendix) {
+            return leftIsAppendix ? -1 : 1;
+        }
+
+        return left.chapter - right.chapter;
+    });
 };
 
 export const getVerseInRangeFromChapters = (

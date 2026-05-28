@@ -1,28 +1,25 @@
 import { lazy, Suspense, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
-import { BookOpenText, Cloud, Sparkles, Target, Zap } from 'lucide-react';
-import { YOGA_CHAPTERS_META } from '../constants';
+import { BookOpenText, ScrollText } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
 import { GlassCard } from '../components/ui/GlassCard';
 
 const CompendiumModal = lazy(() => import('../components/CompendiumModal'));
 const LexiconModal = lazy(() => import('../components/LexiconModal'));
 
-const getChapterIcon = (chapter: number) => {
-    switch (chapter) {
-        case 1:
-            return <Target className="h-5 w-5" />;
-        case 2:
-            return <Zap className="h-5 w-5" />;
-        case 3:
-            return <Sparkles className="h-5 w-5" />;
-        case 4:
-            return <Cloud className="h-5 w-5" />;
-        default:
-            return <BookOpenText className="h-5 w-5" />;
-    }
-};
+const getChapterIcon = (sectionLabel?: string) =>
+    sectionLabel === 'appendix' || sectionLabel === '부록:기도문' ? <ScrollText className="h-5 w-5" /> : <BookOpenText className="h-5 w-5" />;
+
+const getChapterDisplayLabel = (chapter: { chapter: number; meta: { name_korean: string; sectionLabel?: string } }) =>
+    chapter.meta.sectionLabel === 'appendix' || chapter.meta.sectionLabel === '부록:기도문'
+        ? chapter.meta.name_korean
+        : `${chapter.chapter}. ${chapter.meta.name_korean}`;
+
+const getChapterCardSubtitle = (chapter: { chapter: number; meta: { sectionLabel?: string } }) =>
+    chapter.meta.sectionLabel === 'appendix' || chapter.meta.sectionLabel === '부록:기도문'
+        ? 'APPENDIX'
+        : `SECTION ${chapter.chapter}`;
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -47,19 +44,23 @@ const itemVariants: Variants = {
     },
 };
 
-const renderChapterTitle = (title: string) => title.split(' ').filter(Boolean).map((line, index) => (
-    <span key={`${line}-${index}`} className="block">
-        {line}
-    </span>
-));
+const renderChapterTitle = (title: string) =>
+    title
+        .split(' ')
+        .filter(Boolean)
+        .map((line, index) => (
+            <span key={`${line}-${index}`} className="block">
+                {line}
+            </span>
+        ));
 
 const ChapterList = () => {
     const navigate = useNavigate();
     const { chapters, loading, error } = useYogaData();
-    const [isCompendiumOpen, setIsCompendiumOpen] = useState<boolean>(false);
-    const [isLexiconOpen, setIsLexiconOpen] = useState<boolean>(false);
-    const [selectedChapter, setSelectedChapter] = useState<string>('');
-    const [selectedVerse, setSelectedVerse] = useState<string>('');
+    const [isCompendiumOpen, setIsCompendiumOpen] = useState(false);
+    const [isLexiconOpen, setIsLexiconOpen] = useState(false);
+    const [selectedChapter, setSelectedChapter] = useState('');
+    const [selectedVerse, setSelectedVerse] = useState('');
 
     if (loading) {
         return (
@@ -73,7 +74,7 @@ const ChapterList = () => {
         return (
             <div className="flex h-full items-center justify-center px-6">
                 <div className="max-w-lg rounded-2xl border border-gold-border/30 bg-white/75 p-6 text-center shadow-lg backdrop-blur-sm dark:bg-dark-surface/75">
-                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load Bhagavad Gita</h1>
+                    <h1 className="mb-3 font-display text-2xl text-text-primary dark:text-dark-text-primary">Unable to load the book</h1>
                     <p className="text-sm leading-relaxed text-text-secondary dark:text-dark-text-secondary">{error}</p>
                 </div>
             </div>
@@ -87,10 +88,10 @@ const ChapterList = () => {
                     <BookOpenText className="h-5 w-5 text-gold-primary opacity-80" />
                 </motion.div>
                 <motion.h1 variants={itemVariants} className="mb-4 font-display text-[44px] font-medium tracking-[0.12em] text-text-primary drop-shadow-sm dark:text-dark-text-primary sm:text-[56px] md:text-[64px] lg:mb-3 lg:text-[54px]">
-                    BHAGAVAD GITA
+                    TIBETAN BOOK OF THE DEAD
                 </motion.h1>
                 <motion.p variants={itemVariants} className="mb-12 font-display text-[15px] italic tracking-[0.18em] text-gold-primary dark:text-gold-light md:text-lg lg:mb-6">
-                    A reading space for verse, sound, translation, and reflection
+                    Appendix prayers come first, then the main book
                 </motion.p>
 
                 <motion.div variants={itemVariants} className="mb-8 flex flex-wrap items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-[0.28em] text-text-secondary sm:gap-6 lg:mb-5">
@@ -113,7 +114,7 @@ const ChapterList = () => {
 
                 <motion.div variants={itemVariants} className="relative z-10 mx-auto mb-5 flex w-full max-w-[52rem] flex-col items-center justify-between gap-3 rounded-2xl border border-gold-border/40 bg-white/80 p-2.5 shadow-xl shadow-gold-primary/5 backdrop-blur-md dark:bg-dark-surface/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.5)] sm:flex-row sm:gap-0 sm:p-3 lg:mb-0">
                     <div className="flex w-full flex-1 flex-col items-start border-b border-gold-border/30 px-2 pb-2 sm:border-b-0 sm:border-r sm:px-4 sm:pb-0">
-                        <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Chapter</span>
+                        <span className="mb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary drop-shadow-sm">Section</span>
                         <select
                             className="w-full appearance-none bg-transparent text-sm font-medium text-text-primary outline-none transition-colors focus:text-gold-primary dark:text-dark-text-primary"
                             value={selectedChapter}
@@ -122,10 +123,10 @@ const ChapterList = () => {
                                 setSelectedVerse('');
                             }}
                         >
-                            <option value="">Select Chapter</option>
+                            <option value="">Select section</option>
                             {chapters.map((chapter) => (
                                 <option key={chapter.chapter} value={chapter.chapter} className="text-base">
-                                    {chapter.chapter}. {chapter.meta.name_korean}
+                                    {getChapterDisplayLabel(chapter)}
                                 </option>
                             ))}
                         </select>
@@ -145,7 +146,7 @@ const ChapterList = () => {
                                 }
                             }}
                         >
-                            <option value="">{selectedChapter ? 'Select Verse' : 'Select Chapter First'}</option>
+                            <option value="">{selectedChapter ? 'Select verse' : 'Select section first'}</option>
                             {selectedChapter &&
                                 chapters
                                     .find((chapter) => chapter.chapter === Number.parseInt(selectedChapter, 10))
@@ -163,31 +164,27 @@ const ChapterList = () => {
             </motion.div>
 
             <motion.div initial="hidden" animate="visible" variants={containerVariants} className="relative z-10 mx-auto grid w-full max-w-[52rem] grid-cols-1 gap-4 pb-12 sm:grid-cols-2 sm:gap-6 lg:flex-1 lg:items-stretch lg:gap-4 lg:pb-4">
-                {chapters.map((chapter) => {
-                    const chapterInfo = YOGA_CHAPTERS_META[chapter.chapter];
-
-                    return (
-                        <motion.div key={chapter.chapter} variants={itemVariants} className="lg:min-h-0">
-                            <GlassCard
-                                href={`/chapter/${chapter.chapter}/verse/1`}
-                                icon={getChapterIcon(chapter.chapter)}
-                                className="lg:h-full"
-                                subtitle={`CHAPTER ${chapter.chapter}`}
-                                title={
-                                    <>
-                                        <span className="font-display text-[30px] font-medium tracking-[0.04em] md:text-[34px]">
-                                            {renderChapterTitle(chapterInfo?.name_english || chapter.meta.name_english)}
-                                        </span>
-                                        <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">
-                                            {chapterInfo?.name_korean || chapter.meta.name_korean}
-                                        </span>
-                                    </>
-                                }
-                                description={chapterInfo?.description || 'Read verses of this chapter.'}
-                            />
-                        </motion.div>
-                    );
-                })}
+                {chapters.map((chapter) => (
+                    <motion.div key={chapter.chapter} variants={itemVariants} className="lg:min-h-0">
+                        <GlassCard
+                            href={`/chapter/${chapter.chapter}/verse/1`}
+                            icon={getChapterIcon(chapter.meta.sectionLabel)}
+                            className="lg:h-full"
+                            subtitle={getChapterCardSubtitle(chapter)}
+                            title={
+                                <>
+                                    <span className="font-display text-[30px] font-medium tracking-[0.04em] md:text-[34px]">
+                                        {renderChapterTitle(chapter.meta.name_english)}
+                                    </span>
+                                    <span className="mt-1 font-noto-kr text-sm font-medium text-text-secondary dark:text-dark-text-secondary">
+                                        {chapter.meta.name_korean}
+                                    </span>
+                                </>
+                            }
+                            description={chapter.meta.description || 'Read this section.'}
+                        />
+                    </motion.div>
+                ))}
             </motion.div>
 
             <Suspense fallback={null}>

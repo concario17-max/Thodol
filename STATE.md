@@ -1,31 +1,36 @@
 ﻿# State
 
 ## Current Task
-Reduce the Sanskrit text size again in the `심화` view and remove the duplicate English translation there.
+Completed the merged `book` + `prayers` runtime contract and consumer update so prayers appear first as `부록:기도문`, while leaving `albums.json` and `mp3` untouched.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
-main: implementation
+main: planner
 
 ## Contract Freeze
 Frozen scope:
-- Reduce the main Sanskrit text size further in `SutraContent`.
-- Remove the English translation block from the main verse translation section.
-- Keep the rest of the verse content, layout structure, and routing unchanged.
+- Merge `public/book.json` and `public/prayers.json` into one runtime contract.
+- Ensure prayers are presented first as `부록:기도문`.
+- Keep `albums.json`, `album-covers/`, and `mp3/` untouched in this pass.
+- Update the runtime loader and the minimum consumer surfaces needed to present the merged data.
+- Preserve existing verse content as much as possible while normalizing schema differences.
 
-Reason for Route A:
-- The change is a small typography tweak in one verse component.
+Reason for Route B:
+- The work spans the loader contract, view model, chapter list, verse view, and supporting tests.
 
 ## Write Sets
-- main: `STATE.md`, `src/components/verse/SutraContent.tsx`, `src/pages/VerseView.tsx`
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- worker_data: implementation files for the merged data contract and loader
+- worker_ui: implementation files for the consumer surfaces
+- reviewer: implementation review only
 
 ## Reviewer
-reviewer: not required for Route A
+reviewer: completed
 
 ## Last Update
-2026-05-28 14:24:38 +09:00 - Reduced the Sanskrit size again and removed the duplicate English translation block from the main verse section.
+2026-05-28 16:15:20 +09:00 - Implemented the merged book/prayers runtime contract, updated the UI to show prayers first as `부록:기도문`, and verified typecheck, vitest, and build successfully.
 
 ## Open Review Item
 - None.

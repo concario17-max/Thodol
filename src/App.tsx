@@ -37,6 +37,12 @@ interface ContextOption {
     label: string;
 }
 
+const isAppendixChapter = (chapter: { chapter: number; meta: { name_korean: string; name_english: string } }) =>
+    chapter.chapter === 0 || chapter.meta.name_korean.startsWith('부록') || chapter.meta.name_english.startsWith('Appendix');
+
+const getChapterOptionLabel = (chapter: { chapter: number; meta: { name_korean: string; name_english: string } }) =>
+    isAppendixChapter(chapter) ? chapter.meta.name_korean : `${chapter.chapter}. ${chapter.meta.name_korean}`;
+
 interface ContextPillPickerProps {
     chapterNum?: string;
     verseNum?: string;
@@ -145,7 +151,7 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '장 --';
+    const activeChapterLabel = chapterNum ? chapterOptions.find((option) => option.value === chapterNum)?.label ?? `${chapterNum}장` : '장 --';
     const activeVerseLabel = verseNum ? `${verseNum}절` : '절 --';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
@@ -264,7 +270,7 @@ const MainLayout = () => {
         () =>
             chapters.map((chapter) => ({
                 value: String(chapter.chapter),
-                label: `${chapter.chapter}. ${chapter.meta.name_korean}`,
+                label: getChapterOptionLabel(chapter),
             })),
         [chapters],
     );
@@ -303,7 +309,7 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Bhagavad Gita" showSidebarToggle selectionControls={selectionControls} /> : undefined}
+            header={isVerseView ? <Header title="Tibetan Book of the Dead" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}

@@ -1,589 +1,335 @@
 # Repository Research
-Updated: 2026-05-27
-Workspace: `C:\Users\roadsea\Desktop\gita-1`
+Updated: 2026-05-28
+Workspace: `C:\Users\roadsea\Desktop\tibet-1`
 
-## 한 줄 요약
+## 1. 한줄 요약
 
-이 저장소는 React 19 + Vite 기반의 요가 수트라 읽기 앱이다. 홈에서 장과 절을 고르고, 본문 페이지에서 산스크리트 원문, 발음, 번역, 단어 의미, 오디오, 해설, 그리고 학습만화 이미지를 함께 본다. 상태는 `ThemeContext`, `UIContext`, `YogaDataContext`로 나뉘고, 데이터는 `/data.json`을 기준으로 로드된다.
+이 저장소의 활성 앱은 React 19 + Vite 기반의 verse reader다. 지금 런타임은 요가 수트라/가르침 계열의 구조를 읽고 있고, 동시에 `public/book.json`, `public/prayers.json`, `public/albums.json` 같은 별도 데이터 자산이 같이 들어와 있다. 다만 이 복사된 데이터는 아직 React 앱에 연결되지 않았고, 앞으로는 `book.json`과 `prayers.json`을 하나의 데이터로 합치되 `부록:기도문`을 먼저 두는 방향이 가장 자연스럽다.
 
-## 전체 구조
+## 2. 레포 구조
 
-활성 코드의 중심은 `src/`다.
+- `src/`: 현재 동작하는 React 애플리케이션
+- `public/`: 런타임 정적 자산
+- `data-source/`: 데이터 생성용 원본 텍스트와 중간 산출물
+- `scripts/`: 데이터 생성, 검증, 브라우저 QA 스크립트
+- `legacy/`: 예전 정적 구현 참고본
+- `docs/`: 보조 문서와 역사적 기록
+- `dist/`: 빌드 산출물
 
-- `src/main.tsx`: provider 체인을 조립하는 시작점
-- `src/App.tsx`: 라우팅과 공통 레이아웃을 정의하는 상위 컴포넌트
-- `src/pages/ChapterList.tsx`: 홈/챕터 진입 페이지
-- `src/pages/VerseView.tsx`: 실제 수트라 읽기 페이지
-- `src/components/`: 헤더, 사이드바, 모달, verse 전용 서브컴포넌트
-- `src/context/`: 테마, UI, 데이터 공유 상태
-- `src/utils/`: 데이터 로딩, 범위 계산, 네비게이션 계산
-- `src/data/`: 챕터별 해설 블록
-- `src/assets/learning-comic/`: chapter 1~4 학습만화 PNG 묶음
+이 저장소는 단일 제품이라기보다, 서로 다른 시기의 데이터 계열이 한 작업공간에 섞여 있는 상태에 가깝다.
 
-루트 문서도 현재 앱 이해에 꽤 중요하다.
+## 3. 활성 앱의 실제 동작
 
-- `README.md`: 현재 사용자용 개요
-- `plan.md`: 과거 리메디에이션 기록
-- `research.md`: 지금 보고서
-- `scripts/README.md`: 데이터 생성과 QA 스크립트 설명
+### 3.1 진입점과 provider 체인
 
-## 부트스트랩과 provider 순서
+- `src/main.tsx`에서 앱이 시작된다.
+- provider 순서는 `ThemeProvider -> UIProvider -> YogaDataProvider -> App`이다.
+- `ThemeProvider`는 `theme`를 `localStorage`에 저장하고 `document.documentElement`의 class를 바꾼다.
+- `UIProvider`는 사이드바, 데스크톱 rail, commentary 패널, verse/body 모드를 관리한다.
+- `YogaDataProvider`는 원문 데이터를 fetch해서 앱 전체에 배포한다.
 
-`src/main.tsx`는 렌더링 전에 provider를 아래 순서로 감싼다.
+### 3.2 라우팅
 
-1. `ThemeProvider`
-2. `UIProvider`
-3. `YogaDataProvider`
-4. `App`
+- `src/App.tsx`는 `react-router-dom`을 써서 두 개의 주요 경로를 가진다.
+- `/`는 첫 chapter/verse로 리다이렉트한다.
+- `/chapter/:chapterNum/verse/:verseNum`가 실제 verse 화면이다.
+- `MainLayout`이 header, left sidebar, optional right panel, main scroll container를 감싼다.
 
-이 순서가 중요한 이유는 다음과 같다.
+### 3.3 홈 화면
 
-- 테마는 전역 클래스 토글과 `localStorage` 동기화가 필요하다.
-- UI 상태는 모바일/데스크톱 패널 상태를 공통으로 관리해야 한다.
-- 수트라 데이터는 앱 전체에서 재사용되므로 한 번만 fetch하고 공유하는 구조가 맞다.
+`src/pages/ChapterList.tsx`는 홈 랜딩이다.
 
-## 라우팅과 공통 셸
+- 큰 타이틀
+- `Compendium` 모달
+- `Lexicon` 모달
+- chapter select / verse select
+- chapter 카드 그리드
 
-`src/App.tsx`는 `react-router-dom`으로 두 개의 라우트만 둔다.
+chapter 카드는 `GlassCard`를 통해 렌더링된다.
 
-- `/`
-- `/chapter/:chapterNum/verse/:verseNum`
+### 3.4 Verse 화면
 
-둘 다 `MainLayout`을 공유하고, `MainLayout`이 현재 경로를 보고 verse 페이지인지 아닌지 판별한다.
+`src/pages/VerseView.tsx`가 실제 독서 화면이다.
 
-### verse 페이지일 때
+- body mode와 commentary mode를 `UIContext`로 전환한다.
+- body mode에서는 `SutraContent`, `WordMeanings`, `AudioPlayer`, `TranslationSection`이 순서대로 보인다.
+- commentary mode에서는 우측 콘텐츠 대신 commentary나 학습만화가 보인다.
+- `useSutraNavigation`으로 이전/다음 verse 이동을 처리한다.
+- canonical route와 실제 verse 범위가 다르면 `replace: true`로 보정한다.
 
-`MainLayout`은 다음을 함께 조립한다.
+## 4. 데이터 흐름
 
-- `Header`
-- 왼쪽 `Sidebar`
-- 필요할 때만 오른쪽 `CommentarySidebar`
-- `AppShell` 내부의 `main#main-scroll-container`
+### 4.1 현재 런타임 데이터 소스
 
-### 홈일 때
+`src/utils/dataFetcher.ts`는 현재 `/gita.json`을 fetch한다.
 
-홈은 verse 셸을 쓰지 않고, `ThemeToggle`만 floating action으로 둔다.
+- 응답 JSON을 chapter 단위로 묶는다.
+- `YOGA_CHAPTERS_META`를 메타로 주입한다.
+- verse를 숫자 순서로 정렬한다.
+- `word_meanings`를 `{ word, meaning }[]` 형태로 정규화한다.
+- `translation_en`, `translation_gil`, `translation_ham`, `translation_jimong`, `translation_suk` 같은 다중 번역 슬롯을 맞춰 넣는다.
 
-### route 진입 보정
+즉, 앱의 활성 런타임 계약은 아직 `public/book.json`이나 `public/prayers.json`이 아니라 `/gita.json`이다.
 
-`DefaultVerseRedirect`는 데이터 로딩이 끝나면 첫 chapter 첫 sutra로 보낸다.
+### 4.2 현재 확인된 불일치
 
-- 첫 chapter를 `chapters[0]`에서 찾는다.
-- 첫 sutra는 `firstChapter.sutras[0]`에서 찾는다.
-- route는 `/chapter/{chapter}/verse/{verse}` 형태로 만든다.
+여기서 가장 중요한 점은 다음이다.
 
-## 공통 셸과 사이드바 레이아웃
+- `src/utils/dataFetcher.ts`는 `/gita.json`을 읽는다.
+- 그런데 `public/`에는 `gita.json`이 없다.
+- `dist/gita.json`은 존재한다.
+- `dist/gita.json`은 BOM이 들어 있어 raw `JSON.parse`만으로는 바로 파싱되지 않았다.
 
-### `AppShell`
+이건 dev/runtime/build 사이에 데이터 경로 합의가 완전히 정리되지 않았다는 뜻이다.
 
-`src/components/ui/AppShell.tsx`는 화면 전체 프레임이다.
+### 4.3 생성 파이프라인
 
-- `100dvh` 전체 높이를 잡는다.
-- 배경 레이어와 중심 컨테이너를 구성한다.
-- header slot, sidebar slot, rightPanel slot, main 콘텐츠 slot을 배치한다.
-- 필요 시 floating action 버튼을 오른쪽 아래에 띄운다.
+`scripts/generate_data.ps1`는 아직 다른 계약을 갖고 있다.
 
-verse 화면에서는 desktop 그리드도 함께 지원한다.
+- 입력: `data-source/*.txt`
+- 출력: `data.js`, `public/data.json`
+- `1.sans.txt`, `2.english.txt`, `3.korean-1.txt`, `4.han bal.txt`, `5.bae_jik.txt`, `6.bae_uu.txt`, `7.dan.txt` 등을 읽는다.
+- `word_meanings`는 1.sans의 단어 순서와 7.dan의 정의를 sequential mapping으로 붙인다.
 
-### `SidebarLayout`
+문제는 이 스크립트와 현재 앱 런타임이 서로 다른 파일명을 바라본다는 점이다.
 
-`src/components/ui/SidebarLayout.tsx`는 좌/우 drawer 공용 래퍼다.
+- 스크립트 쪽은 `public/data.json`
+- React 런타임 쪽은 `/gita.json`
 
-- 모바일에서는 drawer처럼 보이게 한다.
-- 데스크톱에서는 sticky panel처럼 보이게 한다.
-- left/right 배치 차이를 `position`으로 나눈다.
-- 닫힘 상태에서 translate 잔상이 남지 않도록 width/opacity 중심으로 접는다.
+이 상태는 문서만 보면 더 헷갈리고, 실제 데이터 소스의 우선순위도 모호해진다.
 
-즉, 모바일 drawer와 데스크톱 패널을 하나의 컴포넌트로 묶되, 상태 표현은 분리한 셈이다.
+### 4.4 현재 데이터 수량
 
-## 전역 상태
+`dist/data.json` 기준으로 확인한 수량은 다음과 같다.
 
-### `ThemeContext`
+- 총 195 sutras
+- chapter 1: 51
+- chapter 2: 55
+- chapter 3: 55
+- chapter 4: 34
 
-`src/context/ThemeContext.tsx`는 `light` / `dark`만 다룬다.
+반면 `scripts/generate_data.ps1`는 여전히 196개를 기대하는 경고를 갖고 있다. 즉, 생성 스크립트의 기대치가 현 데이터와 어긋나 있다.
 
-- 초기값은 `localStorage.theme`
-- 없으면 `light`
-- theme가 바뀌면 `document.documentElement.classList`에 반영
+## 5. Verse 데이터 모델
 
-### `UIContext`
+### 5.1 타입 계약
 
-`src/context/UIContext.tsx`는 앱의 패널 상태를 분리해서 관리한다.
-
-- `isSidebarOpen`: 모바일 왼쪽 drawer
-- `isDesktopSidebarOpen`: 데스크톱 왼쪽 rail
-- `activeRightPanel`: 모바일 오른쪽 drawer
-- `activeDesktopRightPanel`: 데스크톱 오른쪽 panel
-- `activeVerseContentMode`: verse 본문 vs commentary 모드
-
-여기서 중요한 건 모바일과 데스크톱 상태가 완전히 같은 상태값이 아니라는 점이다.
-
-- 모바일은 route 이동 시 임시 drawer를 닫는 쪽에 가깝다.
-- 데스크톱은 `localStorage`에 저장해서 유지한다.
-
-저장 키는 다음이다.
-
-- `yoga-verse-content-mode`
-- `yoga-desktop-sidebar`
-- `yoga-desktop-right-panel`
-
-### `YogaDataContext`
-
-`src/context/YogaDataContext.tsx`는 데이터 로딩 결과를 앱 전체에 퍼뜨린다.
-
-노출 값:
-
-- `allChapters`
-- `chapters`
-- `loading`
-- `error`
-- `getVerseInRange`
-- `getVerseRangeLabel`
-
-fetch가 실패하면 그냥 빈 객체로 숨기지 않고 `error`를 노출한다.
-
-## 데이터 모델
-
-`src/types.ts`가 기본 타입 정의다.
+`src/types.ts`는 현재 verse model의 핵심이다.
 
 - `YogaSutra`
 - `YogaChapter`
 - `ChapterMeta`
 - `WordMeaning`
+- `VerseWord`
 
-핵심은 `YogaSutra`가 단순 원문만 갖는 게 아니라는 점이다.
+`YogaSutra`는 단일 번역 문자열이 아니라 여러 번역 슬롯과 단어 의미, 오디오, 발음, IAST를 함께 담는 넓은 스키마다.
 
-- 산스크리트 원문
-- 발음
-- 한국어 발음 표기
-- 영어/한국어 번역
-- 배역/옥스퍼드 번역
-- 단어별 의미
-- 토큰/compound token 확장 필드
+### 5.2 범위 계산
 
-즉, 이 앱은 "한 줄 텍스트 뷰어"가 아니라 여러 연구 레이어를 얹는 구조다.
+`src/utils/yogaData.ts`는 chapter 배열과 verse 범위를 처리한다.
 
-## 데이터 로딩과 정규화
+- chapter 객체를 정렬된 배열로 바꾼다.
+- `verseNum`이 `1.3-1.4`처럼 범위일 때 실제 owner sutra를 찾는다.
+- 화면에 표시할 range label도 계산한다.
 
-`src/utils/dataFetcher.ts`가 런타임 데이터의 핵심이다.
+`src/utils/sutraNavigation.ts`는 이전/다음 이동을 처리한다.
 
-동작 순서:
+- 현재 chapter 안에서 앞뒤로 이동한다.
+- chapter의 시작/끝이면 인접 chapter로 넘어간다.
 
-1. `/data.json` fetch
-2. raw sutra row를 `RawSutra`로 읽음
-3. chapter 번호로 그룹화
-4. `YOGA_CHAPTERS_META`를 metadata로 주입
-5. sutra를 숫자 기준으로 정렬
-6. chapter별 `sutraCount` 계산
-7. 성공 결과를 메모이제이션 캐시로 저장
+## 6. 화면 레이아웃
 
-정규화 시 하는 일도 중요하다.
+### 6.1 공통 shell
 
-- `word_meanings`는 `Record<string, string>`에서 배열 형태로 바꾼다.
-- `4.han bal`이 있으면 `pronunciation_kr`에 우선 반영한다.
-- 영어/한국어 번역 필드는 원본 키 이름을 유지한 채 전달한다.
+`src/components/ui/AppShell.tsx`가 전체 뼈대를 만든다.
 
-실제 데이터는 빌드 산출물 기준으로 다음 규모다.
+- viewport 전체 높이
+- 상단 header
+- 좌측 sidebar
+- 우측 panel
+- 본문 main scroll container
 
-- chapter 1: 51개
-- chapter 2: 55개
-- chapter 3: 55개
-- chapter 4: 34개
-- 총 195개 sutra
+데스크톱 verse 화면에서는 `desktopGridColumns`가 CSS 변수로 들어가서 좌/중/우 비율을 제어한다.
 
-### 중요한 불일치
+### 6.2 사이드바와 패널
 
-소스 트리의 `public/` 목록에는 `data.json`이 보이지 않았지만, `dist/data.json`은 존재한다.
+`src/components/ui/SidebarLayout.tsx`는 left/right 패널의 공통 래퍼다.
 
-즉, 현재 상태에서는 다음을 구분해서 봐야 한다.
+- 모바일에서는 drawer
+- 데스크톱에서는 sticky rail
+- open/closed 상태에 따라 width와 opacity를 바꾼다
 
-- source/dev 관점: `public/data.json`이 있어야 dev server가 `/data.json`을 서빙한다
-- build 관점: `dist/data.json`은 생성되어 있다
+`src/context/UIContext.tsx`는 다음 상태를 관리한다.
 
-이건 단순한 파일 한 개가 아니라, dev 루트와 배포 루트의 동기화 여부를 확인해야 한다는 뜻이다.
+- `isSidebarOpen`
+- `isDesktopSidebarOpen`
+- `activeRightPanel`
+- `activeDesktopRightPanel`
+- `activeVerseContentMode`
 
-## 범위 계산과 내비게이션
+이 값들 중 일부는 `localStorage`에 저장된다.
 
-### `yogaData.ts`
+### 6.3 verse body 구성
 
-`src/utils/yogaData.ts`는 chapter 배열 정렬과 verse 범위 조회를 처리한다.
+`SutraContent`는 산스크리트 본문과 발음을 보여준다.
 
-- `getChapterArray`: Record를 chapter 순으로 정렬한 배열로 바꾼다.
-- `getVerseInRangeFromChapters`: `1.1`, `1.2`, `1.3-1.4` 같은 범위 표시를 실제 owner sutra로 매핑한다.
-- `getVerseRangeText`: 화면에 보여줄 range label을 만든다.
+`WordMeanings`는 word-by-word 해설을 접었다 펼친다.
 
-이 구현 덕분에 route가 `verse/2`라고 와도 실제 owner sutra가 `1.1`일 수 있다.
+`AudioPlayer`는 오디오 재생/정지, seek, progress, error를 처리한다.
 
-### `sutraNavigation.ts`
+`TranslationSection`은 영어 번역과 여러 한국어 번역을 각각 블록으로 보여준다.
 
-`src/utils/sutraNavigation.ts`는 이전/다음 sutra를 계산한다.
+## 7. Commentary와 학습만화
 
-- 같은 chapter 안에서 앞/뒤로 움직인다.
-- chapter 시작/끝에 도달하면 앞/뒤 chapter로 넘어간다.
-- 더 이상 갈 곳이 없으면 `null`을 반환한다.
+### 7.1 commentary 패널
 
-이 로직은 verse 페이지의 prev/next 버튼과 직접 연결된다.
+`src/components/CommentarySidebar.tsx`와 `VerseView.tsx` 내부의 `CommentaryContent`는 commentary를 다룬다.
 
-## 홈 페이지
+- chapter/verse별 commentary를 표시한다.
+- `CommentaryMarkdown`이 heading, paragraph, ordered/unordered list, table을 파싱한다.
+- 우측 commentary 패널은 chapter 1~4에 대한 학습용 해설 구조로 연결되어 있다.
 
-`src/pages/ChapterList.tsx`는 앱의 진입 페이지다.
+### 7.2 학습만화
 
-주요 요소:
+`VerseView.tsx`는 `import.meta.glob('../../학습만화/*/*.png', { eager: true })`로 만화를 읽는다.
 
-- 큰 타이틀 `YOGA SUTRAS`
-- `Compendium` 모달 트리거
-- `Lexicon` 모달 트리거
-- chapter select
-- verse select
-- chapter cards
+- chapter 1~4 폴더만 매핑된다.
+- 파일명 범위를 읽어서 verse 범위와 연결한다.
+- commentary mode에서 만화와 해설을 전환한다.
 
-동작:
+이건 별도 데이터 파일이 아니라 파일 시스템 경로 규칙에 의해 작동하는 자산 맵이다.
 
-- chapter를 고르면 verse select가 활성화된다.
-- verse를 고르면 `/chapter/{chapter}/verse/{verse}`로 이동한다.
-- 각 chapter card는 `GlassCard`로 렌더링된다.
+## 8. 홈 화면의 부가 모듈
 
-### `GlassCard`
+### 8.1 Compendium
 
-`src/components/ui/GlassCard.tsx`는 홈의 카드 컴포넌트다.
+`src/components/CompendiumModal.tsx`는 읽기 안내용 모달이다.
 
-- `href`가 있으면 `Link`
-- 없으면 `button`
-- icon, subtitle, title, description을 공통으로 처리
-- 상단 spotlight gradient와 blur/opacity 효과를 넣는다
+- 현재 앱의 구조 설명
+- 읽는 방식
+- chapter/verse 구성 요약
 
-## Verse 페이지
+### 8.2 Lexicon
 
-`src/pages/VerseView.tsx`가 실제 본문 페이지의 중심이다.
+`src/components/LexiconModal.tsx`는 `/lexicon.json`을 fetch한다.
 
-### 의존 상태
+- 알파벳 섹션으로 단어를 묶는다.
+- section jump가 가능하다.
+- 로딩 실패 시 별도 에러 메시지를 보여준다.
 
-- `useYogaData()`: 데이터
-- `useAudio()`: 오디오 재생 상태
-- `useSutraNavigation()`: prev/next
-- `useUI()`: body/commentary 모드
-- `useNavigate()`: route 보정
+이 둘은 홈 화면에서만 열리는 보조 읽기 도구다.
 
-### route 보정
+## 9. 복사된 Bardo 데이터 자산
 
-현재 route로 들어온 verse가 range owner와 다르면 다시 맞춘다.
+여기서부터가 이번 조사에서 가장 중요한 부분이다. `public/`에는 복사된 Bardo 계열 데이터가 들어 있다.
 
-예를 들면:
+### 9.1 `public/book.json`
 
-- user가 `verse/2`로 들어왔는데
-- 실제 owner가 `1.1`이면
-- `replace: true`로 canonical route로 이동한다
+- array 길이: 4
+- 구조: `group -> subchapters -> verses`
+- 총 subchapter 수: 25개 전후
+- 총 verse 수: 279
 
-### 스크롤/오디오 리셋
+chapter 이름은 다음 계열이다.
 
-chapter 또는 verse가 바뀌면:
+- `1부. 저승 중간계에서 드리는 기도`
+- `2부. 자애로운 모습의 붓다와 보살들이 나타나는 저승 중간계`
+- `3부. 무서운 모습의 붓다와 보살들이 나타나는 저승 중간계`
+- `4부. 탄생 중간계 길 안내`
 
-- `main#main-scroll-container`를 맨 위로 스크롤
-- 오디오를 `reset()`
+이 파일은 본문용 메인 북 데이터에 가깝다.
 
-### body vs commentary mode
+### 9.2 `public/prayers.json`
 
-전역 UI 상태인 `activeVerseContentMode`가 본문 레이아웃을 나눈다.
+- array 길이: 5
+- 구조: `group -> verses`
+- 총 verse 수: 52
+- subchapter는 없다
 
-- `body`면 산스크리트, 단어 의미, 오디오, 번역을 렌더링
-- `commentary`면 commentary/comic 전용 뷰를 렌더링
+chapter 이름은 다음 계열이다.
 
-이 모드는 `Header`의 토글 버튼으로 바뀐다.
+- `붓다의 세 몸에 대한 기도`
+- `붓다와 보살에게 구원을 청하는 기도`
+- `중간계의 공포에서 구원을 청하는 기도`
+- `중간계 수행자를 위한 기도`
+- `삶의 중간계에 들어가기 전에 드리는 기도`
 
-### 본문 구성
+이 파일은 독립된 부록형 기도문 데이터다.
 
-body mode에서 렌더되는 블록:
+### 9.3 `public/albums.json`
 
-- `SutraContent`
-- `WordMeanings`
-- `AudioPlayer`
-- `TranslationSection`
+- album 수: 7
+- tracks 수: 7 / 11 / 9 / 6 / 5 / 19 / 16
+- 각 트랙은 `/mp3/...` 경로를 직접 가리킨다.
 
-#### `SutraContent`
+현재 React 코드에서는 이 파일을 읽지 않는다. 다만 데이터는 이미 정리돼 있어서, 나중에 별도 플레이어/음반 페이지를 붙일 때는 바로 사용할 수 있는 상태다.
 
-- 산스크리트 본문
-- 발음
-- 한국어 발음 표기
+### 9.4 `public/mp3/`와 `public/album-covers/`
 
-#### `WordMeanings`
+- `public/mp3/` 아래에 앨범별 폴더가 있다.
+- `public/album-covers/`에는 앨범 커버 이미지가 있다.
+- `book.json`과 `prayers.json`의 일부 verse는 `/mp3/Prayer/...` 같은 직접 경로를 쓴다.
 
-- `meanings`가 있을 때만 보인다
-- 접이식 accordion 형태
-- 단어별 의미에서 etymology 구분자를 잘라 보여준다
+즉, 오디오는 이미 데이터와 자산 폴더가 함께 맞물려 있다.
 
-#### `AudioPlayer`
+## 10. book + prayers 통합 관찰
 
-`src/hooks/useAudio.ts`를 통해 아래를 관리한다.
+이번 작업에서 가장 중요한 연구 결론은 이거다.
 
-- play/pause
-- current time
-- duration
-- progress percent
-- seek
-- playback error
+`book.json`과 `prayers.json`은 단순 concat으로 끝나는 구조가 아니다.
 
-오디오 파일은 `/mp3/{chapter}-{sutra}.mp3` 패턴으로 붙는다.
+- `book.json`은 `subchapters`를 가진 계층형 구조다.
+- `prayers.json`은 `verses`만 가진 평면 구조다.
 
-#### `TranslationSection`
+그래서 앞으로 하나로 묶으려면, 최소한 다음 둘 중 하나가 필요하다.
 
-두 계열 번역을 함께 보여준다.
+- 공통 상위 스키마를 새로 정의해서 두 데이터 세트를 동일한 wrapper 아래 넣기
+- 로더에서 서로 다른 모양을 normalize해서 하나의 읽기 순서로 합치기
 
-- Oxford translation
-- Baejik / Baeuu
+사용자 요청 기준으로는 `부록:기도문`을 `book`보다 먼저 배치하는 게 맞다. 그러려면 `prayers.json`을 선두 appendix로 넣고, 그 다음에 `book.json` 본문 그룹들이 이어지는 순서가 되어야 한다.
 
-둘 다 없으면 섹션을 아예 렌더하지 않는다.
+정리하면, 권장 읽기 순서는 다음이다.
 
-### commentary/comic 뷰
+1. `부록:기도문`
+2. 본문 `book` 그룹들
+3. 나중에 별도 업데이트할 `albums`와 `mp3`
 
-`VerseView.tsx` 안의 `CommentaryContent`는 두 모드를 가진다.
+## 11. 현재 문서와 코드의 불일치
 
-- `commentary`
-- `comic`
+조사하면서 확인한 어긋남은 아래와 같다.
 
-기본값은 `comic`이고, chapter/verse가 바뀌면 다시 `comic`으로 돌아간다.
+- `README.md`와 `scripts/README.md`는 `public/data.json`을 런타임 소스로 설명하지만, 실제 React 코드는 `/gita.json`을 읽는다.
+- `public/data.json`은 현재 없다.
+- `public/gita.json`도 없다.
+- `dist/gita.json`은 있지만 BOM이 끼어 있다.
+- `scripts/generate_data.ps1`는 196개를 기대하지만 실제 산출물은 195개다.
+- `public/book.json`, `public/prayers.json`, `public/albums.json`은 현재 React 코드에 연결되어 있지 않다.
 
-토글 버튼은 `Image` 아이콘을 쓴다.
+이 불일치는 나중에 데이터 통합 작업을 할 때 반드시 먼저 정리해야 한다.
 
-이 뷰의 핵심은 다음이다.
+## 12. 테스트와 검증
 
-- commentary 텍스트를 보여줄 수 있다
-- 학습만화 PNG를 chapter/verse에 맞춰 보여줄 수 있다
-- chapter 1~4만 이미지 맵이 잡혀 있다
-
-학습만화 자산은 `import.meta.glob()`으로 정적 탐색된다.
-
-- `src/assets/learning-comic/chapter-1/*.png`
-- `src/assets/learning-comic/chapter-2/*.png`
-- `src/assets/learning-comic/chapter-3/*.png`
-- `src/assets/learning-comic/chapter-4/*.png`
-
-정리하면, verse 페이지는 단순 본문 화면이 아니라
-
-1. 본문 읽기
-2. 오디오
-3. 번역 비교
-4. 해설 보기
-5. 학습만화 보기
-
-를 한 화면 안에서 전환하는 구조다.
-
-## 오른쪽 해설 패널
-
-`src/components/CommentarySidebar.tsx`는 별도의 우측 drawer다.
-
-### 상태 분기
-
-- 모바일: `activeRightPanel === 'commentary'`
-- 데스크톱: `activeDesktopRightPanel === 'commentary'`
-
-### 콘텐츠 선택
-
-chapter별 commentary map을 고른 다음, key를 계산한다.
-
-- chapter 1, 4: `${chapterNum}.${verseNum}`
-- chapter 2, 3: `verseNum`
-
-이 차이는 소스 comment 구조가 chapter마다 다르다는 뜻이다.
-
-### 렌더링 방식
-
-해설 블록은 `CommentaryBlock` 구조를 따른다.
-
-- `title`
-- `paragraphs`
-- `bullets`
-- `table`
-
-테이블은 grid로, 불릿은 숫자형 항목을 감지해서 `1.` 같은 marker를 붙여 렌더링한다.
-
-비어 있으면 "No commentary" fallback이 나온다.
-
-### 상단 아이콘
-
-해설 패널 상단에는 `SquareArrowOutUpRight` 아이콘이 들어간다.
-
-이건 패널 자체를 "외부로 빠지는 참고 패널"처럼 보이게 하는 장치다.
-
-## 헤더와 좌측 사이드바
-
-### `Header`
-
-`src/components/Header.tsx`는 데스크톱/모바일에 따라 다른 레이아웃을 가진다.
-
-- 모바일에서는 title/link + selection controls + verse mode toggle
-- 데스크톱에서는 column grid에 맞춘 좌우 정렬
-
-verse 페이지에서만 `showSidebarToggle`가 켜지고, 그때 `getDesktopVerseColumns()`를 써서 grid column을 맞춘다.
-
-verse mode 토글의 라벨은 다음이다.
-
-- 해설
-- 심화
-
-아이콘은 각각 `ScrollText`, `BookOpenText`다.
-
-### `Sidebar`
-
-`src/components/Sidebar.tsx`는 왼쪽 reading guide 패널이다.
-
-- 현재 chapter / verse의 메타를 보여준다
-- English/Korean 본문 일부를 보여준다
-- chapter/verse의 시각적 마커를 크게 강조한다
-
-데이터가 없거나 로딩 중이면 스피너가 나온다.
-
-## 스타일 시스템
-
-`src/index.css`가 전체 톤을 결정한다.
-
-핵심 요소:
-
-- Tailwind v4 `@theme` 사용
-- gold / shell / dark 계열 색상 토큰
-- `SUIT`, `Cormorant Garamond` 기반 폰트 토큰
-- 부드러운 radial + linear gradient 배경
-- 공통 custom scrollbar
-- 전체 transition 기본값
-
-이 앱의 시각 언어는 꽤 일관적이다.
-
-- 따뜻한 베이지/골드 계열
-- 블러와 글래스 재질
-- 과한 평면 UI보다 종이/아카이브 느낌
-
-## 테스트와 검증
-
-코드베이스에는 다음 테스트가 있다.
+관련 테스트는 다음과 같다.
 
 - `src/utils/dataFetcher.test.ts`
 - `src/utils/yogaData.test.ts`
 - `src/utils/sutraNavigation.test.ts`
 - `src/components/ui/desktopVerseLayout.test.ts`
 
-검증 범위는 꽤 분명하다.
+브라우저 QA는 `scripts/browser_smoke.mjs`가 담당한다.
 
-- loader가 데이터를 잘 묶는지
-- 범위 계산이 맞는지
-- prev/next 이동이 맞는지
-- desktop verse columns가 상태별로 맞는지
-
-`scripts/browser_smoke.mjs`도 있지만, 현재 소스와 selector/marker 기준이 완전히 맞물려 있는지는 의심스럽다.
-
-내가 코드에서 찾은 바로는:
-
-- 현재 source UI에는 `#chapter-picker`, `#verse-picker` id가 보이지 않는다
-- 스모크는 여전히 그 selector를 찾는다
-- 스모크는 `Word-by-word`, `3.9` 같은 마커를 기대하지만 현재 본문 UI의 텍스트 구조와는 어긋나 보인다
-
-이건 실제 실행 검증을 다시 맞춰야 할 가능성이 높다는 뜻이다.
-
-## 데이터/문서 자산
-
-### `public/`
-
-확인된 런타임 자산:
-
-- `lexicon.json`
-- `gita.json`
-- `mp3/`
-
-`lexicon.json`은 알파벳 섹션별 단어 목록이고, 현재 대략 21개 문자 섹션에 4119개 항목이 있다.
-
-### `gita.json`
-
-`public/gita.json`은 상당히 큰 JSON이고, 내부에 `commentary_en` 같은 필드가 들어간다.
-
-하지만 활성 코드에서는 이 파일을 직접 읽지 않는다.
-
-즉, 현재 상태에서는 legacy/alternate data blob에 가깝다.
-
-### `data-source/`
-
-여기에는 원문 텍스트와 중간 산출물이 있다.
-
-- `1.sans.txt`
-- `2.english.txt`
-- `3.korean-1.txt`
-- `4.han bal.txt`
-- `5.bae_jik.txt`
-- `6.bae_uu.txt`
-- `7.dan.txt`
-- `8. ox.txt`
-- `9. ox-en.txt`
-- `10.sogae.txt`
-- `11. Lexicon.txt`
-- `han-json/`
-
-이 폴더는 사실상 생성 파이프라인의 원천이다.
-
-### `scripts/`
-
-문서와 스크립트가 말하는 파이프라인은 이렇다.
-
-- `generate_data.ps1`: source text를 읽어 `data.js`와 `public/data.json` 생성
-- `merge_tokens.ps1`: token mapping 병합
-- `update_dictionary.ps1` / `.cjs`: dictionary update
-- `check_audio_mismatch.cjs`: 데이터와 mp3 정합성 검사
-- `verify_data.cjs`, `verify_phase19.ps1`: integrity 검사
-- `browser_smoke.mjs`: Playwright smoke test
-
-`scripts/README.md`는 이 흐름을 비교적 직접적으로 설명한다.
-
-## 문서 상태
-
-### `README.md`
-
-현재 앱 설명과 배포/개발 방법을 비교적 잘 적어놨다.
-
-특히 다음이 유용하다.
-
-- app이 static build라는 점
-- `YogaDataProvider`가 데이터 접근을 중앙화한다는 점
-- verse 페이지에서 좌/우 패널이 분리된다는 점
-
-### `plan.md`
-
-전체적으로는 `completed`로 표시되어 있지만, 맨 아래에 chapter 4 commentary import checklist가 아직 남아 있다.
-
-이건 코드와 문서가 완전히 같은 시점의 상태를 반영하지 않는다는 신호다.
-
-### `research.md`
-
-이 파일 자체가 현재의 심층 아키텍처 보고서가 된다.
-
-## 내가 본 핵심 동작 정리
-
-이 앱은 단순한 읽기 뷰어가 아니다. 내부적으로는 다음이 동시에 돌아간다.
-
-- route 기반 canonical verse 정렬
-- chapter/verse 범위 매핑
-- 오디오 재생 상태
+- home chapter/verse 선택
+- verse route 로딩
 - body/commentary mode 전환
-- 모바일 drawer와 데스크톱 rail의 상태 분리
-- chapter select / verse select / quick nav
-- 학습만화 이미지와 commentary 텍스트의 전환
+- sidebar/panel persistence
+- desktop/mobile selector 동작
 
-즉, 핵심 UX는 "한 수트라를 읽는다"가 아니라
+## 13. 최종 판단
 
-> 장을 고르고, 범위를 맞추고, 본문과 해설과 만화를 서로 전환하면서, 오디오와 번역까지 한 화면에서 엮어 읽는다
+이 workspace의 본질은 “하나의 앱에 여러 데이터 세대가 섞여 있는 상태”다.
 
-에 가깝다.
+- 활성 앱은 여전히 `/gita.json` 중심의 verse reader
+- 새로 복사된 `book.json`과 `prayers.json`은 Bardo Thodol 계열의 별도 데이터
+- `albums.json`과 `mp3`는 음악 자산 계열
 
-## 남는 리스크와 메모
-
-- source tree 기준으로 `/data.json`의 존재 여부를 다시 맞춰봐야 한다. `dist/`에는 있지만 `public/` 목록에는 보이지 않았다.
-- `scripts/browser_smoke.mjs`는 현재 UI와 selector 기준이 어긋난 흔적이 있다. 스모크 신뢰도를 높이려면 현재 DOM 구조에 맞춰 다시 묶는 게 좋다.
-- `public/gita.json`은 크고 내용도 풍부하지만, 활성 경로에서 안 쓰이는 것 같다. 유지 비용만 남길 수 있다.
-- `plan.md`의 chapter 4 commentary 섹션은 현재 코드와 완전히 동기화된 상태로 보이진 않는다.
-
-## 결론
-
-현재 저장소의 활성 앱은 구조적으로 꽤 잘 정리돼 있다.
-
-- 데이터는 provider로 중앙화돼 있고
-- 레이아웃은 `AppShell` / `SidebarLayout` / `desktopVerseLayout`으로 분리돼 있으며
-- verse 페이지는 본문, 오디오, 번역, 해설, 학습만화를 모듈식으로 합쳐서 보여준다
-
-다만 문서와 QA 스크립트, 그리고 runtime asset 배치는 완전히 같은 시점을 반영하지 않는 부분이 남아 있다.
-
-그래서 이 레포는 "동작하는 앱"이기도 하지만, 동시에 "정리된 구현과 몇 개의 동기화 불일치가 공존하는 앱"으로 보는 게 정확하다.
+따라서 다음 구현 단계에서는 먼저 데이터 계약을 하나로 고정해야 한다. 특히 `book.json`과 `prayers.json`은 서로 다른 shape이므로, `부록:기도문`을 먼저 두는 통합 스키마를 명시적으로 정리한 뒤에만 코드 작업을 시작하는 편이 안전하다.

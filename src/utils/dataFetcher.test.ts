@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchYogaData, resetCache } from './dataFetcher';
 
 describe('fetchYogaData', () => {
@@ -7,67 +7,87 @@ describe('fetchYogaData', () => {
         resetCache();
     });
 
-    it('should fetch and structure gita data correctly', async () => {
-        const mockGita = {
-            1: {
-                chapter: 1,
+    it('should merge prayers before the book and normalize the runtime contract', async () => {
+        const mockPrayers = [
+            {
+                id: 'prayer-1',
+                chapterName: '부록 기도문 1',
                 verses: [
                     {
                         id: '1.1',
-                        chapter: 1,
-                        verse: 1,
-                        sanskrit: 'Verse 1.1',
-                        iast: 'verse 1.1',
-                        audio: 'https://example.com/1.mp3',
-                        words: [{ s: 'word', m: 'meaning' }],
-                        translation_en: 'English 1.1',
-                        commentary_en: 'Commentary 1.1',
-                        korean_pronunciation: '발음',
-                        translation_gil: '길',
+                        title: 'Prayer title 1',
+                        chapterTitle: 'Prayer chapter title 1',
+                        text: { english: 'Prayer body 1' },
+                        audioUrl: 'https://example.com/prayer-1.mp3',
                     },
                 ],
             },
-            2: {
-                chapter: 2,
-                verses: [
-                    {
-                        id: '2.1',
-                        chapter: 2,
-                        verse: 1,
-                        sanskrit: 'Verse 2.1',
-                        iast: 'verse 2.1',
-                        audio: 'https://example.com/2.mp3',
-                        words: [],
-                        translation_en: 'English 2.1',
-                        commentary_en: 'Commentary 2.1',
-                        korean_pronunciation: '발음',
-                        translation_gil: '길',
-                    },
-                ],
-            },
-        };
+        ];
 
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            json: async () => mockGita,
-        });
+        const mockBook = [
+            {
+                id: 'book-1',
+                chapterName: '본문 1부',
+                subchapters: [
+                    {
+                        id: 'chapter-1-0',
+                        chapterName: '서론',
+                        verses: [
+                            {
+                                id: '1',
+                                title: 'Book title 1',
+                                chapterTitle: 'Book chapter title 1',
+                                text: { english: 'Book body 1' },
+                                audioUrl: 'https://example.com/book-1.mp3',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ];
+
+        global.fetch = vi.fn().mockImplementation((url: string) => {
+            if (url === '/prayers.json') {
+                return Promise.resolve({
+                    ok: true,
+                    json: async () => mockPrayers,
+                });
+            }
+
+            if (url === '/book.json') {
+                return Promise.resolve({
+                    ok: true,
+                    json: async () => mockBook,
+                });
+            }
+
+            return Promise.resolve({ ok: false, status: 404 });
+        }) as typeof fetch;
 
         const data = await fetchYogaData();
+        const chapters = Object.values(data).sort((left, right) => left.chapter - right.chapter);
 
-        expect(data[1]).toBeDefined();
-        expect(data[2]).toBeDefined();
-        expect(data[1].sutras).toHaveLength(1);
-        expect(data[2].sutras).toHaveLength(1);
-        expect(data[1].sutras[0].translation_en).toBe('English 1.1');
-        expect(data[1].sutras[0].word_meanings?.[0]).toEqual({ word: 'word', meaning: 'meaning' });
+        expect(chapters).toHaveLength(2);
+        expect(chapters[0].meta.sectionLabel).toBe('부록:기도문');
+        expect(chapters[1].meta.sectionLabel).toBe('본문');
+        expect(chapters[0].sutras[0].displayTitle).toBe('Prayer title 1');
+        expect(chapters[0].sutras[0].audioUrl).toBe('https://example.com/prayer-1.mp3');
+        expect(chapters[1].sutras[0].displayTitle).toBe('Book title 1');
+        expect(chapters[1].sutras[0].bodyText).toBe('Book body 1');
     });
 
-    it('should throw on fetch failure', async () => {
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 404,
-        });
+    it('should throw when either source cannot be fetched', async () => {
+        global.fetch = vi.fn().mockImplementation((url: string) => {
+            if (url === '/prayers.json') {
+                return Promise.resolve({ ok: false, status: 404 });
+            }
 
-        await expect(fetchYogaData()).rejects.toThrow('Failed to fetch Gita data: 404');
+            return Promise.resolve({
+                ok: true,
+                json: async () => [],
+            });
+        }) as typeof fetch;
+
+        await expect(fetchYogaData()).rejects.toThrow('Failed to fetch prayers data: 404');
     });
 });

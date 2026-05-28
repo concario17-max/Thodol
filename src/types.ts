@@ -10,6 +10,13 @@ export interface VerseWord {
     m: string;
 }
 
+export interface RuntimeSection {
+    id: string;
+    chapterName: string;
+    verses: YogaSutra[];
+    sectionLabel?: string;
+}
+
 export interface Grammar {
     [key: string]: string;
 }
@@ -39,11 +46,17 @@ export interface YogaSutra {
     chapter?: number;
     verse?: number;
     audio?: string;
+    audioUrl?: string;
     iast?: string;
     "6.bae_uu"?: string;
     "8. ox"?: string;
     pronunciation: string;
     pronunciation_kr: string;
+    displayTitle?: string;
+    displaySubtitle?: string;
+    bodyText?: string;
+    sectionLabel?: string;
+    sourceKind?: 'prayer' | 'book';
     "2.english"?: string;
     "5.bae_jik"?: string;
     "9. ox-en"?: string;
@@ -56,6 +69,16 @@ export interface YogaSutra {
     translation_gil?: string;
     translation_jimong?: string;
     translation_suk?: string;
+    title?: string;
+    chapterTitle?: string;
+    text?: {
+        tibetan?: string;
+        english?: string;
+        korean?: string;
+    };
+    sourceId?: string;
+    sourceSectionId?: string;
+    sourceChapterName?: string;
     words?: VerseWord[];
     word_meanings?: WordMeaning;
     tokens?: Token[];
@@ -68,10 +91,14 @@ export interface ChapterMeta {
     name_english: string;
     description: string;
     sutraCount: number;
+    sectionLabel?: string;
 }
 
 export interface YogaChapter {
     chapter: number;
     meta: ChapterMeta;
     sutras: YogaSutra[];
+    sections?: RuntimeSection[];
+    sourceId?: string;
+    sourceType?: 'appendix' | 'book';
 }

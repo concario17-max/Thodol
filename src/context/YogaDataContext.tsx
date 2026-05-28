@@ -42,7 +42,7 @@ export const YogaDataProvider = ({ children }: YogaDataProviderProps) => {
                 }
 
                 setAllChapters(null);
-                setError('Unable to load Bhagavad Gita data.');
+                setError('Unable to load merged chapter data.');
                 setLoading(false);
             });
 

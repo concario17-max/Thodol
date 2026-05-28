@@ -180,3 +180,80 @@ Goal: synchronize the live app with the newly copied data source before any impl
 - [ ] Freeze the exact files that must be regenerated versus preserved.
 - [ ] Freeze the list of UI surfaces that will need to be updated.
 - [ ] Only then start implementation in a separate pass.
+
+## 13. Future `book.json` + `prayers.json` Integration Plan
+
+Goal: prepare a deterministic implementation path for merging the copied Bardo data so prayers are presented first as `부록:기도문`, while `albums` and `mp3` remain untouched for a later pass.
+
+### 13.1 Scope Freeze
+
+- [ ] Confirm this pass stays planning-only and does not modify runtime code yet.
+- [ ] Keep `albums.json`, `album-covers/`, and `mp3/` explicitly out of scope.
+- [ ] Decide whether the merged data should live in one new JSON file or in two normalized source files with one runtime loader.
+- [ ] Freeze the intended reading order: `부록:기도문` first, then the main `book` sections.
+
+### 13.2 Source Audit
+
+- [ ] Re-read the exact structure of `public/book.json`.
+- [ ] Re-read the exact structure of `public/prayers.json`.
+- [ ] List the common fields between the two files.
+- [ ] List the shape differences between grouped chapters and flat verse groups.
+- [ ] Identify whether any verse IDs, titles, or chapter labels need renaming during merge.
+- [ ] Confirm whether any `audioUrl` paths need normalization before the merge.
+
+### 13.3 Canonical Data Model
+
+- [ ] Define the top-level merged schema.
+- [ ] Decide how to represent `부록:기도문` in the new schema.
+- [ ] Decide whether the main book remains grouped by subchapter or is flattened.
+- [ ] Decide whether verse ordering should be driven by explicit sort keys or array order.
+- [ ] Decide how to preserve existing verse IDs without breaking links.
+- [ ] Decide how titles, subtitles, and section labels will map into the merged shape.
+
+### 13.4 Loader Contract
+
+- [ ] Determine which runtime file name the app should fetch after the merge.
+- [ ] Decide whether `src/utils/dataFetcher.ts` needs a new loader branch or a full replacement.
+- [ ] Decide whether the loader should support backward compatibility with the old `gita.json` contract.
+- [ ] Decide where normalization should happen: build step, runtime fetch, or a prebuilt merged artifact.
+- [ ] Decide how the loader should handle missing appendix or missing book sections.
+
+### 13.5 UI Mapping
+
+- [ ] Identify the landing page surfaces that should show the merged book/prayer order.
+- [ ] Identify any sidebar, modal, or verse-view references that need a new label for `부록:기도문`.
+- [ ] Decide whether prayers should appear as a separate chapter group or as an appendix tab.
+- [ ] Decide whether verse navigation should move across appendix and main book boundaries.
+- [ ] Decide whether the chapter list should visually separate appendix from the main chapters.
+
+### 13.6 Routing and Navigation
+
+- [ ] Confirm whether the current `/chapter/:chapterNum/verse/:verseNum` pattern can represent the merged data without a URL redesign.
+- [ ] Decide how appendix verses will be encoded in URLs if they need their own namespace.
+- [ ] Decide whether the canonical route can continue to normalize ranges without breaking appendix links.
+- [ ] Decide whether prev/next navigation should cross from appendix into the main book or stop at boundaries.
+
+### 13.7 Asset and Media Handling
+
+- [ ] Verify which prayer verses already have audio and which do not.
+- [ ] Confirm whether existing prayer audio paths can be preserved as-is.
+- [ ] Confirm whether `albums.json` and `mp3/` can remain untouched for the first implementation pass.
+- [ ] Decide whether any new merged asset file should sit in `public/` or be generated into `dist/`.
+
+### 13.8 Verification Plan
+
+- [ ] Add or update tests for the new data normalization contract.
+- [ ] Add or update tests for any new route or range behavior.
+- [ ] Add or update tests for appendix ordering and chapter ordering.
+- [ ] Run typecheck after the implementation contract is frozen.
+- [ ] Run unit tests that cover data loading and verse resolution.
+- [ ] Run a targeted browser smoke pass only after the implementation lands.
+
+### 13.9 Implementation Gate
+
+- [ ] Freeze the merged schema.
+- [ ] Freeze the runtime file path.
+- [ ] Freeze the appendix ordering rule.
+- [ ] Freeze the navigation behavior at appendix boundaries.
+- [ ] Freeze the exact files that will be edited in the implementation pass.
+- [ ] Only then start the actual merge work.

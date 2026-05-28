@@ -199,3 +199,19 @@ status: resolved
   summary: Typecheck failed on dynamic heading rendering and nullable chapter access
   details: `CommentaryMarkdown` used a JSX namespace path TS could not resolve, and `VerseView` narrowed `currentChapter` too loosely for strict null checks. Both issues were fixed before rerunning verification.
   status: resolved
+
+- time: 2026-05-28 00:00:00 +09:00
+  location: `dist/gita.json`
+  summary: Raw JSON parse failed because of a UTF-8 BOM
+  details: A direct `JSON.parse` on `dist/gita.json` threw until the BOM was stripped first. The file is still usable, but the encoding detail matters for any loader that reads it verbatim.
+  status: resolved
+- time: 2026-05-28 16:11:29 +09:00
+  location: `npm.cmd exec vitest run src/utils/dataFetcher.test.ts` / `npm.cmd run typecheck`
+  summary: PowerShell blocked `npm.ps1` during verification
+  details: Initial verification attempts failed because the shell policy would not load `C:\Program Files\nodejs\npm.ps1`. Re-ran both checks with `npm.cmd`, and they passed.
+  status: resolved
+- time: 2026-05-28 16:15:20 +09:00
+  location: `cmd /c npm run typecheck` / `cmd /c npx vitest run src/utils/dataFetcher.test.ts` / `cmd /c npm run build`
+  summary: Verification completed successfully after switching to the `.cmd` shim
+  details: The PowerShell execution policy blocked the initial `npm`/`npx` invocations. Re-ran the typecheck, targeted vitest, and production build through `cmd /c`, and all three passed.
+  status: resolved
