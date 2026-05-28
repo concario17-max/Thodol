@@ -25,3 +25,43 @@
 - Verification completed with `cmd /c npm run typecheck`, `cmd /c npx vitest run src/utils/dataFetcher.test.ts`, and `cmd /c npm run build`.
 - Route A reclassification applied for the narrowed UI/consumer-only slice.
 - Main is now writing the consumer-layer implementation directly for the appendix-first presentation pass.
+
+- time: 2026-05-29 00:10:07 +09:00
+  task: prayer translation injection
+  summary: populated public/prayers.json with translation_joongam and translation_ryu from Prayer/6-2 jung .txt and Prayer/6-1 si.txt
+  status: done
+
+- time: 2026-05-29 00:19:16 +09:00
+  task: prayer pronunciation injection
+  summary: populated korean_pronunciation for prayer chapters 3, 4, and 5 from Prayer/3/3.txt, Prayer/4/4.txt, and Prayer/5/5.txt
+  status: done
+
+- time: 2026-05-29 00:21:43 +09:00
+  task: pronunciation ui rendering
+  summary: rendered korean_pronunciation in the verse view for prayer chapters 3, 4, and 5
+  status: done
+
+- time: 2026-05-29 00:27:55 +09:00
+  task: remove auto pronunciation rendering
+  summary: removed the automatic korean_pronunciation section from VerseView while keeping the data in public/prayers.json
+  status: done
+
+- time: 2026-05-29 00:33:09 +09:00
+  task: pronunciation and mp3 rendering
+  summary: rendered korean_pronunciation plus MP3 playback for prayer chapters 3, 4, and 5 in VerseView
+  status: done
+
+- time: 2026-05-29 00:39:04 +09:00
+  task: fix prayer audio scope
+  summary: changed pronunciation and MP3 rendering to target prayer sections 3-5 inside chapter 1 via sourceSectionId
+  status: done
+
+- time: 2026-05-29 00:41:22 +09:00
+  task: audio position tweak
+  summary: moved the prayer MP3 player below the pronunciation section in VerseView
+  status: done
+
+- time: 2026-05-29 00:42:54 +09:00
+  task: fix Korean labels in VerseView
+  summary: corrected corrupted Korean section labels for the verse content headings in deep-detail view
+  status: done

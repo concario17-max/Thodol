@@ -1,47 +1,67 @@
-interface SutraContentProps {
-    title: string;
-    subtitle?: string;
+interface SutraSection {
+    label: string;
     body?: string;
+    tone?: 'hero' | 'refined' | 'translation';
 }
 
-export const SutraContent = ({ title, subtitle, body }: SutraContentProps) => {
-    const cleanSubtitle = subtitle?.replace(/\s+/g, ' ').trim();
-    const cleanBody = body?.replace(/\n{3,}/g, '\n\n').trim();
+interface SutraContentProps {
+    sections: SutraSection[];
+}
 
+const EMPTY_NOTICE = '아직 데이터가 없습니다.';
+
+const normalizeText = (text?: string) => text?.replace(/\n{3,}/g, '\n\n').trim();
+
+const getSectionClasses = (tone?: SutraSection['tone']) => {
+    switch (tone) {
+        case 'hero':
+            return {
+                section: 'py-7 text-center sm:py-8',
+                label: 'hidden',
+                body: 'mx-auto max-w-4xl font-display text-[clamp(1.6rem,1.4rem+0.9vw,2.55rem)] leading-[1.2] tracking-[0.01em] text-gold-primary dark:text-gold-light sm:leading-[1.18]',
+            };
+        case 'refined':
+            return {
+                section: 'py-6 text-center sm:py-7',
+                label: 'justify-center text-[10px] tracking-[0.42em]',
+                body: 'mx-auto max-w-4xl font-sans text-[13px] leading-7 tracking-[0.24em] text-text-secondary dark:text-dark-text-secondary sm:text-[14px]',
+            };
+        case 'translation':
+        default:
+            return {
+                section: 'py-5 text-left sm:py-6',
+                label: 'justify-start text-[10px] tracking-[0.34em]',
+                body: 'whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]',
+            };
+    }
+};
+
+export const SutraContent = ({ sections }: SutraContentProps) => {
     return (
         <section className="mx-auto w-full px-4 sm:px-6 lg:px-8">
-            <div className="border-b border-gold-border/10 pb-5 text-center dark:border-dark-border/45">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
-                    Title
-                </p>
-                <p className="mt-4 whitespace-pre-line break-keep font-display text-[clamp(1.55rem,1.3rem+1.1vw,2.65rem)] leading-[1.26] tracking-[0.015em] text-sanskrit-accent dark:text-sanskrit-accent">
-                    {title}
-                </p>
+            <div className="rounded-[2rem] bg-transparent px-1 py-1">
+                <div className="space-y-0">
+                    {sections.map((section, index) => {
+                        const cleanBody = normalizeText(section.body);
+                        const isLast = index === sections.length - 1;
+                        const sectionClasses = getSectionClasses(section.tone);
+
+                        return (
+                            <section
+                                key={section.label}
+                                className={`${sectionClasses.section} ${index === 0 ? 'pt-2' : ''} ${
+                                    !isLast ? 'border-b border-gold-border/8 dark:border-dark-border/25' : ''
+                                }`}
+                            >
+                                <p className={`flex items-center font-semibold uppercase text-gold-primary/70 dark:text-gold-light/70 ${sectionClasses.label}`}>
+                                    {section.label}
+                                </p>
+                                <p className={`mt-3 ${sectionClasses.body}`}>{cleanBody || EMPTY_NOTICE}</p>
+                            </section>
+                        );
+                    })}
+                </div>
             </div>
-
-            {cleanSubtitle ? (
-                <div className="mt-4 space-y-3 text-center">
-                    <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-text-secondary/60 dark:text-dark-text-secondary/65">
-                            Subtitle
-                        </p>
-                        <p className="mt-2 whitespace-pre-line break-keep font-sans text-[13px] leading-7 text-text-secondary dark:text-dark-text-secondary sm:text-[14px]">
-                            {cleanSubtitle}
-                        </p>
-                    </div>
-                </div>
-            ) : null}
-
-            {cleanBody ? (
-                <div className="mt-5 rounded-[1.4rem] border border-gold-border/10 bg-white/55 px-4 py-4 text-left shadow-sm dark:border-dark-border/45 dark:bg-[#111]/35 sm:px-5 sm:py-5">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-text-secondary/60 dark:text-dark-text-secondary/65">
-                        Body
-                    </p>
-                    <p className="mt-3 whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
-                        {cleanBody}
-                    </p>
-                </div>
-            ) : null}
         </section>
     );
 };

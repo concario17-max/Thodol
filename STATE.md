@@ -1,36 +1,32 @@
 ﻿# State
 
 ## Current Task
-Completed the merged `book` + `prayers` runtime contract and consumer update so prayers appear first as `부록:기도문`, while leaving `albums.json` and `mp3` untouched.
+Fix the corrupted Korean section labels in the deep-detail verse view so the pronunciation and translation headings render correctly in `src/pages/VerseView.tsx`.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
-main: planner
+main: direct
 
 ## Contract Freeze
 Frozen scope:
-- Merge `public/book.json` and `public/prayers.json` into one runtime contract.
-- Ensure prayers are presented first as `부록:기도문`.
-- Keep `albums.json`, `album-covers/`, and `mp3/` untouched in this pass.
-- Update the runtime loader and the minimum consumer surfaces needed to present the merged data.
-- Preserve existing verse content as much as possible while normalizing schema differences.
+- Keep the existing `prayers` + `book` runtime contract intact.
+- Correct the Korean labels in the verse content sections.
+- Preserve the current pronunciation/MP3 placement and translation ordering.
+- Leave other chapters untouched.
 
-Reason for Route B:
-- The work spans the loader contract, view model, chapter list, verse view, and supporting tests.
+Reason for Route A:
+- This is a small label-only fix confined to `src/pages/VerseView.tsx`.
 
 ## Write Sets
-- main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- worker_data: implementation files for the merged data contract and loader
-- worker_ui: implementation files for the consumer surfaces
-- reviewer: implementation review only
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`, `src/pages/VerseView.tsx`
 
 ## Reviewer
-reviewer: completed
+reviewer: not required (Route A)
 
 ## Last Update
-2026-05-28 16:15:20 +09:00 - Implemented the merged book/prayers runtime contract, updated the UI to show prayers first as `부록:기도문`, and verified typecheck, vitest, and build successfully.
+2026-05-29 00:00:00 +09:00 - Completed the Korean label fix in VerseView and verified the build.
 
 ## Open Review Item
 - None.

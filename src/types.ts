@@ -10,6 +10,11 @@ export interface VerseWord {
     m: string;
 }
 
+export interface KoreanTranslationEntry {
+    translator?: string;
+    text?: string;
+}
+
 export interface RuntimeSection {
     id: string;
     chapterName: string;
@@ -69,12 +74,14 @@ export interface YogaSutra {
     translation_gil?: string;
     translation_jimong?: string;
     translation_suk?: string;
+    translation_joongam?: string;
+    translation_ryu?: string;
     title?: string;
     chapterTitle?: string;
     text?: {
         tibetan?: string;
         english?: string;
-        korean?: string;
+        korean?: string | KoreanTranslationEntry[];
     };
     sourceId?: string;
     sourceSectionId?: string;

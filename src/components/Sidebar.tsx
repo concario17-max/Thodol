@@ -142,19 +142,10 @@ const Sidebar = () => {
                     <div className="space-y-3">
                         <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
-                                English
-                            </p>
-                            <p className="whitespace-pre-line break-keep font-sans text-[16px] leading-[1.95] text-text-primary/94 dark:text-dark-text-primary/94 sm:text-[17px]">
-                                {verseData.displayTitle ?? verseData.chapterTitle ?? verseData.translation_en ?? verseData['2.english'] ?? ''}
-                            </p>
-                        </section>
-
-                        <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
-                                Korean
+                                {verseData.sourceKind === 'book' ? '정창영 번역' : '한글 번역'}
                             </p>
                             <p className="whitespace-pre-line break-keep font-sans text-[15px] leading-[2] text-text-secondary/92 dark:text-dark-text-secondary/92 sm:text-[16px]">
-                                {verseData.bodyText ?? verseData.translation_en ?? verseData.translation_ham ?? verseData['5.bae_jik'] ?? ''}
+                                {verseData.translation_ham ?? verseData.translation_jimong ?? verseData.translation_en ?? verseData['5.bae_jik'] ?? ''}
                             </p>
                         </section>
                     </div>

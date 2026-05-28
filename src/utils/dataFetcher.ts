@@ -3,7 +3,12 @@ import { YogaChapter, YogaSutra, WordMeaning, VerseWord, type RuntimeSection } f
 interface RawVerseText {
     tibetan?: string;
     english?: string;
-    korean?: string;
+    korean?: string | RawKoreanTranslation[];
+}
+
+interface RawKoreanTranslation {
+    translator?: string;
+    text?: string;
 }
 
 interface RawVerse {
@@ -21,6 +26,8 @@ interface RawVerse {
     translation_gil?: string;
     translation_jimong?: string;
     translation_suk?: string;
+    translation_joongam?: string;
+    translation_ryu?: string;
 }
 
 interface RawPrayerSection {
@@ -44,8 +51,8 @@ interface RawBookSection {
 type RawPrayerFile = RawPrayerSection[];
 type RawBookFile = RawBookSection[];
 
-const APPENDIX_CHAPTER_NAME_KOREAN = '\uBD80\uB85D:\uAE30\uB3C4\uBB38';
-const APPENDIX_CHAPTER_NAME_ENGLISH = 'Appendix: Prayers';
+const APPENDIX_CHAPTER_NAME_KOREAN = '중간계와 관련된 예비 기도';
+const APPENDIX_CHAPTER_NAME_ENGLISH = 'Preliminary Prayers Related to the Intermediate State';
 
 let cachedData: Record<number, YogaChapter> | null = null;
 let pendingRequest: Promise<Record<number, YogaChapter>> | null = null;
@@ -59,6 +66,36 @@ const normalizeWordMeanings = (meanings?: VerseWord[]): WordMeaning | undefined 
         word: s,
         meaning: m,
     }));
+};
+
+const extractKoreanTranslation = (item: RawVerse): string => {
+    const explicitKorean = item.translation_ham?.trim();
+    if (explicitKorean) {
+        return explicitKorean;
+    }
+
+    const rawKorean = item.text?.korean;
+    if (typeof rawKorean === 'string') {
+        return rawKorean.trim();
+    }
+
+    if (Array.isArray(rawKorean)) {
+        const preferredTranslation = rawKorean.find((entry) => entry.translator?.trim() === '정창영') ?? rawKorean[0];
+        return preferredTranslation?.text?.trim() ?? '';
+    }
+
+    return '';
+};
+
+const extractKoreanTranslationByTranslator = (item: RawVerse, translatorName: string): string => {
+    const rawKorean = item.text?.korean;
+
+    if (!Array.isArray(rawKorean)) {
+        return '';
+    }
+
+    const matchedTranslation = rawKorean.find((entry) => entry.translator?.trim() === translatorName.trim());
+    return matchedTranslation?.text?.trim() ?? '';
 };
 
 const buildCommentary = (heading: string, body: string) => {
@@ -88,7 +125,9 @@ const normalizeVerse = (
     const chapterTitle = item.chapterTitle?.trim() ?? '';
     const sourceText = item.text ?? {};
     const english = item.translation_en ?? sourceText.english ?? '';
-    const korean = item.translation_ham ?? sourceText.korean ?? '';
+    const korean = extractKoreanTranslation(item);
+    const koreanJoongam = extractKoreanTranslationByTranslator(item, '중암 선혜');
+    const koreanRyu = extractKoreanTranslationByTranslator(item, '류시화');
     const tibetan = sourceText.tibetan ?? '';
     const pronunciation = title || chapterTitle || english || korean;
     const commentaryBody = chapterTitle || english || korean;
@@ -116,6 +155,8 @@ const normalizeVerse = (
         translation_gil: item.translation_gil ?? (english || undefined),
         translation_jimong: item.translation_jimong ?? (chapterTitle || undefined),
         translation_suk: item.translation_suk ?? (korean || undefined),
+        translation_joongam: item.translation_joongam ?? (koreanJoongam || undefined),
+        translation_ryu: item.translation_ryu ?? (koreanRyu || undefined),
         '2.english': english || undefined,
         '3.korean-1': korean || undefined,
         '5.bae_jik': korean || undefined,

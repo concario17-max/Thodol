@@ -43,6 +43,11 @@ const isAppendixChapter = (chapter: { chapter: number; meta: { name_korean: stri
 const getChapterOptionLabel = (chapter: { chapter: number; meta: { name_korean: string; name_english: string } }) =>
     isAppendixChapter(chapter) ? chapter.meta.name_korean : `${chapter.chapter}. ${chapter.meta.name_korean}`;
 
+const getVerseOptionLabel = (verseNumber: string, subtitle?: string) => {
+    const trimmedSubtitle = subtitle?.trim();
+    return trimmedSubtitle ? `${verseNumber}. ${trimmedSubtitle}` : verseNumber;
+};
+
 interface ContextPillPickerProps {
     chapterNum?: string;
     verseNum?: string;
@@ -151,7 +156,7 @@ const ContextPillPicker = ({
         }
     }, [isOpen]);
 
-    const activeChapterLabel = chapterNum ? chapterOptions.find((option) => option.value === chapterNum)?.label ?? `${chapterNum}장` : '장 --';
+    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '장 --';
     const activeVerseLabel = verseNum ? `${verseNum}절` : '절 --';
     const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
 
@@ -242,12 +247,14 @@ const ContextPillPicker = ({
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-expanded={isOpen}
                 aria-haspopup="dialog"
-                className="inline-flex items-center gap-1.5 rounded-full border border-gold-border/14 bg-[linear-gradient(180deg,rgba(255,251,241,0.92)_0%,rgba(248,241,228,0.82)_100%)] px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-gold-primary shadow-[0_12px_32px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-primary/30 hover:bg-white/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-[linear-gradient(180deg,rgba(28,23,18,0.92)_0%,rgba(20,17,13,0.82)_100%)] dark:text-gold-light dark:hover:bg-white/8"
+                className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 shadow-[0_10px_28px_-22px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-border/24 hover:bg-shell-main/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-shell-main-dark/88"
             >
-                <span className="whitespace-nowrap">{activeChapterLabel}</span>
-                <span className="text-gold-primary/45 dark:text-gold-light/45">/</span>
-                <span className="whitespace-nowrap">{activeVerseLabel}</span>
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                <span className="inline-flex items-center gap-2 rounded-[0.85rem] bg-transparent px-3 py-1 text-[9px] font-semibold tracking-[0.14em] text-gold-primary dark:text-gold-light">
+                    <span className="whitespace-nowrap">{activeChapterLabel}</span>
+                    <span className="text-gold-primary/35 dark:text-gold-light/35">|</span>
+                    <span className="whitespace-nowrap">{activeVerseLabel}</span>
+                    <ChevronDown className={`h-3.5 w-3.5 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                </span>
             </button>
 
             {isOpen ? createPortal(panel, document.body) : null}
@@ -278,16 +285,13 @@ const MainLayout = () => {
     const verseOptionsByChapter = useMemo(
         () =>
             chapters.reduce<Record<string, ContextOption[]>>((acc, chapter) => {
-                acc[String(chapter.chapter)] = chapter.sutras.map((sutra, index) => {
+                acc[String(chapter.chapter)] = chapter.sutras.map((sutra) => {
                     const verseNumberText = String(sutra.verse ?? Number.parseInt(sutra.id.split('.')[1], 10));
-                    const verseNumber = Number.parseInt(verseNumberText, 10);
-                    const nextSutra = chapter.sutras[index + 1];
-                    const nextVerseNumber = nextSutra ? Number.parseInt(String(nextSutra.verse ?? Number.parseInt(nextSutra.id.split('.')[1], 10)), 10) : null;
-                    const label = nextVerseNumber && nextVerseNumber > verseNumber + 1 ? `${verseNumberText}-${nextVerseNumber - 1}` : verseNumberText;
+                    const verseSubtitle = sutra.sourceChapterName?.trim() || sutra.displaySubtitle?.trim() || sutra.chapterTitle?.trim() || sutra.displayTitle?.trim();
 
                     return {
                         value: verseNumberText,
-                        label,
+                        label: getVerseOptionLabel(verseNumberText, verseSubtitle),
                     };
                 });
 
@@ -309,7 +313,7 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Tibetan Book of the Dead" showSidebarToggle selectionControls={selectionControls} /> : undefined}
+            header={isVerseView ? <Header title="Bardo-Thödol" showSidebarToggle selectionControls={selectionControls} /> : undefined}
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
