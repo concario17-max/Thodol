@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+﻿import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
@@ -58,6 +58,23 @@ const getLearningComicImageUrl = (chapterNum: string, verseNum: string) => {
     return match?.url ?? null;
 };
 
+const extractCommentaryTitle = (content?: string | null) => {
+    if (!content) {
+        return null;
+    }
+
+    const headingMatch = content.match(/^#\s+(.+?)(?:\r?\n|$)/m);
+    return headingMatch?.[1]?.trim() ?? null;
+};
+
+const stripCommentaryTitleBlock = (content?: string | null) => {
+    if (!content) {
+        return content ?? null;
+    }
+
+    return content.replace(/^#\s+.+?(?:\r?\n){2,}/, '').trimStart();
+};
+
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -102,12 +119,61 @@ interface CommentaryContentProps {
 
 const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationControls }: CommentaryContentProps) => {
     const [viewMode, setViewMode] = useState<CommentaryViewMode>('comic');
+    const [commentaryTitle, setCommentaryTitle] = useState<string | null>(() => extractCommentaryTitle(commentaryText));
 
     useEffect(() => {
         setViewMode('comic');
     }, [chapterNum, verseNum]);
 
+    useEffect(() => {
+        const fallbackTitle = extractCommentaryTitle(commentaryText);
+        if (fallbackTitle) {
+            setCommentaryTitle(fallbackTitle);
+            return;
+        }
+
+        let cancelled = false;
+
+        const loadTitle = async () => {
+            try {
+                const response = await fetch('/gita.json');
+                if (!response.ok) {
+                    return;
+                }
+
+                const rawData = (await response.json()) as Record<
+                    string,
+                    {
+                        verses?: Array<{
+                            id: string;
+                            commentary_en?: string;
+                        }>;
+                    }
+                >;
+
+                const chapter = rawData[String(Number.parseInt(chapterNum, 10))];
+                const verse = chapter?.verses?.find((entry) => entry.id === `${chapterNum}.${verseNum}`);
+                const title = extractCommentaryTitle(verse?.commentary_en);
+
+                if (!cancelled) {
+                    setCommentaryTitle(title);
+                }
+            } catch {
+                if (!cancelled) {
+                    setCommentaryTitle(null);
+                }
+            }
+        };
+
+        void loadTitle();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [chapterNum, verseNum, commentaryText]);
+
     const learningComicImageUrl = getLearningComicImageUrl(chapterNum, verseNum);
+    const commentaryBodyText = stripCommentaryTitleBlock(commentaryText);
 
     return (
         <section className="mx-auto w-full space-y-3 px-0 sm:space-y-4">
@@ -132,14 +198,17 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
             <div className={`${sharedContentShellClassName} ${sharedContentPaddingClassName} sm:space-y-5`}>
                 {viewMode === 'commentary' ? (
                     <div className="space-y-3 sm:space-y-4">
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                            <span className="font-display text-[22px] font-semibold tracking-[0.06em] text-text-primary dark:text-dark-text-primary">
+                        <div className="flex items-baseline gap-3 overflow-hidden">
+                            <span className="shrink-0 whitespace-nowrap font-sans text-[22px] font-semibold tabular-nums tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[28px]">
                                 {chapterNum}.{verseNum}
+                            </span>
+                            <span className="min-w-0 truncate text-[22px] font-semibold leading-tight tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[28px]">
+                                {commentaryTitle ?? ''}
                             </span>
                         </div>
 
                         <CommentaryMarkdown
-                            content={commentaryText}
+                            content={commentaryBodyText}
                             emptyMessage={
                                 <div className="border-l border-gold-border/12 pl-5 font-sans text-[15px] leading-8 text-text-secondary dark:border-dark-border/45 dark:text-dark-text-secondary sm:text-[16px]">
                                     No commentary is available for this verse.
