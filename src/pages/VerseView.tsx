@@ -405,8 +405,6 @@ const VerseView = () => {
 
                                         <motion.div variants={itemVariants}>
                                             <TranslationSection
-                                                english={verseData.translation_en ?? verseData['2.english']}
-                                                ham={verseData.translation_ham ?? verseData['5.bae_jik']}
                                                 gil={verseData.translation_gil ?? verseData['8. ox']}
                                                 jimong={verseData.translation_jimong}
                                                 suk={verseData.translation_suk ?? verseData['6.bae_uu'] ?? verseData['9. ox-en']}
@@ -437,3 +435,6 @@ const VerseView = () => {
 };
 
 export default VerseView;
+
+
+

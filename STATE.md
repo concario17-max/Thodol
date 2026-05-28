@@ -1,7 +1,7 @@
 ﻿# State
 
 ## Current Task
-Reduce the Sanskrit text size in the `심화` view so it feels less overpowering.
+Reduce the Sanskrit text size again in the `심화` view and remove the duplicate English translation there.
 
 ## Route
 Route A
@@ -11,21 +11,21 @@ main: implementation
 
 ## Contract Freeze
 Frozen scope:
-- Reduce the main Sanskrit text size in `SutraContent`.
-- Keep the text, layout structure, and routing unchanged.
-- Leave the rest of the verse content and commentary layout unchanged.
+- Reduce the main Sanskrit text size further in `SutraContent`.
+- Remove the English translation block from the main verse translation section.
+- Keep the rest of the verse content, layout structure, and routing unchanged.
 
 Reason for Route A:
 - The change is a small typography tweak in one verse component.
 
 ## Write Sets
-- main: `STATE.md`, `src/components/verse/SutraContent.tsx`
+- main: `STATE.md`, `src/components/verse/SutraContent.tsx`, `src/pages/VerseView.tsx`
 
 ## Reviewer
 reviewer: not required for Route A
 
 ## Last Update
-2026-05-28 12:03:06 +09:00 - Reduced the Sanskrit heading size in `SutraContent` so it sits more lightly above the translations.
+2026-05-28 14:24:38 +09:00 - Reduced the Sanskrit size again and removed the duplicate English translation block from the main verse section.
 
 ## Open Review Item
 - None.

@@ -1,4 +1,4 @@
-interface SutraContentProps {
+﻿interface SutraContentProps {
     sanskrit: string;
     pronunciation: string;
     pronunciationKr?: string;
@@ -14,7 +14,7 @@ export const SutraContent = ({ sanskrit, pronunciation, pronunciationKr }: Sutra
                 <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/70 dark:text-gold-light/70">
                     Sanskrit text
                 </p>
-                <p className="mt-4 whitespace-pre-line break-keep font-display text-[clamp(1.75rem,1.45rem+1.45vw,3rem)] leading-[1.3] tracking-[0.02em] text-sanskrit-accent dark:text-sanskrit-accent">
+                <p className="mt-4 whitespace-pre-line break-keep font-display text-[clamp(1.55rem,1.3rem+1.1vw,2.65rem)] leading-[1.26] tracking-[0.015em] text-sanskrit-accent dark:text-sanskrit-accent">
                     {sanskrit}
                 </p>
             </div>
@@ -38,3 +38,4 @@ export const SutraContent = ({ sanskrit, pronunciation, pronunciationKr }: Sutra
         </section>
     );
 };
+
