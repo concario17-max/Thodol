@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Completed: the right-side panel now opens to learning comic by default while preserving commentary as an explicit alternate view.
+Change the browser tab title from the old Yoga Sutras label to the Bhagavad Gita label.
 
 ## Route
 Route A
@@ -25,7 +25,7 @@ Reason for Route A:
 reviewer: not required for Route A
 
 ## Last Update
-2026-05-27 17:10:00 +09:00 - Switched the verse right-side panel default to learning comic and verified typecheck.
+2026-05-28 00:00:00 +09:00 - Identified the stale tab title in index.html and reclassified the task as a small UI copy fix.
 
 ## Open Review Item
 - None.
