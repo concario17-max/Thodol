@@ -198,11 +198,11 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
             <div className={`${sharedContentShellClassName} ${sharedContentPaddingClassName} sm:space-y-5`}>
                 {viewMode === 'commentary' ? (
                     <div className="space-y-3 sm:space-y-4">
-                        <div className="flex items-baseline gap-3 overflow-hidden">
-                            <span className="shrink-0 whitespace-nowrap font-sans text-[22px] font-semibold tabular-nums tracking-[0.02em] text-text-primary dark:text-dark-text-primary sm:text-[28px]">
+                        <div className="flex items-baseline gap-2 overflow-hidden">
+                            <span className="shrink-0 whitespace-nowrap font-sans text-[15px] font-medium leading-none tracking-[0.04em] text-text-secondary/75 dark:text-dark-text-secondary/75 sm:text-[17px]">
                                 {chapterNum}.{verseNum}
                             </span>
-                            <span className="min-w-0 truncate text-[22px] font-semibold leading-tight tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[28px]">
+                            <span className="min-w-0 truncate font-sans text-[22px] font-semibold leading-tight tracking-[0.01em] text-text-primary dark:text-dark-text-primary sm:text-[28px]">
                                 {commentaryTitle ?? ''}
                             </span>
                         </div>
