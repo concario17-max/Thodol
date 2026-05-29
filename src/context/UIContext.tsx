@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode, Dispatch, SetStateAction } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export type RightPanelType = 'commentary' | null;
-export type VerseContentMode = 'body' | 'commentary';
+export type VerseContentMode = 'body' | 'commentary' | 'album';
 
 const VERSE_CONTENT_MODE_STORAGE_KEY = 'yoga-verse-content-mode';
 
-const isVerseContentMode = (value: string | null): value is VerseContentMode => value === 'body' || value === 'commentary';
+const isVerseContentMode = (value: string | null): value is VerseContentMode =>
+    value === 'body' || value === 'commentary' || value === 'album';
 
 const readSavedVerseContentMode = (): VerseContentMode => {
     try {
@@ -29,6 +31,8 @@ interface UIContextType {
     toggleSidebar: () => void;
     activeVerseContentMode: VerseContentMode;
     setActiveVerseContentMode: Dispatch<SetStateAction<VerseContentMode>>;
+    lastVersePath: string | null;
+    lastNonAlbumVerseContentMode: Exclude<VerseContentMode, 'album'>;
     activeRightPanel: RightPanelType;
     setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     activeDesktopRightPanel: RightPanelType;
@@ -44,6 +48,7 @@ interface UIProviderProps {
 }
 
 export const UIProvider = ({ children }: UIProviderProps) => {
+    const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             return window.innerWidth < 1024;
@@ -51,6 +56,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         return false;
     });
     const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(readSavedVerseContentMode);
+    const [lastVersePath, setLastVersePath] = useState<string | null>(null);
+    const [lastNonAlbumVerseContentMode, setLastNonAlbumVerseContentMode] = useState<Exclude<VerseContentMode, 'album'>>('commentary');
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
@@ -83,6 +90,18 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     }, [activeVerseContentMode]);
 
     useEffect(() => {
+        if (location.pathname.includes('/chapter/') && location.pathname.includes('/verse/')) {
+            setLastVersePath(location.pathname);
+        }
+    }, [location.pathname]);
+
+    useEffect(() => {
+        if (activeVerseContentMode !== 'album') {
+            setLastNonAlbumVerseContentMode(activeVerseContentMode);
+        }
+    }, [activeVerseContentMode]);
+
+    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setIsDesktopSidebarOpen(true);
@@ -92,7 +111,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 return;
             }
 
-            setIsSidebarOpen(isDesktopSidebarOpen);
+            // 좁은 화면에서는 사이드바를 본문 위에 세로로 보여준다.
+            setIsSidebarOpen(true);
         };
 
         window.addEventListener('resize', handleResize);
@@ -136,6 +156,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 toggleSidebar,
                 activeVerseContentMode,
                 setActiveVerseContentMode,
+                lastVersePath,
+                lastNonAlbumVerseContentMode,
                 activeRightPanel,
                 setActiveRightPanel,
                 activeDesktopRightPanel,

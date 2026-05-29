@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Refine the left-pane chapter/verse title labels above the Korean translation block into a calm two-line caption style.
+Make the verse sidebar remain visible in a one-column vertical flow on narrow screens so the left panel stacks above the main content.
 
 ## Route
 Route A
@@ -12,8 +12,8 @@ main: write-capable
 ## Contract Freeze
 Frozen scope:
 - Keep the existing `prayers` + `book` runtime contract intact.
-- Refine the small chapter/verse title labels above the left-pane Korean translation block into a two-line caption style.
-- Keep the translation body and sidebar layout otherwise unchanged.
+- Keep the sidebar content visible on narrow screens by stacking it above the main content in a single vertical flow.
+- Keep the translation body and sidebar content otherwise unchanged.
 - Leave the album/header/routing work untouched.
 
 Reason for Route A:
@@ -26,7 +26,7 @@ Reason for Route A:
 reviewer: not required (Route A)
 
 ## Last Update
-2026-05-29 00:00:00 +09:00 - Increased the chapter/verse caption weight and contrast so the labels read much more strongly while keeping the two-line layout.
+2026-05-29 00:00:00 +09:00 - Made the verse sidebar stay visible on narrow screens by forcing the mobile sidebar open so the layout stacks vertically.
 
 ## Open Review Item
 - None.
