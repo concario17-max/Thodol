@@ -12,6 +12,7 @@ import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 
 const VerseView = lazy(() => import('./pages/VerseView'));
+const AlbumView = lazy(() => import('./pages/AlbumView'));
 
 const DefaultVerseRedirect = () => {
     const { chapters, loading } = useYogaData();
@@ -268,6 +269,7 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
+    const isAlbumView = location.pathname === '/albums';
     const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
@@ -314,7 +316,14 @@ const MainLayout = () => {
     return (
         <AppShell
             header={
-                isVerseView ? <Header title="Bardo-Thödol" showSidebarToggle showContentModeToggle selectionControls={selectionControls} /> : undefined
+                isVerseView || isAlbumView ? (
+                    <Header
+                        title="Bardo-Thödol"
+                        showSidebarToggle={isVerseView}
+                        showContentModeToggle
+                        selectionControls={selectionControls}
+                    />
+                ) : undefined
             }
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
@@ -356,6 +365,7 @@ function App() {
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<DefaultVerseRedirect />} />
                     <Route path="/chapter/:chapterNum/verse/:verseNum" element={<VerseView />} />
+                    <Route path="/albums" element={<AlbumView />} />
                 </Route>
             </Routes>
         </Router>
