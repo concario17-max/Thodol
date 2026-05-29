@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode, Dispatch, SetStateAction } from 'react';
-import { useLocation } from 'react-router-dom';
 
 export type RightPanelType = 'commentary' | null;
 export type VerseContentMode = 'body' | 'commentary' | 'album';
@@ -48,7 +47,6 @@ interface UIProviderProps {
 }
 
 export const UIProvider = ({ children }: UIProviderProps) => {
-    const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             return window.innerWidth < 1024;
@@ -90,10 +88,46 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     }, [activeVerseContentMode]);
 
     useEffect(() => {
-        if (location.pathname.includes('/chapter/') && location.pathname.includes('/verse/')) {
-            setLastVersePath(location.pathname);
+        if (typeof window === 'undefined') {
+            return;
         }
-    }, [location.pathname]);
+
+        const updateFromLocation = () => {
+            const { pathname } = window.location;
+            if (pathname.includes('/chapter/') && pathname.includes('/verse/')) {
+                setLastVersePath(pathname);
+            }
+        };
+
+        const originalPushState = window.history.pushState;
+        const originalReplaceState = window.history.replaceState;
+
+        const handleLocationChange = () => updateFromLocation();
+        const notifyLocationChange = () => window.dispatchEvent(new Event('codex:locationchange'));
+
+        window.history.pushState = function pushState(...args) {
+            const result = originalPushState.apply(this, args as Parameters<History['pushState']>);
+            notifyLocationChange();
+            return result;
+        };
+
+        window.history.replaceState = function replaceState(...args) {
+            const result = originalReplaceState.apply(this, args as Parameters<History['replaceState']>);
+            notifyLocationChange();
+            return result;
+        };
+
+        window.addEventListener('popstate', handleLocationChange);
+        window.addEventListener('codex:locationchange', handleLocationChange);
+        updateFromLocation();
+
+        return () => {
+            window.history.pushState = originalPushState;
+            window.history.replaceState = originalReplaceState;
+            window.removeEventListener('popstate', handleLocationChange);
+            window.removeEventListener('codex:locationchange', handleLocationChange);
+        };
+    }, []);
 
     useEffect(() => {
         if (activeVerseContentMode !== 'album') {
