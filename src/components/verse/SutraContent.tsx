@@ -5,6 +5,7 @@ interface SutraSection {
     body?: string;
     tone?: 'hero' | 'pronunciation' | 'refined' | 'translation';
     trailing?: ReactNode;
+    hideEmptyNotice?: boolean;
 }
 
 interface SutraContentProps {
@@ -68,6 +69,7 @@ export const SutraContent = ({ sections }: SutraContentProps) => {
                         const cleanBody = normalizeText(section.body);
                         const isLast = index === sections.length - 1;
                         const sectionClasses = getSectionClasses(section.tone);
+                        const shouldHideEmptyNotice = section.hideEmptyNotice && !cleanBody;
 
                         return (
                             <section
@@ -87,7 +89,7 @@ export const SutraContent = ({ sections }: SutraContentProps) => {
                                         {section.label}
                                     </p>
                                 ) : null}
-                                <p className={sectionClasses.body}>{cleanBody || EMPTY_NOTICE}</p>
+                                {shouldHideEmptyNotice ? null : <p className={sectionClasses.body}>{cleanBody || EMPTY_NOTICE}</p>}
                                 {section.trailing ? <div className="mt-4">{section.trailing}</div> : null}
                             </section>
                         );

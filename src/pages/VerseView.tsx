@@ -289,6 +289,7 @@ const VerseView = () => {
         body?: string;
         tone?: 'hero' | 'pronunciation' | 'refined' | 'translation';
         trailing?: ReactNode;
+        hideEmptyNotice?: boolean;
     }> = [];
 
     bodySections.push({
@@ -344,6 +345,7 @@ const VerseView = () => {
             label: '류시화',
             body: verseData.translation_ryu ?? undefined,
             tone: 'translation' as const,
+            hideEmptyNotice: currentChapter.chapter === 1 && verseNumber >= 1 && verseNumber <= 8,
         },
     );
     const rightPanelNavigationControls =
