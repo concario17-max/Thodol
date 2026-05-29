@@ -11,6 +11,23 @@ interface CommentaryMarkdownProps {
     emptyMessage?: ReactNode;
 }
 
+const KEYWORD_PREFIX = /^\s*🔑\s*핵심\s*키워드\s*[:：]?\s*/;
+
+const parseKeywordCallout = (text: string) => {
+    const match = text.match(KEYWORD_PREFIX);
+
+    if (!match) {
+        return null;
+    }
+
+    const value = text.slice(match[0].length).trim();
+
+    return {
+        label: '핵심 키워드',
+        value: value || text.replace(KEYWORD_PREFIX, '').trim(),
+    };
+};
+
 const splitTableRow = (line: string) =>
     line
         .trim()
@@ -122,10 +139,10 @@ const renderTable = (headers: string[], rows: string[][]) => {
 };
 
 const headingClassNameByLevel: Record<number, string> = {
-    1: 'text-[22px] sm:text-[24px]',
-    2: 'text-[19px] sm:text-[21px]',
-    3: 'text-[17px] sm:text-[18px]',
-    4: 'text-[16px] sm:text-[17px]',
+    1: 'text-[20px] sm:text-[22px]',
+    2: 'text-[18px] sm:text-[19px]',
+    3: 'text-[16px] sm:text-[17px]',
+    4: 'text-[15px] sm:text-[16px]',
 };
 
 export const CommentaryMarkdown = ({ content, emptyMessage }: CommentaryMarkdownProps) => {
@@ -139,12 +156,34 @@ export const CommentaryMarkdown = ({ content, emptyMessage }: CommentaryMarkdown
         <div className="space-y-4">
             {blocks.map((block, index) => {
                 if (block.type === 'heading') {
+                    const keywordCallout = parseKeywordCallout(block.text);
+                    if (keywordCallout) {
+                        return (
+                            <section
+                                key={`keyword-${index}`}
+                                className="rounded-[1.35rem] border border-gold-border/14 bg-gold-soft/14 px-4 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/45 dark:bg-[#1a1814]/35 sm:px-5"
+                            >
+                                <div className="mb-2 inline-flex items-center rounded-full bg-gold-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.26em] text-gold-primary dark:bg-gold-light/10 dark:text-gold-light">
+                                    {keywordCallout.label}
+                                </div>
+                                <p className="whitespace-pre-line font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                                    {keywordCallout.value}
+                                </p>
+                            </section>
+                        );
+                    }
+
                     const headingTag = `h${Math.min(block.level, 6)}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+                    const isPrimaryHeading = block.level === 1;
                     return createElement(
                         headingTag,
                         {
                             key: `heading-${index}`,
-                            className: `font-sans font-semibold leading-snug tracking-[0.01em] text-text-primary dark:text-dark-text-primary ${
+                            className: `font-sans leading-snug tracking-[0.01em] ${
+                                isPrimaryHeading
+                                    ? 'font-semibold text-text-primary dark:text-dark-text-primary'
+                                    : 'font-medium text-text-secondary/95 dark:text-dark-text-secondary/92'
+                            } ${
                                 headingClassNameByLevel[block.level] ?? 'text-[16px] sm:text-[17px]'
                             }`,
                         },
@@ -174,6 +213,23 @@ export const CommentaryMarkdown = ({ content, emptyMessage }: CommentaryMarkdown
 
                 if (block.type === 'table') {
                     return <div key={`table-${index}`}>{renderTable(block.headers, block.rows)}</div>;
+                }
+
+                const keywordCallout = parseKeywordCallout(block.text);
+                if (keywordCallout) {
+                    return (
+                        <section
+                            key={`keyword-paragraph-${index}`}
+                            className="rounded-[1.35rem] border border-gold-border/14 bg-gold-soft/14 px-4 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] dark:border-dark-border/45 dark:bg-[#1a1814]/35 sm:px-5"
+                        >
+                            <div className="mb-2 inline-flex items-center rounded-full bg-gold-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.26em] text-gold-primary dark:bg-gold-light/10 dark:text-gold-light">
+                                {keywordCallout.label}
+                            </div>
+                            <p className="whitespace-pre-line font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]">
+                                {keywordCallout.value}
+                            </p>
+                        </section>
+                    );
                 }
 
                 return (

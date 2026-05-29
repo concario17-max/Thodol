@@ -1,32 +1,33 @@
 ﻿# State
 
 ## Current Task
-Update chapter 1 learning comic so each verse shows exactly one matching comic image, using the verse number as the image number.
+Adjust commentary typography so the title stays as-is, subtitles are one step smaller and lighter, and 핵심 키워드 keeps body size with its own accent styling.
 
 ## Route
-Route B
+Route A
 
 ## Writer Slot
 main: direct
 
 ## Contract Freeze
 Frozen scope:
-- Change the chapter 1 learning comic view from a full-page strip to a one-image-per-verse lookup.
-- Keep the verse-reader, audio, album, sidebar, and ODT commentary behavior unchanged.
-- Use exact numeric matching so verse 1 shows 1.png, verse 2 shows 2.png, and so on.
+- Keep the main commentary title size unchanged.
+- Make commentary subtitles one step smaller and lighter than the title.
+- Render 핵심 키워드 at the same body size as normal paragraphs, but give it a distinct accent treatment.
+- Keep the verse-reader, audio, album, sidebar, comic, and ODT commentary content unchanged.
 
-Reason for Route B:
-- The task still touches shared comic assets plus the verse viewer, so it needs a frozen analysis and a multi-file write set.
+Reason for Route A:
+- This is now a tight single-slice typography adjustment in the shared commentary renderer.
 
 ## Write Sets
 - main: `STATE.md`, `MULTI_AGENT_LOG.md`
-- feature slice: `src/pages/VerseView.tsx`
+- feature slice: `src/components/commentary/CommentaryMarkdown.tsx`
 
 ## Reviewer
 reviewer: pending
 
 ## Last Update
-2026-05-29 23:58:00 +09:00 - Wired VerseView comic mode to chapter 1 images in `학습만화/1`, including the newly added 52nd page, and verified with `npm.cmd run typecheck` and `npm.cmd run build`.
+2026-05-30 00:00:00 +09:00 - Updated `CommentaryMarkdown` so body-internal titles stay prominent, subtitles are lighter/smaller, and 핵심 키워드 renders at body size with an accent block; `npm.cmd run typecheck` and `npm.cmd run build` both passed.
 
 ## Open Review Item
 - None.
