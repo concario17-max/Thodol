@@ -258,7 +258,12 @@ const VerseView = () => {
     const verseNumber = verseData.verse ?? Number.parseInt(verseData.id.split('.')[1], 10);
     const bodyContentClassName = isCommentaryMode ? 'hidden' : 'space-y-5 sm:space-y-6';
     const navigationDisabledClassName = 'pointer-events-none opacity-25';
-    const bodySections: Array<{ label: string; body?: string; tone?: 'hero' | 'refined' | 'translation' }> = [];
+    const bodySections: Array<{
+        label: string;
+        body?: string;
+        tone?: 'hero' | 'pronunciation' | 'refined' | 'translation';
+        trailing?: ReactNode;
+    }> = [];
 
     bodySections.push({
         label: '티벳어',
@@ -270,7 +275,31 @@ const VerseView = () => {
         bodySections.push({
             label: '발음',
             body: verseData.korean_pronunciation ?? undefined,
-            tone: 'refined' as const,
+            tone: 'pronunciation' as const,
+            trailing: (
+                <div className="space-y-4">
+                    <audio
+                        ref={audioRef}
+                        src={verseData.audioUrl ?? undefined}
+                        preload="metadata"
+                        onTimeUpdate={handleTimeUpdate}
+                        onLoadedMetadata={handleLoadedMetadata}
+                        onEnded={handleAudioEnded}
+                        className="hidden"
+                    />
+                    <AudioPlayer
+                        isPlaying={isPlaying}
+                        togglePlay={togglePlay}
+                        currentTime={currentTime}
+                        duration={duration}
+                        progressPercent={progressPercent}
+                        formatTime={formatTime}
+                        onSeek={seek}
+                        playbackError={playbackError}
+                    />
+                    <div className="h-px w-full bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
+                </div>
+            ),
         });
     }
 
@@ -340,30 +369,6 @@ const VerseView = () => {
                                             <motion.div variants={itemVariants}>
                                                 <SutraContent sections={bodySections} />
                                             </motion.div>
-
-                                            {shouldShowPronunciationAudio ? (
-                                                <motion.div variants={itemVariants}>
-                                                    <audio
-                                                        ref={audioRef}
-                                                        src={verseData.audioUrl ?? undefined}
-                                                        preload="metadata"
-                                                        onTimeUpdate={handleTimeUpdate}
-                                                        onLoadedMetadata={handleLoadedMetadata}
-                                                        onEnded={handleAudioEnded}
-                                                        className="hidden"
-                                                    />
-                                                    <AudioPlayer
-                                                        isPlaying={isPlaying}
-                                                        togglePlay={togglePlay}
-                                                        currentTime={currentTime}
-                                                        duration={duration}
-                                                        progressPercent={progressPercent}
-                                                        formatTime={formatTime}
-                                                        onSeek={seek}
-                                                        playbackError={playbackError}
-                                                    />
-                                                </motion.div>
-                                            ) : null}
 
                                             <motion.div variants={itemVariants}>
                                                 <WordMeanings meanings={verseData.word_meanings} />

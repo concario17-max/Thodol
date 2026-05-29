@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 interface SutraSection {
     label: string;
     body?: string;
-    tone?: 'hero' | 'refined' | 'translation';
+    tone?: 'hero' | 'pronunciation' | 'refined' | 'translation';
     trailing?: ReactNode;
 }
 
@@ -38,6 +38,14 @@ const getSectionClasses = (tone?: SutraSection['tone']): SectionClasses => {
                 pill: 'inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/70 dark:text-gold-light/70',
                 divider: 'h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20',
                 body: 'mx-auto mt-3 max-w-4xl font-sans text-[13px] leading-7 tracking-[0.24em] text-text-secondary dark:text-dark-text-secondary sm:text-[14px]',
+            };
+        case 'pronunciation':
+            return {
+                section: 'py-6 text-center sm:py-7',
+                header: 'flex items-center gap-2.5 border-b border-gold-border/8 pb-3 dark:border-dark-border/35',
+                pill: 'inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/70 dark:text-gold-light/70',
+                divider: 'h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20',
+                body: 'mx-auto mt-3 max-w-[30rem] break-words hyphens-auto font-display text-[clamp(1rem,0.95rem+0.28vw,1.3rem)] leading-[1.58] tracking-[0.035em] text-text-primary dark:text-dark-text-primary sm:max-w-[34rem] sm:text-[1.08rem] lg:max-w-[38rem]',
             };
         case 'translation':
         default:
