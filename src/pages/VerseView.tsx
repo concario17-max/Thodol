@@ -33,16 +33,8 @@ const comicPageModules = import.meta.glob('../../학습만화/1/*.png', {
     import: 'default',
 }) as Record<string, string>;
 
-const getComicPageOrder = (path: string) => {
-    const fileName = path.split('/').pop() ?? path;
-    const order = Number.parseInt(fileName.replace(/\.png$/i, ''), 10);
-
-    return Number.isNaN(order) ? Number.MAX_SAFE_INTEGER : order;
-};
-
-const chapter1ComicPages = Object.entries(comicPageModules)
-    .sort(([leftPath], [rightPath]) => getComicPageOrder(leftPath) - getComicPageOrder(rightPath))
-    .map(([, imageUrl]) => imageUrl);
+const getChapter1ComicPage = (verseNumber: number) =>
+    comicPageModules[`../../학습만화/1/${verseNumber}.png`] ?? null;
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -166,14 +158,14 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
                     </div>
                 ) : comicPages.length ? (
                     <div className="space-y-4">
-                        {comicPages.map((pageUrl, index) => (
+                        {comicPages.map((pageUrl) => (
                             <figure
                                 key={pageUrl}
                                 className="overflow-hidden rounded-[1.5rem] border border-gold-border/10 bg-white/70 shadow-[0_14px_40px_-30px_rgba(0,0,0,0.5)] dark:border-dark-border/45 dark:bg-[#111]/35"
                             >
                                 <img
                                     src={pageUrl}
-                                    alt={`1장 학습만화 ${index + 1}쪽`}
+                                    alt='Chapter 1 learning comic page'
                                     className="block h-auto w-full"
                                     loading="lazy"
                                     decoding="async"
@@ -422,7 +414,7 @@ const VerseView = () => {
                                     verseNum={String(verseNumber)}
                                     commentaryText={verseData.commentary_en}
                                     navigationControls={rightPanelNavigationControls}
-                                    comicPages={currentChapter.chapter === 1 ? chapter1ComicPages : []}
+                                    comicPages={currentChapter.chapter === 1 ? [getChapter1ComicPage(verseNumber)].filter(Boolean) as string[] : []}
                                 />
                             </div>
                         </motion.div>

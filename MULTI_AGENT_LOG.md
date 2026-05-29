@@ -88,3 +88,9 @@
   summary: wired VerseView comic mode to chapter 1 images in ????/1, including the newly added 52nd page, and verified with npm.cmd run typecheck and npm.cmd run build
   status: done
 
+
+- time: 2026-05-29 23:58:00 +09:00
+  task: chapter 1 learning comic update
+  summary: adjusted VerseView comic mode so chapter 1 now shows exactly one image per verse by verse-number lookup in 학습만화/1
+  status: done
+
