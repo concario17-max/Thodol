@@ -78,3 +78,4 @@
   summary: published codex/learning-comic-cleanup after rewriting the cleanup history in a temporary clone and pushing the filtered branch to GitHub
   status: done
 2026-05-29 18:33:00 +09:00 - main-ready non-MP3 publish completed and pushed to origin/codex/gita-data-sync as d80f0f8 after rebasing the clean publish worktree.
+2026-05-29 19:05:00 +09:00 | pronunciation audio spacing and typography | completed | Audio player now sits below pronunciation with tighter spacing, pronunciation font is differentiated, and a divider follows the player. Build and typecheck passed. | resolved

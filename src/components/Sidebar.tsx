@@ -140,6 +140,40 @@ const Sidebar = () => {
                     </div>
 
                     <div className="space-y-3">
+                        <div className="flex items-start gap-3.5">
+                            <span className="mt-0.5 h-14 w-px shrink-0 bg-gradient-to-b from-gold-primary/65 via-gold-primary/28 to-transparent dark:from-gold-light/65 dark:via-gold-light/24" />
+                            <div className="flex min-w-0 flex-col gap-4 py-0.5">
+                                {(chapterNumberLabel || chapterCaptionLabel) ? (
+                                    <div className="flex min-w-0 flex-col gap-1">
+                                        {chapterNumberLabel ? (
+                                            <p className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-gold-primary dark:text-gold-light">
+                                                {chapterNumberLabel}
+                                            </p>
+                                        ) : null}
+                                        {chapterCaptionLabel ? (
+                                            <p className="max-w-[250px] text-[11px] font-medium leading-[1.6] text-text-secondary/88 dark:text-dark-text-secondary/88">
+                                                {chapterCaptionLabel}
+                                            </p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+                                {(verseNumberLabel || verseCaptionLabel) ? (
+                                    <div className="flex min-w-0 flex-col gap-1">
+                                        {verseNumberLabel ? (
+                                            <p className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-gold-primary dark:text-gold-light">
+                                                {verseNumberLabel}
+                                            </p>
+                                        ) : null}
+                                        {verseCaptionLabel ? (
+                                            <p className="max-w-[250px] text-[11px] font-medium leading-[1.6] text-text-secondary/88 dark:text-dark-text-secondary/88">
+                                                {verseCaptionLabel}
+                                            </p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+                            </div>
+                        </div>
+
                         <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 {verseData.sourceKind === 'book' ? '정창영 번역' : '한글 번역'}
