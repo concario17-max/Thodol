@@ -65,3 +65,16 @@
   task: fix Korean labels in VerseView
   summary: corrected corrupted Korean section labels for the verse content headings in deep-detail view
   status: done
+- time: 2026-05-29 15:00:00 +09:00
+  task: incremental publish branch
+  summary: created and pushed codex/incremental-sidebar from origin/codex/gita-data-sync with only the AppShell shrink-wrap fix
+  status: done
+- time: 2026-05-29 16:45:00 +09:00
+  task: incremental verse and album branches
+  summary: published codex/incremental-reader-ui with verse-reader UI refinements and the new album browsing page on top of codex/incremental-sidebar
+  status: done
+- time: 2026-05-29 17:30:00 +09:00
+  task: learning-comic cleanup branch
+  summary: published codex/learning-comic-cleanup after rewriting the cleanup history in a temporary clone and pushing the filtered branch to GitHub
+  status: done
+2026-05-29 18:33:00 +09:00 - main-ready non-MP3 publish completed and pushed to origin/codex/gita-data-sync as d80f0f8 after rebasing the clean publish worktree.

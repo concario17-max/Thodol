@@ -226,3 +226,35 @@ status: resolved
   summary: section-header parser misdetected verse lines and missed chapter headers
   details: initial title-based injection attempts failed because shell-embedded Korean literals were mangled and a loose numeric header regex matched verse lines; resolved by deriving section order from the source files themselves and using header-title order to map translations.
   status: resolved
+## 2026-05-29 01:00:00 +09:00
+- time: 2026-05-29 01:00:00 +09:00
+- location: git push to origin/codex/gita-data-sync
+- summary: Direct push from the main worktree was rejected, and the rebase retry failed because of disk-space and path-write issues.
+- details: git push hit HTTP 500 from the remote. A rebase with autostash then failed while restoring tracked files, with no space left on device and path unlink/write errors. The branch was later pushed successfully from a clean shared clone at C:\Users\roadsea\Desktop\thodol-push-temp4.
+- status: resolved## 2026-05-29 01:20:00 +09:00
+- time: 2026-05-29 01:20:00 +09:00
+- location: git push to origin/codex/gita-data-sync
+- summary: The branch was finally published after cherry-picking the sidebar stack fix onto a clean clone of the remote branch.
+- details: A direct push from the main worktree kept failing with HTTP 500 and a few temporary clone attempts were miswired to the local repository. The final push succeeded from C:\Users\roadsea\Desktop\thodol-push-temp6 after setting origin to GitHub, resolving one STATE.md cherry-pick conflict, and pushing commit 2981a79 to origin/codex/gita-data-sync.
+- status: resolved## 2026-05-29 02:00:00 +09:00
+- time: 2026-05-29 02:00:00 +09:00
+- location: git force-push to origin/codex/gita-data-sync
+- summary: History cleanup could not be completed because GitHub kept returning HTTP 500 during force-push attempts.
+- details: Multiple push attempts from clean shared clones failed while trying to move codex/gita-data-sync from 70fe845 to 2e9472f. The local commit exists, but the remote branch pointer remains on the earlier commit because the server consistently terminated the send-pack session.
+- status: open- time: 2026-05-29 15:00:00 +09:00
+  location: C:\Users\roadsea\Desktop\tibet-1-publish
+  summary: validation initially failed in the fresh worktree because npm scripts could not find local dependencies
+  details: PowerShell blocked npm.ps1 first, then cmd/npm failed because the worktree had no node_modules until a junction to the parent worktree was created
+  status: resolved
+- time: 2026-05-29 17:30:00 +09:00
+  location: `git push origin HEAD:codex/learning-comic-cleanup`
+  summary: direct push from the cleanup branch failed with HTTP 500 until the history was rewritten in a temporary clone
+  details: Initial push attempts from the raw cleanup worktree timed out and then failed with HTTP 500. The branch was cloned into a temporary repository, rewritten with git filter-branch to remove learning-comic assets from history, repointed to the GitHub remote, and then pushed successfully.
+  status: resolved
+- time: 2026-05-29 17:45:00 +09:00
+  location: `gh auth status` / `gh repo view`
+  summary: pull request creation blocked because GitHub CLI is not installed in this environment
+  details: The publish branch was pushed successfully, but the PR creation workflow could not continue because the `gh` command is unavailable on PATH. A draft PR could not be opened through the preferred GitHub CLI path, and no authenticated fallback path is available in this session.
+  status: open
+2026-05-29 18:30:00 +09:00 | git push origin HEAD:main | HTTP 500 / remote hangup | Direct main push from the dirty root repo timed out with HTTP 500, then the publish was rebased onto origin/codex/gita-data-sync and pushed successfully as d80f0f8. | resolved
+2026-05-29 18:42:00 +09:00 | npm run typecheck | PowerShell execution policy blocked npm.ps1 | Verification failed in PowerShell; use cmd /c npm run typecheck instead. | resolved

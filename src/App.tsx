@@ -313,7 +313,16 @@ const MainLayout = () => {
 
     return (
         <AppShell
-            header={isVerseView ? <Header title="Bardo-Thödol" showSidebarToggle selectionControls={selectionControls} /> : undefined}
+            header={
+                isVerseView ? (
+                    <Header
+                        title="Bardo-Thödol"
+                        showSidebarToggle
+                        showContentModeToggle
+                        selectionControls={selectionControls}
+                    />
+                ) : undefined
+            }
             sidebar={isVerseView ? <Sidebar /> : undefined}
             isMobilePanelOpen={isVerseView && isSidebarOpen}
             desktopGridColumns={desktopGridColumns}
