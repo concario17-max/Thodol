@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { BookOpenText, ScrollText } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Album, BookOpenText, ScrollText } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 import { getDesktopVerseColumns } from './ui/desktopVerseLayout';
 
@@ -8,6 +8,7 @@ interface HeaderProps {
     title?: ReactNode;
     targetUrl?: string;
     showSidebarToggle?: boolean;
+    showContentModeToggle?: boolean;
     selectionControls?: ReactNode;
     rightContent?: ReactNode;
     className?: string;
@@ -17,21 +18,48 @@ const Header = ({
     title = 'Bardo-Thödol',
     targetUrl = '/',
     showSidebarToggle = false,
+    showContentModeToggle = false,
     selectionControls,
     rightContent,
     className = '',
 }: HeaderProps) => {
-    const { activeVerseContentMode, isDesktopSidebarOpen, setActiveVerseContentMode } = useUI();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const {
+        activeVerseContentMode,
+        isDesktopSidebarOpen,
+        lastVersePath,
+        lastNonAlbumVerseContentMode,
+        setActiveVerseContentMode,
+    } = useUI();
+    const isAlbumPage = location.pathname === '/albums';
     const desktopGridStyle = showSidebarToggle
         ? ({ '--desktop-verse-columns': getDesktopVerseColumns(isDesktopSidebarOpen, false) } as CSSProperties)
         : undefined;
 
+    const handleModeSelect = (mode: 'commentary' | 'body' | 'album') => {
+        if (mode === 'album') {
+            setActiveVerseContentMode('album');
+            navigate('/albums');
+            return;
+        }
+
+        if (isAlbumPage) {
+            navigate(lastVersePath ?? '/');
+            setActiveVerseContentMode(lastNonAlbumVerseContentMode);
+            return;
+        }
+
+        setActiveVerseContentMode(mode);
+    };
+
     const renderVerseModeToggle = () =>
-        showSidebarToggle ? (
+        showContentModeToggle ? (
             <div className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 backdrop-blur-sm dark:border-dark-border/70 dark:bg-shell-main-dark/82">
                 {[
                     { mode: 'commentary' as const, label: '해설', icon: ScrollText },
                     { mode: 'body' as const, label: '심화', icon: BookOpenText },
+                    { mode: 'album' as const, label: '앨범', icon: Album },
                 ].map((option) => {
                     const isActive = activeVerseContentMode === option.mode;
                     const Icon = option.icon;
@@ -40,9 +68,9 @@ const Header = ({
                         <button
                             key={option.mode}
                             type="button"
-                            onClick={() => setActiveVerseContentMode(option.mode)}
+                            onClick={() => handleModeSelect(option.mode)}
                             aria-pressed={isActive}
-                            className={`inline-flex min-w-[3.25rem] items-center justify-center gap-1.5 rounded-[0.85rem] px-2.5 py-1 text-[9px] font-semibold tracking-[0.14em] transition-all duration-300 sm:min-w-[3.45rem] sm:text-[10px] ${
+                            className={`inline-flex min-w-[3.25rem] items-center justify-center gap-1.5 rounded-[0.85rem] px-2.5 py-1 text-[9px] font-semibold tracking-[0.14em] transition-all duration-300 sm:min-w-[3.9rem] sm:text-[10px] ${
                                 isActive
                                     ? 'bg-gold-primary text-white shadow-[0_6px_16px_-8px_rgba(166,139,92,0.95)] dark:bg-gold-light dark:text-[#2a2116]'
                                     : 'text-gold-primary hover:bg-gold-surface/70 dark:text-gold-light dark:hover:bg-white/6'
