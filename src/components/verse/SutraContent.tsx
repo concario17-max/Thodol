@@ -1,7 +1,10 @@
+import type { ReactNode } from 'react';
+
 interface SutraSection {
     label: string;
     body?: string;
     tone?: 'hero' | 'refined' | 'translation';
+    trailing?: ReactNode;
 }
 
 interface SutraContentProps {
@@ -12,26 +15,38 @@ const EMPTY_NOTICE = '아직 데이터가 없습니다.';
 
 const normalizeText = (text?: string) => text?.replace(/\n{3,}/g, '\n\n').trim();
 
-const getSectionClasses = (tone?: SutraSection['tone']) => {
+interface SectionClasses {
+    section: string;
+    header: string;
+    body: string;
+    pill?: string;
+    divider?: string;
+}
+
+const getSectionClasses = (tone?: SutraSection['tone']): SectionClasses => {
     switch (tone) {
         case 'hero':
             return {
-                section: 'py-7 text-center sm:py-8',
-                label: 'hidden',
+                section: 'py-5 text-center sm:py-6',
+                header: 'hidden',
                 body: 'mx-auto max-w-4xl font-display text-[clamp(1.6rem,1.4rem+0.9vw,2.55rem)] leading-[1.2] tracking-[0.01em] text-gold-primary dark:text-gold-light sm:leading-[1.18]',
             };
         case 'refined':
             return {
                 section: 'py-6 text-center sm:py-7',
-                label: 'justify-center text-[10px] tracking-[0.42em]',
-                body: 'mx-auto max-w-4xl font-sans text-[13px] leading-7 tracking-[0.24em] text-text-secondary dark:text-dark-text-secondary sm:text-[14px]',
+                header: 'flex items-center gap-2.5 border-b border-gold-border/8 pb-3 dark:border-dark-border/35',
+                pill: 'inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/70 dark:text-gold-light/70',
+                divider: 'h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20',
+                body: 'mx-auto mt-3 max-w-4xl font-sans text-[13px] leading-7 tracking-[0.24em] text-text-secondary dark:text-dark-text-secondary sm:text-[14px]',
             };
         case 'translation':
         default:
             return {
                 section: 'py-5 text-left sm:py-6',
-                label: 'justify-start text-[10px] tracking-[0.34em]',
-                body: 'whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]',
+                header: 'flex items-center gap-2.5 border-b border-gold-border/8 pb-3 dark:border-dark-border/35',
+                pill: 'inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/70 dark:text-gold-light/70',
+                divider: 'h-px flex-1 bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20',
+                body: 'mt-3 whitespace-pre-line break-keep font-sans text-[15px] leading-8 text-text-primary dark:text-dark-text-primary sm:text-[16px]',
             };
     }
 };
@@ -49,14 +64,23 @@ export const SutraContent = ({ sections }: SutraContentProps) => {
                         return (
                             <section
                                 key={section.label}
-                                className={`${sectionClasses.section} ${index === 0 ? 'pt-2' : ''} ${
+                                className={`${sectionClasses.section} ${index === 0 ? 'pt-0' : ''} ${
                                     !isLast ? 'border-b border-gold-border/8 dark:border-dark-border/25' : ''
                                 }`}
                             >
-                                <p className={`flex items-center font-semibold uppercase text-gold-primary/70 dark:text-gold-light/70 ${sectionClasses.label}`}>
-                                    {section.label}
-                                </p>
-                                <p className={`mt-3 ${sectionClasses.body}`}>{cleanBody || EMPTY_NOTICE}</p>
+                                {section.tone === 'hero' ? null : (
+                                    <div className={sectionClasses.header}>
+                                        <span className={sectionClasses.pill}>{section.label}</span>
+                                        <span className={sectionClasses.divider} />
+                                    </div>
+                                )}
+                                {section.tone === 'hero' ? (
+                                    <p className={`flex items-center font-semibold uppercase text-gold-primary/70 dark:text-gold-light/70 ${sectionClasses.header}`}>
+                                        {section.label}
+                                    </p>
+                                ) : null}
+                                <p className={sectionClasses.body}>{cleanBody || EMPTY_NOTICE}</p>
+                                {section.trailing ? <div className="mt-4">{section.trailing}</div> : null}
                             </section>
                         );
                     })}

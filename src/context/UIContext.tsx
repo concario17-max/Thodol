@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode, Dispatch, SetStateAction } from 'react';
 
 export type RightPanelType = 'commentary' | null;
-export type VerseContentMode = 'body' | 'commentary';
+export type VerseContentMode = 'body' | 'commentary' | 'album';
 
 const VERSE_CONTENT_MODE_STORAGE_KEY = 'yoga-verse-content-mode';
 
-const isVerseContentMode = (value: string | null): value is VerseContentMode => value === 'body' || value === 'commentary';
+const isVerseContentMode = (value: string | null): value is VerseContentMode =>
+    value === 'body' || value === 'commentary' || value === 'album';
 
 const readSavedVerseContentMode = (): VerseContentMode => {
     try {
@@ -29,6 +30,8 @@ interface UIContextType {
     toggleSidebar: () => void;
     activeVerseContentMode: VerseContentMode;
     setActiveVerseContentMode: Dispatch<SetStateAction<VerseContentMode>>;
+    lastVersePath: string | null;
+    lastNonAlbumVerseContentMode: Exclude<VerseContentMode, 'album'>;
     activeRightPanel: RightPanelType;
     setActiveRightPanel: Dispatch<SetStateAction<RightPanelType>>;
     activeDesktopRightPanel: RightPanelType;
@@ -51,6 +54,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
         return false;
     });
     const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(readSavedVerseContentMode);
+    const [lastVersePath, setLastVersePath] = useState<string | null>(null);
+    const [lastNonAlbumVerseContentMode, setLastNonAlbumVerseContentMode] = useState<Exclude<VerseContentMode, 'album'>>('commentary');
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
@@ -83,6 +88,54 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     }, [activeVerseContentMode]);
 
     useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        const updateFromLocation = () => {
+            const { pathname } = window.location;
+            if (pathname.includes('/chapter/') && pathname.includes('/verse/')) {
+                setLastVersePath(pathname);
+            }
+        };
+
+        const originalPushState = window.history.pushState;
+        const originalReplaceState = window.history.replaceState;
+
+        const handleLocationChange = () => updateFromLocation();
+        const notifyLocationChange = () => window.dispatchEvent(new Event('codex:locationchange'));
+
+        window.history.pushState = function pushState(...args) {
+            const result = originalPushState.apply(this, args as Parameters<History['pushState']>);
+            notifyLocationChange();
+            return result;
+        };
+
+        window.history.replaceState = function replaceState(...args) {
+            const result = originalReplaceState.apply(this, args as Parameters<History['replaceState']>);
+            notifyLocationChange();
+            return result;
+        };
+
+        window.addEventListener('popstate', handleLocationChange);
+        window.addEventListener('codex:locationchange', handleLocationChange);
+        updateFromLocation();
+
+        return () => {
+            window.history.pushState = originalPushState;
+            window.history.replaceState = originalReplaceState;
+            window.removeEventListener('popstate', handleLocationChange);
+            window.removeEventListener('codex:locationchange', handleLocationChange);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (activeVerseContentMode !== 'album') {
+            setLastNonAlbumVerseContentMode(activeVerseContentMode);
+        }
+    }, [activeVerseContentMode]);
+
+    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setIsDesktopSidebarOpen(true);
@@ -92,7 +145,7 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 return;
             }
 
-            setIsSidebarOpen(isDesktopSidebarOpen);
+            setIsSidebarOpen(true);
         };
 
         window.addEventListener('resize', handleResize);
@@ -136,6 +189,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 toggleSidebar,
                 activeVerseContentMode,
                 setActiveVerseContentMode,
+                lastVersePath,
+                lastNonAlbumVerseContentMode,
                 activeRightPanel,
                 setActiveRightPanel,
                 activeDesktopRightPanel,
