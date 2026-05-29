@@ -1,7 +1,7 @@
 # State
 
 ## Current Task
-Make the verse sidebar remain visible in a one-column vertical flow on narrow screens so the left panel stacks above the main content.
+Fix the blank monochrome screen caused by the UI provider using router state outside the router, while preserving the stacked mobile sidebar flow.
 
 ## Route
 Route A
@@ -12,21 +12,21 @@ main: write-capable
 ## Contract Freeze
 Frozen scope:
 - Keep the existing `prayers` + `book` runtime contract intact.
-- Keep the sidebar content visible on narrow screens by stacking it above the main content in a single vertical flow.
+- Remove the router-hook crash from `src/context/UIContext.tsx` and keep the mobile sidebar stacking behavior working.
 - Keep the translation body and sidebar content otherwise unchanged.
 - Leave the album/header/routing work untouched.
 
 Reason for Route A:
-- This is a small single-file UI tweak confined to `src/components/Sidebar.tsx`.
+- This is a small runtime fix confined to `src/context/UIContext.tsx`.
 
 ## Write Sets
-- main: `src/components/Sidebar.tsx`, `STATE.md`, `MULTI_AGENT_LOG.md`
+- main: `src/context/UIContext.tsx`, `STATE.md`, `MULTI_AGENT_LOG.md`
 
 ## Reviewer
 reviewer: not required (Route A)
 
 ## Last Update
-2026-05-29 00:00:00 +09:00 - Made the verse sidebar stay visible on narrow screens by forcing the mobile sidebar open so the layout stacks vertically.
+2026-05-29 00:00:00 +09:00 - Removed the router-hook crash from UIContext and kept the mobile sidebar stacking behavior working on narrow screens.
 
 ## Open Review Item
 - None.
