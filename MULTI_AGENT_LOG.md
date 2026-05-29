@@ -82,3 +82,9 @@
 2026-05-29 22:30:00 +09:00 - Fixed the deployed sidebar caption build error by restoring the missing label variables and pushing commit `79ceed3`.
 2026-05-29 23:15:00 +09:00 - chapter 1 commentary fallback gap closed in `src/utils/dataFetcher.ts`; missing chapter 1 keys now reuse the last ODT-derived commentary entry before buildCommentary is considered.
 2026-05-29 23:35:00 +09:00 - Added the missing 1.52 chapter 1 commentary block to `src/data/chapter1Commentary.ts` so the extracted dataset now covers the full chapter.
+
+- time: 2026-05-29 23:58:00 +09:00
+  task: chapter 1 learning comic update
+  summary: wired VerseView comic mode to chapter 1 images in ????/1, including the newly added 52nd page, and verified with npm.cmd run typecheck and npm.cmd run build
+  status: done
+

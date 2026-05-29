@@ -28,6 +28,22 @@ const stripCommentaryTitleBlock = (content?: string | null) => {
     return content.replace(/^#\s+.+?(?:\r?\n){2,}/, '').trimStart();
 };
 
+const comicPageModules = import.meta.glob('../../학습만화/1/*.png', {
+    eager: true,
+    import: 'default',
+}) as Record<string, string>;
+
+const getComicPageOrder = (path: string) => {
+    const fileName = path.split('/').pop() ?? path;
+    const order = Number.parseInt(fileName.replace(/\.png$/i, ''), 10);
+
+    return Number.isNaN(order) ? Number.MAX_SAFE_INTEGER : order;
+};
+
+const chapter1ComicPages = Object.entries(comicPageModules)
+    .sort(([leftPath], [rightPath]) => getComicPageOrder(leftPath) - getComicPageOrder(rightPath))
+    .map(([, imageUrl]) => imageUrl);
+
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -69,6 +85,7 @@ interface CommentaryContentProps {
     verseNum: string;
     commentaryText?: string;
     navigationControls?: ReactNode;
+    comicPages?: string[];
 }
 
 interface VersePanelHeaderProps {
@@ -90,7 +107,7 @@ const VersePanelHeader = ({ label, navigationControls, rightAction }: VersePanel
     </div>
 );
 
-const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationControls }: CommentaryContentProps) => {
+const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationControls, comicPages = [] }: CommentaryContentProps) => {
     const [viewMode, setViewMode] = useState<CommentaryViewMode>('comic');
     const [commentaryTitle, setCommentaryTitle] = useState<string | null>(() => extractCommentaryTitle(commentaryText));
 
@@ -146,6 +163,23 @@ const CommentaryContent = ({ chapterNum, verseNum, commentaryText, navigationCon
                                 </div>
                             }
                         />
+                    </div>
+                ) : comicPages.length ? (
+                    <div className="space-y-4">
+                        {comicPages.map((pageUrl, index) => (
+                            <figure
+                                key={pageUrl}
+                                className="overflow-hidden rounded-[1.5rem] border border-gold-border/10 bg-white/70 shadow-[0_14px_40px_-30px_rgba(0,0,0,0.5)] dark:border-dark-border/45 dark:bg-[#111]/35"
+                            >
+                                <img
+                                    src={pageUrl}
+                                    alt={`1장 학습만화 ${index + 1}쪽`}
+                                    className="block h-auto w-full"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </figure>
+                        ))}
                     </div>
                 ) : (
                     <div className="rounded-[1.4rem] border border-gold-border/10 bg-white/55 px-4 py-4 text-left shadow-sm dark:border-dark-border/45 dark:bg-[#111]/35 sm:px-5 sm:py-5">
@@ -388,6 +422,7 @@ const VerseView = () => {
                                     verseNum={String(verseNumber)}
                                     commentaryText={verseData.commentary_en}
                                     navigationControls={rightPanelNavigationControls}
+                                    comicPages={currentChapter.chapter === 1 ? chapter1ComicPages : []}
                                 />
                             </div>
                         </motion.div>
