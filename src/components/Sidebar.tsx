@@ -13,6 +13,15 @@ const Sidebar = () => {
     const chapterNumber = chapterNum ? parseInt(chapterNum, 10) : null;
     const currentChapter = chapterNumber !== null ? allChapters?.[chapterNumber] ?? null : null;
     const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
+    const chapterNumberLabel = currentChapter ? `${currentChapter.chapter}장` : '';
+    const chapterCaptionLabel = currentChapter?.meta.name_korean?.trim() || '';
+    const verseNumberLabel = verseData ? `${verseData.verse ?? parseInt(verseData.id.split('.')[1], 10)}절` : '';
+    const verseCaptionLabel =
+        verseData?.sourceChapterName?.trim() ||
+        verseData?.chapterTitle?.trim() ||
+        verseData?.displaySubtitle?.trim() ||
+        verseData?.displayTitle?.trim() ||
+        '';
     const isAppendixChapter = Boolean(
         currentChapter &&
             (currentChapter.chapter === 0 ||
@@ -140,6 +149,40 @@ const Sidebar = () => {
                     </div>
 
                     <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                            <span className="mt-1.5 h-12 w-px bg-gradient-to-b from-gold-primary/60 via-gold-primary/25 to-transparent dark:from-gold-light/60 dark:via-gold-light/20" />
+                            <div className="flex flex-col gap-2">
+                                {(chapterNumberLabel || chapterCaptionLabel) ? (
+                                    <div className="flex flex-col gap-0.5">
+                                        {chapterNumberLabel ? (
+                                            <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-gold-primary dark:text-gold-light">
+                                                {chapterNumberLabel}
+                                            </p>
+                                        ) : null}
+                                        {chapterCaptionLabel ? (
+                                            <p className="max-w-[260px] text-[11px] font-medium leading-[1.55] text-text-secondary/92 dark:text-dark-text-secondary/92">
+                                                {chapterCaptionLabel}
+                                            </p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+                                {(verseNumberLabel || verseCaptionLabel) ? (
+                                    <div className="flex flex-col gap-0.5">
+                                        {verseNumberLabel ? (
+                                            <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-gold-primary dark:text-gold-light">
+                                                {verseNumberLabel}
+                                            </p>
+                                        ) : null}
+                                        {verseCaptionLabel ? (
+                                            <p className="max-w-[260px] text-[11px] font-medium leading-[1.55] text-text-secondary/92 dark:text-dark-text-secondary/92">
+                                                {verseCaptionLabel}
+                                            </p>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+                            </div>
+                        </div>
+
                         <section className="space-y-2 border-l border-black/5 pl-4 dark:border-white/7">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-text-secondary/52 dark:text-dark-text-secondary/60">
                                 {verseData.sourceKind === 'book' ? '정창영 번역' : '한글 번역'}
