@@ -1,32 +1,34 @@
 ﻿# State
 
 ## Current Task
-Restyle the left sidebar chapter/verse caption so the number line and description line match the reference more closely.
+Populate chapter 1 commentary from the extracted ODT dataset in `src/utils/dataFetcher.ts` so the sidebar and main commentary share the same source, and make sure the final chapter 1 verse is covered by the extracted chapter 1 commentary data.
 
 ## Route
-Route A
+Route B
 
 ## Writer Slot
 main: direct
 
 ## Contract Freeze
 Frozen scope:
-- Restyle the chapter/verse caption block in the left sidebar only.
-- Keep the current text content and ordering.
-- Do not touch audio, album routing, or other verse layout files.
+- Read the local ODT file, use the chapter-1 commentary dataset as the extracted source, and populate `commentary_en` in the data layer.
+- Keep the existing verse-reader, audio, album, and sidebar behavior unchanged.
+- Prefer a minimal data-layer change set that preserves the current app structure.
+- Preferred integration point: `src/utils/dataFetcher.ts` with a small serializer/helper only if needed.
+- Ensure the extracted data file itself includes the missing final chapter 1 verse commentary instead of relying only on fallback logic.
 
-Reason for Route A:
-- This is a single-file visual tweak confined to `src/components/Sidebar.tsx`.
+Reason for Route B:
+- The task spans document extraction plus at least one app file, so it needs a frozen analysis and a multi-file write set.
 
 ## Write Sets
-- main: `STATE.md`
-- hotfix slice: `src/components/Sidebar.tsx`
+- main: `STATE.md`, `MULTI_AGENT_LOG.md`
+- feature slice: analysis plus `src/utils/dataFetcher.ts` and any small helper needed to serialize/render the extracted chapter 1 commentary
 
 ## Reviewer
-reviewer: not required for Route A hotfix
+reviewer: main-self-review
 
 ## Last Update
-2026-05-29 00:00:00 +09:00 - Published the verse-reader and album branches, then re-scoped the remaining work to the asset cleanup slice after confirming the learning-comic assets only exist in the dirty root worktree. 2026-05-29 17:30:00 +09:00 - Published the filtered learning-comic cleanup branch after rewriting history in a temporary clone and pushing it to GitHub. 2026-05-29 18:00:00 +09:00 - Re-scoped again to a main-ready non-MP3 branch. 2026-05-29 18:15:00 +09:00 - Tightened the publish contract to exclude all staged `mp3` assets, including the `Prayer` audio files. 2026-05-29 18:33:00 +09:00 - Rebased the clean publish worktree onto `origin/codex/gita-data-sync` and pushed commit `d80f0f8` successfully. 2026-05-29 18:40:00 +09:00 - Reclassified the next task as a Route A hotfix after noticing `showContentModeToggle` was not passed into `Header`. 2026-05-29 18:50:00 +09:00 - Promoted the pronunciation placement and font update to Route B because it needs coordinated updates in both `VerseView` and `SutraContent`. 2026-05-29 18:58:00 +09:00 - Expanded the Route B slice to include `AudioPlayer` spacing cleanup after reviewer feedback flagged stacked margins around the newly nested pronunciation player. 2026-05-29 19:05:00 +09:00 - Completed the pronunciation/audio spacing adjustment and reviewer re-check; the nested player now sits directly below the pronunciation text with a divider beneath it. 2026-05-29 19:25:00 +09:00 - Re-scoped to a Route A sidebar caption polish after the left sidebar chapter/verse caption was judged too flat versus the reference image.
+2026-05-29 23:15:00 +09:00 - Added the missing chapter 1 commentary fallback in `src/utils/dataFetcher.ts` so verse 52 reused the last ODT-derived block, then verified with `npm.cmd run typecheck` and `npm.cmd run build`. 2026-05-29 23:35:00 +09:00 - Added the missing 1.52 chapter 1 commentary block to `src/data/chapter1Commentary.ts` so the extracted dataset now covers the full chapter.
 
 ## Open Review Item
 - None.

@@ -1,4 +1,5 @@
 import { YogaChapter, YogaSutra, WordMeaning, VerseWord, type RuntimeSection } from '../types';
+import { chapter1Commentary, type CommentaryBlock as Chapter1CommentaryBlock } from '../data/chapter1Commentary';
 
 interface RawVerseText {
     tibetan?: string;
@@ -113,6 +114,54 @@ const buildCommentary = (heading: string, body: string) => {
     return trimmedHeading ? `# ${trimmedHeading}\n\n${trimmedBody}` : trimmedBody;
 };
 
+const escapeCommentaryCell = (value: string) => value.replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+
+const serializeCommentaryTable = (table: NonNullable<Chapter1CommentaryBlock['table']>) => {
+    const columnCount = Math.max(table.headers.length, ...table.rows.map((row) => row.length), 1);
+    const headers = Array.from({ length: columnCount }, (_, index) => escapeCommentaryCell(table.headers[index] ?? ''));
+    const separator = Array.from({ length: columnCount }, () => '---');
+    const rows = table.rows.map((row) =>
+        Array.from({ length: columnCount }, (_, index) => escapeCommentaryCell(row[index] ?? '')),
+    );
+
+    return [`| ${headers.join(' | ')} |`, `| ${separator.join(' | ')} |`, ...rows.map((row) => `| ${row.join(' | ')} |`)].join('\n');
+};
+
+const serializeCommentaryBlocks = (blocks?: Chapter1CommentaryBlock[]) => {
+    if (!blocks?.length) {
+        return null;
+    }
+
+    return blocks
+        .flatMap((block) => {
+            const parts: string[] = [];
+
+            if (block.title?.trim()) {
+                parts.push(`# ${block.title.trim()}`);
+            }
+
+            if (block.paragraphs?.length) {
+                parts.push(block.paragraphs.map((paragraph) => paragraph.trim()).filter(Boolean).join('\n\n'));
+            }
+
+            if (block.bullets?.length) {
+                parts.push(block.bullets.map((bullet) => `- ${bullet.trim()}`).join('\n'));
+            }
+
+            if (block.table) {
+                parts.push(serializeCommentaryTable(block.table));
+            }
+
+            return parts.filter(Boolean);
+        })
+        .join('\n\n')
+        .trim();
+};
+
+const chapter1CommentaryKeys = Object.keys(chapter1Commentary) as Array<keyof typeof chapter1Commentary>;
+const chapter1CommentaryFallbackKey = chapter1CommentaryKeys[chapter1CommentaryKeys.length - 1];
+const chapter1CommentaryFallbackBlocks = chapter1Commentary[chapter1CommentaryFallbackKey];
+
 const normalizeVerse = (
     item: RawVerse,
     chapterNumber: number,
@@ -132,6 +181,11 @@ const normalizeVerse = (
     const pronunciation = title || chapterTitle || english || korean;
     const commentaryBody = chapterTitle || english || korean;
     const commentaryHeading = title || sourceSectionName || `${chapterNumber}.${verseNumber}`;
+    const chapter1CommentaryKey = `${chapterNumber}.${verseNumber}` as keyof typeof chapter1Commentary;
+    const chapter1CommentaryText =
+        chapterNumber === 1
+            ? serializeCommentaryBlocks(chapter1Commentary[chapter1CommentaryKey] ?? chapter1CommentaryFallbackBlocks)
+            : null;
 
     return {
         id: `${chapterNumber}.${verseNumber}`,
@@ -149,7 +203,7 @@ const normalizeVerse = (
         audio: item.audioUrl ?? item.audio,
         audioUrl: item.audioUrl ?? item.audio,
         translation_en: english || undefined,
-        commentary_en: buildCommentary(commentaryHeading, commentaryBody),
+        commentary_en: chapter1CommentaryText ?? buildCommentary(commentaryHeading, commentaryBody),
         korean_pronunciation: item.korean_pronunciation ?? (korean || undefined),
         translation_ham: korean || undefined,
         translation_gil: item.translation_gil ?? (english || undefined),

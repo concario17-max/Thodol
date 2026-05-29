@@ -79,3 +79,6 @@
   status: done
 2026-05-29 18:33:00 +09:00 - main-ready non-MP3 publish completed and pushed to origin/codex/gita-data-sync as d80f0f8 after rebasing the clean publish worktree.
 2026-05-29 19:05:00 +09:00 | pronunciation audio spacing and typography | completed | Audio player now sits below pronunciation with tighter spacing, pronunciation font is differentiated, and a divider follows the player. Build and typecheck passed. | resolved
+2026-05-29 22:30:00 +09:00 - Fixed the deployed sidebar caption build error by restoring the missing label variables and pushing commit `79ceed3`.
+2026-05-29 23:15:00 +09:00 - chapter 1 commentary fallback gap closed in `src/utils/dataFetcher.ts`; missing chapter 1 keys now reuse the last ODT-derived commentary entry before buildCommentary is considered.
+2026-05-29 23:35:00 +09:00 - Added the missing 1.52 chapter 1 commentary block to `src/data/chapter1Commentary.ts` so the extracted dataset now covers the full chapter.
