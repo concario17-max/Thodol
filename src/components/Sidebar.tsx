@@ -13,6 +13,15 @@ const Sidebar = () => {
     const chapterNumber = chapterNum ? parseInt(chapterNum, 10) : null;
     const currentChapter = chapterNumber !== null ? allChapters?.[chapterNumber] ?? null : null;
     const verseData = chapterNum && verseNum ? getVerseInRange(chapterNum, verseNum) : null;
+    const chapterNumberLabel = currentChapter ? `${currentChapter.chapter}장` : '';
+    const chapterCaptionLabel = currentChapter?.meta.name_korean?.trim() || '';
+    const verseNumberLabel = verseData ? `${verseData.verse ?? parseInt(verseData.id.split('.')[1], 10)}절` : '';
+    const verseCaptionLabel =
+        verseData?.sourceChapterName?.trim() ||
+        verseData?.chapterTitle?.trim() ||
+        verseData?.displaySubtitle?.trim() ||
+        verseData?.displayTitle?.trim() ||
+        '';
     const isAppendixChapter = Boolean(
         currentChapter &&
             (currentChapter.chapter === 0 ||
