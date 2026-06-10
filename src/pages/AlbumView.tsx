@@ -143,24 +143,16 @@ const AlbumView = () => {
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(165,139,92,0.06)_0%,transparent_30%,transparent_70%,rgba(165,139,92,0.05)_100%)] dark:bg-[linear-gradient(135deg,rgba(255,255,255,0.03)_0%,transparent_30%,transparent_70%,rgba(255,255,255,0.02)_100%)]" />
 
             <div className="relative mx-auto flex min-h-full w-full max-w-[1440px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-                <header className="rounded-[2.2rem] border border-gold-border/12 bg-white/64 px-5 py-5 shadow-[0_22px_48px_-38px_rgba(0,0,0,0.4)] backdrop-blur-xl dark:border-dark-border/55 dark:bg-[#111]/52 sm:px-6 sm:py-6">
-                    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                        <div className="max-w-3xl">
-                            <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.34em] text-gold-primary/75 dark:text-gold-light/75">
-                                <LibraryBig className="h-4 w-4" />
+                <header className="px-1 py-2 sm:px-2">
+                    <div className="flex items-center justify-between border-b border-gold-border/10 pb-3 dark:border-dark-border/35">
+                        <div className="flex items-center gap-3">
+                            <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-gold-primary/75 dark:text-gold-light/75">
+                                <LibraryBig className="h-4 w-4 shrink-0" />
                                 {ALBUMS_ROUTE_PATH}
-                            </p>
-                            <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.8rem)] leading-[1.03] text-text-primary dark:text-dark-text-primary">
-                                앨범 청취 허브
-                            </h1>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.26em] text-text-secondary/70 dark:text-dark-text-secondary/70">
-                            <span className="rounded-full border border-gold-border/12 bg-white/72 px-3 py-2 dark:border-dark-border/45 dark:bg-white/5">
-                                {albums.length}개 앨범
                             </span>
-                            <span className="rounded-full border border-gold-border/12 bg-white/72 px-3 py-2 dark:border-dark-border/45 dark:bg-white/5">
-                                첫 앨범 기본 선택
+                            <span className="text-gold-primary/25 dark:text-gold-light/25 text-[11px]">|</span>
+                            <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-text-secondary/70 dark:text-dark-text-secondary/70">
+                                {albums.length}개 앨범
                             </span>
                         </div>
                     </div>
