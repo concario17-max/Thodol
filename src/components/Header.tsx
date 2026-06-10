@@ -108,8 +108,8 @@ const Header = ({
             </div>
 
             <div
-                className={`mx-auto hidden h-12 w-full max-w-[1406px] items-center lg:grid ${
-                    showSidebarToggle ? 'lg:[grid-template-columns:var(--desktop-verse-columns)]' : 'lg:grid-cols-1'
+                className={`mx-auto hidden h-12 w-full max-w-[1406px] items-center ${
+                    showSidebarToggle ? 'lg:grid lg:[grid-template-columns:var(--desktop-verse-columns)]' : 'lg:flex lg:justify-between'
                 }`}
                 style={desktopGridStyle}
             >
