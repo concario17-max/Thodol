@@ -23,6 +23,8 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
         albumPlaybackRate,
         setAlbumVolume,
         setAlbumPlaybackRate,
+        currentTrack,
+        currentAlbum,
     } = useGlobalAudio();
 
     const [prevVolume, setPrevVolume] = useState(1.0);
@@ -154,7 +156,13 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
 
                 <button
                     type="button"
-                    onClick={() => void toggleAlbumPlay()}
+                    onClick={() => {
+                        if (!currentTrack || !currentAlbum) {
+                            void playAlbumTrack(album, track);
+                        } else {
+                            void toggleAlbumPlay();
+                        }
+                    }}
                     className="grid h-12 w-12 place-items-center rounded-full bg-gold-primary text-white shadow-md transition-transform hover:scale-105 active:scale-95 dark:bg-gold-light dark:text-black"
                 >
                     {isAlbumPlaying ? (
