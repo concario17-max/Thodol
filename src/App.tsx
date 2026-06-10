@@ -1,6 +1,5 @@
-import { CSSProperties, Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
 import Sidebar from './components/Sidebar';
@@ -11,9 +10,8 @@ import { AppShell } from './components/ui/AppShell';
 import { StickyBottomPlayer } from './components/album/StickyBottomPlayer';
 import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
-
-const VerseView = lazy(() => import('./pages/VerseView'));
-const AlbumView = lazy(() => import('./pages/AlbumView'));
+import VerseView from './pages/VerseView';
+import AlbumView from './pages/AlbumView';
 
 const DefaultVerseRedirect = () => {
     const { chapters, loading } = useYogaData();
@@ -336,26 +334,17 @@ const MainLayout = () => {
                     ) : undefined
                 }
             >
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={location.pathname}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="h-full"
+                <div className="h-full">
+                    <Suspense
+                        fallback={
+                            <div className="flex h-full items-center justify-center bg-transparent">
+                                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
+                            </div>
+                        }
                     >
-                        <Suspense
-                            fallback={
-                                <div className="flex h-full items-center justify-center bg-transparent">
-                                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
-                                </div>
-                            }
-                        >
-                            <Outlet />
-                        </Suspense>
-                    </motion.div>
-                </AnimatePresence>
+                        <Outlet />
+                    </Suspense>
+                </div>
             </AppShell>
             <StickyBottomPlayer />
         </>
