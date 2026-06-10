@@ -47,12 +47,7 @@ interface UIProviderProps {
 }
 
 export const UIProvider = ({ children }: UIProviderProps) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
-        if (typeof window !== 'undefined') {
-            return window.innerWidth < 1024;
-        }
-        return false;
-    });
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(readSavedVerseContentMode);
     const [lastVersePath, setLastVersePath] = useState<string | null>(null);
     const [lastNonAlbumVerseContentMode, setLastNonAlbumVerseContentMode] = useState<Exclude<VerseContentMode, 'album'>>('commentary');
@@ -145,8 +140,8 @@ export const UIProvider = ({ children }: UIProviderProps) => {
                 return;
             }
 
-            // 좁은 화면에서는 사이드바를 본문 위에 세로로 보여준다.
-            setIsSidebarOpen(true);
+            // 좁은 화면에서는 모바일 사이드바를 기본적으로 닫아둔다 (대안 1 적용으로 상단 칩 배너가 대체함).
+            setIsSidebarOpen(false);
         };
 
         window.addEventListener('resize', handleResize);
