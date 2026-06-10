@@ -1,6 +1,6 @@
 import { Play, Pause } from 'lucide-react';
 import { useAudioTime } from '../../context/AudioContext';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface AudioPlayerProps {
     isPlaying: boolean;
@@ -17,8 +17,8 @@ export const AudioPlayer = ({
 }: AudioPlayerProps) => {
     // 경전 전용 오디오 시간 정보 구독
     const { currentTime, duration, progress } = useAudioTime('sutra');
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragProgress, setDragProgress] = useState(0);
+    const [tempProgress, setTempProgress] = useState<number | null>(null);
+    const seekTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const formatTime = (time: number) => {
         if (Number.isNaN(time) || !Number.isFinite(time)) {
@@ -29,22 +29,32 @@ export const AudioPlayer = ({
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const currentProgress = isDragging ? dragProgress : progress;
-    const displayTime = isDragging ? (dragProgress / 100) * duration : currentTime;
-
-    const handleStart = () => {
-        setIsDragging(true);
-        setDragProgress(currentProgress);
-    };
+    const currentProgress = tempProgress !== null ? tempProgress : progress;
+    const displayTime = tempProgress !== null ? (tempProgress / 100) * duration : currentTime;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDragProgress(parseFloat(e.target.value));
+        const val = parseFloat(e.target.value);
+        setTempProgress(val); // UI 슬라이더 위치 즉각 이동
+
+        // 기존 대기 타이머 제거
+        if (seekTimeoutRef.current) {
+            clearTimeout(seekTimeoutRef.current);
+        }
+
+        // 150ms 딜레이 디바운싱
+        seekTimeoutRef.current = setTimeout(() => {
+            onSeek(val / 100);
+            setTempProgress(null);
+        }, 150);
     };
 
-    const handleEnd = () => {
-        setIsDragging(false);
-        onSeek(dragProgress / 100);
-    };
+    useEffect(() => {
+        return () => {
+            if (seekTimeoutRef.current) {
+                clearTimeout(seekTimeoutRef.current);
+            }
+        };
+    }, []);
 
     return (
         <div className="mx-auto mb-0 flex w-full flex-col items-center gap-2 px-0">
@@ -81,11 +91,7 @@ export const AudioPlayer = ({
                         max="100"
                         step="0.1"
                         value={currentProgress}
-                        onMouseDown={handleStart}
-                        onTouchStart={handleStart}
                         onChange={handleChange}
-                        onMouseUp={handleEnd}
-                        onTouchEnd={handleEnd}
                         className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
                         aria-label="경전 재생 진행률 조절"
                     />

@@ -2,7 +2,7 @@ import { useGlobalAudio, useAudioTime } from '../../context/AudioContext';
 import type { AlbumData, AlbumTrack } from '../../data/albums';
 import { motion } from 'framer-motion';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface AlbumPlayerProps {
     album: AlbumData;
@@ -203,8 +203,8 @@ interface AlbumProgressSectionProps {
 // 오디오 재생 진행 정보를 전독적으로 구독하여 렌더링을 국소화하는 컴포넌트
 const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSectionProps) => {
     const { currentTime, duration, progress } = useAudioTime('album');
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragProgress, setDragProgress] = useState(0);
+    const [tempProgress, setTempProgress] = useState<number | null>(null);
+    const seekTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const formatTime = (time: number) => {
         if (Number.isNaN(time) || !Number.isFinite(time)) {
@@ -215,27 +215,36 @@ const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSec
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const currentProgress = isDragging ? dragProgress : (isThisTrackActive ? progress : 0);
-    const displayTime = isDragging 
-        ? (dragProgress / 100) * duration 
+    const currentProgress = tempProgress !== null ? tempProgress : (isThisTrackActive ? progress : 0);
+    const displayTime = tempProgress !== null 
+        ? (tempProgress / 100) * duration 
         : (isThisTrackActive ? currentTime : 0);
     const displayDuration = isThisTrackActive ? duration : 0;
 
-    const handleStart = () => {
-        setIsDragging(true);
-        setDragProgress(currentProgress);
-    };
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDragProgress(parseFloat(e.target.value));
+        if (!isThisTrackActive) return;
+        const val = parseFloat(e.target.value);
+        setTempProgress(val); // UI 슬라이더 위치 즉시 이동 반영
+
+        // 기존 타이머 클리어로 디바운스 대기 연장
+        if (seekTimeoutRef.current) {
+            clearTimeout(seekTimeoutRef.current);
+        }
+
+        // 150ms 딜레이 후 단발성 오디오 seek 및 상태 복구
+        seekTimeoutRef.current = setTimeout(() => {
+            seekAlbum(val / 100);
+            setTempProgress(null);
+        }, 150);
     };
 
-    const handleEnd = () => {
-        setIsDragging(false);
-        if (isThisTrackActive) {
-            seekAlbum(dragProgress / 100);
-        }
-    };
+    useEffect(() => {
+        return () => {
+            if (seekTimeoutRef.current) {
+                clearTimeout(seekTimeoutRef.current);
+            }
+        };
+    }, []);
 
     return (
         <div className="mt-4 flex flex-col gap-1.5">
@@ -257,11 +266,7 @@ const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSec
                     max="100"
                     step="0.1"
                     value={currentProgress}
-                    onMouseDown={handleStart}
-                    onTouchStart={handleStart}
                     onChange={handleChange}
-                    onMouseUp={handleEnd}
-                    onTouchEnd={handleEnd}
                     disabled={!isThisTrackActive}
                     className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
                     aria-label="재생 진행률 조절"
