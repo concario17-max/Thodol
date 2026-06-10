@@ -28,6 +28,7 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
     } = useGlobalAudio();
 
     const [prevVolume, setPrevVolume] = useState(1.0);
+    const isThisTrackActive = currentTrack?.id === track?.id && currentAlbum?.id === album.id;
 
     const formatTime = (time: number) => {
         if (Number.isNaN(time)) {
@@ -82,7 +83,7 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
             {/* 상단 앨범 정보 및 LP 회전 아트 */}
             <div className="flex flex-col items-center text-center gap-3 pb-3.5 border-b border-gold-border/8 dark:border-dark-border/30">
                 <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full border border-gold-border/15 shadow-lg dark:border-dark-border/40">
-                    {isAlbumPlaying ? (
+                    {isAlbumPlaying && isThisTrackActive ? (
                         <motion.div
                             animate={{ rotate: 360 }}
                             transition={{ repeat: Infinity, duration: 15 / albumPlaybackRate, ease: 'linear' }}
@@ -122,6 +123,7 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                 <div
                     className="group relative h-1.5 w-full cursor-pointer rounded-full bg-gold-border/30 dark:bg-dark-border"
                     onClick={(e) => {
+                        if (!isThisTrackActive) return;
                         const rect = e.currentTarget.getBoundingClientRect();
                         const x = e.clientX - rect.left;
                         seekAlbum(x / rect.width);
@@ -129,17 +131,17 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                 >
                     <div
                         className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light pointer-events-none"
-                        style={{ width: `${albumProgress}%` }}
+                        style={{ width: `${isThisTrackActive ? albumProgress : 0}%` }}
                     />
                     <div
                         className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gold-primary dark:bg-gold-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                        style={{ left: `calc(${albumProgress}% - 7px)` }}
+                        style={{ left: `calc(${isThisTrackActive ? albumProgress : 0}% - 7px)` }}
                     />
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] font-mono font-semibold text-text-secondary/55">
-                    <span>{formatTime(albumCurrentTime)}</span>
-                    <span>{formatTime(albumDuration)}</span>
+                    <span>{formatTime(isThisTrackActive ? albumCurrentTime : 0)}</span>
+                    <span>{formatTime(isThisTrackActive ? albumDuration : 0)}</span>
                 </div>
             </div>
 
@@ -157,7 +159,7 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                 <button
                     type="button"
                     onClick={() => {
-                        if (!currentTrack || !currentAlbum) {
+                        if (!isThisTrackActive) {
                             void playAlbumTrack(album, track);
                         } else {
                             void toggleAlbumPlay();
@@ -165,7 +167,7 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                     }}
                     className="grid h-12 w-12 place-items-center rounded-full bg-gold-primary text-white shadow-md transition-transform hover:scale-105 active:scale-95 dark:bg-gold-light dark:text-black"
                 >
-                    {isAlbumPlaying ? (
+                    {isAlbumPlaying && isThisTrackActive ? (
                         <Pause className="h-5 w-5 fill-current" />
                     ) : (
                         <Play className="h-5 w-5 fill-current translate-x-[1.5px]" />

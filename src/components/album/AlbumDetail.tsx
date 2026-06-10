@@ -88,6 +88,8 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                                 {album.tracks.map((track, index) => {
                                     const isSelected = track.id === selectedTrack?.id;
                                     const isCurrentlyPlaying = isSelected && isAlbumPlaying && currentTrack?.id === track.id;
+                                    const isThisTrackPaused = isSelected && !isAlbumPlaying && currentTrack?.id === track.id;
+                                    const statusText = isCurrentlyPlaying ? '재생 중' : isThisTrackPaused ? '일시 정지됨' : '눌러서 재생';
 
                                     return (
                                         <button
@@ -112,7 +114,7 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                                                     {track.title}
                                                 </span>
                                                 <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.24em] text-text-secondary/55 dark:text-dark-text-secondary/55">
-                                                    {isCurrentlyPlaying ? '재생 중' : isSelected ? '일시 정지됨' : '눌러서 재생'}
+                                                    {statusText}
                                                 </span>
                                             </span>
                                         </button>
