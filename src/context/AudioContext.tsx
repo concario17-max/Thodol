@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import type { AlbumData, AlbumTrack } from '../data/albums';
+import { Howl } from 'howler';
 
 // 활성 오디오 세션 타입 정의
 export type AudioSessionType = 'sutra' | 'album' | null;
@@ -45,9 +46,12 @@ interface AudioContextType {
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
-    const albumAudioRef = useRef<HTMLAudioElement | null>(null);
-    const sutraAudioRef = useRef<HTMLAudioElement | null>(null);
+    // Howler.js 재생 인스턴스 Refs
+    const albumHowlRef = useRef<Howl | null>(null);
+    const sutraHowlRef = useRef<Howl | null>(null);
+    
     const lastAlbumSeekTimeRef = useRef<number>(0);
+    const animationFrameIdRef = useRef<number | null>(null);
 
     // 고빈도 갱신 시간을 전달하기 위한 리스너 세트
     const albumTimeListenersRef = useRef<Set<(time: number, duration: number, progress: number) => void>>(new Set());
@@ -76,6 +80,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         currentTrackRef.current = currentTrack;
     }, [currentTrack]);
+    
     const [albumVolume, setAlbumVolumeState] = useState(1.0);
     const [albumPlaybackRate, setAlbumPlaybackRateState] = useState(1.0);
 
@@ -84,140 +89,153 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const [isSutraPlaying, setIsSutraPlaying] = useState(false);
     const [sutraPlaybackError, setSutraPlaybackError] = useState<string | null>(null);
 
-    // 초기 오디오 객체 생성 및 이벤트 바인딩
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
+    // 재생 시간 업데이트 폴링을 위한 requestAnimationFrame 루프 실행 함수
+    const startPolling = useCallback(() => {
+        if (animationFrameIdRef.current) return;
 
-        const albumAudio = new Audio();
-        albumAudio.preload = 'metadata'; // 재생 길이 조기 확보와 데이터 절약을 동시에 달성
-        
-        const sutraAudio = new Audio();
-        sutraAudio.preload = 'metadata';
-
-        albumAudioRef.current = albumAudio;
-        sutraAudioRef.current = sutraAudio;
-
-        setupAlbumEventListeners(albumAudio);
-        setupSutraEventListeners(sutraAudio);
-
-        return () => {
-            albumAudio.pause();
-            sutraAudio.pause();
-        };
-    }, []);
-
-
-    // 앨범 시간 업데이트 이벤트 전파
-    const triggerAlbumTimeUpdate = useCallback(() => {
-        const audio = albumAudioRef.current;
-        if (!audio) return;
-        const time = audio.currentTime;
-        const duration = audio.duration || 0;
-        const progress = duration > 0 ? (time / duration) * 100 : 0;
-        albumTimeListenersRef.current.forEach((fn) => fn(time, duration, progress));
-    }, []);
-
-    // 경전 시간 업데이트 이벤트 전파
-    const triggerSutraTimeUpdate = useCallback(() => {
-        const audio = sutraAudioRef.current;
-        if (!audio) return;
-        const time = audio.currentTime;
-        const duration = audio.duration || 0;
-        const progress = duration > 0 ? (time / duration) * 100 : 0;
-        sutraTimeListenersRef.current.forEach((fn) => fn(time, duration, progress));
-    }, []);
-
-    // 앨범 이벤트 리스너 세팅 함수
-    const setupAlbumEventListeners = (audio: HTMLAudioElement) => {
-        audio.ontimeupdate = () => {
-            const now = Date.now();
-            // 최근 500ms 이내에 탐색이 일어났으면 브라우저의 낡은 타임 업데이트 프레임을 무시함
-            if (now - lastAlbumSeekTimeRef.current < 500) {
-                return;
-            }
-            if (!audio.seeking) {
-                triggerAlbumTimeUpdate();
-            }
-        };
-        audio.onloadedmetadata = () => {
-            triggerAlbumTimeUpdate();
-            setAlbumPlaybackError(null);
-        };
-        audio.onended = () => {
-            setIsAlbumPlaying(false);
-            setTrackEndedCount((prev) => prev + 1);
-
-            // 전역 다음 트랙 자동 재생 연쇄 처리
-            const album = currentAlbumRef.current;
-            const track = currentTrackRef.current;
-            const playFn = playAlbumTrackRef.current;
-
-            if (album && track && playFn) {
-                const tracks = album.tracks;
-                const currentIndex = tracks.findIndex((t) => t.id === track.id);
-                if (currentIndex !== -1 && currentIndex < tracks.length - 1) {
-                    const nextTrack = tracks[currentIndex + 1];
-                    void playFn(album, nextTrack);
-                } else if (currentIndex === tracks.length - 1) {
-                    const firstTrack = tracks[0];
-                    if (firstTrack) {
-                        setCurrentTrack(firstTrack);
-                        audio.src = firstTrack.url;
-                        audio.load();
-                        triggerAlbumTimeUpdate();
-                    }
+        const poll = () => {
+            // 앨범 재생 시간 전파
+            const albumHowl = albumHowlRef.current;
+            if (albumHowl && albumHowl.playing()) {
+                const now = Date.now();
+                // seek 탐색 시 시간 락 500ms 체크
+                if (now - lastAlbumSeekTimeRef.current >= 500) {
+                    const time = albumHowl.seek() as number;
+                    const duration = albumHowl.duration() || 0;
+                    const progress = duration > 0 ? (time / duration) * 100 : 0;
+                    albumTimeListenersRef.current.forEach((fn) => fn(time, duration, progress));
                 }
             }
-        };
-        audio.onerror = () => setAlbumPlaybackError('앨범 음원 로드 실패');
-    };
 
-    // 경전 이벤트 리스너 세팅 함수
-    const setupSutraEventListeners = (audio: HTMLAudioElement) => {
-        audio.ontimeupdate = () => triggerSutraTimeUpdate();
-        audio.onloadedmetadata = () => {
-            triggerSutraTimeUpdate();
-            setSutraPlaybackError(null);
+            // 경전 재생 시간 전파
+            const sutraHowl = sutraHowlRef.current;
+            if (sutraHowl && sutraHowl.playing()) {
+                const time = sutraHowl.seek() as number;
+                const duration = sutraHowl.duration() || 0;
+                const progress = duration > 0 ? (time / duration) * 100 : 0;
+                sutraTimeListenersRef.current.forEach((fn) => fn(time, duration, progress));
+            }
+
+            animationFrameIdRef.current = requestAnimationFrame(poll);
         };
-        audio.onended = () => {
-            setIsSutraPlaying(false);
-            triggerSutraTimeUpdate();
+
+        animationFrameIdRef.current = requestAnimationFrame(poll);
+    }, []);
+
+    // 폴링 루프 중지 함수
+    const stopPolling = useCallback(() => {
+        if (animationFrameIdRef.current) {
+            cancelAnimationFrame(animationFrameIdRef.current);
+            animationFrameIdRef.current = null;
+        }
+    }, []);
+
+    // 재생 유무에 맞추어 시간 폴링 자동 연동 제어
+    useEffect(() => {
+        if (isAlbumPlaying || isSutraPlaying) {
+            startPolling();
+        } else {
+            stopPolling();
+        }
+        return () => stopPolling();
+    }, [isAlbumPlaying, isSutraPlaying, startPolling, stopPolling]);
+
+    // 언마운트 시 Howler 리소스 해제
+    useEffect(() => {
+        return () => {
+            if (albumHowlRef.current) {
+                albumHowlRef.current.unload();
+            }
+            if (sutraHowlRef.current) {
+                sutraHowlRef.current.unload();
+            }
         };
-        audio.onerror = () => setSutraPlaybackError('경전 음원 로드 실패');
-    };
+    }, []);
 
     // 앨범 트랙 변경 및 재생 함수
     const playAlbumTrack = useCallback(async (album: AlbumData, track: AlbumTrack) => {
-        const audio = albumAudioRef.current;
-        if (!audio) return;
-
         // 경전 세션 일시정지 조율
-        if (sutraAudioRef.current && isSutraPlaying) {
-            sutraAudioRef.current.pause();
+        if (sutraHowlRef.current && isSutraPlaying) {
+            sutraHowlRef.current.pause();
             setIsSutraPlaying(false);
         }
 
         setActiveSession('album');
         
-        // 트랙이 새로 지정된 경우에만 로드
+        // 트랙이 새로 지정된 경우에만 인스턴스 새로 생성
         if (currentTrack?.id !== track.id) {
             setCurrentAlbum(album);
             setCurrentTrack(track);
-            audio.src = track.url;
-            audio.load();
-            audio.playbackRate = albumPlaybackRate; // 기존 설정된 배속 반영
-            audio.volume = albumVolume; // 기존 설정된 볼륨 반영
+
+            if (albumHowlRef.current) {
+                albumHowlRef.current.unload();
+            }
+
+            const howl = new Howl({
+                src: [track.url],
+                html5: true, // 대용량 스트리밍 음원이므로 HTML5 Audio 모드 강제
+                preload: 'metadata',
+                volume: albumVolume,
+                rate: albumPlaybackRate,
+                onload: () => {
+                    const dur = howl.duration();
+                    albumTimeListenersRef.current.forEach((fn) => fn(0, dur, 0));
+                },
+                onend: () => {
+                    setIsAlbumPlaying(false);
+                    setTrackEndedCount((prev) => prev + 1);
+
+                    const currentAlbumData = currentAlbumRef.current;
+                    const currentTrackData = currentTrackRef.current;
+                    const playFn = playAlbumTrackRef.current;
+
+                    if (currentAlbumData && currentTrackData && playFn) {
+                        const tracks = currentAlbumData.tracks;
+                        const currentIndex = tracks.findIndex((t) => t.id === currentTrackData.id);
+                        if (currentIndex !== -1 && currentIndex < tracks.length - 1) {
+                            const nextTrack = tracks[currentIndex + 1];
+                            void playFn(currentAlbumData, nextTrack);
+                        } else if (currentIndex === tracks.length - 1) {
+                            const firstTrack = tracks[0];
+                            if (firstTrack) {
+                                setCurrentTrack(firstTrack);
+                                if (albumHowlRef.current) {
+                                    albumHowlRef.current.unload();
+                                }
+                                const firstHowl = new Howl({
+                                    src: [firstTrack.url],
+                                    html5: true,
+                                    preload: 'metadata',
+                                    volume: albumVolume,
+                                    rate: albumPlaybackRate
+                                });
+                                albumHowlRef.current = firstHowl;
+                                albumTimeListenersRef.current.forEach((fn) => fn(0, 0, 0));
+                            }
+                        }
+                    }
+                },
+                onloaderror: () => {
+                    setAlbumPlaybackError('앨범 음원 로드 실패');
+                    setIsAlbumPlaying(false);
+                }
+            });
+
+            albumHowlRef.current = howl;
         }
 
-        try {
-            await audio.play();
-            setIsAlbumPlaying(true);
-            setAlbumPlaybackError(null);
-        } catch {
-            setAlbumPlaybackError('재생 시작 실패');
-            setIsAlbumPlaying(false);
+        const currentHowl = albumHowlRef.current;
+        if (currentHowl) {
+            try {
+                currentHowl.play();
+                setIsAlbumPlaying(true);
+                setAlbumPlaybackError(null);
+            } catch {
+                setAlbumPlaybackError('재생 시작 실패');
+                setIsAlbumPlaying(false);
+            }
         }
-    }, [currentTrack, isSutraPlaying]);
+    }, [currentTrack, isSutraPlaying, albumVolume, albumPlaybackRate]);
 
     // 재생 함수 최신화 Ref
     useEffect(() => {
@@ -226,8 +244,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 앨범 일시정지 함수
     const pauseAlbumTrack = useCallback(() => {
-        if (albumAudioRef.current) {
-            albumAudioRef.current.pause();
+        if (albumHowlRef.current) {
+            albumHowlRef.current.pause();
             setIsAlbumPlaying(false);
         }
     }, []);
@@ -244,61 +262,42 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 앨범 볼륨 조절 함수
     const setAlbumVolume = useCallback((vol: number) => {
-        const audio = albumAudioRef.current;
-        if (audio) {
-            const clamped = Math.max(0, Math.min(vol, 1));
-            audio.volume = clamped;
-            setAlbumVolumeState(clamped);
+        const howl = albumHowlRef.current;
+        const clamped = Math.max(0, Math.min(vol, 1));
+        if (howl) {
+            howl.volume(clamped);
         }
+        setAlbumVolumeState(clamped);
     }, []);
 
     // 앨범 배속 조절 함수
     const setAlbumPlaybackRate = useCallback((rate: number) => {
-        const audio = albumAudioRef.current;
-        if (audio) {
-            audio.playbackRate = rate;
-            setAlbumPlaybackRateState(rate);
+        const howl = albumHowlRef.current;
+        if (howl) {
+            howl.rate(rate);
         }
+        setAlbumPlaybackRateState(rate);
     }, []);
 
     // 앨범 탐색(Seek) 함수
     const seekAlbum = useCallback((percentage: number) => {
-        const audio = albumAudioRef.current;
-        if (audio) {
-            const duration = audio.duration || 0;
-            const performSeek = (dur: number) => {
-                const nextTime = Math.max(0, Math.min(percentage, 1)) * dur;
+        const howl = albumHowlRef.current;
+        if (howl) {
+            const duration = howl.duration() || 0;
+            if (duration > 0) {
+                const nextTime = Math.max(0, Math.min(percentage, 1)) * duration;
                 lastAlbumSeekTimeRef.current = Date.now(); // 시간 락 시동
-                audio.currentTime = nextTime;
-                triggerAlbumTimeUpdate();
-            };
-
-            if (audio.readyState >= 1 && duration > 0) {
-                performSeek(duration);
-            } else {
-                // 아직 준비가 안 된 경우 (readyState === 0 또는 duration 없음), 메타데이터 로드 완료 후 탐색 실행
-                const onLoadedMetadata = () => {
-                    const dur = audio.duration || 0;
-                    if (dur > 0) {
-                        performSeek(dur);
-                    }
-                    audio.removeEventListener('loadedmetadata', onLoadedMetadata);
-                };
-                audio.addEventListener('loadedmetadata', onLoadedMetadata);
-                // 모바일 브라우저 환경에서 preload="metadata" 상태일 때 즉시 로드를 유도하기 위함
-                audio.load();
+                howl.seek(nextTime);
+                albumTimeListenersRef.current.forEach((fn) => fn(nextTime, duration, percentage * 100));
             }
         }
-    }, [triggerAlbumTimeUpdate]);
+    }, []);
 
     // 경전 재생 함수
     const playSutraAudio = useCallback(async (url: string) => {
-        const audio = sutraAudioRef.current;
-        if (!audio) return;
-
         // 앨범 세션 일시정지 조율
-        if (albumAudioRef.current && isAlbumPlaying) {
-            albumAudioRef.current.pause();
+        if (albumHowlRef.current && isAlbumPlaying) {
+            albumHowlRef.current.pause();
             setIsAlbumPlaying(false);
         }
 
@@ -306,24 +305,49 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (sutraAudioUrl !== url) {
             setSutraAudioUrl(url);
-            audio.src = url;
-            audio.load();
+
+            if (sutraHowlRef.current) {
+                sutraHowlRef.current.unload();
+            }
+
+            const howl = new Howl({
+                src: [url],
+                html5: false, // 경전은 파일 크기가 작으므로 Web Audio API 강제 -> 캐시 재생으로 HTTP 206 완벽 우회 및 정밀 seek 보장
+                onload: () => {
+                    const dur = howl.duration();
+                    sutraTimeListenersRef.current.forEach((fn) => fn(0, dur, 0));
+                },
+                onend: () => {
+                    setIsSutraPlaying(false);
+                    const dur = howl.duration();
+                    sutraTimeListenersRef.current.forEach((fn) => fn(0, dur, 0));
+                },
+                onloaderror: () => {
+                    setSutraPlaybackError('경전 음원 로드 실패');
+                    setIsSutraPlaying(false);
+                }
+            });
+
+            sutraHowlRef.current = howl;
         }
 
-        try {
-            await audio.play();
-            setIsSutraPlaying(true);
-            setSutraPlaybackError(null);
-        } catch {
-            setSutraPlaybackError('경전 재생 시작 실패');
-            setIsSutraPlaying(false);
+        const currentHowl = sutraHowlRef.current;
+        if (currentHowl) {
+            try {
+                currentHowl.play();
+                setIsSutraPlaying(true);
+                setSutraPlaybackError(null);
+            } catch {
+                setSutraPlaybackError('경전 재생 시작 실패');
+                setIsSutraPlaying(false);
+            }
         }
     }, [sutraAudioUrl, isAlbumPlaying]);
 
     // 경전 일시정지 함수
     const pauseSutraAudio = useCallback(() => {
-        if (sutraAudioRef.current) {
-            sutraAudioRef.current.pause();
+        if (sutraHowlRef.current) {
+            sutraHowlRef.current.pause();
             setIsSutraPlaying(false);
         }
     }, []);
@@ -340,42 +364,25 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 경전 탐색 함수
     const seekSutra = useCallback((percentage: number) => {
-        const audio = sutraAudioRef.current;
-        if (audio) {
-            const duration = audio.duration || 0;
-            const performSeek = (dur: number) => {
-                const nextTime = Math.max(0, Math.min(percentage, 1)) * dur;
-                audio.currentTime = nextTime;
-                triggerSutraTimeUpdate();
-            };
-
-            if (audio.readyState >= 1 && duration > 0) {
-                performSeek(duration);
-            } else {
-                // 아직 준비가 안 된 경우 (readyState === 0 또는 duration 없음), 메타데이터 로드 완료 후 탐색 실행
-                const onLoadedMetadata = () => {
-                    const dur = audio.duration || 0;
-                    if (dur > 0) {
-                        performSeek(dur);
-                    }
-                    audio.removeEventListener('loadedmetadata', onLoadedMetadata);
-                };
-                audio.addEventListener('loadedmetadata', onLoadedMetadata);
-                // 모바일 브라우저 환경에서 preload="metadata" 상태일 때 즉시 로드를 유도하기 위함
-                audio.load();
+        const howl = sutraHowlRef.current;
+        if (howl) {
+            const duration = howl.duration() || 0;
+            if (duration > 0) {
+                const nextTime = Math.max(0, Math.min(percentage, 1)) * duration;
+                howl.seek(nextTime);
+                sutraTimeListenersRef.current.forEach((fn) => fn(nextTime, duration, percentage * 100));
             }
         }
-    }, [triggerSutraTimeUpdate]);
+    }, []);
 
     // 경전 오디오 초기화 함수
     const resetSutraAudio = useCallback(() => {
         setSutraAudioUrl(null);
         setIsSutraPlaying(false);
-        if (sutraAudioRef.current) {
-            sutraAudioRef.current.pause();
-            sutraAudioRef.current.src = '';
+        if (sutraHowlRef.current) {
+            sutraHowlRef.current.unload();
+            sutraHowlRef.current = null;
         }
-        // 시간 상태 리셋 전파
         sutraTimeListenersRef.current.forEach((fn) => fn(0, 0, 0));
         setSutraPlaybackError(null);
     }, []);
@@ -398,17 +405,17 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     // 오디오 현재 시간 즉시 조회를 위한 헬퍼
     const getAudioTime = useCallback((session: 'album' | 'sutra') => {
         if (session === 'album') {
-            const audio = albumAudioRef.current;
-            if (!audio) return { currentTime: 0, duration: 0, progress: 0 };
-            const time = audio.currentTime;
-            const duration = audio.duration || 0;
+            const howl = albumHowlRef.current;
+            if (!howl) return { currentTime: 0, duration: 0, progress: 0 };
+            const time = howl.seek() as number;
+            const duration = howl.duration() || 0;
             const progress = duration > 0 ? (time / duration) * 100 : 0;
             return { currentTime: time, duration, progress };
         } else {
-            const audio = sutraAudioRef.current;
-            if (!audio) return { currentTime: 0, duration: 0, progress: 0 };
-            const time = audio.currentTime;
-            const duration = audio.duration || 0;
+            const howl = sutraHowlRef.current;
+            if (!howl) return { currentTime: 0, duration: 0, progress: 0 };
+            const time = howl.seek() as number;
+            const duration = howl.duration() || 0;
             const progress = duration > 0 ? (time / duration) * 100 : 0;
             return { currentTime: time, duration, progress };
         }
@@ -463,7 +470,6 @@ export const useAudioTime = (session: 'album' | 'sutra') => {
     const [timeInfo, setTimeInfo] = useState({ currentTime: 0, duration: 0, progress: 0 });
 
     useEffect(() => {
-        // 컴포넌트 마운트 시 초기값 세팅
         setTimeInfo(context.getAudioTime(session));
 
         const register = session === 'album' 
