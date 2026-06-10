@@ -63,7 +63,7 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                             <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-text-secondary/65 dark:text-dark-text-secondary/65">
                                 {album.artist}
                             </p>
-                            <h2 className="font-display text-[clamp(1.8rem,4vw,3.1rem)] leading-[1.05] text-text-primary dark:text-dark-text-primary">
+                            <h2 className="font-display text-[clamp(1.5rem,3.5vw,2.4rem)] leading-[1.08] text-text-primary dark:text-dark-text-primary">
                                 {album.title}
                             </h2>
                             <p className="max-w-3xl text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">

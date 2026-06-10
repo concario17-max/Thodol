@@ -169,7 +169,7 @@ const AlbumView = () => {
                     </div>
                 </header>
 
-                <main className="space-y-6">
+                <main className="flex flex-col gap-6 lg:grid lg:grid-cols-[340px_1fr] lg:gap-8 lg:items-start">
                     <AlbumSelector
                         albums={albums}
                         selectedAlbumId={selectedAlbum.id}
