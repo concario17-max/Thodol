@@ -391,7 +391,6 @@ const VerseView = () => {
                     <MobileVerseGuide
                         chapterNum={chapterNum ?? ''}
                         verseNum={verseNum ?? ''}
-                        englishText={verseData.translation_en ?? verseData.text?.english ?? undefined}
                         koreanText={verseData.translation_ham ?? undefined}
                     />
                     {!isCommentaryMode ? (
