@@ -36,7 +36,6 @@ const AlbumView = () => {
         playAlbumTrack,
         currentAlbum,
         currentTrack,
-        trackEndedCount,
     } = useGlobalAudio();
 
     useEffect(() => {
@@ -79,7 +78,7 @@ const AlbumView = () => {
         return () => {
             active = false;
         };
-    }, [currentAlbum, currentTrack]);
+    }, []);
 
     const selectedAlbum = useMemo(
         () => albums.find((album) => album.id === selectedAlbumId) ?? albums[0] ?? null,
@@ -102,24 +101,7 @@ const AlbumView = () => {
         });
     }, [selectedAlbum, currentAlbum, currentTrack]);
 
-    // 자동 다음 곡 재생 감지 효과
-    useEffect(() => {
-        if (trackEndedCount === 0 || !selectedAlbum || !selectedTrackId) return;
 
-        const tracks = selectedAlbum.tracks;
-        const currentIndex = tracks.findIndex((t) => t.id === selectedTrackId);
-
-        if (currentIndex !== -1 && currentIndex < tracks.length - 1) {
-            const nextTrack = tracks[currentIndex + 1];
-            setSelectedTrackId(nextTrack.id);
-            void playAlbumTrack(selectedAlbum, nextTrack);
-        } else if (currentIndex === tracks.length - 1) {
-            const firstTrack = tracks[0];
-            if (firstTrack) {
-                setSelectedTrackId(firstTrack.id);
-            }
-        }
-    }, [trackEndedCount]);
 
     if (loading) {
         return loadingState;

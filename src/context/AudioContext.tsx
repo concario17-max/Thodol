@@ -50,6 +50,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const sutraAudioRef = useRef<HTMLAudioElement | null>(null);
     const isAlbumSeekingRef = useRef(false);
 
+    // 최신 오디오 상태를 stale closure 없이 관리하기 위한 Refs
+    const currentAlbumRef = useRef<AlbumData | null>(null);
+    const currentTrackRef = useRef<AlbumTrack | null>(null);
+    const playAlbumTrackRef = useRef<((album: AlbumData, track: AlbumTrack) => Promise<void>) | null>(null);
+
     // 활성 세션 상태
     const [activeSession, setActiveSession] = useState<AudioSessionType>(null);
     
@@ -61,6 +66,15 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const [albumDuration, setAlbumDuration] = useState(0);
     const [albumPlaybackError, setAlbumPlaybackError] = useState<string | null>(null);
     const [trackEndedCount, setTrackEndedCount] = useState(0);
+
+    // 최신 상태 Refs 동기화
+    useEffect(() => {
+        currentAlbumRef.current = currentAlbum;
+    }, [currentAlbum]);
+
+    useEffect(() => {
+        currentTrackRef.current = currentTrack;
+    }, [currentTrack]);
     const [albumVolume, setAlbumVolumeState] = useState(1.0);
     const [albumPlaybackRate, setAlbumPlaybackRateState] = useState(1.0);
 
@@ -90,6 +104,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         };
     }, []);
 
+
     // 앨범 이벤트 리스너 세팅 함수
     const setupAlbumEventListeners = (audio: HTMLAudioElement) => {
         audio.onseeking = () => {
@@ -110,6 +125,28 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         audio.onended = () => {
             setIsAlbumPlaying(false);
             setTrackEndedCount((prev) => prev + 1);
+
+            // 전역 다음 트랙 자동 재생 연쇄 처리
+            const album = currentAlbumRef.current;
+            const track = currentTrackRef.current;
+            const playFn = playAlbumTrackRef.current;
+
+            if (album && track && playFn) {
+                const tracks = album.tracks;
+                const currentIndex = tracks.findIndex((t) => t.id === track.id);
+                if (currentIndex !== -1 && currentIndex < tracks.length - 1) {
+                    const nextTrack = tracks[currentIndex + 1];
+                    void playFn(album, nextTrack);
+                } else if (currentIndex === tracks.length - 1) {
+                    const firstTrack = tracks[0];
+                    if (firstTrack) {
+                        setCurrentTrack(firstTrack);
+                        audio.src = firstTrack.url;
+                        audio.load();
+                        setAlbumCurrentTime(0);
+                    }
+                }
+            }
         };
         audio.onerror = () => setAlbumPlaybackError('앨범 음원 로드 실패');
     };
@@ -160,6 +197,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
             setIsAlbumPlaying(false);
         }
     }, [currentTrack, isSutraPlaying]);
+
+    // 재생 함수 최신화 Ref
+    useEffect(() => {
+        playAlbumTrackRef.current = playAlbumTrack;
+    }, [playAlbumTrack]);
 
     // 앨범 일시정지 함수
     const pauseAlbumTrack = useCallback(() => {
