@@ -266,11 +266,27 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         const audio = albumAudioRef.current;
         if (audio) {
             const duration = audio.duration || 0;
-            if (duration > 0) {
-                const nextTime = Math.max(0, Math.min(percentage, 1)) * duration;
+            const performSeek = (dur: number) => {
+                const nextTime = Math.max(0, Math.min(percentage, 1)) * dur;
                 lastAlbumSeekTimeRef.current = Date.now(); // 시간 락 시동
                 audio.currentTime = nextTime;
                 triggerAlbumTimeUpdate();
+            };
+
+            if (audio.readyState >= 1 && duration > 0) {
+                performSeek(duration);
+            } else {
+                // 아직 준비가 안 된 경우 (readyState === 0 또는 duration 없음), 메타데이터 로드 완료 후 탐색 실행
+                const onLoadedMetadata = () => {
+                    const dur = audio.duration || 0;
+                    if (dur > 0) {
+                        performSeek(dur);
+                    }
+                    audio.removeEventListener('loadedmetadata', onLoadedMetadata);
+                };
+                audio.addEventListener('loadedmetadata', onLoadedMetadata);
+                // 모바일 브라우저 환경에서 preload="metadata" 상태일 때 즉시 로드를 유도하기 위함
+                audio.load();
             }
         }
     }, [triggerAlbumTimeUpdate]);
@@ -327,10 +343,26 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         const audio = sutraAudioRef.current;
         if (audio) {
             const duration = audio.duration || 0;
-            if (duration > 0) {
-                const nextTime = Math.max(0, Math.min(percentage, 1)) * duration;
+            const performSeek = (dur: number) => {
+                const nextTime = Math.max(0, Math.min(percentage, 1)) * dur;
                 audio.currentTime = nextTime;
                 triggerSutraTimeUpdate();
+            };
+
+            if (audio.readyState >= 1 && duration > 0) {
+                performSeek(duration);
+            } else {
+                // 아직 준비가 안 된 경우 (readyState === 0 또는 duration 없음), 메타데이터 로드 완료 후 탐색 실행
+                const onLoadedMetadata = () => {
+                    const dur = audio.duration || 0;
+                    if (dur > 0) {
+                        performSeek(dur);
+                    }
+                    audio.removeEventListener('loadedmetadata', onLoadedMetadata);
+                };
+                audio.addEventListener('loadedmetadata', onLoadedMetadata);
+                // 모바일 브라우저 환경에서 preload="metadata" 상태일 때 즉시 로드를 유도하기 위함
+                audio.load();
             }
         }
     }, [triggerSutraTimeUpdate]);
