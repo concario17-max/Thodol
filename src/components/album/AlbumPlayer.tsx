@@ -37,8 +37,8 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
     }
 
     return (
-        <section className="rounded-[1.6rem] border border-gold-border/12 bg-white/62 px-4 py-4 shadow-[0_14px_34px_-30px_rgba(0,0,0,0.35)] dark:border-dark-border/55 dark:bg-[#111]/40">
-            <div className="mb-4 flex items-center gap-4 border-b border-gold-border/8 pb-3 dark:border-dark-border/35">
+        <section className="rounded-[1.3rem] border border-gold-border/10 bg-gold-primary/[0.03] dark:bg-gold-light/[0.02] px-4 py-4 dark:border-dark-border/35">
+            <div className="mb-4 flex items-center gap-4 border-b border-gold-border/8 pb-3 dark:border-dark-border/30">
                 {/* 회전하는 LP 커버 이미지 */}
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-gold-border/15 shadow-md dark:border-dark-border/40">
                     {isAlbumPlaying ? (

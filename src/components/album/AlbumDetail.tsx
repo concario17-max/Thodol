@@ -73,15 +73,15 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                     </div>
 
                     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.85fr)]">
-                        <div className="rounded-[1.5rem] border border-gold-border/10 bg-white/58 p-4 dark:border-dark-border/50 dark:bg-white/5">
-                            <div className="mb-4 flex items-center gap-2">
+                        <div className="border-0 bg-transparent p-1">
+                            <div className="mb-4 flex items-center gap-2 px-1">
                                 <Music2 className="h-4 w-4 text-gold-primary/70 dark:text-gold-light/70" />
                                 <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-text-secondary/75 dark:text-dark-text-secondary/75">
                                     트랙 목록
                                 </h3>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="divide-y divide-gold-border/8 dark:divide-dark-border/25">
                                 {album.tracks.map((track, index) => {
                                     const isSelected = track.id === selectedTrack?.id;
                                     const isCurrentlyPlaying = isSelected && isAlbumPlaying && currentTrack?.id === track.id;
@@ -91,13 +91,13 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                                             key={track.id}
                                             type="button"
                                             onClick={() => onSelectTrack(track.id)}
-                                            className={`flex w-full items-center gap-3 rounded-[1.1rem] border px-3 py-3 text-left transition-all duration-300 ${
+                                            className={`flex w-full items-center gap-3.5 border-l-[3px] py-3.5 px-3 text-left transition-all duration-300 rounded-r-xl rounded-l-none ${
                                                 isSelected
-                                                    ? 'border-gold-primary/30 bg-gold-primary/8 shadow-[0_10px_24px_-20px_rgba(165,139,92,0.65)] dark:border-gold-light/28 dark:bg-gold-light/8'
-                                                    : 'border-gold-border/10 bg-white/62 hover:border-gold-primary/20 hover:bg-white/82 dark:border-dark-border/40 dark:bg-white/5 dark:hover:bg-white/8'
+                                                    ? 'border-l-gold-primary bg-gold-primary/8 dark:border-l-gold-light dark:bg-gold-light/8'
+                                                    : 'border-l-transparent bg-transparent hover:bg-black/[0.03] dark:hover:bg-white/[0.03]'
                                             }`}
                                         >
-                                            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold-border/12 bg-white/78 text-[11px] font-semibold text-gold-primary dark:border-dark-border/45 dark:bg-white/5 dark:text-gold-light">
+                                            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gold-primary/6 text-[10px] font-mono font-semibold text-gold-primary/70 dark:bg-white/5 dark:text-gold-light/70">
                                                 {isCurrentlyPlaying ? (
                                                     <PlayingWaveform />
                                                 ) : (

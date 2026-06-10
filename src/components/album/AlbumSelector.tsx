@@ -44,10 +44,10 @@ export const AlbumSelector = ({ albums, selectedAlbumId, onSelectAlbum }: AlbumS
                         type="button"
                         onClick={() => onSelectAlbum(album.id)}
                         aria-pressed={isSelected}
-                        className={`group flex h-full flex-col overflow-hidden rounded-[1.8rem] border p-3 text-left transition-all duration-300 shrink-0 w-[290px] snap-start md:shrink md:w-auto lg:w-full lg:flex-row lg:items-center lg:gap-3.5 lg:p-2.5 lg:rounded-[1.4rem] ${
+                        className={`group flex h-full flex-col overflow-hidden rounded-[1.8rem] border p-3 text-left transition-all duration-300 shrink-0 w-[290px] snap-start md:shrink md:w-auto lg:w-full lg:flex-row lg:items-center lg:gap-3 lg:p-2 lg:transition-colors ${
                             isSelected
-                                ? 'border-gold-primary/35 bg-white/88 shadow-[0_18px_38px_-24px_rgba(165,139,92,0.5)] dark:border-gold-light/30 dark:bg-[#181512]/88'
-                                : 'border-gold-border/14 bg-white/68 hover:-translate-y-0.5 hover:border-gold-primary/22 hover:bg-white/82 dark:border-dark-border/60 dark:bg-[#151311]/72 dark:hover:bg-[#191714]/88'
+                                ? 'border-gold-primary/35 bg-white/88 shadow-[0_18px_38px_-24px_rgba(165,139,92,0.5)] dark:border-gold-light/30 dark:bg-[#181512]/88 lg:border-y-0 lg:border-r-0 lg:border-l-[3.5px] lg:border-l-gold-primary lg:bg-gold-primary/8 lg:dark:bg-gold-light/8 lg:shadow-none lg:rounded-r-[1rem] lg:rounded-l-none lg:pl-2.5 lg:dark:border-l-gold-light'
+                                : 'border-gold-border/14 bg-white/68 hover:-translate-y-0.5 hover:border-gold-primary/22 hover:bg-white/82 dark:border-dark-border/60 dark:bg-[#151311]/72 dark:hover:bg-[#191714]/88 lg:border-none lg:bg-transparent lg:shadow-none lg:hover:bg-black/4 lg:dark:hover:bg-white/4 lg:rounded-[1rem] lg:hover:-translate-y-0'
                         }`}
                     >
                         <div className="overflow-hidden rounded-[1.35rem] border border-gold-border/10 bg-gradient-to-br from-[#f5efe4] to-[#e8dcc9] shadow-sm dark:border-dark-border/45 dark:from-[#241c16] dark:to-[#17120f] shrink-0 lg:h-14 lg:w-14 lg:rounded-[1rem]">
