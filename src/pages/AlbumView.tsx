@@ -153,9 +153,6 @@ const AlbumView = () => {
                             <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.8rem)] leading-[1.03] text-text-primary dark:text-dark-text-primary">
                                 앨범 청취 허브
                             </h1>
-                            <p className="mt-4 max-w-3xl text-[15px] leading-8 text-text-secondary dark:text-dark-text-secondary sm:text-[16px]">
-                                표지와 설명을 먼저 고르고, 아래에서 트랙을 눌러 재생을 시작한다. 작업 흐름을 끊지 않도록 한 화면에서 앨범 전체를 훑을 수 있게 구성했다.
-                            </p>
                         </div>
 
                         <div className="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.26em] text-text-secondary/70 dark:text-dark-text-secondary/70">

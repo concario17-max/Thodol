@@ -120,9 +120,6 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
 
                         <div className="hidden md:block md:space-y-4">
                             <AlbumPlayer album={album} track={selectedTrack} />
-                            <div className="rounded-[1.5rem] border border-gold-border/10 bg-white/58 p-4 text-sm leading-relaxed text-text-secondary dark:border-dark-border/55 dark:bg-white/5 dark:text-dark-text-secondary">
-                                트랙을 바꾸면 플레이어가 바로 새 소스를 읽는다. 재생 버튼은 기존 오디오 플레이어 스타일을 그대로 쓴다.
-                            </div>
                         </div>
                     </div>
                 </div>
