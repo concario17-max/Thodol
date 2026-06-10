@@ -4,7 +4,6 @@ import { AlbumSelector } from '../components/album/AlbumSelector';
 import { AlbumDetail } from '../components/album/AlbumDetail';
 import { ALBUMS_ROUTE_PATH, loadAlbums, type AlbumData } from '../data/albums';
 import { useGlobalAudio } from '../context/AudioContext';
-import { StickyBottomPlayer } from '../components/album/StickyBottomPlayer';
 
 const loadingState = (
     <div className="flex min-h-[60vh] items-center justify-center">
@@ -178,7 +177,6 @@ const AlbumView = () => {
                     />
                 </main>
             </div>
-            <StickyBottomPlayer />
         </div>
     );
 };

@@ -8,6 +8,7 @@ import Header from './components/Header';
 import ThemeToggle from './components/ThemeToggle';
 import { useUI } from './context/UIContext';
 import { AppShell } from './components/ui/AppShell';
+import { StickyBottomPlayer } from './components/album/StickyBottomPlayer';
 import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 
@@ -314,47 +315,50 @@ const MainLayout = () => {
         ) : undefined;
 
     return (
-        <AppShell
-            header={
-                isVerseView || isAlbumPage ? (
-                    <Header
-                        title="Bardo-Thödol"
-                        showSidebarToggle={isVerseView}
-                        showContentModeToggle
-                        selectionControls={selectionControls}
-                    />
-                ) : undefined
-            }
-            sidebar={isVerseView ? <Sidebar /> : undefined}
-            isMobilePanelOpen={isVerseView && isSidebarOpen}
-            desktopGridColumns={desktopGridColumns}
-            floatingAction={
-                !isVerseView ? (
-                    <ThemeToggle className="border border-gold-primary/20 bg-white/82 p-3 shadow-xl shadow-black/5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-gold-primary/40 active:scale-90 dark:border-gold-primary/10 dark:bg-[#111]/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)]" />
-                ) : undefined
-            }
-        >
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={location.pathname}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="h-full"
-                >
-                    <Suspense
-                        fallback={
-                            <div className="flex h-full items-center justify-center bg-transparent">
-                                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
-                            </div>
-                        }
+        <>
+            <AppShell
+                header={
+                    isVerseView || isAlbumPage ? (
+                        <Header
+                            title="Bardo-Thödol"
+                            showSidebarToggle={isVerseView}
+                            showContentModeToggle
+                            selectionControls={selectionControls}
+                        />
+                    ) : undefined
+                }
+                sidebar={isVerseView ? <Sidebar /> : undefined}
+                isMobilePanelOpen={isVerseView && isSidebarOpen}
+                desktopGridColumns={desktopGridColumns}
+                floatingAction={
+                    !isVerseView ? (
+                        <ThemeToggle className="border border-gold-primary/20 bg-white/82 p-3 shadow-xl shadow-black/5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-gold-primary/40 active:scale-90 dark:border-gold-primary/10 dark:bg-[#111]/80 dark:shadow-[0_8px_30px_-5px_rgba(0,0,0,0.6)]" />
+                    ) : undefined
+                }
+            >
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={location.pathname}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="h-full"
                     >
-                        <Outlet />
-                    </Suspense>
-                </motion.div>
-            </AnimatePresence>
-        </AppShell>
+                        <Suspense
+                            fallback={
+                                <div className="flex h-full items-center justify-center bg-transparent">
+                                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-primary border-t-transparent" />
+                                </div>
+                            }
+                        >
+                            <Outlet />
+                        </Suspense>
+                    </motion.div>
+                </AnimatePresence>
+            </AppShell>
+            <StickyBottomPlayer />
+        </>
     );
 };
 

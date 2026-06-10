@@ -1,8 +1,10 @@
 import { useGlobalAudio } from '../../context/AudioContext';
 import { Play, Pause, Disc3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 export const StickyBottomPlayer = () => {
+    const location = useLocation();
     const {
         currentAlbum,
         currentTrack,
@@ -10,6 +12,8 @@ export const StickyBottomPlayer = () => {
         toggleAlbumPlay,
         albumProgress,
     } = useGlobalAudio();
+
+    const isAlbumPage = location.pathname === '/albums';
 
     // 재생 중이거나 선택된 트랙이 없으면 렌더링 배제
     if (!currentTrack || !currentAlbum) {
@@ -23,7 +27,9 @@ export const StickyBottomPlayer = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 80, opacity: 0 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                className="fixed bottom-4 left-4 right-4 z-50 overflow-hidden rounded-[1.6rem] border border-gold-border/20 bg-white/94 p-3 shadow-[0_24px_54px_-14px_rgba(0,0,0,0.38)] backdrop-blur-md dark:border-dark-border/60 dark:bg-[#13100d]/94 md:hidden"
+                className={`fixed bottom-4 left-4 right-4 z-50 overflow-hidden rounded-[1.6rem] border border-gold-border/20 bg-white/94 p-3 shadow-[0_24px_54px_-14px_rgba(0,0,0,0.38)] backdrop-blur-md dark:border-dark-border/60 dark:bg-[#13100d]/94 md:bottom-6 md:right-6 md:left-auto md:w-80 md:rounded-[1.4rem] md:shadow-[0_20px_48px_-16px_rgba(0,0,0,0.3)] ${
+                    isAlbumPage ? 'md:hidden' : ''
+                }`}
             >
                 {/* 하단 밀착 진행 바 */}
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gold-primary/10 dark:bg-gold-light/10">
