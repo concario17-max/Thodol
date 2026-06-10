@@ -1,4 +1,4 @@
-import { useGlobalAudio } from '../../context/AudioContext';
+import { useGlobalAudio, useAudioTime } from '../../context/AudioContext';
 import { Play, Pause, Disc3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -10,7 +10,6 @@ export const StickyBottomPlayer = () => {
         currentTrack,
         isAlbumPlaying,
         toggleAlbumPlay,
-        albumProgress,
     } = useGlobalAudio();
 
     const isAlbumPage = location.pathname === '/albums';
@@ -31,13 +30,8 @@ export const StickyBottomPlayer = () => {
                     isAlbumPage ? 'md:hidden' : ''
                 }`}
             >
-                {/* 하단 밀착 진행 바 */}
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gold-primary/10 dark:bg-gold-light/10">
-                    <div
-                        className="h-full bg-gold-primary transition-all duration-100 ease-out dark:bg-gold-light"
-                        style={{ width: `${albumProgress}%` }}
-                    />
-                </div>
+                {/* 하단 밀착 진행 바 (렌더링 격리된 프로그레스 라인 컴포넌트 호출) */}
+                <BottomProgressLine />
 
                 <div className="flex items-center gap-3">
                     {/* 미니 앨범 커버 */}
@@ -92,5 +86,18 @@ export const StickyBottomPlayer = () => {
                 </div>
             </motion.div>
         </AnimatePresence>
+    );
+};
+
+// 미니 바텀 오디오 진행바 컴포넌트: 전용 훅으로 렌더링 세분화 구현
+const BottomProgressLine = () => {
+    const { progress } = useAudioTime('album');
+    return (
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gold-primary/10 dark:bg-gold-light/10">
+            <div
+                className="h-full bg-gold-primary transition-all duration-100 ease-out dark:bg-gold-light"
+                style={{ width: `${progress}%` }}
+            />
+        </div>
     );
 };

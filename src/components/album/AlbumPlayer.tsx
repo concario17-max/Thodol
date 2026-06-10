@@ -1,4 +1,4 @@
-import { useGlobalAudio } from '../../context/AudioContext';
+import { useGlobalAudio, useAudioTime } from '../../context/AudioContext';
 import type { AlbumData, AlbumTrack } from '../../data/albums';
 import { motion } from 'framer-motion';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
@@ -12,12 +12,9 @@ interface AlbumPlayerProps {
 export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
     const {
         isAlbumPlaying,
-        albumCurrentTime,
-        albumDuration,
         albumPlaybackError,
         toggleAlbumPlay,
         seekAlbum,
-        albumProgress,
         playAlbumTrack,
         albumVolume,
         albumPlaybackRate,
@@ -29,15 +26,6 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
 
     const [prevVolume, setPrevVolume] = useState(1.0);
     const isThisTrackActive = currentTrack?.id === track?.id && currentAlbum?.id === album.id;
-
-    const formatTime = (time: number) => {
-        if (Number.isNaN(time)) {
-            return '0:00';
-        }
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    };
 
     // 네이티브 range input을 오버레이 방식으로 도입했으므로 기존 클릭 처리 함수는 불필요하여 제거함
 
@@ -120,42 +108,8 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                 </div>
             </div>
 
-            {/* 재생 프로그레스 슬라이더 */}
-            <div className="mt-4 flex flex-col gap-1.5">
-                <div className="group relative h-1.5 w-full rounded-full bg-gold-border/30 dark:bg-dark-border">
-                    {/* 재생 진행바 시각 요소 */}
-                    <div
-                        className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light pointer-events-none"
-                        style={{ width: `${isThisTrackActive ? albumProgress : 0}%` }}
-                    />
-                    {/* 진행바 핸들 조절기 시각 요소 */}
-                    <div
-                        className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gold-primary dark:bg-gold-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                        style={{ left: `calc(${isThisTrackActive ? albumProgress : 0}% - 7px)` }}
-                    />
-                    {/* 네이티브 range input 투명 오버레이: 웹접근성 및 완벽한 드래그/클릭 터치 감도 보장 */}
-                    <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        step="0.1"
-                        value={isThisTrackActive ? albumProgress : 0}
-                        onChange={(e) => {
-                            if (!isThisTrackActive) return;
-                            const percentage = parseFloat(e.target.value) / 100;
-                            seekAlbum(percentage);
-                        }}
-                        disabled={!isThisTrackActive}
-                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
-                        aria-label="재생 진행률 조절"
-                    />
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] font-mono font-semibold text-text-secondary/55">
-                    <span>{formatTime(isThisTrackActive ? albumCurrentTime : 0)}</span>
-                    <span>{formatTime(isThisTrackActive ? albumDuration : 0)}</span>
-                </div>
-            </div>
+            {/* 재생 프로그레스 슬라이더 (렌더링 세분화를 위해 별도 분리된 서브컴포넌트) */}
+            <AlbumProgressSection isThisTrackActive={isThisTrackActive} seekAlbum={seekAlbum} />
 
             {/* 주요 오디오 컨트롤 조작 그룹 */}
             <div className="mt-3.5 flex items-center justify-center gap-6">
@@ -238,5 +192,66 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                 </p>
             )}
         </section>
+    );
+};
+
+interface AlbumProgressSectionProps {
+    isThisTrackActive: boolean;
+    seekAlbum: (percentage: number) => void;
+}
+
+// 오디오 재생 진행 정보를 전독적으로 구독하여 렌더링을 국소화하는 컴포넌트
+const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSectionProps) => {
+    const { currentTime, duration, progress } = useAudioTime('album');
+
+    const formatTime = (time: number) => {
+        if (Number.isNaN(time)) {
+            return '0:00';
+        }
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const currentProgress = isThisTrackActive ? progress : 0;
+    const displayTime = isThisTrackActive ? currentTime : 0;
+    const displayDuration = isThisTrackActive ? duration : 0;
+
+    return (
+        <div className="mt-4 flex flex-col gap-1.5">
+            <div className="group relative h-1.5 w-full rounded-full bg-gold-border/30 dark:bg-dark-border">
+                {/* 재생 진행바 시각 요소 */}
+                <div
+                    className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light pointer-events-none"
+                    style={{ width: `${currentProgress}%` }}
+                />
+                {/* 진행바 핸들 조절기 시각 요소 */}
+                <div
+                    className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gold-primary dark:bg-gold-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                    style={{ left: `calc(${currentProgress}% - 7px)` }}
+                />
+                {/* 네이티브 range input 투명 오버레이: 웹접근성 및 완벽한 드래그/클릭 터치 감도 보장 */}
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={currentProgress}
+                    onChange={(e) => {
+                        if (!isThisTrackActive) return;
+                        const percentage = parseFloat(e.target.value) / 100;
+                        seekAlbum(percentage);
+                    }}
+                    disabled={!isThisTrackActive}
+                    className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
+                    aria-label="재생 진행률 조절"
+                />
+            </div>
+
+            <div className="flex items-center justify-between text-[10px] font-mono font-semibold text-text-secondary/55">
+                <span>{formatTime(displayTime)}</span>
+                <span>{formatTime(displayDuration)}</span>
+            </div>
+        </div>
     );
 };

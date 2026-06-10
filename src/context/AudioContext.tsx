@@ -10,18 +10,12 @@ interface AudioContextType {
     currentAlbum: AlbumData | null;
     currentTrack: AlbumTrack | null;
     isAlbumPlaying: boolean;
-    albumCurrentTime: number;
-    albumDuration: number;
-    albumProgress: number;
     albumPlaybackError: string | null;
     trackEndedCount: number; // 다음 곡 자동 전환 감지용 카운터
     
     // 경전 재생 상태 메타데이터
     sutraAudioUrl: string | null;
     isSutraPlaying: boolean;
-    sutraCurrentTime: number;
-    sutraDuration: number;
-    sutraProgress: number;
     sutraPlaybackError: string | null;
 
     albumVolume: number;
@@ -41,6 +35,11 @@ interface AudioContextType {
     toggleSutraPlay: () => Promise<void>;
     seekSutra: (percentage: number) => void;
     resetSutraAudio: () => void;
+
+    // 시간 및 프로그레스 이벤트 구독 인터페이스
+    registerAlbumTimeListener: (listener: (time: number, duration: number, progress: number) => void) => () => void;
+    registerSutraTimeListener: (listener: (time: number, duration: number, progress: number) => void) => () => void;
+    getAudioTime: (session: 'album' | 'sutra') => { currentTime: number; duration: number; progress: number };
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -49,6 +48,10 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const albumAudioRef = useRef<HTMLAudioElement | null>(null);
     const sutraAudioRef = useRef<HTMLAudioElement | null>(null);
     const lastAlbumSeekTimeRef = useRef<number>(0);
+
+    // 고빈도 갱신 시간을 전달하기 위한 리스너 세트
+    const albumTimeListenersRef = useRef<Set<(time: number, duration: number, progress: number) => void>>(new Set());
+    const sutraTimeListenersRef = useRef<Set<(time: number, duration: number, progress: number) => void>>(new Set());
 
     // 최신 오디오 상태를 stale closure 없이 관리하기 위한 Refs
     const currentAlbumRef = useRef<AlbumData | null>(null);
@@ -62,8 +65,6 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentAlbum, setCurrentAlbum] = useState<AlbumData | null>(null);
     const [currentTrack, setCurrentTrack] = useState<AlbumTrack | null>(null);
     const [isAlbumPlaying, setIsAlbumPlaying] = useState(false);
-    const [albumCurrentTime, setAlbumCurrentTime] = useState(0);
-    const [albumDuration, setAlbumDuration] = useState(0);
     const [albumPlaybackError, setAlbumPlaybackError] = useState<string | null>(null);
     const [trackEndedCount, setTrackEndedCount] = useState(0);
 
@@ -81,8 +82,6 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     // 경전 재생 상태
     const [sutraAudioUrl, setSutraAudioUrl] = useState<string | null>(null);
     const [isSutraPlaying, setIsSutraPlaying] = useState(false);
-    const [sutraCurrentTime, setSutraCurrentTime] = useState(0);
-    const [sutraDuration, setSutraDuration] = useState(0);
     const [sutraPlaybackError, setSutraPlaybackError] = useState<string | null>(null);
 
     // 초기 오디오 객체 생성 및 이벤트 바인딩
@@ -90,7 +89,10 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         if (typeof window === 'undefined') return;
 
         const albumAudio = new Audio();
+        albumAudio.preload = 'none'; // 모바일 데이터 소모 방지를 위한 프리로드 제한
+        
         const sutraAudio = new Audio();
+        sutraAudio.preload = 'none';
 
         albumAudioRef.current = albumAudio;
         sutraAudioRef.current = sutraAudio;
@@ -105,6 +107,26 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
 
+    // 앨범 시간 업데이트 이벤트 전파
+    const triggerAlbumTimeUpdate = useCallback(() => {
+        const audio = albumAudioRef.current;
+        if (!audio) return;
+        const time = audio.currentTime;
+        const duration = audio.duration || 0;
+        const progress = duration > 0 ? (time / duration) * 100 : 0;
+        albumTimeListenersRef.current.forEach((fn) => fn(time, duration, progress));
+    }, []);
+
+    // 경전 시간 업데이트 이벤트 전파
+    const triggerSutraTimeUpdate = useCallback(() => {
+        const audio = sutraAudioRef.current;
+        if (!audio) return;
+        const time = audio.currentTime;
+        const duration = audio.duration || 0;
+        const progress = duration > 0 ? (time / duration) * 100 : 0;
+        sutraTimeListenersRef.current.forEach((fn) => fn(time, duration, progress));
+    }, []);
+
     // 앨범 이벤트 리스너 세팅 함수
     const setupAlbumEventListeners = (audio: HTMLAudioElement) => {
         audio.ontimeupdate = () => {
@@ -114,11 +136,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 return;
             }
             if (!audio.seeking) {
-                setAlbumCurrentTime(audio.currentTime);
+                triggerAlbumTimeUpdate();
             }
         };
         audio.onloadedmetadata = () => {
-            setAlbumDuration(audio.duration);
+            triggerAlbumTimeUpdate();
             setAlbumPlaybackError(null);
         };
         audio.onended = () => {
@@ -142,7 +164,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                         setCurrentTrack(firstTrack);
                         audio.src = firstTrack.url;
                         audio.load();
-                        setAlbumCurrentTime(0);
+                        triggerAlbumTimeUpdate();
                     }
                 }
             }
@@ -152,14 +174,14 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 경전 이벤트 리스너 세팅 함수
     const setupSutraEventListeners = (audio: HTMLAudioElement) => {
-        audio.ontimeupdate = () => setSutraCurrentTime(audio.currentTime);
+        audio.ontimeupdate = () => triggerSutraTimeUpdate();
         audio.onloadedmetadata = () => {
-            setSutraDuration(audio.duration);
+            triggerSutraTimeUpdate();
             setSutraPlaybackError(null);
         };
         audio.onended = () => {
             setIsSutraPlaying(false);
-            setSutraCurrentTime(0);
+            triggerSutraTimeUpdate();
         };
         audio.onerror = () => setSutraPlaybackError('경전 음원 로드 실패');
     };
@@ -242,13 +264,16 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     // 앨범 탐색(Seek) 함수
     const seekAlbum = useCallback((percentage: number) => {
         const audio = albumAudioRef.current;
-        if (audio && albumDuration > 0) {
-            const nextTime = Math.max(0, Math.min(percentage, 1)) * albumDuration;
-            lastAlbumSeekTimeRef.current = Date.now(); // 시간 락 시동
-            audio.currentTime = nextTime;
-            setAlbumCurrentTime(nextTime);
+        if (audio) {
+            const duration = audio.duration || 0;
+            if (duration > 0) {
+                const nextTime = Math.max(0, Math.min(percentage, 1)) * duration;
+                lastAlbumSeekTimeRef.current = Date.now(); // 시간 락 시동
+                audio.currentTime = nextTime;
+                triggerAlbumTimeUpdate();
+            }
         }
-    }, [albumDuration]);
+    }, [triggerAlbumTimeUpdate]);
 
     // 경전 재생 함수
     const playSutraAudio = useCallback(async (url: string) => {
@@ -300,28 +325,62 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     // 경전 탐색 함수
     const seekSutra = useCallback((percentage: number) => {
         const audio = sutraAudioRef.current;
-        if (audio && sutraDuration > 0) {
-            const nextTime = Math.max(0, Math.min(percentage, 1)) * sutraDuration;
-            audio.currentTime = nextTime;
-            setSutraCurrentTime(nextTime);
+        if (audio) {
+            const duration = audio.duration || 0;
+            if (duration > 0) {
+                const nextTime = Math.max(0, Math.min(percentage, 1)) * duration;
+                audio.currentTime = nextTime;
+                triggerSutraTimeUpdate();
+            }
         }
-    }, [sutraDuration]);
+    }, [triggerSutraTimeUpdate]);
 
     // 경전 오디오 초기화 함수
     const resetSutraAudio = useCallback(() => {
         setSutraAudioUrl(null);
         setIsSutraPlaying(false);
-        setSutraCurrentTime(0);
-        setSutraDuration(0);
-        setSutraPlaybackError(null);
         if (sutraAudioRef.current) {
             sutraAudioRef.current.pause();
             sutraAudioRef.current.src = '';
         }
+        // 시간 상태 리셋 전파
+        sutraTimeListenersRef.current.forEach((fn) => fn(0, 0, 0));
+        setSutraPlaybackError(null);
     }, []);
 
-    const albumProgress = albumDuration > 0 ? (albumCurrentTime / albumDuration) * 100 : 0;
-    const sutraProgress = sutraDuration > 0 ? (sutraCurrentTime / sutraDuration) * 100 : 0;
+    // 리스너 등록 액션 구현
+    const registerAlbumTimeListener = useCallback((listener: (time: number, duration: number, progress: number) => void) => {
+        albumTimeListenersRef.current.add(listener);
+        return () => {
+            albumTimeListenersRef.current.delete(listener);
+        };
+    }, []);
+
+    const registerSutraTimeListener = useCallback((listener: (time: number, duration: number, progress: number) => void) => {
+        sutraTimeListenersRef.current.add(listener);
+        return () => {
+            sutraTimeListenersRef.current.delete(listener);
+        };
+    }, []);
+
+    // 오디오 현재 시간 즉시 조회를 위한 헬퍼
+    const getAudioTime = useCallback((session: 'album' | 'sutra') => {
+        if (session === 'album') {
+            const audio = albumAudioRef.current;
+            if (!audio) return { currentTime: 0, duration: 0, progress: 0 };
+            const time = audio.currentTime;
+            const duration = audio.duration || 0;
+            const progress = duration > 0 ? (time / duration) * 100 : 0;
+            return { currentTime: time, duration, progress };
+        } else {
+            const audio = sutraAudioRef.current;
+            if (!audio) return { currentTime: 0, duration: 0, progress: 0 };
+            const time = audio.currentTime;
+            const duration = audio.duration || 0;
+            const progress = duration > 0 ? (time / duration) * 100 : 0;
+            return { currentTime: time, duration, progress };
+        }
+    }, []);
 
     return (
         <AudioContext.Provider
@@ -330,18 +389,12 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 currentAlbum,
                 currentTrack,
                 isAlbumPlaying,
-                albumCurrentTime,
-                albumDuration,
-                albumProgress,
                 albumPlaybackError,
                 trackEndedCount,
                 albumVolume,
                 albumPlaybackRate,
                 sutraAudioUrl,
                 isSutraPlaying,
-                sutraCurrentTime,
-                sutraDuration,
-                sutraProgress,
                 sutraPlaybackError,
                 playAlbumTrack,
                 pauseAlbumTrack,
@@ -354,6 +407,9 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 toggleSutraPlay,
                 seekSutra,
                 resetSutraAudio,
+                registerAlbumTimeListener,
+                registerSutraTimeListener,
+                getAudioTime,
             }}
         >
             {children}
@@ -367,4 +423,27 @@ export const useGlobalAudio = () => {
         throw new Error('useGlobalAudio는 AudioProvider 하위에서 호출되어야 해');
     }
     return context;
+};
+
+// 시간/프로그레스 개별 구독을 위한 고성능 커스텀 훅
+export const useAudioTime = (session: 'album' | 'sutra') => {
+    const context = useGlobalAudio();
+    const [timeInfo, setTimeInfo] = useState({ currentTime: 0, duration: 0, progress: 0 });
+
+    useEffect(() => {
+        // 컴포넌트 마운트 시 초기값 세팅
+        setTimeInfo(context.getAudioTime(session));
+
+        const register = session === 'album' 
+            ? context.registerAlbumTimeListener 
+            : context.registerSutraTimeListener;
+
+        const unsubscribe = register((time, duration, progress) => {
+            setTimeInfo({ currentTime: time, duration, progress });
+        });
+
+        return unsubscribe;
+    }, [session, context]);
+
+    return timeInfo;
 };

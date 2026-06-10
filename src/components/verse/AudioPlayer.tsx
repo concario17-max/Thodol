@@ -1,12 +1,9 @@
 import { Play, Pause } from 'lucide-react';
+import { useAudioTime } from '../../context/AudioContext';
 
 interface AudioPlayerProps {
     isPlaying: boolean;
     togglePlay: () => Promise<void>;
-    currentTime: number;
-    duration: number;
-    progressPercent: number;
-    formatTime: (time: number) => string;
     onSeek: (percentage: number) => void;
     playbackError?: string | null;
 }
@@ -14,14 +11,20 @@ interface AudioPlayerProps {
 export const AudioPlayer = ({
     isPlaying,
     togglePlay,
-    currentTime,
-    duration,
-    progressPercent,
-    formatTime,
     onSeek,
     playbackError,
 }: AudioPlayerProps) => {
-    // 네이티브 range input을 오버레이 방식으로 도입했으므로 기존 클릭 처리 함수는 불필요하여 제거함
+    // 경전 전용 오디오 시간 정보 구독
+    const { currentTime, duration, progress } = useAudioTime('sutra');
+
+    const formatTime = (time: number) => {
+        if (Number.isNaN(time)) {
+            return '0:00';
+        }
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
 
     return (
         <div className="mx-auto mb-0 flex w-full flex-col items-center gap-2 px-0">
@@ -44,12 +47,12 @@ export const AudioPlayer = ({
                     {/* 재생 진행바 시각 요소 */}
                     <div
                         className="absolute left-0 top-0 h-full rounded-full bg-[#A68B5C] pointer-events-none"
-                        style={{ width: `${progressPercent}%` }}
+                        style={{ width: `${progress}%` }}
                     />
                     {/* 진행바 핸들 조절기 시각 요소 */}
                     <div
                         className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#A68B5C] shadow-sm opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none"
-                        style={{ left: `calc(${progressPercent}% - 4px)` }}
+                        style={{ left: `calc(${progress}% - 4px)` }}
                     />
                     {/* 네이티브 range input 투명 오버레이: 웹접근성 및 완벽한 드래그/클릭 터치 감도 보장 */}
                     <input
@@ -57,7 +60,7 @@ export const AudioPlayer = ({
                         min="0"
                         max="100"
                         step="0.1"
-                        value={progressPercent}
+                        value={progress}
                         onChange={(e) => {
                             const percentage = parseFloat(e.target.value) / 100;
                             onSeek(percentage);

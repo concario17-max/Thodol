@@ -239,9 +239,6 @@ const VerseView = () => {
         playSutraAudio,
         pauseSutraAudio,
         isSutraPlaying,
-        sutraCurrentTime,
-        sutraDuration,
-        sutraProgress,
         sutraPlaybackError,
         resetSutraAudio,
         seekSutra,
@@ -255,15 +252,6 @@ const VerseView = () => {
             await playSutraAudio(verseData.audioUrl);
         }
     }, [verseData?.audioUrl, isSutraPlaying, playSutraAudio, pauseSutraAudio]);
-
-    const formatTime = useCallback((time: number) => {
-        if (Number.isNaN(time)) {
-            return '0:00';
-        }
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }, []);
 
     const shouldShowPronunciationAudio =
         verseData?.sourceKind === 'prayer' &&
@@ -324,10 +312,6 @@ const VerseView = () => {
                     <AudioPlayer
                         isPlaying={isSutraPlaying}
                         togglePlay={handleToggleSutra}
-                        currentTime={sutraCurrentTime}
-                        duration={sutraDuration}
-                        progressPercent={sutraProgress}
-                        formatTime={formatTime}
                         onSeek={seekSutra}
                         playbackError={sutraPlaybackError}
                     />
