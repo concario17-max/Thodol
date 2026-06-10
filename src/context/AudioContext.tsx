@@ -89,10 +89,10 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         if (typeof window === 'undefined') return;
 
         const albumAudio = new Audio();
-        albumAudio.preload = 'none'; // 모바일 데이터 소모 방지를 위한 프리로드 제한
+        albumAudio.preload = 'metadata'; // 재생 길이 조기 확보와 데이터 절약을 동시에 달성
         
         const sutraAudio = new Audio();
-        sutraAudio.preload = 'none';
+        sutraAudio.preload = 'metadata';
 
         albumAudioRef.current = albumAudio;
         sutraAudioRef.current = sutraAudio;

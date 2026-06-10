@@ -203,9 +203,11 @@ interface AlbumProgressSectionProps {
 // 오디오 재생 진행 정보를 전독적으로 구독하여 렌더링을 국소화하는 컴포넌트
 const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSectionProps) => {
     const { currentTime, duration, progress } = useAudioTime('album');
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragProgress, setDragProgress] = useState(0);
 
     const formatTime = (time: number) => {
-        if (Number.isNaN(time)) {
+        if (Number.isNaN(time) || !Number.isFinite(time)) {
             return '0:00';
         }
         const minutes = Math.floor(time / 60);
@@ -213,9 +215,27 @@ const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSec
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const currentProgress = isThisTrackActive ? progress : 0;
-    const displayTime = isThisTrackActive ? currentTime : 0;
+    const currentProgress = isDragging ? dragProgress : (isThisTrackActive ? progress : 0);
+    const displayTime = isDragging 
+        ? (dragProgress / 100) * duration 
+        : (isThisTrackActive ? currentTime : 0);
     const displayDuration = isThisTrackActive ? duration : 0;
+
+    const handleStart = () => {
+        setIsDragging(true);
+        setDragProgress(currentProgress);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDragProgress(parseFloat(e.target.value));
+    };
+
+    const handleEnd = () => {
+        setIsDragging(false);
+        if (isThisTrackActive) {
+            seekAlbum(dragProgress / 100);
+        }
+    };
 
     return (
         <div className="mt-4 flex flex-col gap-1.5">
@@ -237,11 +257,11 @@ const AlbumProgressSection = ({ isThisTrackActive, seekAlbum }: AlbumProgressSec
                     max="100"
                     step="0.1"
                     value={currentProgress}
-                    onChange={(e) => {
-                        if (!isThisTrackActive) return;
-                        const percentage = parseFloat(e.target.value) / 100;
-                        seekAlbum(percentage);
-                    }}
+                    onMouseDown={handleStart}
+                    onTouchStart={handleStart}
+                    onChange={handleChange}
+                    onMouseUp={handleEnd}
+                    onTouchEnd={handleEnd}
                     disabled={!isThisTrackActive}
                     className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
                     aria-label="재생 진행률 조절"
