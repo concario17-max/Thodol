@@ -48,7 +48,6 @@ const AudioContext = createContext<AudioContextType | undefined>(undefined);
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const albumAudioRef = useRef<HTMLAudioElement | null>(null);
     const sutraAudioRef = useRef<HTMLAudioElement | null>(null);
-    const isAlbumSeekingRef = useRef(false);
 
     // 최신 오디오 상태를 stale closure 없이 관리하기 위한 Refs
     const currentAlbumRef = useRef<AlbumData | null>(null);
@@ -107,14 +106,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 앨범 이벤트 리스너 세팅 함수
     const setupAlbumEventListeners = (audio: HTMLAudioElement) => {
-        audio.onseeking = () => {
-            isAlbumSeekingRef.current = true;
-        };
-        audio.onseeked = () => {
-            isAlbumSeekingRef.current = false;
-        };
         audio.ontimeupdate = () => {
-            if (!isAlbumSeekingRef.current) {
+            if (!audio.seeking) {
                 setAlbumCurrentTime(audio.currentTime);
             }
         };
@@ -245,7 +238,6 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         const audio = albumAudioRef.current;
         if (audio && albumDuration > 0) {
             const nextTime = Math.max(0, Math.min(percentage, 1)) * albumDuration;
-            isAlbumSeekingRef.current = true;
             audio.currentTime = nextTime;
             setAlbumCurrentTime(nextTime);
         }

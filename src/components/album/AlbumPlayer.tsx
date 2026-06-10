@@ -39,6 +39,21 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
+    const handleProgressClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+        if (!isThisTrackActive) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        
+        let clientX = 0;
+        if ('touches' in e) {
+            clientX = e.touches[0]?.clientX || e.changedTouches[0]?.clientX || 0;
+        } else {
+            clientX = e.clientX;
+        }
+
+        const x = clientX - rect.left;
+        seekAlbum(x / rect.width);
+    };
+
     if (!track) {
         return (
             <div className="rounded-[1.3rem] border border-dashed border-gold-border/18 bg-white/50 px-4 py-5 text-sm leading-relaxed text-text-secondary dark:border-dark-border/55 dark:bg-[#111]/30 dark:text-dark-text-secondary">
@@ -122,12 +137,8 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
             <div className="mt-4 flex flex-col gap-1.5">
                 <div
                     className="group relative h-1.5 w-full cursor-pointer rounded-full bg-gold-border/30 dark:bg-dark-border"
-                    onClick={(e) => {
-                        if (!isThisTrackActive) return;
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        seekAlbum(x / rect.width);
-                    }}
+                    onClick={handleProgressClick}
+                    onTouchStart={handleProgressClick}
                 >
                     <div
                         className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light pointer-events-none"
