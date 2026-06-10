@@ -46,11 +46,11 @@ export const AudioPlayer = ({
                 }}
             >
                 <div
-                    className="absolute left-0 top-0 h-full rounded-full bg-[#A68B5C] transition-all"
+                    className="absolute left-0 top-0 h-full rounded-full bg-[#A68B5C] pointer-events-none"
                     style={{ width: `${progressPercent}%` }}
                 />
                 <div
-                    className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#A68B5C] shadow-sm opacity-0 transition-opacity group-hover:opacity-100"
+                    className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#A68B5C] shadow-sm opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none"
                     style={{ left: `calc(${progressPercent}% - 4px)` }}
                 />
             </div>

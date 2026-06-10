@@ -126,11 +126,11 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
                     }}
                 >
                     <div
-                        className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light transition-all"
+                        className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light pointer-events-none"
                         style={{ width: `${albumProgress}%` }}
                     />
                     <div
-                        className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gold-primary dark:bg-gold-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gold-primary dark:bg-gold-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
                         style={{ left: `calc(${albumProgress}% - 7px)` }}
                     />
                 </div>
