@@ -38,12 +38,15 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
     return (
         <section className="overflow-hidden rounded-[2.1rem] border border-gold-border/14 bg-[linear-gradient(180deg,rgba(255,252,246,0.94)_0%,rgba(252,248,239,0.9)_100%)] shadow-[0_24px_64px_-46px_rgba(0,0,0,0.45)] dark:border-dark-border/55 dark:bg-[linear-gradient(180deg,rgba(24,20,17,0.98)_0%,rgba(17,15,13,0.95)_100%)]">
             <div className="grid gap-5 p-4 sm:p-5 lg:grid-cols-[minmax(240px,320px)_1fr] lg:gap-6 lg:p-6">
-                <div className="overflow-hidden rounded-[1.7rem] border border-gold-border/12 bg-white/65 shadow-sm dark:border-dark-border/50 dark:bg-white/5">
+                <div className="flex flex-col gap-4">
                     <img
                         src={album.coverImage}
                         alt={`${album.title} cover`}
-                        className="aspect-square w-full object-cover"
+                        className="aspect-square w-full object-cover rounded-[1.5rem] shadow-[0_12px_32px_-12px_rgba(0,0,0,0.4)] dark:shadow-[0_12px_32px_-12px_rgba(0,0,0,0.7)]"
                     />
+                    <div className="hidden lg:block">
+                        <AlbumPlayer album={album} track={selectedTrack} />
+                    </div>
                 </div>
 
                 <div className="flex min-w-0 flex-col gap-4">
@@ -72,7 +75,7 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                         </div>
                     </div>
 
-                    <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.85fr)]">
+                    <div className="mt-2">
                         <div className="border-0 bg-transparent p-1">
                             <div className="mb-4 flex items-center gap-2 px-1">
                                 <Music2 className="h-4 w-4 text-gold-primary/70 dark:text-gold-light/70" />
@@ -118,7 +121,8 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                             </div>
                         </div>
 
-                        <div className="hidden md:block md:space-y-4">
+                        {/* 모바일 화면에서는 스티키 바와 별개로 상세 뷰 하단에도 플레이어를 내장 */}
+                        <div className="mt-6 lg:hidden">
                             <AlbumPlayer album={album} track={selectedTrack} />
                         </div>
                     </div>

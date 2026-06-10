@@ -24,11 +24,16 @@ interface AudioContextType {
     sutraProgress: number;
     sutraPlaybackError: string | null;
 
+    albumVolume: number;
+    albumPlaybackRate: number;
+
     // 앨범 관련 액션
     playAlbumTrack: (album: AlbumData, track: AlbumTrack) => Promise<void>;
     pauseAlbumTrack: () => void;
     toggleAlbumPlay: () => Promise<void>;
     seekAlbum: (percentage: number) => void;
+    setAlbumVolume: (vol: number) => void;
+    setAlbumPlaybackRate: (rate: number) => void;
     
     // 경전 관련 액션
     playSutraAudio: (url: string) => Promise<void>;
@@ -55,6 +60,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const [albumDuration, setAlbumDuration] = useState(0);
     const [albumPlaybackError, setAlbumPlaybackError] = useState<string | null>(null);
     const [trackEndedCount, setTrackEndedCount] = useState(0);
+    const [albumVolume, setAlbumVolumeState] = useState(1.0);
+    const [albumPlaybackRate, setAlbumPlaybackRateState] = useState(1.0);
 
     // 경전 재생 상태
     const [sutraAudioUrl, setSutraAudioUrl] = useState<string | null>(null);
@@ -129,6 +136,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
             setCurrentTrack(track);
             audio.src = track.url;
             audio.load();
+            audio.playbackRate = albumPlaybackRate; // 기존 설정된 배속 반영
+            audio.volume = albumVolume; // 기존 설정된 볼륨 반영
         }
 
         try {
@@ -158,6 +167,25 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
             await playAlbumTrack(currentAlbum, currentTrack);
         }
     }, [currentAlbum, currentTrack, isAlbumPlaying, playAlbumTrack, pauseAlbumTrack]);
+
+    // 앨범 볼륨 조절 함수
+    const setAlbumVolume = useCallback((vol: number) => {
+        const audio = albumAudioRef.current;
+        if (audio) {
+            const clamped = Math.max(0, Math.min(vol, 1));
+            audio.volume = clamped;
+            setAlbumVolumeState(clamped);
+        }
+    }, []);
+
+    // 앨범 배속 조절 함수
+    const setAlbumPlaybackRate = useCallback((rate: number) => {
+        const audio = albumAudioRef.current;
+        if (audio) {
+            audio.playbackRate = rate;
+            setAlbumPlaybackRateState(rate);
+        }
+    }, []);
 
     // 앨범 탐색(Seek) 함수
     const seekAlbum = useCallback((percentage: number) => {
@@ -254,6 +282,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 albumProgress,
                 albumPlaybackError,
                 trackEndedCount,
+                albumVolume,
+                albumPlaybackRate,
                 sutraAudioUrl,
                 isSutraPlaying,
                 sutraCurrentTime,
@@ -264,6 +294,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 pauseAlbumTrack,
                 toggleAlbumPlay,
                 seekAlbum,
+                setAlbumVolume,
+                setAlbumPlaybackRate,
                 playSutraAudio,
                 pauseSutraAudio,
                 toggleSutraPlay,
