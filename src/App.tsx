@@ -269,6 +269,7 @@ const MainLayout = () => {
     const { chapterNum, verseNum } = useParams<{ chapterNum?: string; verseNum?: string }>();
     const { chapters } = useYogaData();
     const isVerseView = location.pathname.includes('/chapter/') && location.pathname.includes('/verse/');
+    const isAlbumPage = location.pathname === '/albums';
     const { isSidebarOpen, isDesktopSidebarOpen } = useUI();
 
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
@@ -315,10 +316,10 @@ const MainLayout = () => {
     return (
         <AppShell
             header={
-                isVerseView ? (
+                isVerseView || isAlbumPage ? (
                     <Header
                         title="Bardo-Thödol"
-                        showSidebarToggle
+                        showSidebarToggle={isVerseView}
                         showContentModeToggle
                         selectionControls={selectionControls}
                     />
