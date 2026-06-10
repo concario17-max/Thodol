@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useGlobalAudio } from '../../context/AudioContext';
 import { AudioPlayer } from '../verse/AudioPlayer';
-import { useAudio } from '../../hooks/useAudio';
 import type { AlbumData, AlbumTrack } from '../../data/albums';
+import { motion } from 'framer-motion';
 
 interface AlbumPlayerProps {
     album: AlbumData;
@@ -9,25 +9,24 @@ interface AlbumPlayerProps {
 }
 
 export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const {
-        isPlaying,
-        currentTime,
-        duration,
-        playbackError,
-        togglePlay,
-        handleTimeUpdate,
-        handleLoadedMetadata,
-        handleAudioEnded,
-        reset,
-        seek,
-        formatTime,
-        progressPercent,
-    } = useAudio(audioRef);
+        isAlbumPlaying,
+        albumCurrentTime,
+        albumDuration,
+        albumPlaybackError,
+        toggleAlbumPlay,
+        seekAlbum,
+        albumProgress,
+    } = useGlobalAudio();
 
-    useEffect(() => {
-        reset();
-    }, [reset, track?.id, track?.url]);
+    const formatTime = (time: number) => {
+        if (Number.isNaN(time)) {
+            return '0:00';
+        }
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
 
     if (!track) {
         return (
@@ -39,39 +38,54 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
 
     return (
         <section className="rounded-[1.6rem] border border-gold-border/12 bg-white/62 px-4 py-4 shadow-[0_14px_34px_-30px_rgba(0,0,0,0.35)] dark:border-dark-border/55 dark:bg-[#111]/40">
-            <div className="mb-3 flex items-start justify-between gap-3 border-b border-gold-border/8 pb-3 dark:border-dark-border/35">
-                <div className="min-w-0">
+            <div className="mb-4 flex items-center gap-4 border-b border-gold-border/8 pb-3 dark:border-dark-border/35">
+                {/* 회전하는 LP 커버 이미지 */}
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-gold-border/15 shadow-md dark:border-dark-border/40">
+                    {isAlbumPlaying ? (
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
+                            className="h-full w-full"
+                        >
+                            <img
+                                src={album.coverImage}
+                                alt="Vinyl cover"
+                                className="h-full w-full object-cover"
+                            />
+                        </motion.div>
+                    ) : (
+                        <img
+                            src={album.coverImage}
+                            alt="Vinyl cover"
+                            className="h-full w-full object-cover"
+                        />
+                    )}
+                    {/* 중심 홀 디자인 */}
+                    <div className="absolute inset-0 m-auto h-4 w-4 rounded-full border border-white/20 bg-[#111]/90 shadow-inner" />
+                </div>
+
+                <div className="min-w-0 flex-1">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-primary/70 dark:text-gold-light/70">
                         현재 재생
                     </p>
-                    <h3 className="mt-2 line-clamp-2 font-display text-lg text-text-primary dark:text-dark-text-primary">
+                    <h3 className="mt-1 line-clamp-1 font-display text-base text-text-primary dark:text-dark-text-primary">
                         {track.title}
                     </h3>
-                    <p className="mt-1 text-sm text-text-secondary dark:text-dark-text-secondary">
+                    <p className="mt-0.5 truncate text-xs text-text-secondary dark:text-dark-text-secondary">
                         {album.title}
                     </p>
                 </div>
             </div>
 
-            <audio
-                ref={audioRef}
-                src={track.url}
-                preload="metadata"
-                onTimeUpdate={handleTimeUpdate}
-                onLoadedMetadata={handleLoadedMetadata}
-                onEnded={handleAudioEnded}
-                className="hidden"
-            />
-
             <AudioPlayer
-                isPlaying={isPlaying}
-                togglePlay={togglePlay}
-                currentTime={currentTime}
-                duration={duration}
-                progressPercent={progressPercent}
+                isPlaying={isAlbumPlaying}
+                togglePlay={toggleAlbumPlay}
+                currentTime={albumCurrentTime}
+                duration={albumDuration}
+                progressPercent={albumProgress}
                 formatTime={formatTime}
-                onSeek={seek}
-                playbackError={playbackError}
+                onSeek={seekAlbum}
+                playbackError={albumPlaybackError}
             />
         </section>
     );

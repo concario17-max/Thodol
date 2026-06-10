@@ -3,6 +3,8 @@ import { Loader2, LibraryBig } from 'lucide-react';
 import { AlbumSelector } from '../components/album/AlbumSelector';
 import { AlbumDetail } from '../components/album/AlbumDetail';
 import { ALBUMS_ROUTE_PATH, loadAlbums, type AlbumData } from '../data/albums';
+import { useGlobalAudio } from '../context/AudioContext';
+import { StickyBottomPlayer } from '../components/album/StickyBottomPlayer';
 
 const loadingState = (
     <div className="flex min-h-[60vh] items-center justify-center">
@@ -31,6 +33,13 @@ const AlbumView = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const {
+        playAlbumTrack,
+        currentAlbum,
+        currentTrack,
+        trackEndedCount,
+    } = useGlobalAudio();
+
     useEffect(() => {
         let active = true;
 
@@ -44,7 +53,14 @@ const AlbumView = () => {
                 }
 
                 setAlbums(nextAlbums);
-                setSelectedAlbumId((current) => current ?? nextAlbums[0]?.id ?? null);
+                
+                // 만약 전역 재생 세션이 있으면 그 정보를 쓰고, 없으면 첫 앨범 선택
+                if (currentAlbum && currentTrack) {
+                    setSelectedAlbumId(currentAlbum.id);
+                    setSelectedTrackId(currentTrack.id);
+                } else {
+                    setSelectedAlbumId(nextAlbums[0]?.id ?? null);
+                }
                 setError(null);
             } catch (loadError) {
                 if (!active) {
@@ -64,7 +80,7 @@ const AlbumView = () => {
         return () => {
             active = false;
         };
-    }, []);
+    }, [currentAlbum, currentTrack]);
 
     const selectedAlbum = useMemo(
         () => albums.find((album) => album.id === selectedAlbumId) ?? albums[0] ?? null,
@@ -78,10 +94,33 @@ const AlbumView = () => {
         }
 
         setSelectedTrackId((current) => {
+            // 전역 세션 상태와 일치하면 그대로 유지
+            if (currentTrack && currentAlbum?.id === selectedAlbum.id) {
+                return currentTrack.id;
+            }
             const stillExists = selectedAlbum.tracks.some((track) => track.id === current);
             return stillExists ? current : selectedAlbum.tracks[0]?.id ?? null;
         });
-    }, [selectedAlbum]);
+    }, [selectedAlbum, currentAlbum, currentTrack]);
+
+    // 자동 다음 곡 재생 감지 효과
+    useEffect(() => {
+        if (trackEndedCount === 0 || !selectedAlbum || !selectedTrackId) return;
+
+        const tracks = selectedAlbum.tracks;
+        const currentIndex = tracks.findIndex((t) => t.id === selectedTrackId);
+
+        if (currentIndex !== -1 && currentIndex < tracks.length - 1) {
+            const nextTrack = tracks[currentIndex + 1];
+            setSelectedTrackId(nextTrack.id);
+            void playAlbumTrack(selectedAlbum, nextTrack);
+        } else if (currentIndex === tracks.length - 1) {
+            const firstTrack = tracks[0];
+            if (firstTrack) {
+                setSelectedTrackId(firstTrack.id);
+            }
+        }
+    }, [trackEndedCount]);
 
     if (loading) {
         return loadingState;
@@ -140,10 +179,17 @@ const AlbumView = () => {
                     <AlbumDetail
                         album={selectedAlbum}
                         selectedTrackId={selectedTrackId}
-                        onSelectTrack={(trackId) => setSelectedTrackId(trackId)}
+                        onSelectTrack={(trackId) => {
+                            setSelectedTrackId(trackId);
+                            const trackObj = selectedAlbum.tracks.find((t) => t.id === trackId);
+                            if (trackObj) {
+                                void playAlbumTrack(selectedAlbum, trackObj);
+                            }
+                        }}
                     />
                 </main>
             </div>
+            <StickyBottomPlayer />
         </div>
     );
 };

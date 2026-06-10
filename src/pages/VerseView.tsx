@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useState, useCallback, type ReactNode } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 import { useYogaData } from '../hooks/useYogaData';
@@ -9,7 +9,7 @@ import { useSutraNavigation } from '../hooks/useSutraNavigation';
 import { useUI } from '../context/UIContext';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { CommentaryMarkdown } from '../components/commentary/CommentaryMarkdown';
-import { useAudio } from '../hooks/useAudio';
+import { useGlobalAudio } from '../context/AudioContext';
 import { MobileVerseGuide } from '../components/verse/MobileVerseGuide';
 
 const extractCommentaryTitle = (content?: string | null) => {
@@ -235,29 +235,44 @@ const VerseView = () => {
     const currentChapterLength = currentChapter?.sutras.length ?? 0;
     const isFirstVerse = currentChapterNumber !== null && currentChapterNumber === firstChapterNumber && currentIndex === 0;
     const isLastVerse = currentChapterNumber !== null && currentChapterNumber === lastChapterNumber && currentIndex === currentChapterLength - 1;
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const {
-        isPlaying,
-        currentTime,
-        duration,
-        playbackError,
-        togglePlay,
-        handleTimeUpdate,
-        handleLoadedMetadata,
-        handleAudioEnded,
-        reset,
-        seek,
-        formatTime,
-        progressPercent,
-    } = useAudio(audioRef);
+        playSutraAudio,
+        pauseSutraAudio,
+        isSutraPlaying,
+        sutraCurrentTime,
+        sutraDuration,
+        sutraProgress,
+        sutraPlaybackError,
+        resetSutraAudio,
+        seekSutra,
+    } = useGlobalAudio();
+
+    const handleToggleSutra = useCallback(async () => {
+        if (!verseData?.audioUrl) return;
+        if (isSutraPlaying) {
+            pauseSutraAudio();
+        } else {
+            await playSutraAudio(verseData.audioUrl);
+        }
+    }, [verseData?.audioUrl, isSutraPlaying, playSutraAudio, pauseSutraAudio]);
+
+    const formatTime = useCallback((time: number) => {
+        if (Number.isNaN(time)) {
+            return '0:00';
+        }
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }, []);
+
     const shouldShowPronunciationAudio =
         verseData?.sourceKind === 'prayer' &&
         ['prayer-3', 'prayer-4', 'prayer-5'].includes(verseData.sourceSectionId ?? '') &&
         Boolean(verseData?.audioUrl);
 
     useEffect(() => {
-        reset();
-    }, [reset, verseData?.audioUrl, verseData?.id]);
+        resetSutraAudio();
+    }, [verseData?.id, resetSutraAudio]);
 
     if (error) {
         return (
@@ -306,24 +321,15 @@ const VerseView = () => {
             tone: 'pronunciation' as const,
             trailing: (
                 <div className="space-y-4">
-                    <audio
-                        ref={audioRef}
-                        src={verseData.audioUrl ?? undefined}
-                        preload="metadata"
-                        onTimeUpdate={handleTimeUpdate}
-                        onLoadedMetadata={handleLoadedMetadata}
-                        onEnded={handleAudioEnded}
-                        className="hidden"
-                    />
                     <AudioPlayer
-                        isPlaying={isPlaying}
-                        togglePlay={togglePlay}
-                        currentTime={currentTime}
-                        duration={duration}
-                        progressPercent={progressPercent}
+                        isPlaying={isSutraPlaying}
+                        togglePlay={handleToggleSutra}
+                        currentTime={sutraCurrentTime}
+                        duration={sutraDuration}
+                        progressPercent={sutraProgress}
                         formatTime={formatTime}
-                        onSeek={seek}
-                        playbackError={playbackError}
+                        onSeek={seekSutra}
+                        playbackError={sutraPlaybackError}
                     />
                     <div className="h-px w-full bg-gradient-to-r from-gold-border/35 via-gold-border/15 to-transparent dark:from-dark-border/45 dark:via-dark-border/20" />
                 </div>

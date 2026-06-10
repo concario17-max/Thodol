@@ -23,7 +23,7 @@ export const AlbumSelector = ({ albums, selectedAlbumId, onSelectAlbum }: AlbumS
             </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 scrollbar-thin scrollbar-thumb-gold-primary/20 md:grid md:gap-4 md:grid-cols-2 md:overflow-x-visible md:pb-0 xl:grid-cols-3">
             {albums.map((album) => {
                 const isSelected = album.id === selectedAlbumId;
 
@@ -33,7 +33,7 @@ export const AlbumSelector = ({ albums, selectedAlbumId, onSelectAlbum }: AlbumS
                         type="button"
                         onClick={() => onSelectAlbum(album.id)}
                         aria-pressed={isSelected}
-                        className={`group flex h-full flex-col overflow-hidden rounded-[1.8rem] border p-3 text-left transition-all duration-300 ${
+                        className={`group flex h-full flex-col overflow-hidden rounded-[1.8rem] border p-3 text-left transition-all duration-300 shrink-0 w-[290px] snap-start md:shrink md:w-auto ${
                             isSelected
                                 ? 'border-gold-primary/35 bg-white/88 shadow-[0_18px_38px_-24px_rgba(165,139,92,0.5)] dark:border-gold-light/30 dark:bg-[#181512]/88'
                                 : 'border-gold-border/14 bg-white/68 hover:-translate-y-0.5 hover:border-gold-primary/22 hover:bg-white/82 dark:border-dark-border/60 dark:bg-[#151311]/72 dark:hover:bg-[#191714]/88'

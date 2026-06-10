@@ -1,6 +1,8 @@
 import { AlbumPlayer } from './AlbumPlayer';
 import type { AlbumData } from '../../data/albums';
 import { Headphones, Music2, Disc3 } from 'lucide-react';
+import { useGlobalAudio } from '../../context/AudioContext';
+import { motion } from 'framer-motion';
 
 interface AlbumDetailProps {
     album: AlbumData;
@@ -8,8 +10,30 @@ interface AlbumDetailProps {
     onSelectTrack: (trackId: string) => void;
 }
 
+const PlayingWaveform = () => (
+    <div className="flex items-end gap-[2.5px] h-3.5 w-3.5 shrink-0 justify-center">
+        {[0, 1, 2].map((i) => (
+            <motion.div
+                key={i}
+                animate={{
+                    height: [4, 14, 4],
+                }}
+                transition={{
+                    duration: 0.85,
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    delay: i * 0.15,
+                    ease: 'easeInOut',
+                }}
+                className="w-[2.5px] bg-gold-primary dark:bg-gold-light rounded-full"
+            />
+        ))}
+    </div>
+);
+
 export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDetailProps) => {
     const selectedTrack = album.tracks.find((track) => track.id === selectedTrackId) ?? album.tracks[0] ?? null;
+    const { isAlbumPlaying, currentTrack } = useGlobalAudio();
 
     return (
         <section className="overflow-hidden rounded-[2.1rem] border border-gold-border/14 bg-[linear-gradient(180deg,rgba(255,252,246,0.94)_0%,rgba(252,248,239,0.9)_100%)] shadow-[0_24px_64px_-46px_rgba(0,0,0,0.45)] dark:border-dark-border/55 dark:bg-[linear-gradient(180deg,rgba(24,20,17,0.98)_0%,rgba(17,15,13,0.95)_100%)]">
@@ -60,6 +84,7 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                             <div className="space-y-2">
                                 {album.tracks.map((track, index) => {
                                     const isSelected = track.id === selectedTrack?.id;
+                                    const isCurrentlyPlaying = isSelected && isAlbumPlaying && currentTrack?.id === track.id;
 
                                     return (
                                         <button
@@ -73,14 +98,18 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                                             }`}
                                         >
                                             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold-border/12 bg-white/78 text-[11px] font-semibold text-gold-primary dark:border-dark-border/45 dark:bg-white/5 dark:text-gold-light">
-                                                {String(index + 1).padStart(2, '0')}
+                                                {isCurrentlyPlaying ? (
+                                                    <PlayingWaveform />
+                                                ) : (
+                                                    String(index + 1).padStart(2, '0')
+                                                )}
                                             </span>
                                             <span className="min-w-0 flex-1">
                                                 <span className="block truncate text-sm font-medium text-text-primary dark:text-dark-text-primary">
                                                     {track.title}
                                                 </span>
                                                 <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.24em] text-text-secondary/55 dark:text-dark-text-secondary/55">
-                                                    {isSelected ? '선택됨' : '눌러서 재생'}
+                                                    {isCurrentlyPlaying ? '재생 중' : isSelected ? '일시 정지됨' : '눌러서 재생'}
                                                 </span>
                                             </span>
                                         </button>
@@ -89,9 +118,9 @@ export const AlbumDetail = ({ album, selectedTrackId, onSelectTrack }: AlbumDeta
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="hidden md:block md:space-y-4">
                             <AlbumPlayer album={album} track={selectedTrack} />
-                            <div className="rounded-[1.5rem] border border-gold-border/10 bg-white/58 p-4 text-sm leading-relaxed text-text-secondary dark:border-dark-border/50 dark:bg-white/5 dark:text-dark-text-secondary">
+                            <div className="rounded-[1.5rem] border border-gold-border/10 bg-white/58 p-4 text-sm leading-relaxed text-text-secondary dark:border-dark-border/55 dark:bg-white/5 dark:text-dark-text-secondary">
                                 트랙을 바꾸면 플레이어가 바로 새 소스를 읽는다. 재생 버튼은 기존 오디오 플레이어 스타일을 그대로 쓴다.
                             </div>
                         </div>
