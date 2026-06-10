@@ -39,20 +39,7 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const handleProgressClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-        if (!isThisTrackActive) return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        
-        let clientX = 0;
-        if ('touches' in e) {
-            clientX = e.touches[0]?.clientX || e.changedTouches[0]?.clientX || 0;
-        } else {
-            clientX = e.clientX;
-        }
-
-        const x = clientX - rect.left;
-        seekAlbum(x / rect.width);
-    };
+    // 네이티브 range input을 오버레이 방식으로 도입했으므로 기존 클릭 처리 함수는 불필요하여 제거함
 
     if (!track) {
         return (
@@ -135,18 +122,32 @@ export const AlbumPlayer = ({ album, track }: AlbumPlayerProps) => {
 
             {/* 재생 프로그레스 슬라이더 */}
             <div className="mt-4 flex flex-col gap-1.5">
-                <div
-                    className="group relative h-1.5 w-full cursor-pointer rounded-full bg-gold-border/30 dark:bg-dark-border"
-                    onClick={handleProgressClick}
-                    onTouchStart={handleProgressClick}
-                >
+                <div className="group relative h-1.5 w-full rounded-full bg-gold-border/30 dark:bg-dark-border">
+                    {/* 재생 진행바 시각 요소 */}
                     <div
                         className="absolute left-0 top-0 h-full rounded-full bg-gold-primary dark:bg-gold-light pointer-events-none"
                         style={{ width: `${isThisTrackActive ? albumProgress : 0}%` }}
                     />
+                    {/* 진행바 핸들 조절기 시각 요소 */}
                     <div
                         className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-gold-primary dark:bg-gold-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
                         style={{ left: `calc(${isThisTrackActive ? albumProgress : 0}% - 7px)` }}
+                    />
+                    {/* 네이티브 range input 투명 오버레이: 웹접근성 및 완벽한 드래그/클릭 터치 감도 보장 */}
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value={isThisTrackActive ? albumProgress : 0}
+                        onChange={(e) => {
+                            if (!isThisTrackActive) return;
+                            const percentage = parseFloat(e.target.value) / 100;
+                            seekAlbum(percentage);
+                        }}
+                        disabled={!isThisTrackActive}
+                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
+                        aria-label="재생 진행률 조절"
                     />
                 </div>
 

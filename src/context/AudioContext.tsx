@@ -48,6 +48,7 @@ const AudioContext = createContext<AudioContextType | undefined>(undefined);
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const albumAudioRef = useRef<HTMLAudioElement | null>(null);
     const sutraAudioRef = useRef<HTMLAudioElement | null>(null);
+    const lastAlbumSeekTimeRef = useRef<number>(0);
 
     // 최신 오디오 상태를 stale closure 없이 관리하기 위한 Refs
     const currentAlbumRef = useRef<AlbumData | null>(null);
@@ -107,6 +108,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     // 앨범 이벤트 리스너 세팅 함수
     const setupAlbumEventListeners = (audio: HTMLAudioElement) => {
         audio.ontimeupdate = () => {
+            const now = Date.now();
+            // 최근 500ms 이내에 탐색이 일어났으면 브라우저의 낡은 타임 업데이트 프레임을 무시함
+            if (now - lastAlbumSeekTimeRef.current < 500) {
+                return;
+            }
             if (!audio.seeking) {
                 setAlbumCurrentTime(audio.currentTime);
             }
@@ -238,6 +244,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         const audio = albumAudioRef.current;
         if (audio && albumDuration > 0) {
             const nextTime = Math.max(0, Math.min(percentage, 1)) * albumDuration;
+            lastAlbumSeekTimeRef.current = Date.now(); // 시간 락 시동
             audio.currentTime = nextTime;
             setAlbumCurrentTime(nextTime);
         }

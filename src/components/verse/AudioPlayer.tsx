@@ -21,19 +21,7 @@ export const AudioPlayer = ({
     onSeek,
     playbackError,
 }: AudioPlayerProps) => {
-    const handleProgressClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        
-        let clientX = 0;
-        if ('touches' in e) {
-            clientX = e.touches[0]?.clientX || e.changedTouches[0]?.clientX || 0;
-        } else {
-            clientX = e.clientX;
-        }
-
-        const x = clientX - rect.left;
-        onSeek(x / rect.width);
-    };
+    // 네이티브 range input을 오버레이 방식으로 도입했으므로 기존 클릭 처리 함수는 불필요하여 제거함
 
     return (
         <div className="mx-auto mb-0 flex w-full flex-col items-center gap-2 px-0">
@@ -52,18 +40,30 @@ export const AudioPlayer = ({
                     {formatTime(currentTime)}
                 </span>
 
-                <div
-                    className="group relative mx-2 h-2 flex-1 cursor-pointer rounded-full bg-gold-border/30 dark:bg-dark-border"
-                    onClick={handleProgressClick}
-                    onTouchStart={handleProgressClick}
-                >
+                <div className="group relative mx-2 h-2 flex-1 rounded-full bg-gold-border/30 dark:bg-dark-border">
+                    {/* 재생 진행바 시각 요소 */}
                     <div
                         className="absolute left-0 top-0 h-full rounded-full bg-[#A68B5C] pointer-events-none"
                         style={{ width: `${progressPercent}%` }}
                     />
+                    {/* 진행바 핸들 조절기 시각 요소 */}
                     <div
                         className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#A68B5C] shadow-sm opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none"
                         style={{ left: `calc(${progressPercent}% - 4px)` }}
+                    />
+                    {/* 네이티브 range input 투명 오버레이: 웹접근성 및 완벽한 드래그/클릭 터치 감도 보장 */}
+                    <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value={progressPercent}
+                        onChange={(e) => {
+                            const percentage = parseFloat(e.target.value) / 100;
+                            onSeek(percentage);
+                        }}
+                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0 z-10"
+                        aria-label="경전 재생 진행률 조절"
                     />
                 </div>
 
