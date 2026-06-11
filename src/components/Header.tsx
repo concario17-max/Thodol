@@ -99,14 +99,12 @@ const Header = ({
                     </Link>
                 </div>
 
-                {/* 모바일 서브 헤더 라인: 독립된 알약 형태로 노출 */}
+                {/* 모바일 서브 헤더 라인: 피커와 모드 선택을 우측에 나란히 배치 */}
                 {selectionControls || showContentModeToggle ? (
-                    <div className="mt-2 flex w-full items-center justify-between border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
-                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : <div />}
-                        <div className="flex items-center gap-2">
-                            {rightContent}
-                            {renderVerseModeToggle()}
-                        </div>
+                    <div className="mt-2 flex w-full items-center justify-end gap-2 border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
+                        {rightContent}
+                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
+                        {renderVerseModeToggle()}
                     </div>
                 ) : null}
             </div>
@@ -130,20 +128,11 @@ const Header = ({
                     </Link>
                 </div>
 
-                {/* 2열: 콘텐츠 영역 위의 헤더 공간 (그리드 정렬선 유지) */}
-                <div className="relative flex h-full min-w-0 items-center justify-center px-5">
-                    {/* 장/절 선택 피커 (콘텐츠 영역 중앙에 대칭 배치) */}
-                    {selectionControls ? (
-                        <div className="min-w-0 shrink-0">
-                            {selectionControls}
-                        </div>
-                    ) : null}
-
-                    {/* 모드 선택 및 테마는 우측 끝에 absolute 배치 */}
-                    <div className="absolute right-5 flex items-center gap-2">
-                        {rightContent}
-                        {renderVerseModeToggle()}
-                    </div>
+                {/* 2열: 콘텐츠 영역 위의 헤더 공간 (우측에 나란히 정렬) */}
+                <div className="flex min-w-0 items-center justify-end gap-2.5 px-5">
+                    {rightContent}
+                    {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
+                    {renderVerseModeToggle()}
                 </div>
             </div>
         </header>
