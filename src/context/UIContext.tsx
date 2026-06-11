@@ -30,9 +30,25 @@ interface UIProviderProps {
 
 export const UIProvider = ({ children }: UIProviderProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-    const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>('commentary');
+    const [activeVerseContentMode, setActiveVerseContentMode] = useState<VerseContentMode>(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem('yoga-verse-content-mode');
+            if (saved === 'body' || saved === 'commentary' || saved === 'album') {
+                return saved;
+            }
+        }
+        return 'body';
+    });
     const [lastVersePath, setLastVersePath] = useState<string | null>(null);
-    const [lastNonAlbumVerseContentMode, setLastNonAlbumVerseContentMode] = useState<Exclude<VerseContentMode, 'album'>>('commentary');
+    const [lastNonAlbumVerseContentMode, setLastNonAlbumVerseContentMode] = useState<Exclude<VerseContentMode, 'album'>>(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem('yoga-verse-content-mode');
+            if (saved === 'body' || saved === 'commentary') {
+                return saved;
+            }
+        }
+        return 'body';
+    });
     const [activeRightPanel, setActiveRightPanel] = useState<RightPanelType>(null);
 
     const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState<boolean>(() => {
@@ -103,6 +119,9 @@ export const UIProvider = ({ children }: UIProviderProps) => {
     useEffect(() => {
         if (activeVerseContentMode !== 'album') {
             setLastNonAlbumVerseContentMode(activeVerseContentMode);
+        }
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('yoga-verse-content-mode', activeVerseContentMode);
         }
     }, [activeVerseContentMode]);
 

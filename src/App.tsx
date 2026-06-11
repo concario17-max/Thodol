@@ -1,4 +1,4 @@
-import { CSSProperties, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ChevronDown } from 'lucide-react';
@@ -12,6 +12,7 @@ import { getDesktopVerseColumns } from './components/ui/desktopVerseLayout';
 import { useYogaData } from './hooks/useYogaData';
 import VerseView from './pages/VerseView';
 import AlbumView from './pages/AlbumView';
+import { YogaChapter } from './types';
 
 const DefaultVerseRedirect = () => {
     const { chapters, loading } = useYogaData();
@@ -32,45 +33,32 @@ const DefaultVerseRedirect = () => {
     return <Navigate to={`/chapter/${chapterNum}/verse/${verseNum}`} replace />;
 };
 
-interface ContextOption {
-    value: string;
-    label: string;
-}
 
-const isAppendixChapter = (chapter: { chapter: number; meta: { name_korean: string; name_english: string } }) =>
-    chapter.chapter === 0 || chapter.meta.name_korean.startsWith('부록') || chapter.meta.name_english.startsWith('Appendix');
 
-const getChapterOptionLabel = (chapter: { chapter: number; meta: { name_korean: string; name_english: string } }) =>
-    isAppendixChapter(chapter) ? chapter.meta.name_korean : `${chapter.chapter}. ${chapter.meta.name_korean}`;
 
-const getVerseOptionLabel = (verseNumber: string, subtitle?: string) => {
-    const trimmedSubtitle = subtitle?.trim();
-    return trimmedSubtitle ? `${verseNumber}. ${trimmedSubtitle}` : verseNumber;
-};
+
+
 
 interface ContextPillPickerProps {
     chapterNum?: string;
     verseNum?: string;
-    chapterOptions: ContextOption[];
-    verseOptionsByChapter: Record<string, ContextOption[]>;
+    chapters: YogaChapter[];
     onCommitSelection: (chapter: string, verse: string) => void;
 }
 
 const ContextPillPicker = ({
     chapterNum,
     verseNum,
-    chapterOptions,
-    verseOptionsByChapter,
+    chapters,
     onCommitSelection,
 }: ContextPillPickerProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [draftChapterNum, setDraftChapterNum] = useState(chapterNum ?? '');
-    const [draftVerseNum, setDraftVerseNum] = useState(verseNum ?? '');
+    const [expandedChapter, setExpandedChapter] = useState<number | null>(
+        chapterNum ? Number.parseInt(chapterNum, 10) : null
+    );
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
-    const chapterSelectRef = useRef<HTMLSelectElement>(null);
-    const verseSelectRef = useRef<HTMLSelectElement>(null);
     const [panelStyle, setPanelStyle] = useState<CSSProperties | null>(null);
 
     useEffect(() => {
@@ -78,11 +66,10 @@ const ContextPillPicker = ({
     }, [chapterNum, verseNum]);
 
     useEffect(() => {
-        if (!isOpen) {
-            setDraftChapterNum(chapterNum ?? '');
-            setDraftVerseNum(verseNum ?? '');
+        if (isOpen && chapterNum) {
+            setExpandedChapter(Number.parseInt(chapterNum, 10));
         }
-    }, [chapterNum, isOpen, verseNum]);
+    }, [isOpen, chapterNum]);
 
     useLayoutEffect(() => {
         if (!isOpen || !triggerRef.current) {
@@ -95,8 +82,8 @@ const ContextPillPicker = ({
                 return;
             }
 
-            const panelWidth = Math.min(352, window.innerWidth - 16);
-            const left = Math.min(Math.max(rect.left, 8), window.innerWidth - panelWidth - 8);
+            const panelWidth = Math.min(380, window.innerWidth - 24);
+            const left = Math.min(Math.max(rect.left, 12), window.innerWidth - panelWidth - 12);
             const top = rect.bottom + 8;
 
             setPanelStyle({
@@ -127,9 +114,7 @@ const ContextPillPicker = ({
             if (
                 rootRef.current &&
                 !rootRef.current.contains(target) &&
-                !panelRef.current?.contains(target) &&
-                !chapterSelectRef.current?.contains(target) &&
-                !verseSelectRef.current?.contains(target)
+                !panelRef.current?.contains(target)
             ) {
                 setIsOpen(false);
             }
@@ -150,18 +135,13 @@ const ContextPillPicker = ({
         };
     }, [isOpen]);
 
-    useEffect(() => {
-        if (isOpen) {
-            chapterSelectRef.current?.focus();
-        }
-    }, [isOpen]);
-
-    const activeChapterLabel = chapterNum ? `${chapterNum}장` : '장 --';
-    const activeVerseLabel = verseNum ? `${verseNum}절` : '절 --';
-    const draftVerseOptions = draftChapterNum ? verseOptionsByChapter[draftChapterNum] ?? [] : [];
-
-    const selectClassName =
-        'h-11 w-full appearance-none rounded-[1rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.72)_100%)] px-3.5 pr-9 text-[11px] font-medium tracking-[0.08em] text-text-primary outline-none transition-all duration-300 hover:border-gold-border/25 hover:bg-white hover:shadow-[0_10px_28px_-22px_rgba(0,0,0,0.55)] focus:border-gold-primary/35 focus:bg-white focus:ring-1 focus:ring-gold-primary/15 dark:border-dark-border/60 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)] dark:text-dark-text-primary dark:hover:bg-white/8 dark:focus:border-gold-light/30 dark:focus:bg-white/10';
+    const activeChapter = chapters.find((c) => String(c.chapter) === chapterNum);
+    const activeChapterLabel = activeChapter
+        ? (activeChapter.chapter === 0 || activeChapter.meta.name_korean.startsWith('부록')
+            ? activeChapter.meta.name_korean
+            : `제${activeChapter.chapter}장 ${activeChapter.meta.name_korean}`)
+        : `제${chapterNum}장`;
+    const activeVerseLabel = verseNum ? `${verseNum}절` : '';
 
     const panel = isOpen ? (
         <div
@@ -169,75 +149,90 @@ const ContextPillPicker = ({
             aria-label="Context picker"
             ref={panelRef}
             style={panelStyle ?? undefined}
-            className="z-[60] rounded-[1.75rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,251,241,0.98)_0%,rgba(252,247,237,0.96)_48%,rgba(245,238,228,0.92)_100%)] p-3.5 shadow-[0_26px_72px_-34px_rgba(0,0,0,0.58)] backdrop-blur-2xl dark:border-dark-border/70 dark:bg-[linear-gradient(180deg,rgba(24,20,15,0.98)_0%,rgba(20,17,13,0.96)_48%,rgba(15,13,10,0.92)_100%)]"
+            className="z-[60] flex flex-col rounded-[1.75rem] border border-gold-border/12 bg-[linear-gradient(180deg,rgba(255,251,241,0.98)_0%,rgba(252,247,237,0.96)_48%,rgba(245,238,228,0.92)_100%)] p-4 shadow-[0_26px_72px_-34px_rgba(0,0,0,0.58)] backdrop-blur-2xl dark:border-dark-border/70 dark:bg-[linear-gradient(180deg,rgba(24,20,15,0.98)_0%,rgba(20,17,13,0.96)_48%,rgba(15,13,10,0.92)_100%)] select-none"
         >
-            <div className="mb-3 flex items-center gap-2.5 border-b border-gold-border/12 pb-2.5 dark:border-dark-border/55">
-                <span className="rounded-full border border-gold-primary/18 bg-gold-primary/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-gold-primary dark:border-gold-light/18 dark:bg-gold-light/10 dark:text-gold-light">
-                    Context
+            <div className="mb-3.5 flex items-center gap-3 border-b border-gold-border/12 pb-3 dark:border-dark-border/55">
+                <span className="rounded-full border border-gold-primary/18 bg-gold-primary/8 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.24em] text-gold-primary dark:border-gold-light/18 dark:bg-gold-light/8 dark:text-gold-light">
+                    CONTEXT
                 </span>
-                <span className="flex-1 text-[10px] font-medium tracking-[0.14em] text-text-secondary/75 dark:text-dark-text-secondary/70">
-                    {activeChapterLabel} / {activeVerseLabel}
+                <span className="flex-1 truncate text-[10px] font-medium tracking-[0.1em] text-text-secondary dark:text-dark-text-secondary">
+                    {activeChapterLabel} {activeVerseLabel ? `/ ${activeVerseLabel}` : ''}
                 </span>
             </div>
-            <div className="space-y-2.5">
-                <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
-                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
-                        장
-                    </span>
-                    <select
-                        ref={chapterSelectRef}
-                        value={draftChapterNum}
-                        onChange={(event) => {
-                            const nextChapter = event.target.value;
-                            if (nextChapter) {
-                                setDraftChapterNum(nextChapter);
-                                setDraftVerseNum('');
-                                window.requestAnimationFrame(() => verseSelectRef.current?.focus());
-                            }
-                        }}
-                        className={selectClassName}
-                    >
-                        <option value="" disabled>
-                            장 선택
-                        </option>
-                        {chapterOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
 
-                <label className="block rounded-[1.1rem] border border-gold-border/10 bg-white/48 p-2.5 transition-all duration-300 hover:border-gold-border/18 hover:bg-white/60 dark:border-dark-border/60 dark:bg-white/5 dark:hover:bg-white/8">
-                    <span className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.24em] text-text-secondary/78 dark:text-dark-text-secondary/78">
-                        절
-                    </span>
-                    <select
-                        ref={verseSelectRef}
-                        value={draftVerseNum}
-                        onChange={(event) => {
-                            const nextVerse = event.target.value;
-                            if (nextVerse && draftChapterNum) {
-                                onCommitSelection(draftChapterNum, nextVerse);
-                                setIsOpen(false);
-                            }
-                        }}
-                        className={selectClassName}
-                        disabled={!draftChapterNum}
-                    >
-                        <option value="" disabled>
-                            절 선택
-                        </option>
-                        {draftVerseOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+            <div className="max-h-[380px] overflow-y-auto space-y-2.5 pr-1.5 custom-scrollbar">
+                {chapters.map((ch) => {
+                    const isCurrentChapter = String(ch.chapter) === chapterNum;
+                    const isExpanded = expandedChapter === ch.chapter;
+                    
+                    const displayChapterTitle = ch.chapter === 0 || ch.meta.name_korean.startsWith('부록')
+                        ? ch.meta.name_korean
+                        : `제${ch.chapter}장 ${ch.meta.name_korean}`;
+
+                    return (
+                        <div
+                            key={ch.chapter}
+                            className={`rounded-[1.25rem] border transition-all duration-300 ${
+                                isExpanded
+                                    ? 'border-gold-border/25 bg-white/40 dark:border-dark-border/80 dark:bg-white/5 shadow-[0_8px_20px_-12px_rgba(166,139,92,0.15)]'
+                                    : 'border-gold-border/10 bg-white/12 hover:border-gold-border/20 hover:bg-white/25 dark:border-dark-border/40 dark:bg-white/2 dark:hover:bg-white/4'
+                            }`}
+                        >
+                            <button
+                                type="button"
+                                onClick={() => setExpandedChapter(isExpanded ? null : ch.chapter)}
+                                className="flex w-full items-center justify-between px-4 py-3 text-left outline-none cursor-pointer"
+                            >
+                                <span className={`text-[12px] font-semibold tracking-[0.02em] transition-colors duration-250 ${
+                                    isExpanded 
+                                        ? 'text-gold-primary dark:text-gold-light' 
+                                        : 'text-text-primary dark:text-dark-text-primary'
+                                }`}>
+                                    {displayChapterTitle}
+                                </span>
+                                <span className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                                    isCurrentChapter
+                                        ? 'bg-gold-primary dark:bg-gold-light scale-110 shadow-[0_0_8px_rgba(166,139,92,0.6)]'
+                                        : 'bg-gold-border/30 dark:bg-dark-border/40'
+                                }`} />
+                            </button>
+
+                            {isExpanded && (
+                                <div className="border-t border-gold-border/8 px-4 pb-4 pt-3.5 dark:border-dark-border/30">
+                                    <div className="grid grid-cols-6 gap-2">
+                                        {ch.sutras.map((sutra) => {
+                                            const vNum = String(sutra.verse ?? Number.parseInt(sutra.id.split('.')[1], 10));
+                                            const isCurrentVerse = isCurrentChapter && vNum === verseNum;
+                                            return (
+                                                <button
+                                                    key={sutra.id}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        onCommitSelection(String(ch.chapter), vNum);
+                                                        setIsOpen(false);
+                                                    }}
+                                                    className={`h-9 w-full rounded-full text-[10px] font-semibold transition-all duration-200 outline-none flex items-center justify-center cursor-pointer ${
+                                                        isCurrentVerse
+                                                            ? 'bg-gold-primary text-white shadow-[0_4px_12px_-4px_rgba(166,139,92,0.8)] dark:bg-gold-light dark:text-[#2a2116]'
+                                                            : 'bg-white/80 text-text-primary border border-gold-border/10 hover:border-gold-border/25 hover:bg-white hover:shadow-[0_4px_10px_-6px_rgba(0,0,0,0.15)] dark:bg-white/6 dark:text-dark-text-primary dark:border-dark-border/50 dark:hover:bg-white/10'
+                                                    }`}
+                                                >
+                                                    {vNum}절
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     ) : null;
+
+    const shortChapterLabel = chapterNum ? `${chapterNum}장` : '장 --';
+    const shortVerseLabel = verseNum ? `${verseNum}절` : '절 --';
 
     return (
         <div ref={rootRef} className="relative shrink-0">
@@ -247,12 +242,12 @@ const ContextPillPicker = ({
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-expanded={isOpen}
                 aria-haspopup="dialog"
-                className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 shadow-[0_10px_28px_-22px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-border/24 hover:bg-shell-main/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-shell-main-dark/88"
+                className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 shadow-[0_10px_28px_-22px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-border/24 hover:bg-shell-main/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-shell-main-dark/88 cursor-pointer"
             >
                 <span className="inline-flex items-center gap-2 rounded-[0.85rem] bg-transparent px-3 py-1 text-[9px] font-semibold tracking-[0.14em] text-gold-primary dark:text-gold-light">
-                    <span className="whitespace-nowrap">{activeChapterLabel}</span>
+                    <span className="whitespace-nowrap">{shortChapterLabel}</span>
                     <span className="text-gold-primary/35 dark:text-gold-light/35">|</span>
-                    <span className="whitespace-nowrap">{activeVerseLabel}</span>
+                    <span className="whitespace-nowrap">{shortVerseLabel}</span>
                     <ChevronDown className={`h-3.5 w-3.5 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                 </span>
             </button>
@@ -274,40 +269,14 @@ const MainLayout = () => {
     const desktopGridColumns = isVerseView ? getDesktopVerseColumns(isDesktopSidebarOpen, false) : undefined;
     const currentChapterNumber = isVerseView && chapterNum ? Number.parseInt(chapterNum, 10) : null;
 
-    const chapterOptions = useMemo(
-        () =>
-            chapters.map((chapter) => ({
-                value: String(chapter.chapter),
-                label: getChapterOptionLabel(chapter),
-            })),
-        [chapters],
-    );
 
-    const verseOptionsByChapter = useMemo(
-        () =>
-            chapters.reduce<Record<string, ContextOption[]>>((acc, chapter) => {
-                acc[String(chapter.chapter)] = chapter.sutras.map((sutra) => {
-                    const verseNumberText = String(sutra.verse ?? Number.parseInt(sutra.id.split('.')[1], 10));
-                    const verseSubtitle = sutra.sourceChapterName?.trim() || sutra.displaySubtitle?.trim() || sutra.chapterTitle?.trim() || sutra.displayTitle?.trim();
-
-                    return {
-                        value: verseNumberText,
-                        label: getVerseOptionLabel(verseNumberText, verseSubtitle),
-                    };
-                });
-
-                return acc;
-            }, {}),
-        [chapters],
-    );
 
     const selectionControls =
-        isVerseView && chapterOptions.length > 0 && currentChapterNumber !== null ? (
+        isVerseView && chapters.length > 0 && currentChapterNumber !== null ? (
             <ContextPillPicker
                 chapterNum={chapterNum}
                 verseNum={verseNum}
-                chapterOptions={chapterOptions}
-                verseOptionsByChapter={verseOptionsByChapter}
+                chapters={chapters}
                 onCommitSelection={(nextChapter, nextVerse) => navigate(`/chapter/${nextChapter}/verse/${nextVerse}`)}
             />
         ) : undefined;
