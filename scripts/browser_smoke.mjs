@@ -34,8 +34,10 @@ async function getVisibleMain(page) {
 }
 
 async function expectVisible(locator, message) {
-    if (!(await locator.first().isVisible())) {
-        throw new Error(message);
+    try {
+        await locator.first().waitFor({ state: 'visible', timeout: 5000 });
+    } catch (error) {
+        throw new Error(`${message} (Detail: ${error.message})`);
     }
 }
 
@@ -142,7 +144,7 @@ async function goFromHomeToVerse(page, chapterValue, verseValue) {
 
     await page.waitForURL(`**/chapter/${chapterValue}/verse/${verseValue}`);
     await pickerButton.waitFor({ state: 'visible' });
-    await page.getByText('영어 번역').first().waitFor({ state: 'visible' });
+    await page.getByText('Commentary').first().waitFor({ state: 'visible' });
 }
 
 async function selectVisibleHeaderChapter(page, chapterValue) {
@@ -179,30 +181,24 @@ async function waitForTranslationLabels(page) {
     await page.getByText('류시화', { exact: true }).first().waitFor({ state: 'visible' });
 }
 
-async function verifyVerseModePersistence(page) {
+async function verifyVerseModeToggling(page) {
+    // 최초 진입 시 무조건 commentary(학습만화) 모드가 활성화되어 있어야 함
+    await expectNoVisibleCommentaryPanel(page);
+    await expectCommentaryModeUi(page);
+
+    // body(심화) 모드로 전환 동작 확인
+    await toggleVerseMode(page, 1);
+    await waitForVerseMode(page, 1);
+
     await expectNoVisibleCommentaryPanel(page);
     await expectBodyModeUi(page);
 
+    // 다시 commentary(학습만화) 모드로 무결 복귀 동작 확인
     await toggleVerseMode(page, 0);
     await waitForVerseMode(page, 0);
 
     await expectNoVisibleCommentaryPanel(page);
     await expectCommentaryModeUi(page);
-
-    const storedMode = await page.evaluate(() => localStorage.getItem('yoga-verse-content-mode'));
-    if (storedMode !== 'commentary') {
-        throw new Error(`Expected localStorage to store commentary mode, found ${storedMode ?? 'null'}.`);
-    }
-
-    await page.reload({ waitUntil: 'networkidle' });
-    await waitForVerseMode(page, 0);
-    await expectNoVisibleCommentaryPanel(page);
-    await expectCommentaryModeUi(page);
-
-    await toggleVerseMode(page, 1);
-    await waitForVerseMode(page, 1);
-    await expectNoVisibleCommentaryPanel(page);
-    await expectBodyModeUi(page);
 }
 
 async function createPage(browser, viewport, logs, errors) {
@@ -224,7 +220,6 @@ async function createPage(browser, viewport, logs, errors) {
             return;
         }
 
-        localStorage.removeItem('yoga-verse-content-mode');
         localStorage.removeItem('yoga-desktop-right-panel');
         localStorage.removeItem('yoga-desktop-sidebar');
         sessionStorage.setItem('__smoke-storage-reset', 'true');
@@ -240,10 +235,14 @@ async function runDesktopFlow(browser, logs, errors) {
     await waitForHomeSelects(desktop.page);
     await goFromHomeToVerse(desktop.page, '3', '9');
     await waitForHomeSelects(desktop.page);
-    await verifyVerseModePersistence(desktop.page);
+    await verifyVerseModeToggling(desktop.page);
 
     await ensureSidebarOpen(desktop.page);
     await waitForSidebarReadingCard(desktop.page);
+
+    // 번역가 라벨 검증을 위해 body(심화) 모드로 전환
+    await toggleVerseMode(desktop.page, 1);
+    await waitForVerseMode(desktop.page, 1);
 
     await selectVisibleHeaderChapter(desktop.page, '1');
     await waitForTranslationLabels(desktop.page);
@@ -258,9 +257,13 @@ async function runMobileFlow(browser, logs, errors) {
     await waitForHomeSelects(mobile.page);
     await goFromHomeToVerse(mobile.page, '3', '9');
     await waitForHomeSelects(mobile.page);
-    await verifyVerseModePersistence(mobile.page);
+    await verifyVerseModeToggling(mobile.page);
 
 
+
+    // 번역가 라벨 검증을 위해 body(심화) 모드로 전환
+    await toggleVerseMode(mobile.page, 1);
+    await waitForVerseMode(mobile.page, 1);
 
     await selectVisibleHeaderChapter(mobile.page, '1');
     await waitForTranslationLabels(mobile.page);
@@ -293,7 +296,7 @@ async function run() {
                         'desktop verse body mode markers',
                         'desktop verse commentary mode markers',
                         'desktop verse audio persists through toggles',
-                        'desktop verse mode persistence',
+                        'desktop verse mode toggling',
                         'desktop left reading card',
                         'desktop translation labels',
                         'mobile home chapter select',
@@ -303,7 +306,7 @@ async function run() {
                         'mobile verse body mode markers',
                         'mobile verse commentary mode markers',
                         'mobile verse audio persists through toggles',
-                        'mobile verse mode persistence',
+                        'mobile verse mode toggling',
                         'mobile left reading card',
                         'mobile translation labels',
                     ],
