@@ -231,8 +231,7 @@ const ContextPillPicker = ({
         </div>
     ) : null;
 
-    const shortChapterLabel = chapterNum ? `${chapterNum}장` : '장 --';
-    const shortVerseLabel = verseNum ? `${verseNum}절` : '절 --';
+    const triggerText = activeVerseLabel ? `${activeChapterLabel} / ${activeVerseLabel}` : activeChapterLabel;
 
     return (
         <div ref={rootRef} className="relative shrink-0">
@@ -242,12 +241,10 @@ const ContextPillPicker = ({
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-expanded={isOpen}
                 aria-haspopup="dialog"
-                className="inline-flex items-center rounded-[1rem] border border-gold-border/14 bg-shell-main/80 p-0.5 shadow-[0_10px_28px_-22px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-border/24 hover:bg-shell-main/90 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-shell-main-dark/88 cursor-pointer"
+                className="inline-flex items-center rounded-full border border-gold-border/14 bg-shell-main/82 p-0.5 shadow-[0_10px_28px_-22px_rgba(0,0,0,0.32)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-border/24 hover:bg-shell-main/92 active:translate-y-0 dark:border-dark-border/70 dark:bg-shell-main-dark/82 dark:hover:bg-shell-main-dark/88 cursor-pointer"
             >
-                <span className="inline-flex items-center gap-2 rounded-[0.85rem] bg-transparent px-3 py-1 text-[9px] font-semibold tracking-[0.14em] text-gold-primary dark:text-gold-light">
-                    <span className="whitespace-nowrap">{shortChapterLabel}</span>
-                    <span className="text-gold-primary/35 dark:text-gold-light/35">|</span>
-                    <span className="whitespace-nowrap">{shortVerseLabel}</span>
+                <span className="inline-flex items-center gap-2.5 rounded-full bg-transparent px-4 py-1.5 text-[11px] font-semibold tracking-[0.02em] text-gold-primary dark:text-gold-light">
+                    <span className="max-w-[170px] sm:max-w-[280px] md:max-w-[340px] truncate whitespace-nowrap">{triggerText}</span>
                     <ChevronDown className={`h-3.5 w-3.5 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                 </span>
             </button>

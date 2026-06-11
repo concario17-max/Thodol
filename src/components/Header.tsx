@@ -86,6 +86,7 @@ const Header = ({
 
     return (
         <header className={`sticky top-0 z-50 w-full border-b border-gold-border/10 bg-shell-header shadow-none transition-colors duration-500 backdrop-blur-0 dark:border-dark-border/60 dark:bg-shell-header-dark ${className}`}>
+            {/* 모바일 레이아웃 */}
             <div className="mx-auto w-full max-w-[1406px] px-4 py-2 sm:px-5 lg:hidden">
                 <div className="flex min-w-0 items-center gap-2 text-text-primary dark:text-dark-text-primary">
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate">
@@ -98,21 +99,26 @@ const Header = ({
                     </Link>
                 </div>
 
-                <div className="mt-2 flex w-full flex-col gap-2 border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
-                    <div className="flex flex-wrap items-center gap-2">
-                        {rightContent}
-                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
-                        <div className="ml-auto flex items-center gap-2">{renderVerseModeToggle()}</div>
+                {/* 모바일 서브 헤더 라인: 독립된 알약 형태로 노출 */}
+                {selectionControls || showContentModeToggle ? (
+                    <div className="mt-2 flex w-full items-center justify-between border-t border-gold-border/10 pt-2 dark:border-dark-border/50">
+                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : <div />}
+                        <div className="flex items-center gap-2">
+                            {rightContent}
+                            {renderVerseModeToggle()}
+                        </div>
                     </div>
-                </div>
+                ) : null}
             </div>
 
+            {/* 데스크톱 레이아웃 */}
             <div
                 className={`mx-auto hidden h-12 w-full max-w-[1406px] items-center ${
                     showSidebarToggle ? 'lg:grid lg:[grid-template-columns:var(--desktop-verse-columns)]' : 'lg:flex lg:justify-between'
                 }`}
                 style={desktopGridStyle}
             >
+                {/* 1열: 로고 영역 */}
                 <div className="flex min-w-0 items-center gap-3 px-5">
                     <Link to={targetUrl} className="group flex min-w-0 items-center gap-2 truncate text-text-primary dark:text-dark-text-primary">
                         <span className="flex shrink-0 items-center justify-center text-gold-primary opacity-90 transition-transform duration-700 group-hover:rotate-6">
@@ -124,10 +130,18 @@ const Header = ({
                     </Link>
                 </div>
 
-                <div className="flex min-w-0 items-center justify-end gap-3 px-5">
-                    <div className="flex items-center gap-1 rounded-[1rem] border border-gold-border/10 bg-shell-main/78 p-0.5 backdrop-blur-sm dark:border-dark-border/60 dark:bg-shell-main-dark/80">
+                {/* 2열: 콘텐츠 영역 위의 헤더 공간 (그리드 정렬선 유지) */}
+                <div className="relative flex h-full min-w-0 items-center justify-center px-5">
+                    {/* 장/절 선택 피커 (콘텐츠 영역 중앙에 대칭 배치) */}
+                    {selectionControls ? (
+                        <div className="min-w-0 shrink-0">
+                            {selectionControls}
+                        </div>
+                    ) : null}
+
+                    {/* 모드 선택 및 테마는 우측 끝에 absolute 배치 */}
+                    <div className="absolute right-5 flex items-center gap-2">
                         {rightContent}
-                        {selectionControls ? <div className="min-w-0 shrink-0">{selectionControls}</div> : null}
                         {renderVerseModeToggle()}
                     </div>
                 </div>
